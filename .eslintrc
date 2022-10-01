@@ -1,8 +1,10 @@
 {
+  "parser": "@typescript-eslint/parser",
   "extends": [
     "eslint:recommended",
     "airbnb",
-    "airbnb/hooks"
+    "airbnb/hooks",
+    "plugin:@typescript-eslint/recommended"
   ],
   "env": {
     "es6": true,
@@ -71,6 +73,9 @@
       "off"
     ],
     "no-param-reassign": [
+      "off"
+    ],
+    "@typescript-eslint/no-var-requires": [
       "off"
     ]
   }
