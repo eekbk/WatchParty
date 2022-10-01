@@ -1,0 +1,52 @@
+{
+  "dependencies": {
+    "aws-sdk": "^2.1227.0",
+    "axios": "^0.27.2",
+    "bootstrap": "^5.2.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "nodemon": "^2.0.20",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-google-oidc": "^0.1.0",
+    "passport-local": "^1.0.0",
+    "postgres": "^3.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.1",
+    "styled-components": "^5.3.6",
+    "webpack-cli": "^4.10.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.3",
+    "@babel/preset-env": "^7.19.3",
+    "@babel/preset-react": "^7.18.6",
+    "babel-loader": "^8.2.5",
+    "eslint": "^8.24.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.31.8",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.4",
+    "webpack": "^5.74.0"
+  },
+  "scripts": {
+    "build": "webpack --watch",
+    "start": "nodemon server/index.ts",
+    "prepare": "husky install",
+    "pre-commit": "npx husky add .husky/pre-commit \"npx lint-staged\"",
+    "husky-setup": "npm run prepare && npm run pre-commit",
+    "pretest": "tsc --noEmit"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix --max-warnings 6969"
+    ]
+  }
+}
