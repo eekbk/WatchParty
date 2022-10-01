@@ -1,6 +1,7 @@
 // File for creating the server
+import user from './routes/user.ts';
+
 const express = require('express');
-require('./routes/user.ts');
 
 const PORT = process.env.PORT || 4040;
 const app = express();
