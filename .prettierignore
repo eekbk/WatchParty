@@ -1,0 +1,4 @@
+**/.eslint*
+**/.vscode
+**/node_modules
+**/dist
