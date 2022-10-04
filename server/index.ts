@@ -2,11 +2,14 @@
 import * as path from 'path';
 
 const express = require('express');
+
+const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 const { default: user } = require('./routes/user.ts');
 const { default: party } = require('./routes/watchParty.ts');
 
 const PORT = process.env.PORT || 4040;
-const app = express();
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -32,6 +35,13 @@ app.get('/*', (req: any, res: any) => {
   );
 });
 
-app.listen(PORT, () => {
+// socket.io testing
+io.on('connection', (socket: any) => {
+  socket.on('pause', (arg: boolean) => {
+    io.emit('pause', arg);
+  });
+});
+
+http.listen(PORT, () => {
   console.log(`listening at http://localhost:${PORT}`);
 });
