@@ -6,7 +6,7 @@ function WatchParty({ videos }) {
   const [video, setVideo] = useState(() => (videos ? videos[0] : {}));
   const config = {
     method: 'get',
-    url: 'http://localhost:4040/party/',
+    url: '/party',
     headers: {},
   };
 
