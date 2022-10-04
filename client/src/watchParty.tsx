@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
+import ReactPlayer from 'react-player';
 
 function WatchParty({ videos }: any) {
   const [video, setVideo] = useState(() => (videos ? videos[0] : {}));
@@ -22,10 +23,11 @@ function WatchParty({ videos }: any) {
   }, []);
 
   return (
-    <Card style={{ width: '50rem', height: '25rem' }}>
-      <Card.Img
-        variant="top"
-        src={video.snippet ? video.snippet.thumbnails.high.url : ''}
+    <Card style={{ width: '75%', height: '750px' }}>
+      <ReactPlayer
+        url="https://www.youtube.com/watch?v=CtpdMkKvB6U"
+        height="75%"
+        width="75%"
       />
       <Card.Body>
         <Card.Title>
