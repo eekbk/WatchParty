@@ -5,7 +5,7 @@ function App(): JSX.Element {
   const navigate = useNavigate();
   const location = useLocation().pathname;
 
-  const handleClick = (e) => {
+  const handleClick = (e: any) => {
     if (location !== e.target.id) {
       console.log(e.target.id);
       navigate(e.target.id);

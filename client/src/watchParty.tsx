@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
 
-function WatchParty({ videos }) {
+function WatchParty({ videos }: any) {
   const [video, setVideo] = useState(() => (videos ? videos[0] : {}));
   const config = {
     method: 'get',

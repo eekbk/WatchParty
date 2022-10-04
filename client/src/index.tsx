@@ -7,7 +7,7 @@ const { default: App } = require('./app.tsx');
 const { default: Home } = require('./home.tsx');
 const { default: WatchParty } = require('./watchParty.tsx');
 
-ReactDOM.createRoot(document.getElementById('app')).render(
+ReactDOM.createRoot(document.getElementById('app')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
