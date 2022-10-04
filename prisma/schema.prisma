@@ -1,0 +1,159 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id @default(uuid())
+  user_name    String
+  email        String       @unique
+  follows      Int          @default(0)
+  messages     Message[]
+  relator      Relation[]   @relation("relator")
+  relatee      Relation[]   @relation("relatee")
+  user_parties User_Party[]
+  likes        Like[]
+  upvotes      Upvote[]
+}
+
+model Relation {
+  id         String        @id @default(uuid())
+  relator    User          @relation("relator", fields: [relator_id], references: [id])
+  relator_id String
+  relatee    User          @relation("relatee", fields: [relatee_id], references: [id])
+  relatee_id String
+  type       Relation_Type
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  createdAt      DateTime     @default(now())
+  room_timestamp DateTime
+  user           User         @relation(fields: [user_id], references: [id])
+  user_id        String
+  party          Party        @relation(fields: [party_id], references: [id])
+  party_id       String
+  type           Message_Type
+  upvotes_count  Int          @default(0)
+  upvotes        Upvote[]
+}
+
+model Party {
+  id           String       @id @default(uuid())
+  messages     Message[]
+  playlist     Playlist     @relation(fields: [playlist_id], references: [id])
+  playlist_id  String
+  is_private   Boolean      @default(false)
+  is_recurring Boolean      @default(false)
+  date_time    DateTime
+  likes_count  Int
+  type         Party_Type
+  status       Status       @default(UPCOMING)
+  user_parties User_Party[]
+  actions      Action[]
+  likes        Like[]
+}
+
+model Playlist {
+  id              String           @id @default(uuid())
+  name            String
+  description     String
+  thumbnail       String
+  parties         Party[]
+  playlist_videos Playlist_Video[]
+}
+
+model Playlist_Video {
+  id          String   @id @default(uuid())
+  playlist    Playlist @relation(fields: [playlist_id], references: [id])
+  playlist_id String
+  video       Video    @relation(fields: [video_id], references: [id])
+  video_id    String
+}
+
+model Video {
+  id              String           @id @default(uuid())
+  url             String
+  title           String
+  description     String
+  thumbnail       String
+  playlist_videos Playlist_Video[]
+  actions         Action[]
+}
+
+model User_Party {
+  id       String @id @default(uuid())
+  user_id  String
+  party_id String
+  user     User   @relation(fields: [user_id], references: [id])
+  party    Party  @relation(fields: [party_id], references: [id])
+}
+
+model Action {
+  id                   String      @id @default(uuid())
+  party_id             String
+  party                Party       @relation(fields: [party_id], references: [id])
+  video_id             String
+  video                Video       @relation(fields: [video_id], references: [id])
+  type                 Action_Type
+  action_timestamp     DateTime
+  move_video_timestamp DateTime
+}
+
+model Like {
+  id       String @id @default(uuid())
+  user_id  String
+  user     User   @relation(fields: [user_id], references: [id])
+  party_id String
+  party    Party  @relation(fields: [party_id], references: [id])
+}
+
+model Upvote {
+  id         String  @id @default(uuid())
+  user_id    String
+  user       User    @relation(fields: [user_id], references: [id])
+  message_id String
+  message    Message @relation(fields: [message_id], references: [id])
+}
+
+enum Party_Type {
+  DM
+  PARTY
+}
+
+enum Status {
+  ARCHIVED
+  UPCOMING
+  LIVE
+}
+
+enum Role {
+  CREATOR
+  ADMIN
+  NORMIE
+}
+
+enum Message_Type {
+  DM
+  COMMENT
+}
+
+enum Relation_Type {
+  BLOCK
+  FOLLOW
+}
+
+enum Action_Type {
+  START
+  STOP
+  MOVE
+  SKIP
+  SELECT
+}
