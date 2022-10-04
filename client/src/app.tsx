@@ -1,13 +1,14 @@
-import { useLocation, useNavigate, Outlet } from 'react-router-dom';
+import {
+  useLocation, useNavigate, Outlet, Link,
+} from 'react-router-dom';
 import { Nav, Navbar } from 'react-bootstrap';
 
 function App(): JSX.Element {
   const navigate = useNavigate();
   const location = useLocation().pathname;
 
-  const handleClick = (e) => {
+  const handleClick = (e: any) => {
     if (location !== e.target.id) {
-      console.log(e.target.id);
       navigate(e.target.id);
     }
   };
@@ -15,11 +16,11 @@ function App(): JSX.Element {
   return (
     <>
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand id="/home" onClick={handleClick}>
+        <Navbar.Brand id="/home" onClick={handleClick} type="a">
           WatchParty!
         </Navbar.Brand>
         <Nav className="me-auto">
-          <Nav.Link id="/watchParty" onClick={handleClick}>
+          <Nav.Link to="/watchParty" as={Link} onClick={handleClick}>
             WatchParty !&quot;TEMP&quot;!
           </Nav.Link>
         </Nav>

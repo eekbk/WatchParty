@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
+import { StyledButton } from './styles';
 
-function WatchParty({ videos }) {
+function WatchParty({ videos }: any) {
   const [video, setVideo] = useState(() => (videos ? videos[0] : {}));
   const config = {
     method: 'get',
-    url: '/party',
+    url: '/party/',
     headers: {},
   };
 
@@ -35,6 +36,9 @@ function WatchParty({ videos }) {
           {video.snippet ? video.snippet.description : 'Please Wait'}
         </Card.Text>
       </Card.Body>
+      <Card.Footer>
+        <StyledButton>Press Me</StyledButton>
+      </Card.Footer>
     </Card>
   );
 }
