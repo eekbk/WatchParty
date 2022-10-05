@@ -28,8 +28,13 @@ app.use(express.static(path.resolve('client', 'dist')));
 app.use(express.json());
 
 // routes
-app.use('/user', user);
-app.use('/party', party);
+/*
+AT CAITY'S SUGGESTION: add 'api' before before the route endpoint of
+any backend routes to avoid front end navigation "crossing streams"
+with backend
+*/
+app.use('api/user', user);
+app.use('api/party', party);
 
 
 
@@ -118,7 +123,7 @@ app.get('/', (req, res) => {
   res.status(200).send();
 });
 
-app.get('/*', (req: any, res: any) => {
+app.get('/*', (req: Request, res: Response) => {
   res.sendFile(
     path.resolve(__dirname, '..', 'client', 'dist', 'index.html'),
     (_data: object, err: string) => {
