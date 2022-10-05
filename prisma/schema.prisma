@@ -92,6 +92,7 @@ model User_Party {
   id       String @id @default(uuid())
   user_id  String
   party_id String
+  role     Role
   user     User   @relation(fields: [user_id], references: [id])
   party    Party  @relation(fields: [party_id], references: [id])
 }
