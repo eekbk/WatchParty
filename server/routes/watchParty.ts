@@ -1,9 +1,12 @@
 // File for handling WatchParty endpoints
-const express = require('express');
-const { default: dummyData } = require('../../dummyData.ts')
-const party = express.Router();
+import express, { Request, Response, Router } from 'express';
 
-party.get('/', (req, res) => {
+const { default: dummyData } = require('../../dummyData.ts');
+
+const party: Router = express.Router();
+
+// All Watch Parties that exist
+party.get('/all', (req: Request, res: Response) => {
   res.status(200).send(JSON.stringify(dummyData.items[0]));
 });
 
