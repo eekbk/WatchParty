@@ -1,5 +1,5 @@
 import {useLocation, useNavigate, Outlet} from 'react-router-dom'
-
+import { Nav, Navbar } from 'react-bootstrap';
 const App = () :JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation().pathname;
@@ -11,14 +11,16 @@ const App = () :JSX.Element => {
     }
   }
 
-
   return (
-    <div>
-      <ul>
-        <li id='/home' onClick={handleClick}>Home</li>
-      </ul>
+    <>
+      <Navbar bg="dark" variant="dark">
+      <Navbar.Brand id='/home' onClick={handleClick}>WatchParty!</Navbar.Brand>
+        <Nav className="me-auto">
+          <Nav.Link id='/watchParty' onClick={handleClick}>WatchParty !"TEMP"!</Nav.Link>
+        </Nav>
+      </Navbar>
       <Outlet />
-    </div>
+    </>
   )
 }
 export default App;

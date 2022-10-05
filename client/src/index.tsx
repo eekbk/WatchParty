@@ -9,6 +9,7 @@ import {
 
 const { default: App } = require('./app.tsx');
 const { default: Home } = require('./home.tsx');
+const { default: WatchParty } = require('./watchParty.tsx');
 
 
 ReactDOM.createRoot(document.getElementById('app')).render(
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('app')).render(
       <Routes>
         <Route path='/' element={<App />}>
           <Route path='home' element={<Home />} />
+          <Route path='watchParty' element={<WatchParty />} />
         </Route>
       </Routes>
     </BrowserRouter>
