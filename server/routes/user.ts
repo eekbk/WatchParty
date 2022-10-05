@@ -1,9 +1,9 @@
 // File for handling user endpoints
-const express = require('express');
+import express, { Request, Response, Router } from 'express';
 
-const user = express.Router();
+const user: Router = express.Router();
 
-user.get('/', (req: any, res: any) => {
+user.get('/', (req: Request, res: Response) => {
   res.status(200).send(JSON.stringify('WOOP'));
 });
 

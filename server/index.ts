@@ -1,11 +1,12 @@
 // File for creating the server
+import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
 
-const express = require('express');
+const app: Express = express();
 
-const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
+
 const { default: user } = require('./routes/user.ts');
 const { default: party } = require('./routes/watchParty.ts');
 
@@ -20,14 +21,14 @@ app.use(express.json());
 app.use('/user', user);
 app.use('/party', party);
 
-app.get('/', (req: any, res: any) => {
+app.get('/', (req: Request, res: Response) => {
   res.status(200).send();
 });
 
 app.get('/*', (req: any, res: any) => {
   res.sendFile(
     path.resolve(__dirname, '..', 'client', 'dist', 'index.html'),
-    (data: any, err: any) => {
+    (_data: object, err: string) => {
       if (err) {
         res.status(500).send(err);
       }

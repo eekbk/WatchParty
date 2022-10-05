@@ -4,6 +4,9 @@ const srcDir = path.resolve(__dirname, 'client', 'src', 'index.tsx');
 module.exports = {
   mode: 'development',
   entry: path.resolve(srcDir),
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'client', 'dist'),
@@ -22,7 +25,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: ['ts-loader'],
       },

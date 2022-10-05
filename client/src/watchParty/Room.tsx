@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
+import { StyledButton } from '../styles';
 
 const { default: Video } = require('./Video.tsx');
 
@@ -37,6 +38,9 @@ function WatchParty({ videos }: any) {
           {video.snippet ? video.snippet.description : 'Please Wait'}
         </Card.Text>
       </Card.Body>
+      <Card.Footer>
+        <StyledButton>Press Me</StyledButton>
+      </Card.Footer>
     </Card>
   );
 }
