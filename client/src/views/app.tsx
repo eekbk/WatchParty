@@ -2,6 +2,7 @@ import {
   useLocation, useNavigate, Outlet, Link,
 } from 'react-router-dom';
 import { Nav, Navbar } from 'react-bootstrap';
+// import LoginButton from '../LoginButton';
 
 function App(): JSX.Element {
   const navigate = useNavigate();
@@ -23,8 +24,10 @@ function App(): JSX.Element {
           <Nav.Link to="/watchParty" as={Link} onClick={handleClick}>
             WatchParty !&quot;TEMP&quot;!
           </Nav.Link>
+          <a href="/auth/google">LOGIN!</a>
         </Nav>
       </Navbar>
+
       <Outlet />
     </>
   );
