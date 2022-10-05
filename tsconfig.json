@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
+<<<<<<< HEAD
     "strict": true,
     "noImplicitAny": true,
+=======
+    "strict": false,
+>>>>>>> 3a8228dd014ca922c102c690eeeed1de7b9db509
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noUnusedLocals": true,
