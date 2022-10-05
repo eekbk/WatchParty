@@ -4,7 +4,12 @@
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
+<<<<<<< HEAD
+    "strict": true,
+    "noImplicitAny": true,
+=======
     "strict": false,
+>>>>>>> 01dbbd00984f099f6e33517c32252cca6bb1fa94
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noUnusedLocals": true,
