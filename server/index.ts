@@ -62,25 +62,31 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `https://localhost:${PORT}/auth/google/callback`,
+      callbackURL: `http://localhost:${PORT}/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
-      try {
-        const user = await prisma.user.findUnique({
-          where: {
-            email: profile.email,
+      console.log('the profile:', profile);
+      const user = await prisma.user.findUnique({
+        where: {
+          googleId: profile.id,
+        },
+      });
+      // if the user doesn't exist, create it
+      if (!user) {
+        const newUser = await prisma.user.create({
+          data: {
+            user_name: profile.name.givenName,
+            googleId: profile.id,
           },
         });
-        if (!user) {
-          await prisma.user.create({
-            data: {
-              user_name: profile.name,
-              email: profile.email,
-            },
-          });
+        if (newUser) {
+          console.log('newUser:', newUser);
+          done(null, newUser);
         }
-      } catch (error) {}
-      done(null, profile);
+      } else {
+        console.log('user', user);
+        done(null, user);
+      }
     },
   ),
 );
