@@ -1,7 +1,6 @@
 // File for creating the server
 import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
-
 import * as dotenv from 'dotenv';
 import { prisma } from './db/index';
 

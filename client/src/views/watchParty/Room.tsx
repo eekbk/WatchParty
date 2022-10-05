@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
-import { StyledButton } from '../styles';
+import { StyledButton } from '../../styles';
 
 const { default: Video } = require('./Video.tsx');
 

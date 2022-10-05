@@ -5,7 +5,6 @@ import express, { Request, Response, Router } from 'express';
 const user: Router = express.Router();
 
 user.get('/', (req: Request, res: Response) => {
-  //
   res.status(200).send(JSON.stringify('WOOP'));
 });
 
