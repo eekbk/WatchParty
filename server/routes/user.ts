@@ -1,10 +1,10 @@
 // File for handling user endpoints
-const express = require('express');
-const { default: prisma } = require('../db/index.ts');
+import express, { Request, Response, Router } from 'express';
+import prisma from '../db/index.ts';
 
-const user = express.Router();
+const user: Router = express.Router();
 
-user.get('/', (req, res) => {
+user.get('/', (req: Request, res: Response) => {
   res.status(200).send(JSON.stringify('WOOP'));
 });
 

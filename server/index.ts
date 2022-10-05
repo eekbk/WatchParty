@@ -1,29 +1,34 @@
 // File for creating the server
-const express = require('express');
-const { default: user } = require('./routes/user.ts');
-const { default: party } = require('./routes/watchParty.ts');
+import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
 
-const PORT = process.env.PORT || 4040;
-const app = express();
+const app: Express = express();
 
-//Middleware
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
+const { default: user } = require('./routes/user.ts');
+const { default: party } = require('./routes/watchParty.ts');
+
+const PORT = process.env.PORT || 4040;
+
+// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve('client', 'dist')));
 app.use(express.json());
 
-//routes
+// routes
 app.use('/user', user);
 app.use('/party', party);
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
   res.status(200).send();
 });
 
-app.get('/*', (req, res) => {
+app.get('/*', (req: any, res: any) => {
   res.sendFile(
     path.resolve(__dirname, '..', 'client', 'dist', 'index.html'),
-    (data, err) => {
+    (_data: object, err: string) => {
       if (err) {
         res.status(500).send(err);
       }
@@ -31,6 +36,16 @@ app.get('/*', (req, res) => {
   );
 });
 
-app.listen(PORT, () => {
+// socket.io testing
+io.on('connection', (socket: any) => {
+  socket.on('pause', (arg: boolean) => {
+    io.emit('pause', arg);
+  });
+  socket.on('play', (arg: boolean) => {
+    io.emit('play', arg);
+  });
+});
+
+http.listen(PORT, () => {
   console.log(`listening at http://localhost:${PORT}`);
 });
