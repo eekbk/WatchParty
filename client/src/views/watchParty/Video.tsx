@@ -1,5 +1,5 @@
 import ReactPlayer from 'react-player';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
 const socket = io();
@@ -7,19 +7,23 @@ const socket = io();
 function Video({ videoUrl }: any) {
   // state vars
   const [isPlaying, setPause] = useState(false);
+  const [pSeconds, setSeconds] = useState(0);
+
+  const videoPlayer = useRef<ReactPlayer>(null);
 
   // functions
 
   // pauses all clients
   const pauseVid = () => {
     socket.emit('pause', false);
+    videoPlayer.current.seekTo(pSeconds);
   };
   // plays all clients
   const playVid = () => {
     socket.emit('play', true);
   };
-  const testFunc = (data: any) => {
-    console.log(data);
+  const updateTime = (data: any) => {
+    setSeconds(data.playedSeconds);
   };
 
   // updates once
@@ -31,9 +35,9 @@ function Video({ videoUrl }: any) {
       setPause(arg);
     });
   });
-  console.log(isPlaying);
   return (
     <ReactPlayer
+      ref={videoPlayer}
       config={{
 			  youtube: {
 			    playerVars: {
@@ -43,7 +47,7 @@ function Video({ videoUrl }: any) {
       }}
       onPlay={playVid}
       onPause={pauseVid}
-      onSeek={testFunc}
+      onProgress={updateTime}
       playing={isPlaying}
       url={videoUrl}
       style={{
