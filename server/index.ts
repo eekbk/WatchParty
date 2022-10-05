@@ -1,5 +1,12 @@
 // File for creating the server
-const express = require('express');
+import express, { Express, Request, Response } from 'express';
+import * as path from 'path';
+
+const app: Express = express();
+
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
 const { default: user } = require('./routes/user.ts');
 const { default: party } = require('./routes/watchParty.ts');
 const passport = require('passport');
@@ -14,15 +21,13 @@ import prisma from '../script'
 dotenv.config();
 const PORT = process.env.PORT || 4040;
 const app = express();
-// const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
-// const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
 
-//Middleware
+// Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve('client', 'dist')));
 app.use(express.json());
 
-//routes
+// routes
 app.use('/user', user);
 app.use('/party', party);
 
@@ -113,10 +118,10 @@ app.get('/', (req, res) => {
   res.status(200).send();
 });
 
-app.get('/*', (req, res) => {
+app.get('/*', (req: any, res: any) => {
   res.sendFile(
     path.resolve(__dirname, '..', 'client', 'dist', 'index.html'),
-    (data, err) => {
+    (_data: object, err: string) => {
       if (err) {
         res.status(500).send(err);
       }
@@ -124,20 +129,16 @@ app.get('/*', (req, res) => {
   );
 });
 
-app.listen(PORT, () => {
-  console.log(`listening at http://localhost:${PORT}`);
+// socket.io testing
+io.on('connection', (socket: any) => {
+  socket.on('pause', (arg: boolean) => {
+    io.emit('pause', arg);
+  });
+  socket.on('play', (arg: boolean) => {
+    io.emit('play', arg);
+  });
 });
 
-
-//const authUser = (accessToken, refreshToken, profile, cb) => done(null, profile);
-
-// passport.use(
-//   new GoogleStrategy(
-//     {
-//       clientID: process.env.GOOGLE_CLIENT_ID,
-//       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-//       callbackURL: `https://localhost:${PORT}/auth/google/callback`
-//     },
-//     authUser,
-//   ),
-// );
+http.listen(PORT, () => {
+  console.log(`listening at http://localhost:${PORT}`);
+});
