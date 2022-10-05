@@ -3530,6 +3530,8 @@ eval("\n\nfunction checkDCE() {\n  /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */\n
 
 /***/ }),
 
+<<<<<<< HEAD
+=======
 /***/ "./node_modules/react-fast-compare/index.js":
 /*!**************************************************!*\
   !*** ./node_modules/react-fast-compare/index.js ***!
@@ -3540,6 +3542,7 @@ eval("/* global Map:readonly, Set:readonly, ArrayBuffer:readonly */\n\nvar hasEl
 
 /***/ }),
 
+>>>>>>> 01dbbd00984f099f6e33517c32252cca6bb1fa94
 /***/ "./node_modules/react-is/cjs/react-is.development.js":
 /*!***********************************************************!*\
   !*** ./node_modules/react-is/cjs/react-is.development.js ***!

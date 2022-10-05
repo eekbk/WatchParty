@@ -3,14 +3,16 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const main = async () => {
-  // func for connecting prisma
-};
+// const main = async () => {
+//   // func for connecting prisma
+// };
 
-main()
-  .catch((err) => {
-    console.error(err.message);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+// main()
+//   .catch((err) => {
+//     console.error(err.message);
+//   })
+//   .finally(async () => {
+//     await prisma.$disconnect();
+//   });
+
+export default prisma;
