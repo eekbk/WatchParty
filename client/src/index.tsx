@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 const { default: App } = require('./app.tsx');
 const { default: Home } = require('./home.tsx');
-const { default: WatchParty } = require('./watchParty.tsx');
+const { default: WatchParty } = require('./watchParty/Room.tsx');
 
 ReactDOM.createRoot(document.getElementById('app')!).render(
   <React.StrictMode>

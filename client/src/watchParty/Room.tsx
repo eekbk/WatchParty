@@ -1,23 +1,13 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
-import ReactPlayer from 'react-player';
-import io from 'socket.io-client';
 
-const socket = io();
+const { default: Video } = require('./Video.tsx');
 
 function WatchParty({ videos }: any) {
   const [video, setVideo] = useState(() => (videos ? videos[0] : {}));
-  const [isPaused, setPause] = useState(false);
-
-  const testFunc = () => {
-    socket.emit('pause', isPaused);
-  };
 
   useEffect(() => {
-    socket.on('pause', (arg: boolean) => {
-      setPause(!arg);
-    });
     const config = {
       method: 'get',
       url: 'http://localhost:4040/party/',
@@ -32,13 +22,13 @@ function WatchParty({ videos }: any) {
       });
   }, []);
   return (
-    <Card style={{ width: '75%', height: '750px' }}>
-      <ReactPlayer
-        playing={isPaused}
-        url="https://www.youtube.com/watch?v=CtpdMkKvB6U"
-        height="75%"
-        width="75%"
-      />
+    <Card
+      style={{ width: '75%', height: '100%' }}
+      bg="dark"
+      key="Dark"
+      text="white"
+    >
+      <Video videoUrl="https://www.youtube.com/watch?v=vZa0Yh6e7dw" />
       <Card.Body>
         <Card.Title>
           {video.snippet ? video.snippet.title : 'Please Wait'}
@@ -47,9 +37,6 @@ function WatchParty({ videos }: any) {
           {video.snippet ? video.snippet.description : 'Please Wait'}
         </Card.Text>
       </Card.Body>
-      <button type="button" onClick={testFunc}>
-        TEE HEE
-      </button>
     </Card>
   );
 }

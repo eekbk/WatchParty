@@ -40,6 +40,9 @@ io.on('connection', (socket: any) => {
   socket.on('pause', (arg: boolean) => {
     io.emit('pause', arg);
   });
+  socket.on('play', (arg: boolean) => {
+    io.emit('play', arg);
+  });
 });
 
 http.listen(PORT, () => {
