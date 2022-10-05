@@ -2,7 +2,7 @@
 import { PrismaClient } from '@prisma/client';
 // import { mainModule } from 'process';
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 // const main = async () => {
 //   // funcs interacting with the database
@@ -17,5 +17,3 @@ const prisma = new PrismaClient();
 //   .finally(async () => {
 //     await prisma.$disconnect();
 //   });
-
-export default prisma;
