@@ -53,7 +53,7 @@ model Party {
   is_private   Boolean      @default(false)
   is_recurring Boolean      @default(false)
   date_time    DateTime
-  likes_count  Int
+  likes_count  Int          @default(0)
   type         Party_Type
   status       Status       @default(UPCOMING)
   user_parties User_Party[]
