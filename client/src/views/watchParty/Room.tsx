@@ -11,7 +11,7 @@ function WatchParty({ videos }: any) {
   useEffect(() => {
     const config = {
       method: 'get',
-      url: 'http://localhost:4040/party/',
+      url: 'http://localhost:4040/api/party/test',
       headers: {},
     };
     axios(config)
@@ -24,12 +24,11 @@ function WatchParty({ videos }: any) {
   }, []);
   return (
     <Card
-      style={{ width: '75%', height: '100%' }}
-      bg="dark"
-      key="Dark"
+      style={{ width: '75%', height: '90vh', borderRadius: '0px 0px 10px 0px' }}
+      bg="transparent"
       text="white"
     >
-      <Video videoUrl="https://www.youtube.com/watch?v=vZa0Yh6e7dw" />
+      <Video videoUrl="https://www.youtube.com/watch?v=vZa0Yh6e7dw" isAdmin />
       <Card.Body>
         <Card.Title>
           {video.snippet ? video.snippet.title : 'Please Wait'}
