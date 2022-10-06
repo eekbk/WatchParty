@@ -42,7 +42,6 @@ passport.use(
       callbackURL: `http://localhost:${PORT}/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log('the profile:', profile);
       const user = await prisma.user.findUnique({
         where: {
           googleId: profile.id,
@@ -57,11 +56,9 @@ passport.use(
           },
         });
         if (newUser) {
-          console.log('newUser:', newUser);
           done(null, newUser);
         }
       } else {
-        console.log('user', user);
         done(null, user);
       }
     },
@@ -88,7 +85,6 @@ passport.deserializeUser(async (id, done) => {
     where: {
       id: id,
     }})
-    //console.log(user, 'user........')
   done(null, user);
 });
 
@@ -100,7 +96,6 @@ app.get('/test', (req: Request, res: Response) => {
 app.get(
   '/auth/google',
   passport.authenticate('google', { scope: ['profile'] }, (req: Request, res: Response) => {
-    console.log('not empty');
   }),
 );
 
@@ -109,7 +104,6 @@ app.get(
   passport.authenticate('google', { failureRedirect: '/' }),
   (req: Request, res: Response) => {
     // Successful authentication, redirect home.
-    //console.log(req.user, 'req................');
     res.redirect('/profile');
   },
 );
