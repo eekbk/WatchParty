@@ -2,9 +2,15 @@
 import express, { Request, Response, Router } from 'express';
 import { Party } from '@prisma/client';
 import { prisma } from '../db/index';
-// const { default: dummyData } = require('../../dummyData.ts');
+
+const { default: dummyData } = require('../../dummyData.ts');
 
 const party: Router = express.Router();
+
+// Get video dummy data
+party.get('/test', (req: Request, res: Response) => {
+  res.status(200).send(JSON.stringify(dummyData[0]));
+});
 
 // Get all watch parties
 party.get('/', (req: Request, res: Response) => {

@@ -149,6 +149,9 @@ io.on('connection', (socket: any) => {
   socket.on('play', (arg: boolean) => {
     io.emit('play', arg);
   });
+  socket.on('seek', (seconds: number) => {
+    io.emit('seek', seconds);
+  });
 });
 
 http.listen(PORT, () => {

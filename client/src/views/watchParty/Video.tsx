@@ -1,10 +1,11 @@
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
+import { Container } from 'react-bootstrap';
 
 const socket = io();
 
-function Video({ videoUrl }: any) {
+function Video({ videoUrl, isAdmin }: any) {
   // state vars
   const [isPlaying, setPause] = useState(false);
   const [pSeconds, setSeconds] = useState(0);
@@ -16,6 +17,7 @@ function Video({ videoUrl }: any) {
   // pauses all clients
   const pauseVid = () => {
     socket.emit('pause', false);
+    socket.emit('seek', pSeconds);
     videoPlayer.current.seekTo(pSeconds);
   };
   // plays all clients
@@ -34,27 +36,33 @@ function Video({ videoUrl }: any) {
     socket.on('play', (arg: boolean) => {
       setPause(arg);
     });
+    socket.on('seek', (seconds: number) => {
+      setSeconds(seconds);
+    });
   });
   return (
-    <ReactPlayer
-      ref={videoPlayer}
-      config={{
-			  youtube: {
-			    playerVars: {
-			      controls: 1,
-			    },
-			  },
-      }}
-      onPlay={playVid}
-      onPause={pauseVid}
-      onProgress={updateTime}
-      playing={isPlaying}
-      url={videoUrl}
-      style={{
-			  height: '500px',
-			  width: '500px',
-      }}
-    />
+    <Container fluid="md" style={{ height: '100%' }}>
+      <ReactPlayer
+        ref={videoPlayer}
+        config={{
+				  youtube: {
+				    playerVars: {
+				      controls: 1,
+				    },
+				  },
+        }}
+        onPlay={playVid}
+        onPause={pauseVid}
+        onProgress={updateTime}
+        playing={isPlaying}
+        url={videoUrl}
+        width="100%"
+        height="100%"
+        style={{
+				  pointerEvents: isAdmin ? 'all' : 'none',
+        }}
+      />
+    </Container>
   );
 }
 export default Video;
