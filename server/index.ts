@@ -2,7 +2,8 @@
 import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
-import { prisma } from './db/index';
+import  { prisma }  from './db/index';
+
 
 const app: Express = express();
 
@@ -32,66 +33,40 @@ with backend
 app.use('api/user', user);
 app.use('api/party', party);
 
-// passport.use(new GoogleStrategy({
-//   clientID: GOOGLE_CLIENT_ID,
-//   clientSecret: GOOGLE_CLIENT_SECRET,
-//   callbackURL: `https://localhost:${PORT}/auth/google/callback`
-// },
-// async function(accessToken, refreshToken, profile, cb) {
-//   try {
-//     let user = await prisma.user.findUnique({
-//       where: {
-//         email: profile.email,
-//       }
-//     })
-//     if (!user) {
-//       let user = await prisma.user.create({
-//         data: profile,
-//       })
-//     }
-//   } catch (error) {
-//   }
-//   }, function(err, user) {
-//     return cb(err, user);
-//   });
-
-// ));
 
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `https://localhost:${PORT}/auth/google/callback`,
+      callbackURL: `http://localhost:${PORT}/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
-      try {
-        const user = await prisma.user.findUnique({
-          where: {
-            email: profile.email,
+      console.log('the profile:', profile);
+      const user = await prisma.user.findUnique({
+        where: {
+          googleId: profile.id,
+        },
+      });
+      // if the user doesn't exist, create it
+      if (!user) {
+        const newUser = await prisma.user.create({
+          data: {
+            user_name: profile.name.givenName,
+            googleId: profile.id,
           },
         });
-        if (!user) {
-          await prisma.user.create({
-            data: {
-              user_name: profile.name,
-              email: profile.email,
-            },
-          });
+        if (newUser) {
+          console.log('newUser:', newUser);
+          done(null, newUser);
         }
-      } catch (error) {}
-      done(null, profile);
+      } else {
+        console.log('user', user);
+        done(null, user);
+      }
     },
   ),
 );
-
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser(async (user, done) => {
-  done(null, user);
-});
 
 app.use(
   session({
@@ -104,25 +79,75 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id: id,
+    }})
+    //console.log(user, 'user........')
+  done(null, user);
+});
+
+app.get('/test', (req: Request, res: Response) => {
+  res.json(req.user)
+})
+
+
 app.get(
   '/auth/google',
-  passport.authenticate('google', { scope: ['profile'] }, (req, res) => {
+  passport.authenticate('google', { scope: ['profile'] }, (req: Request, res: Response) => {
     console.log('not empty');
   }),
 );
 
 app.get(
   '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  (req, res) => {
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req: Request, res: Response) => {
     // Successful authentication, redirect home.
-    res.redirect('/');
+    //console.log(req.user, 'req................');
+    res.redirect('/profile');
   },
 );
+
 
 app.get('/', (req, res) => {
   res.status(200).send();
 });
+
+// const isLoggedIn = (req, res, next) => {
+//   if (req.user) {
+//     next();
+//   } else {
+//       res.status(401).send('Not Logged In');
+//     }
+//   }
+
+//   const isLoggedIn = require('./Middleware/auth')
+//   app.get('/', isLoggedIn,(req, res) => res.send(`Welcome ${req.user.displayName}!`))
+//   app.get('/logout', (req, res) => {
+//     req.session = null;
+//     req.logout();
+//     res.redirect('/');
+//   })
+
+// app.post('/logout', (req, res) => {
+//   if (req.session) {
+//     req.session.destroy((err) => {
+//       if (err) {
+//         res.status(400).send('Unable to log out');
+//       } else {
+//         res.status(200).send('logged out worked');
+//       }
+//     });
+//   } else {
+//     res.end();
+//   }
+// });
 
 app.get('/*', (req: Request, res: Response) => {
   res.sendFile(
