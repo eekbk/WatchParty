@@ -23,8 +23,10 @@ function App(): JSX.Element {
           <Nav.Link to="/watchParty" as={Link} onClick={handleClick}>
             WatchParty !&quot;TEMP&quot;!
           </Nav.Link>
+          <a href="/auth/google">LOGIN!</a>
         </Nav>
       </Navbar>
+
       <Outlet />
     </Container>
   );
