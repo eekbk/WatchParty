@@ -1,32 +1,30 @@
-import {
-  useLocation, useNavigate, Outlet, Link,
-} from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Outlet, Link } from 'react-router-dom';
+import { Nav, Navbar, Container } from 'react-bootstrap';
 
 function App(): JSX.Element {
-  const navigate = useNavigate();
-  const location = useLocation().pathname;
-
-  const handleClick = (e: any) => {
-    if (location !== e.target.id) {
-      navigate(e.target.id);
-    }
-  };
-
   return (
-    <>
+    <Container fluid>
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand id="/home" onClick={handleClick} type="a">
+        <Navbar.Brand to="/home" as={Link}>
           WatchParty!
         </Navbar.Brand>
         <Nav className="me-auto">
-          <Nav.Link to="/watchParty" as={Link} onClick={handleClick}>
+          <Nav.Link to="/watchParty" as={Link}>
             WatchParty !&quot;TEMP&quot;!
+          </Nav.Link>
+          <Nav.Link to="/createParty" as={Link}>
+            Create Watch Party
+          </Nav.Link>
+          <Nav.Link to="/profile" as={Link}>
+            Profile
+          </Nav.Link>
+          <Nav.Link to="/dashboard" as={Link}>
+            Dashboard
           </Nav.Link>
         </Nav>
       </Navbar>
       <Outlet />
-    </>
+    </Container>
   );
 }
 export default App;
