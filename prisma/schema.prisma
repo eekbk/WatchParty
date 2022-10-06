@@ -13,7 +13,7 @@ datasource db {
 model User {
   id           String       @id @default(uuid())
   user_name    String
-  email        String       @unique
+  googleId     String       @unique
   follows      Int          @default(0)
   messages     Message[]
   relator      Relation[]   @relation("relator")
@@ -53,7 +53,7 @@ model Party {
   is_private   Boolean      @default(false)
   is_recurring Boolean      @default(false)
   date_time    DateTime
-  likes_count  Int
+  likes_count  Int          @default(0)
   type         Party_Type
   status       Status       @default(UPCOMING)
   user_parties User_Party[]
