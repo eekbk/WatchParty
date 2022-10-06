@@ -1,34 +1,38 @@
-import {
-  useLocation, useNavigate, Outlet, Link,
-} from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import { Nav, Navbar, Container } from 'react-bootstrap';
+import { StyledBackgroundContainer } from '../styles';
 
 function App(): JSX.Element {
   return (
-    <Container fluid style={{ backgroundColor: 'black' }}>
-      <Navbar bg="dark" variant="dark" expand="xs" style={{ height: '10vh' }}>
-        <Navbar.Brand id="/home" to="/home" as={Link}>
-          WatchParty!
-        </Navbar.Brand>
-        <Nav className="me-auto">
-          <Nav.Link to="/watchParty" as={Link}>
-            WatchParty !&quot;TEMP&quot;!
-          </Nav.Link>
-          <Nav.Link to="/createParty" as={Link}>
-            Create Watch Party
-          </Nav.Link>
-          <Nav.Link to="/profile" as={Link}>
-            Profile
-          </Nav.Link>
-          <Nav.Link to="/dashboard" as={Link}>
-            Dashboard
-          </Nav.Link>
-          <a href="/auth/google">LOGIN!</a>
-        </Nav>
+    <StyledBackgroundContainer fluid>
+      <Navbar expand="lg" style={{ height: '10vh' }}>
+        <Container>
+          <Navbar.Brand to="/home" as={Link}>
+            WatchParty
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link to="/watchParty" as={Link}>
+                Party View
+              </Nav.Link>
+              <Nav.Link to="/createParty" as={Link}>
+                Create Party
+              </Nav.Link>
+              <Nav.Link to="/profile" as={Link}>
+                Profile
+              </Nav.Link>
+              <Nav.Link to="/dashboard" as={Link}>
+                Dashboard
+              </Nav.Link>
+              <Nav.Link href="/auth/google">Login</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
       </Navbar>
 
       <Outlet />
-    </Container>
+    </StyledBackgroundContainer>
   );
 }
 export default App;

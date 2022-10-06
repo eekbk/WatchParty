@@ -13,6 +13,7 @@ ReactDOM.createRoot(document.getElementById('app')!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
+          <Route path="" element={<Home />} />
           <Route path="home" element={<Home />} />
           <Route path="watchParty" element={<WatchParty />} />
           <Route path="createParty" element={<CreateParty />} />
