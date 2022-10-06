@@ -1,7 +1,7 @@
 import {
   useLocation, useNavigate, Outlet, Link,
 } from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar, Container } from 'react-bootstrap';
 
 function App(): JSX.Element {
   const navigate = useNavigate();
@@ -14,8 +14,8 @@ function App(): JSX.Element {
   };
 
   return (
-    <>
-      <Navbar bg="dark" variant="dark">
+    <Container fluid style={{ backgroundColor: 'black' }}>
+      <Navbar bg="dark" variant="dark" expand="xs" style={{ height: '10vh' }}>
         <Navbar.Brand id="/home" onClick={handleClick} type="a">
           WatchParty!
         </Navbar.Brand>
@@ -26,7 +26,7 @@ function App(): JSX.Element {
         </Nav>
       </Navbar>
       <Outlet />
-    </>
+    </Container>
   );
 }
 export default App;
