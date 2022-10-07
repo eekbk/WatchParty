@@ -104,7 +104,7 @@ app.get(
   passport.authenticate('google', { failureRedirect: '/' }),
   (req: Request, res: Response) => {
     // Successful authentication, redirect home.
-    res.redirect('/profile');
+    res.redirect('/dashboard');
   },
 );
 
@@ -161,6 +161,9 @@ io.on('connection', (socket: any) => {
   });
   socket.on('play', (arg: boolean) => {
     io.emit('play', arg);
+  });
+  socket.on('seek', (seconds: number) => {
+    io.emit('seek', seconds);
   });
 });
 
