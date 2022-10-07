@@ -10,17 +10,12 @@ export const StyledButton = styled(Button)`
 		background-color: #8a25e2;
 		border-color: #8a25e2;
 	}
-	&:focus {
+	&:active:focus {
 		outline: none;
 		box-shadow: none;
 		background-color: #8a25e2;
 	}
 	&:active {
-		outline: none;
-		box-shadow: none;
-		background-color: #8a25e2;
-	}
-	&:active:focus {
 		outline: none;
 		box-shadow: none;
 		background-color: #8a25e2;

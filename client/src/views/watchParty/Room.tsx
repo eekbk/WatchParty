@@ -38,7 +38,7 @@ function WatchParty({ videos }: any) {
         </Card.Text>
       </Card.Body>
       <Card.Footer>
-        <StyledButton>Press Me</StyledButton>
+        <StyledButton onClick={(e) => e.target.blur()}>Press Me</StyledButton>
       </Card.Footer>
     </Card>
   );
