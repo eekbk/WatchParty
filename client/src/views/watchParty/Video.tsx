@@ -88,7 +88,14 @@ function Video({ videos, isAdmin, room }: any) {
     );
   }, []);
   return (
-		<Container fluid="md" style={{ height: '100%' }}>
+		<Container
+  fluid="md"
+  style={{
+			  height: '100%',
+			  float: 'left',
+			  marginLeft: '0px',
+  }}
+		>
 			<ReactPlayer
   ref={videoPlayer}
   config={{
