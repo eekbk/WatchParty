@@ -2,6 +2,7 @@ import {
   useLocation, useNavigate, Outlet, Link,
 } from 'react-router-dom';
 import { Nav, Navbar } from 'react-bootstrap';
+import Search from '../search';
 // import LoginButton from '../LoginButton';
 
 function App(): JSX.Element {
@@ -27,7 +28,7 @@ function App(): JSX.Element {
           <a href="/auth/google">LOGIN!</a>
         </Nav>
       </Navbar>
-
+      <Search />
       <Outlet />
     </>
   );
