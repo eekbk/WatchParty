@@ -144,13 +144,13 @@ app.get('/*', (req: Request, res: Response) => {
 // socket.io testing
 io.on('connection', (socket: any) => {
   socket.on('pause', (arg: boolean) => {
-    io.emit('pause', arg);
+    socket.broadcast.emit('pause', arg);
   });
   socket.on('play', (arg: boolean) => {
     io.emit('play', arg);
   });
   socket.on('seek', (seconds: number) => {
-    io.emit('seek', seconds);
+    socket.broadcast.emit('seek', seconds);
   });
 });
 

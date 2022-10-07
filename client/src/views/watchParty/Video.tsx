@@ -1,7 +1,8 @@
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
-import { Container } from 'react-bootstrap';
+import { Container, ProgressBar } from 'react-bootstrap';
+import { PlayPause } from '../../styles';
 
 const socket = io();
 
@@ -9,13 +10,20 @@ function Video({ videoUrl, isAdmin }: any) {
   // state vars
   const [isPlaying, setPause] = useState(false);
   const [pSeconds, setSeconds] = useState(0);
+  const [duration, setDur] = useState(1);
 
-  const videoPlayer = useRef<ReactPlayer>(null);
+  const videoPlayer: any = useRef<ReactPlayer>(null);
 
   // functions
 
+  // Updates the duration
+  const setDuration = (sec) => {
+    setDur(sec);
+  };
+
   // pauses all clients
   const pauseVid = () => {
+    setPause(false);
     socket.emit('pause', false);
     socket.emit('seek', pSeconds);
     videoPlayer.current.seekTo(pSeconds);
@@ -38,6 +46,7 @@ function Video({ videoUrl, isAdmin }: any) {
     });
     socket.on('seek', (seconds: number) => {
       setSeconds(seconds);
+      videoPlayer.current.seekTo(seconds);
     });
   });
   return (
@@ -47,21 +56,25 @@ function Video({ videoUrl, isAdmin }: any) {
         config={{
 				  youtube: {
 				    playerVars: {
-				      controls: 1,
+				      controls: 0,
+				      color: 'white',
 				    },
 				  },
         }}
-        onPlay={playVid}
-        onPause={pauseVid}
+        onDuration={setDuration}
         onProgress={updateTime}
         playing={isPlaying}
         url={videoUrl}
         width="100%"
-        height="100%"
+        height="85%"
         style={{
-				  pointerEvents: isAdmin ? 'all' : 'none',
+				  pointerEvents: 'none',
         }}
       />
+      <ProgressBar variant="info" now={pSeconds} max={duration} min={0} />
+      <PlayPause onClick={playVid}>Play</PlayPause>
+      {' '}
+      <PlayPause onClick={pauseVid}>Pause</PlayPause>
     </Container>
   );
 }
