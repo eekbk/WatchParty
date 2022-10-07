@@ -1,7 +1,7 @@
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
-import { Container, ProgressBar } from 'react-bootstrap';
+import { Container, ProgressBar, Form } from 'react-bootstrap';
 import { PlayPause } from '../../styles';
 
 const socket = io();
@@ -11,10 +11,16 @@ function Video({ videoUrl, isAdmin }: any) {
   const [isPlaying, setPause] = useState(false);
   const [pSeconds, setSeconds] = useState(0);
   const [duration, setDur] = useState(1);
+  const [volume, setVol] = useState(0.5);
 
   const videoPlayer: any = useRef<ReactPlayer>(null);
 
   // functions
+
+  // updates volume
+  const setVolume = (e) => {
+    setVol(e.target.value / 100);
+  };
 
   // Updates the duration
   const setDuration = (sec) => {
@@ -61,6 +67,7 @@ function Video({ videoUrl, isAdmin }: any) {
 				    },
 				  },
         }}
+        volume={volume}
         onDuration={setDuration}
         onProgress={updateTime}
         playing={isPlaying}
@@ -72,6 +79,10 @@ function Video({ videoUrl, isAdmin }: any) {
         }}
       />
       <ProgressBar variant="info" now={pSeconds} max={duration} min={0} />
+      Volume
+      <Container fluid="md" style={{ height: '1.5rm', width: '10%' }}>
+        <Form.Range value={volume * 100} onChange={setVolume} />
+      </Container>
       <PlayPause onClick={playVid}>Play</PlayPause>
       {' '}
       <PlayPause onClick={pauseVid}>Pause</PlayPause>
