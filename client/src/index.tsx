@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 const { default: App } = require('./views/app.tsx');
 const { default: Home } = require('./views/home.tsx');
 const { default: WatchParty } = require('./views/watchParty/Room.tsx');
+const { default: Dashboard } = require('./views/Dashboard.tsx');
 
 ReactDOM.createRoot(document.getElementById('app')!).render(
   <React.StrictMode>
@@ -14,6 +15,7 @@ ReactDOM.createRoot(document.getElementById('app')!).render(
         <Route path="/" element={<App />}>
           <Route path="home" element={<Home />} />
           <Route path="watchParty" element={<WatchParty />} />
+          <Route path="Dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>
