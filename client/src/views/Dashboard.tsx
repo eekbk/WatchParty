@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import axios from 'axios';
 
-function Profile() {
+function Dashboard() {
 
   useEffect(() => {
     axios.get('http://localhost:4040/test')
@@ -14,10 +14,10 @@ function Profile() {
     })
   }, [])
   return (
-    <Container>Profile</Container>
+    <Container>Dashboard</Container>
   )
 }
 
-export default Profile
+export default Dashboard
 
  
