@@ -7,6 +7,7 @@ import { CreateParty } from './views/CreateParty';
 const { default: App } = require('./views/app.tsx');
 const { default: Home } = require('./views/home.tsx');
 const { default: WatchParty } = require('./views/watchParty/Room.tsx');
+const { default: Dashboard } = require('./views/Dashboard.tsx');
 
 ReactDOM.createRoot(document.getElementById('app')!).render(
   <React.StrictMode>
@@ -18,7 +19,7 @@ ReactDOM.createRoot(document.getElementById('app')!).render(
           <Route path="watchParty" element={<WatchParty />} />
           <Route path="createParty" element={<CreateParty />} />
           <Route path="profile" element={<div>Profile</div>} />
-          <Route path="dashboard" element={<div>Dashboard</div>} />
+          <Route path="dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>
