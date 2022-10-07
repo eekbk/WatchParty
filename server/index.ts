@@ -2,8 +2,7 @@
 import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
-import  { prisma }  from './db/index';
-
+import { prisma } from './db/index';
 
 const app: Express = express();
 
@@ -32,7 +31,6 @@ with backend
 */
 app.use('api/user', user);
 app.use('api/party', party);
-
 
 passport.use(
   new GoogleStrategy(
@@ -83,20 +81,25 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   const user = await prisma.user.findUnique({
     where: {
-      id: id,
-    }})
+      id,
+    },
+  });
   done(null, user);
 });
 
-app.get('/test', (req: Request, res: Response) => {
-  res.json(req.user)
-})
-
+app.get('/test', (req: any, res: Response) => {
+  res.json(req.user);
+});
 
 app.get(
   '/auth/google',
-  passport.authenticate('google', { scope: ['profile'] }, (req: Request, res: Response) => {
-  }),
+  passport.authenticate(
+    'google',
+    { scope: ['profile'] },
+    (req: Request, res: Response) => {
+      console.log('not empty now');
+    },
+  ),
 );
 
 app.get(
@@ -107,7 +110,6 @@ app.get(
     res.redirect('/dashboard');
   },
 );
-
 
 app.get('/', (req, res) => {
   res.status(200).send();

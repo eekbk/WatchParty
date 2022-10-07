@@ -1,9 +1,7 @@
 // File for React context
 
- const Context = () => {
-  return (
-    <div>context</div>
-  )
+function Context() {
+  return <div>context</div>;
 }
 
 export default Context;
