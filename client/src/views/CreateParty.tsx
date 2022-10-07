@@ -14,8 +14,8 @@ const { Item, Header, Body } = Accordion;
 
 export function CreateParty() {
   const { user } = useContext(UserContext);
+  const temp = { playlists: [], friends: [] };
   const typeaheadRef = useRef(null);
-  const [multiSelections, setMultiSelections] = useState([]);
   const [privateR, setPrivateR] = useState(false);
   const [archive, setArchive] = useState(false);
   const [savePlaylist, setSavePlaylist] = useState(false);
@@ -26,12 +26,26 @@ export function CreateParty() {
 
   const handleCreate = (e) => {
     axios.post('/api/party', {
-      party: {},
+      party: {
+        private: privateR,
+        creatorId: user.id,
+        archive,
+        playlist,
+        invited,
+        admins,
+      },
+      savePlaylist,
     });
   };
 
   const handlePlaylistImport = (pl) => {
     console.log('filler');
+  };
+
+  const handleVideoAddition = () => {
+    // Do some database stuff for video here
+    setPlaylist(playlist.concat([video]));
+    setVideo(null);
   };
 
   return (
@@ -50,8 +64,8 @@ export function CreateParty() {
 						<Group>
 							<Label>Choose Saved Playlist</Label>
 							<Accordion>
-								{user.playlists.map((pl, i) => (
-									<Item eventKey={i}>
+								{temp.playlists.map((pl, i) => (
+									<Item eventKey={String(i)}>
 										<Header>{pl.title}</Header>
 										<Body>{pl.description}</Body>
 										<StyledButton onClick={(pl) => handlePlaylistImport(pl)}>
@@ -88,14 +102,36 @@ export function CreateParty() {
   multiple
   id="keep-menu-open"
   onChange={(selected) => {
-								  setMultiSelections(selected);
+								  setInvited(selected);
 								  // Keep the menu open when making multiple selections.
 								  typeaheadRef.current.toggleMenu();
   }}
-  options={user.friends}
-  placeholder="Invite friends"
+  options={temp.friends}
+  placeholder="Enter usernames"
   ref={typeaheadRef}
-  selected={multiSelections}
+  selected={invited}
+  renderToken={(option: any, { onRemove }, index) => (
+									<Token key={index} onRemove={onRemove} option={option}>
+										{`@${option.username}`}
+									</Token>
+  )}
+							/>
+						</Group>
+
+						<Group>
+							<Label>Assign Admins</Label>
+							<Typeahead
+  multiple
+  id="keep-menu-open"
+  onChange={(selected) => {
+								  setAdmins(selected);
+								  // Keep the menu open when making multiple selections.
+								  typeaheadRef.current.toggleMenu();
+  }}
+  options={temp.friends.filter((f) => invited.some((i) => f.id === i.id))}
+  placeholder="Enter usernames"
+  ref={typeaheadRef}
+  selected={admins}
   renderToken={(option: any, { onRemove }, index) => (
 									<Token key={index} onRemove={onRemove} option={option}>
 										{`@${option.username}`}
@@ -109,8 +145,12 @@ export function CreateParty() {
 					<StyledForm>
 						<Group>
 							<Label>Video Url</Label>
-							<Control placeholder="Paste Url Here" />
+							<Control
+  placeholder="Paste Url Here"
+  onChange={(e) => setVideo(e.target.value)}
+							/>
 							<Text>Choose a youtube video to add</Text>
+							<StyledButton onClick={handleVideoAddition}>Add</StyledButton>
 						</Group>
 					</StyledForm>
 				</Col>

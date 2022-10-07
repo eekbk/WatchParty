@@ -5,7 +5,7 @@ import { StyledBackgroundContainer } from '../styles';
 import { UserContext } from '../context';
 
 function App(): JSX.Element {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   return (
 		<StyledBackgroundContainer fluid>
 			<Navbar expand="lg" style={{ height: '10vh' }}>
@@ -19,10 +19,14 @@ function App(): JSX.Element {
 							<Nav.Link to="/watchParty" as={Link}>
 								Party View
 							</Nav.Link>
-							<Nav.Link hidden={!user} to="/createParty" as={Link}>
+							<Nav.Link
+  hidden={false /* hidden={!user} */}
+  to="/createParty"
+  as={Link}
+							>
 								Create Party
 							</Nav.Link>
-							<Nav.Link hidden={!user} to="/profile" as={Link}>
+							<Nav.Link to="/profile" as={Link}>
 								Profile
 							</Nav.Link>
 							<Nav.Link to="/dashboard" as={Link}>
