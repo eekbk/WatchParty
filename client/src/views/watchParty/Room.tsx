@@ -9,7 +9,7 @@ function WatchParty({ videos }: any) {
       bg="transparent"
       text="white"
     >
-      <Video videos={videos} isAdmin />
+      <Video videos={videos} isAdmin={Math.random() < 0.5} room="test" />
     </Card>
   );
 }

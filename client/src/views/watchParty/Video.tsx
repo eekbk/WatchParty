@@ -8,22 +8,33 @@ import { PlayPause } from '../../styles';
 
 const socket = io();
 
-function Video({ videos, isAdmin }: any) {
+function Video({ videos, isAdmin, room }: any) {
   // state vars
   const [isPlaying, setPause] = useState(false);
-  const [pSeconds, setSeconds] = useState(0);
+  const [pSeconds, setSeconds] = useState(0.0001);
   const [duration, setDur] = useState(1);
   const [volume, setVol] = useState(0.5);
   const [video, setVid] = useState(0);
 
   const videoPlayer: any = useRef<ReactPlayer>(null);
 
+  // TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  if (isAdmin) {
+    console.log('YOU ARE S.P.E.C.I.A.L');
+    socket.on('roomCheck', () => {
+      socket.emit('giveRoom', { room, video, start: pSeconds });
+    });
+  }
+
+  // TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
   // functions
 
   // Plays next video in playlist
   const changeVid = () => {
+    setSeconds(0);
     setVid(video + 1);
-    console.log(video);
   };
 
   // updates volume
@@ -39,13 +50,14 @@ function Video({ videos, isAdmin }: any) {
   // pauses all clients
   const pauseVid = () => {
     setPause(false);
-    socket.emit('pause', false);
-    socket.emit('seek', pSeconds);
-    videoPlayer.current.seekTo(pSeconds);
+    console.log(pSeconds);
+    socket.emit('pause', { room, bool: false });
+    socket.emit('seek', { room, amount: pSeconds });
+    videoPlayer.current.seekTo(pSeconds, 'seconds');
   };
   // plays all clients
   const playVid = () => {
-    socket.emit('play', true);
+    socket.emit('play', { room, bool: true });
   };
   const updateTime = (data: any) => {
     setSeconds(data.playedSeconds);
@@ -53,6 +65,7 @@ function Video({ videos, isAdmin }: any) {
 
   // updates once
   useEffect(() => {
+    socket.emit('join', 'test');
     socket.on('pause', (arg: boolean) => {
       setPause(arg);
     });
@@ -60,10 +73,20 @@ function Video({ videos, isAdmin }: any) {
       setPause(arg);
     });
     socket.on('seek', (seconds: number) => {
+      console.log(seconds);
+      videoPlayer.current.seekTo(seconds, 'seconds');
       setSeconds(seconds);
-      videoPlayer.current.seekTo(seconds);
     });
-  });
+
+    socket.on(
+      'giveRoom',
+      (video: { room: string; video: number; start: number }) => {
+        setVid(video.video);
+        setSeconds(video.start);
+        videoPlayer.current.seekTo(video.start, 'seconds');
+      },
+    );
+  }, []);
   return (
     <Container fluid="md" style={{ height: '100%' }}>
       <ReactPlayer
@@ -77,6 +100,12 @@ function Video({ videos, isAdmin }: any) {
 				  },
         }}
         onEnded={changeVid}
+        onBuffer={() => {
+				  console.log('buffering');
+        }}
+        onBufferEnd={() => {
+				  console.log('DONE');
+        }}
         volume={volume}
         onDuration={setDuration}
         onProgress={updateTime}
@@ -93,7 +122,6 @@ function Video({ videos, isAdmin }: any) {
         }}
       />
       <ProgressBar variant="info" now={pSeconds} max={duration} min={0} />
-      Volume
       <Container fluid="md" style={{ height: '1.5rm', width: '10%' }}>
         <Form.Range value={volume * 100} onChange={setVolume} />
       </Container>
