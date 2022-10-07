@@ -1,36 +1,37 @@
-import {
-  useLocation, useNavigate, Outlet, Link,
-} from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
-import Search from '../search';
-// import LoginButton from '../LoginButton';
+import { Outlet, Link } from 'react-router-dom';
+import { Nav, Navbar, Container } from 'react-bootstrap';
+import { StyledBackgroundContainer } from '../styles';
 
 function App(): JSX.Element {
-  const navigate = useNavigate();
-  const location = useLocation().pathname;
-
-  const handleClick = (e: any) => {
-    if (location !== e.target.id) {
-      navigate(e.target.id);
-    }
-  };
-
   return (
-    <>
-      <Navbar bg="dark" variant="dark">
-        <Navbar.Brand id="/home" onClick={handleClick} type="a">
-          WatchParty!
-        </Navbar.Brand>
-        <Nav className="me-auto">
-          <Nav.Link to="/watchParty" as={Link} onClick={handleClick}>
-            WatchParty !&quot;TEMP&quot;!
-          </Nav.Link>
-          <a href="/auth/google">LOGIN!</a>
-        </Nav>
+    <StyledBackgroundContainer fluid>
+      <Navbar expand="lg" style={{ height: '10vh' }}>
+        <Container>
+          <Navbar.Brand to="/home" as={Link}>
+            WatchParty
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link to="/watchParty" as={Link}>
+                Party View
+              </Nav.Link>
+              <Nav.Link to="/createParty" as={Link}>
+                Create Party
+              </Nav.Link>
+              <Nav.Link to="/profile" as={Link}>
+                Profile
+              </Nav.Link>
+              <Nav.Link to="/dashboard" as={Link}>
+                Dashboard
+              </Nav.Link>
+              <Nav.Link href="/auth/google">Login</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
       </Navbar>
-      <Search />
       <Outlet />
-    </>
+    </StyledBackgroundContainer>
   );
 }
 export default App;
