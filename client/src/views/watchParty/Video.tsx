@@ -88,55 +88,55 @@ function Video({ videos, isAdmin, room }: any) {
     );
   }, []);
   return (
-    <Container fluid="md" style={{ height: '100%' }}>
-      <ReactPlayer
-        ref={videoPlayer}
-        config={{
+		<Container fluid="md" style={{ height: '100%' }}>
+			<ReactPlayer
+  ref={videoPlayer}
+  config={{
 				  youtube: {
 				    playerVars: {
 				      controls: 0,
 				      color: 'white',
 				    },
 				  },
-        }}
-        onEnded={changeVid}
-        onBuffer={() => {
+  }}
+  onEnded={changeVid}
+  onBuffer={() => {
 				  console.log('buffering');
-        }}
-        onBufferEnd={() => {
+  }}
+  onBufferEnd={() => {
 				  console.log('DONE');
-        }}
-        volume={volume}
-        onDuration={setDuration}
-        onProgress={updateTime}
-        playing={isPlaying}
-        url={
+  }}
+  volume={volume}
+  onDuration={setDuration}
+  onProgress={updateTime}
+  playing={isPlaying}
+  url={
 					videos[video]
 					  ? videos[video].url
 					  : 'https://www.youtube.com/watch?v=vZa0Yh6e7dw'
 				}
-        width="100%"
-        height="85%"
-        style={{
+  width="100%"
+  height="85%"
+  style={{
 				  pointerEvents: 'none',
-        }}
-      />
-      <ProgressBar variant="info" now={pSeconds} max={duration} min={0} />
-      <Container fluid="md" style={{ height: '1.5rm', width: '10%' }}>
-        <Form.Range value={volume * 100} onChange={setVolume} />
-      </Container>
-      <PlayPause onClick={playVid}>Play</PlayPause>
-      {' '}
-      <PlayPause onClick={pauseVid}>Pause</PlayPause>
-      <Card.Body>
-        <Card.Title>
-          {videos[video] ? videos[video].snippet.title : 'Please Wait'}
-        </Card.Title>
-        <Card.Text>
-          {videos[video] ? videos[video].snippet.description : 'Please Wait'}
-        </Card.Text>
-      </Card.Body>
-    </Container>
+  }}
+			/>
+			<ProgressBar variant="info" now={pSeconds} max={duration} min={0} />
+			<Container fluid="md" style={{ height: '1.5rm', width: '10%' }}>
+				<Form.Range value={volume * 100} onChange={setVolume} />
+			</Container>
+			<PlayPause onClick={playVid}>Play</PlayPause>
+{' '}
+			<PlayPause onClick={pauseVid}>Pause</PlayPause>
+			<Card.Body>
+				<Card.Title>
+					{videos[video] ? videos[video].snippet.title : 'Please Wait'}
+				</Card.Title>
+				<Card.Text>
+					{videos[video] ? videos[video].snippet.description : 'Please Wait'}
+				</Card.Text>
+			</Card.Body>
+		</Container>
   );
 }
 export default Video;
