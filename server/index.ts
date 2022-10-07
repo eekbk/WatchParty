@@ -87,9 +87,9 @@ passport.deserializeUser(async (id, done) => {
   done(null, user);
 });
 
-// app.get('/test', (req: Request, res: Response) => {
-//   res.json(req.user)
-// })
+app.get('/test', (req: any, res: Response) => {
+  res.json(req.user);
+});
 
 app.get(
   '/auth/google',
