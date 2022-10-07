@@ -5,7 +5,7 @@ import { prisma } from '../db/index';
 
 const { default: dummyData } = require('../../dummyData.ts');
 
-const party: Router = express.Router();
+export const party: Router = express.Router();
 
 // Get video dummy data
 party.get('/test', (req: Request, res: Response) => {
@@ -64,5 +64,3 @@ party.put('/:partyId', (req: Request, res: Response) => {
       res.sendStatus(err.status);
     });
 });
-
-export default party;
