@@ -16,7 +16,29 @@ ReactDOM.createRoot(document.getElementById('app')!).render(
         <Route path="/" element={<App />}>
           <Route path="" element={<Home />} />
           <Route path="home" element={<Home />} />
-          <Route path="watchParty" element={<WatchParty />} />
+          <Route
+            path="watchParty"
+            element={(
+              <WatchParty
+                videos={[
+								  {
+								    url: 'https://www.youtube.com/watch?v=IGQBtbKSVhY',
+								    snippet: {
+								      title: 'Peace',
+								      description: 'A place to relax and chill',
+								    },
+								  },
+								  {
+								    url: 'https://www.youtube.com/watch?v=LrpyWWgmRno',
+								    snippet: {
+								      title: 'AHAHAHAHA',
+								      description: 'A place to relax and chill',
+								    },
+								  },
+                ]}
+              />
+     )}
+          />
           <Route path="createParty" element={<CreateParty />} />
           <Route path="profile" element={<div>Profile</div>} />
           <Route path="dashboard" element={<Dashboard />} />

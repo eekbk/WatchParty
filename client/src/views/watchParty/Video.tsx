@@ -1,21 +1,30 @@
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
-import { Container, ProgressBar, Form } from 'react-bootstrap';
+import {
+  Container, ProgressBar, Form, Card,
+} from 'react-bootstrap';
 import { PlayPause } from '../../styles';
 
 const socket = io();
 
-function Video({ videoUrl, isAdmin }: any) {
+function Video({ videos, isAdmin }: any) {
   // state vars
   const [isPlaying, setPause] = useState(false);
   const [pSeconds, setSeconds] = useState(0);
   const [duration, setDur] = useState(1);
   const [volume, setVol] = useState(0.5);
+  const [video, setVid] = useState(0);
 
   const videoPlayer: any = useRef<ReactPlayer>(null);
 
   // functions
+
+  // Plays next video in playlist
+  const changeVid = () => {
+    setVid(video + 1);
+    console.log(video);
+  };
 
   // updates volume
   const setVolume = (e) => {
@@ -67,11 +76,16 @@ function Video({ videoUrl, isAdmin }: any) {
 				    },
 				  },
         }}
+        onEnded={changeVid}
         volume={volume}
         onDuration={setDuration}
         onProgress={updateTime}
         playing={isPlaying}
-        url={videoUrl}
+        url={
+					videos[video]
+					  ? videos[video].url
+					  : 'https://www.youtube.com/watch?v=vZa0Yh6e7dw'
+				}
         width="100%"
         height="85%"
         style={{
@@ -86,6 +100,14 @@ function Video({ videoUrl, isAdmin }: any) {
       <PlayPause onClick={playVid}>Play</PlayPause>
       {' '}
       <PlayPause onClick={pauseVid}>Pause</PlayPause>
+      <Card.Body>
+        <Card.Title>
+          {videos[video] ? videos[video].snippet.title : 'Please Wait'}
+        </Card.Title>
+        <Card.Text>
+          {videos[video] ? videos[video].snippet.description : 'Please Wait'}
+        </Card.Text>
+      </Card.Body>
     </Container>
   );
 }
