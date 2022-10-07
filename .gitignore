@@ -9,3 +9,4 @@ Thumbs.db
 yarn.lock
 pnpm-lock.yaml
 .env
+bundle.js
