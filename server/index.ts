@@ -3,6 +3,7 @@ import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import { prisma } from './db/index';
+import { party } from './routes/watchParty';
 
 const app: Express = express();
 
@@ -10,9 +11,9 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const passport = require('passport');
+const axios = require('axios');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const { default: party } = require('./routes/watchParty.ts');
 const { default: user } = require('./routes/user.ts');
 
 dotenv.config();
@@ -144,6 +145,50 @@ app.get('/', (req, res) => {
 //     res.end();
 //   }
 // });
+
+app.post('/video', (req: Request, res: Response) => {
+  const { videoId, videoUrl } = req.body;
+  prisma.video
+    .findFirst({
+      where: {
+        id: videoId,
+      },
+    })
+    .then((results) => {
+      if (results) {
+        res.status(200).send(results);
+      } else {
+        return Promise.resolve(
+          axios.get(
+            `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${process.env.YOUTUBE_KEY}`,
+          ),
+        );
+      }
+    })
+    .then((video: any) => {
+      console.log('video: ', video);
+      video = video.data;
+      const formattedVideo: any = {
+        id: videoId,
+        url: videoUrl,
+        title: video.items[0].snippet.title,
+        description: video.items[0].snippet.description,
+        thumbnail: video.items[0].snippet.thumbnails.default.url,
+      };
+      prisma.video.upsert({
+        where: {
+          id: videoId,
+        },
+        update: {},
+        create: formattedVideo,
+      });
+      res.send(formattedVideo);
+    })
+    .catch((err) => {
+      console.error('error: ', err);
+      res.sendStatus(err.response.status);
+    });
+});
 
 app.get('/*', (req: Request, res: Response) => {
   res.sendFile(

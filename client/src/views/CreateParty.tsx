@@ -1,10 +1,10 @@
 import {
-  Container, Row, Col, Accordion,
+  Container, Row, Col, Accordion, CloseButton,
 } from 'react-bootstrap';
 import { Typeahead, Token } from 'react-bootstrap-typeahead';
 import { useState, useRef, useContext } from 'react';
 import axios from 'axios';
-import { StyledForm, StyledButton } from '../styles';
+import { StyledForm, StyledButton, StyledVideoCard } from '../styles';
 import { UserContext } from '../context';
 
 const {
@@ -20,7 +20,7 @@ export function CreateParty() {
   const [archive, setArchive] = useState(false);
   const [savePlaylist, setSavePlaylist] = useState(false);
   const [playlist, setPlaylist] = useState([]);
-  const [video, setVideo] = useState(null);
+  const [video, setVideo] = useState('');
   const [invited, setInvited] = useState([]);
   const [admins, setAdmins] = useState([]);
 
@@ -43,9 +43,32 @@ export function CreateParty() {
   };
 
   const handleVideoAddition = () => {
-    // Do some database stuff for video here
-    setPlaylist(playlist.concat([video]));
-    setVideo(null);
+    const regExp =			/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = video.match(regExp);
+    const videoId: any = match[2];
+    if (match && match[2].length === 11) {
+      axios
+        .post('/video', { videoId, videoUrl: video })
+        .then((vd) => {
+          console.log(vd);
+          setVideo('');
+          setPlaylist(playlist.concat([vd.data]));
+        })
+        .catch((err) => {
+          console.error(err);
+          setVideo('');
+        });
+    } else {
+      // Add alert for invalid url
+      console.log('invalid url');
+      setVideo('');
+    }
+  };
+
+  const handleVideoRemoval = (i) => {
+    const tempPlaylist = playlist.slice();
+    tempPlaylist.splice(i, 1);
+    setPlaylist(tempPlaylist);
   };
 
   return (
@@ -61,7 +84,7 @@ export function CreateParty() {
 							<Label>Description</Label>
 							<Control as="textarea" placeholder="Describe Room Here" />
 						</Group>
-						<Group>
+						<Group hidden={!(user && user.playlists && user.playlists.length)}>
 							<Label>Choose Saved Playlist</Label>
 							<Accordion>
 								{temp.playlists.map((pl, i) => (
@@ -106,7 +129,9 @@ export function CreateParty() {
 								  // Keep the menu open when making multiple selections.
 								  typeaheadRef.current.toggleMenu();
   }}
-  options={temp.friends}
+  options={temp.friends.filter(
+								  (f) => !invited.some((i) => f.id === i.id),
+  )}
   placeholder="Enter usernames"
   ref={typeaheadRef}
   selected={invited}
@@ -128,7 +153,7 @@ export function CreateParty() {
 								  // Keep the menu open when making multiple selections.
 								  typeaheadRef.current.toggleMenu();
   }}
-  options={temp.friends.filter((f) => invited.some((i) => f.id === i.id))}
+  options={temp.friends}
   placeholder="Enter usernames"
   ref={typeaheadRef}
   selected={admins}
@@ -144,13 +169,41 @@ export function CreateParty() {
 				<Col fluid="md">
 					<StyledForm>
 						<Group>
-							<Label>Video Url</Label>
+							<Label>Youtube Video Url</Label>
 							<Control
   placeholder="Paste Url Here"
   onChange={(e) => setVideo(e.target.value)}
+  value={video}
 							/>
 							<Text>Choose a youtube video to add</Text>
 							<StyledButton onClick={handleVideoAddition}>Add</StyledButton>
+						</Group>
+						<Group>
+							<Label>Video List</Label>
+							{playlist.map((vd, i) => (
+								<StyledVideoCard>
+									<CloseButton onClick={() => handleVideoRemoval(i)} />
+									<StyledVideoCard.Title>{vd.title}</StyledVideoCard.Title>
+									<StyledVideoCard.Body>
+										<StyledVideoCard.Img src={vd.thumbnail} />
+										<StyledVideoCard.Text>
+											{vd.description.slice(0, 150)}
+										</StyledVideoCard.Text>
+									</StyledVideoCard.Body>
+								</StyledVideoCard>
+							))}
+						</Group>
+					</StyledForm>
+				</Col>
+				<Col fluid="md" hidden={!savePlaylist}>
+					<StyledForm>
+						<Group>
+							<Label>Playlist Title</Label>
+							<Control placeholder="Enter Playlist Title Here" />
+						</Group>
+						<Group>
+							<Label>Description</Label>
+							<Control as="textarea" placeholder="Describe Playlist Here" />
 						</Group>
 					</StyledForm>
 				</Col>

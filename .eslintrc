@@ -101,6 +101,9 @@
     ],
     "react/jsx-indent": [
       "off"
+    ],
+    "no-useless-escape": [
+      "off"
     ]
   }
 }

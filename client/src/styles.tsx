@@ -1,6 +1,14 @@
 // File for styling components
 import styled from 'styled-components';
-import { Button, Form, Container } from 'react-bootstrap';
+import {
+  Button, Form, Container, Card,
+} from 'react-bootstrap';
+// const { Title, Body, Img, Text } = Card;
+
+export const StyledVideoCard = styled(Card)`
+	background-color: #375915;
+	color: #ff30db;
+`;
 
 export const StyledButton = styled(Button)`
 	color: #ffed5d;
