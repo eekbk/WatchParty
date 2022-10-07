@@ -1,21 +1,11 @@
-import {
-   Outlet, Link,
-} from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import { Nav, Navbar, Container } from 'react-bootstrap';
+import { StyledBackgroundContainer } from '../styles';
 
 function App(): JSX.Element {
-  // const navigate = useNavigate();
-  // const location = useLocation().pathname;
-
-  // const handleClick = (e: any) => {
-  //   if (location !== e.target.id) {
-  //     navigate(e.target.id);
-  //   }
-  // };
-
   return (
-    <Container fluid style={{ backgroundColor: 'black' }}>
-      <Navbar expand="lg" style={{ height: '10vh' }} bg='dark' variant='dark'>
+    <StyledBackgroundContainer fluid>
+      <Navbar expand="lg" style={{ height: '10vh' }}>
         <Container>
           <Navbar.Brand to="/home" as={Link}>
             WatchParty
@@ -42,7 +32,7 @@ function App(): JSX.Element {
       </Navbar>
 
       <Outlet />
-    </Container>
+    </StyledBackgroundContainer>
   );
 }
 export default App;

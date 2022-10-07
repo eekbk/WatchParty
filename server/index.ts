@@ -2,8 +2,7 @@
 import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
-import  { prisma }  from './db/index';
-
+import { prisma } from './db/index';
 
 const app: Express = express();
 
@@ -32,7 +31,6 @@ with backend
 */
 app.use('api/user', user);
 app.use('api/party', party);
-
 
 passport.use(
   new GoogleStrategy(
@@ -83,20 +81,25 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   const user = await prisma.user.findUnique({
     where: {
-      id: id,
-    }})
+      id,
+    },
+  });
   done(null, user);
 });
 
-app.get('/test', (req: Request, res: Response) => {
-  res.json(req.user)
-})
-
+app.get('/test', (req: any, res: Response) => {
+  res.json(req.user);
+});
 
 app.get(
   '/auth/google',
-  passport.authenticate('google', { scope: ['profile'] }, (req: Request, res: Response) => {
-  }),
+  passport.authenticate(
+    'google',
+    { scope: ['profile'] },
+    (req: Request, res: Response) => {
+      console.log('not empty now');
+    },
+  ),
 );
 
 app.get(
@@ -107,7 +110,6 @@ app.get(
     res.redirect('/dashboard');
   },
 );
-
 
 app.get('/', (req, res) => {
   res.status(200).send();
@@ -156,15 +158,25 @@ app.get('/*', (req: Request, res: Response) => {
 
 // socket.io testing
 io.on('connection', (socket: any) => {
-  socket.on('pause', (arg: boolean) => {
-    io.emit('pause', arg);
+  socket.on('join', (room: string) => {
+    socket.join(room);
+    io.to(room).emit('roomCheck');
   });
-  socket.on('play', (arg: boolean) => {
-    io.emit('play', arg);
+  socket.on('pause', (pause: { room: string; bool: boolean }) => {
+    socket.broadcast.to(pause.room).emit('pause', pause.bool);
   });
-  socket.on('seek', (seconds: number) => {
-    io.emit('seek', seconds);
+  socket.on('play', (play: { room: string; bool: boolean }) => {
+    io.to(play.room).emit('play', play.bool);
   });
+  socket.on('seek', (seconds: { room: string; amount: number }) => {
+    socket.broadcast.to(seconds.room).emit('seek', seconds.amount);
+  });
+  socket.on(
+    'giveRoom',
+    (video: { room: string; video: number; start: number }) => {
+      socket.broadcast.to(video.room).emit('giveRoom', video);
+    },
+  );
 });
 
 http.listen(PORT, () => {
