@@ -95,6 +95,12 @@
     ],
     "import/no-unresolved": [
       "off"
+    ],
+    "react/jsx-closing-tag-location": [
+      "off"
+    ],
+    "react/jsx-indent": [
+      "off"
     ]
   }
 }
