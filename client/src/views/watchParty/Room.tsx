@@ -28,10 +28,7 @@ function WatchParty({ videos }: any) {
       bg="transparent"
       text="white"
     >
-      <Video
-        videoUrl="https://www.youtube.com/watch?v=vZa0Yh6e7dw"
-        isAdmin
-      />
+      <Video videoUrl="https://www.youtube.com/watch?v=vZa0Yh6e7dw" isAdmin />
       <Card.Body>
         <Card.Title>
           {video.snippet ? video.snippet.title : 'Please Wait'}
@@ -41,7 +38,7 @@ function WatchParty({ videos }: any) {
         </Card.Text>
       </Card.Body>
       <Card.Footer>
-        <StyledButton>Press Me</StyledButton>
+        <StyledButton onClick={(e) => e.target.blur()}>Press Me</StyledButton>
       </Card.Footer>
     </Card>
   );
