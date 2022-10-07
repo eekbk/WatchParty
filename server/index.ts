@@ -203,15 +203,25 @@ app.get('/*', (req: Request, res: Response) => {
 
 // socket.io testing
 io.on('connection', (socket: any) => {
-  socket.on('pause', (arg: boolean) => {
-    io.emit('pause', arg);
+  socket.on('join', (room: string) => {
+    socket.join(room);
+    io.to(room).emit('roomCheck');
   });
-  socket.on('play', (arg: boolean) => {
-    io.emit('play', arg);
+  socket.on('pause', (pause: { room: string; bool: boolean }) => {
+    socket.broadcast.to(pause.room).emit('pause', pause.bool);
   });
-  socket.on('seek', (seconds: number) => {
-    io.emit('seek', seconds);
+  socket.on('play', (play: { room: string; bool: boolean }) => {
+    io.to(play.room).emit('play', play.bool);
   });
+  socket.on('seek', (seconds: { room: string; amount: number }) => {
+    socket.broadcast.to(seconds.room).emit('seek', seconds.amount);
+  });
+  socket.on(
+    'giveRoom',
+    (video: { room: string; video: number; start: number }) => {
+      socket.broadcast.to(video.room).emit('giveRoom', video);
+    },
+  );
 });
 
 http.listen(PORT, () => {

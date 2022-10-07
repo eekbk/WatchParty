@@ -19,7 +19,29 @@ function RouteHandler() {
 					<Route path="/" element={<App />}>
 						<Route path="" element={<Home />} />
 						<Route path="home" element={<Home />} />
-						<Route path="watchParty" element={<WatchParty />} />
+						<Route
+  path="watchParty"
+  element={(
+        <WatchParty
+          videos={[
+									  {
+									    url: 'https://www.youtube.com/watch?v=IGQBtbKSVhY',
+									    snippet: {
+									      title: 'Peace',
+									      description: 'A place to relax and chill',
+									    },
+									  },
+									  {
+									    url: 'https://www.youtube.com/watch?v=LrpyWWgmRno',
+									    snippet: {
+									      title: 'AHAHAHAHA',
+									      description: 'A place to relax and chill',
+									    },
+									  },
+          ]}
+								/>
+      )}
+						/>
 						<Route
   loader={null /* () => !user ? redirect('/') : null */}
   path="createParty"
