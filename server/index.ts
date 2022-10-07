@@ -80,11 +80,11 @@ passport.use(
           },
         });
         if (newUser) {
-          console.log('newUser:', newUser);
+          // console.log('newUser:', newUser);
           done(null, newUser);
         }
       } else {
-        console.log('user', user);
+        // console.log('user', user);
         done(null, user);
       }
     },
