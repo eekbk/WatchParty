@@ -9,11 +9,11 @@ function LoginButton() {
   };
 
   return (
-		<div>
-			<button type="button" onClick={handleClick}>
-				Login
-			</button>
-		</div>
+    <div>
+      <button type="button" onClick={handleClick}>
+        Login
+      </button>
+    </div>
   );
 }
 

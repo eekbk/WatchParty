@@ -4,7 +4,6 @@ import { UserContext } from '../context';
 // const navigate = useNavigate();
 // import { Navigate } from 'react-router-dom';
 
-// {setUser: any}
 const Logout = () => {
   const { setUser } = useContext(UserContext);
 

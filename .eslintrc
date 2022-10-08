@@ -99,11 +99,14 @@
     "react/jsx-closing-tag-location": [
       "off"
     ],
-    "react/jsx-indent": [
-      "off"
-    ],
     "no-useless-escape": [
       "off"
+    ],
+    "implicit-arrow-linebreak": [
+      "off"
+    ],
+    "react/jsx-indent": [
+      "warn"
     ]
   }
 }
