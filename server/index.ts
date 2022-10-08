@@ -201,27 +201,49 @@ app.get('/*', (req: Request, res: Response) => {
   );
 });
 
-// socket.io testing
+// socket.io connection, listeners/emits
 io.on('connection', (socket: any) => {
+  // tells a user which room to join
   socket.on('join', (room: string) => {
     socket.join(room);
     io.to(room).emit('roomCheck');
   });
+  // handles pause
   socket.on('pause', (pause: { room: string; bool: boolean }) => {
     socket.broadcast.to(pause.room).emit('pause', pause.bool);
   });
+  // handles play
   socket.on('play', (play: { room: string; bool: boolean }) => {
     io.to(play.room).emit('play', play.bool);
   });
+  // handles seek
   socket.on('seek', (seconds: { room: string; amount: number }) => {
     socket.broadcast.to(seconds.room).emit('seek', seconds.amount);
   });
+  // handles new users entering a watch party room
   socket.on(
     'giveRoom',
     (video: { room: string; video: number; start: number }) => {
       socket.broadcast.to(video.room).emit('giveRoom', video);
     },
   );
+
+  // Chat
+
+  // sends a message to the room
+  socket.on('chat', (chat: { room: string; message: string }) => {
+    prisma.message
+      .create({
+        data: {
+          room_timestamp: '10',
+          user: 'Test',
+        },
+      })
+      .then((messages) => {
+        console.log(messages);
+      });
+    io.emit('chat', chat.message);
+  });
 });
 
 http.listen(PORT, () => {
