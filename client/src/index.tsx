@@ -9,6 +9,7 @@ const { default: App } = require('./views/app.tsx');
 const { default: Home } = require('./views/home.tsx');
 const { default: WatchParty } = require('./views/watchParty/Room.tsx');
 const { default: Dashboard } = require('./views/Dashboard.tsx');
+const { default: Logout } = require('./views/Logout.tsx');
 
 function RouteHandler() {
   // const {user} = useContext(UserContext);
@@ -19,6 +20,7 @@ function RouteHandler() {
 					<Route path="/" element={<App />}>
 						<Route path="" element={<Home />} />
 						<Route path="home" element={<Home />} />
+						<Route path="logout" element={<Logout />} />
 						<Route
   path="watchParty"
   element={(
