@@ -25,12 +25,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve('client', 'dist')));
 app.use(express.json());
 
-// routes
-/*
-AT CAITY'S SUGGESTION: add 'api' before before the route endpoint of
-any backend routes to avoid front end navigation "crossing streams"
-with backend
-*/
 app.use('api/user', user);
 app.use('api/party', party);
 
@@ -131,6 +125,79 @@ app.post('/logout', (req, res) => {
     });
   } else {
     res.end();
+  }
+});
+
+// endpoint for search queries
+app.get('/api/search/:q', async (req: Request, res: Response) => {
+  // destructure the query from the req.body
+  // const { q } = req.body;
+  const { q } = req.params;
+  const qSearch = q.replace(/&/g, ' | ');
+  // console.log('qsearch:', qSearch);
+  // const qSearch = q.replaceAll('&', ' | ');
+  // query the database for videos with description or title matching q
+  try {
+    const videos = await prisma.video.findMany({
+      where: {
+        OR: [
+          {
+            title: {
+              search: qSearch,
+            },
+          },
+          {
+            description: {
+              search: qSearch,
+            },
+          },
+        ],
+      },
+    });
+    // query the db for users matching q
+    const users = await prisma.user.findMany({
+      where: {
+        user_name: {
+          search: qSearch,
+        },
+      },
+    });
+    // query the db for parties with descrip or name matching q
+    const parties = await prisma.party.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              search: qSearch,
+            },
+          },
+          {
+            description: qSearch,
+          },
+        ],
+      },
+    });
+    const results = {
+      videos,
+      users,
+      parties,
+    };
+    res.status(200).send(results);
+  } catch (err) {
+    console.log('Error from search:\n', err);
+    res.sendStatus(500);
+  }
+});
+
+// endpoint for seeding database
+app.post('/api/seed', async (req: Request, res: Response) => {
+  const { table, dataObj } = req.body;
+  try {
+    const createdData = await prisma[table].createMany(dataObj);
+    res.status(201).send(createdData);
+  } catch (err) {
+    console.log('Error from /seed', err);
+    res.sendStatus(500);
   }
 });
 

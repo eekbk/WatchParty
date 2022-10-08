@@ -4,12 +4,14 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route /* redirect */ } from 'react-router-dom';
 import { CreateParty } from './views/CreateParty';
 import { UserContextProvider /* UserContext */ } from './context';
+import { SearchContextProvider } from './contexts/searchContext';
 
 const { default: App } = require('./views/app.tsx');
 const { default: Home } = require('./views/home.tsx');
 const { default: WatchParty } = require('./views/watchParty/Room.tsx');
 const { default: Dashboard } = require('./views/Dashboard.tsx');
 const { default: Logout } = require('./views/Logout.tsx');
+const { default: Search } = require('./views/search/Search.tsx');
 
 function RouteHandler() {
   // const {user} = useContext(UserContext);
@@ -21,6 +23,7 @@ function RouteHandler() {
 						<Route path="" element={<Home />} />
 						<Route path="home" element={<Home />} />
 						<Route path="logout" element={<Logout />} />
+						<Route path="search" element={<Search />} />
 						<Route
   path="watchParty"
   element={(
@@ -60,6 +63,8 @@ function RouteHandler() {
 
 ReactDOM.createRoot(document.getElementById('app')!).render(
 	<UserContextProvider>
-		<RouteHandler />
+		<SearchContextProvider>
+			<RouteHandler />
+		</SearchContextProvider>
 	</UserContextProvider>,
 );
