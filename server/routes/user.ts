@@ -1,6 +1,6 @@
 // File for handling user endpoints
 import express, { Response, Router } from 'express';
-import { User, RequestWithUser } from '../../interfaces';
+import { RequestWithUser } from '../../interfaces';
 import { prisma } from '../db/index';
 
 const user: Router = express.Router();
