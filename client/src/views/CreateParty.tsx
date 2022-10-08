@@ -23,6 +23,8 @@ export function CreateParty() {
   const [video, setVideo] = useState('');
   const [invited, setInvited] = useState([]);
   const [admins, setAdmins] = useState([]);
+  const [usePlaylist, setUsePlaylist] = useState(false);
+  const [chooseVideos, setChooseVideos] = useState(false);
 
   const handleCreate = (e) => {
     axios.post('/api/party', {
@@ -83,20 +85,6 @@ export function CreateParty() {
 						<Group>
 							<Label>Description</Label>
 							<Control as="textarea" placeholder="Describe Room Here" />
-						</Group>
-						<Group hidden={!(user && user.playlists && user.playlists.length)}>
-							<Label>Choose Saved Playlist</Label>
-							<Accordion>
-								{temp.playlists.map((pl, i) => (
-									<Item eventKey={String(i)}>
-										<Header>{pl.title}</Header>
-										<Body>{pl.description}</Body>
-										<StyledButton onClick={(pl) => handlePlaylistImport(pl)}>
-											Import
-										</StyledButton>
-									</Item>
-								))}
-							</Accordion>
 						</Group>
 					</StyledForm>
 				</Col>

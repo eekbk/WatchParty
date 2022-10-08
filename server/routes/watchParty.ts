@@ -33,11 +33,12 @@ party.post('/', (req: Request, res: Response) => {
   // Get the party values out of the request body
   const { party, playlist }: { party: Party; playlist: any } = req.body;
   // Create the new party in the database
+  const { name, description }: { name: any; description: any } = party;
   prisma.party
     .create({
       data: {
-        name: party.name,
-        description: party.description,
+        name,
+        description,
       },
     })
     .then(() => {

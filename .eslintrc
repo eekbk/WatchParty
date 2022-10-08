@@ -104,6 +104,9 @@
     ],
     "no-useless-escape": [
       "off"
+    ],
+    "implicit-arrow-linebreak": [
+      "off"
     ]
   }
 }

@@ -11,25 +11,24 @@ user.get('/', (req: Request, res: Response) => {
   prisma.playlist
     .findMany({
       where: {
-        user_id: user.id,
+        // user_id: user.id,
       },
     })
-    .then((playlists) => {
-      user.playlists = playlists;
-      return prisma.party.findMany({
+    .then((playlists) =>
+    // user.playlists = playlists;
+			 prisma.party.findMany({
         where: {
           user_parties: {
             some: {
               user: {
-                id: user.id,
+                // id: user.id,
               },
             },
           },
         },
-      });
-    })
+      }))
     .then((parties) => {
-      user.parties = parties;
+      // user.parties = parties;
       res.status(200).json(user);
     })
     .catch((err) => {
@@ -40,7 +39,7 @@ user.get('/', (req: Request, res: Response) => {
 
 user.post('/playlist', (req: Request, res: Response) => {
   const { playlist } = req.body;
-  const { user } = req;
+  // const { user } = req;
   const {
     name,
     description,
@@ -53,7 +52,7 @@ user.post('/playlist', (req: Request, res: Response) => {
         name,
         description,
         thumbnail: thumbnail || '',
-        user_id: user.id,
+        // user_id: user.id,
         playlist_videos: {
           connect: videos.map((id) => ({ id })),
         },
