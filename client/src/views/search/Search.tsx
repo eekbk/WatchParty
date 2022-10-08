@@ -7,18 +7,7 @@ function Search() {
 
   return (
 		<Container>
-			Search Results
-			<ul>
-				{usersMatch.map((user) => (
-					<Card key={user.id}>
-						<h3>{user.user_name}</h3>
-						<h4>
-followers:
-{user.follows}
-</h4>
-					</Card>
-				))}
-			</ul>
+			Parties
 			<ul>
 				{partiesMatch.map((party) => (
 					<Card key={party.id}>
@@ -27,6 +16,19 @@ followers:
 					</Card>
 				))}
 			</ul>
+			Users
+			<ul>
+				{usersMatch.map((user) => (
+					<Card key={user.id}>
+						<h3>{user.user_name}</h3>
+						<h4>
+							followers:
+							{user.follows}
+						</h4>
+					</Card>
+				))}
+			</ul>
+			Videos
 			<ul>
 				{videosMatch.map((video) => (
 					<Card key={video.id}>
