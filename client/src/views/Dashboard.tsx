@@ -3,7 +3,10 @@
 import { useEffect, useContext } from 'react';
 import { Container } from 'react-bootstrap';
 import axios from 'axios';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { UserContext } from '../context';
+
 // useState, useContext useState,
 function Dashboard() {
   // get user data from nodejs and return in react jsl functional component using hooks
@@ -14,16 +17,15 @@ function Dashboard() {
   // const [ data1, setData1 ] = useState([]);
 
   useEffect(() => {
+    axios.post('http://localhost:4040/test').then((data) => {
+      setUser(data.data);
+      console.log(data.data, '2nd data....');
+    });
     axios
-      .post('http://localhost:4040/test')
+      .get('http://localhost:4040/api/party/test')
       .then((data) => {
-        setUser(data.data);
-        console.log(data.data, '2nd data....');
+        console.log(data, 'party data........');
       })
-      .then(() => {
-        // console.log(user)
-      })
-
       .catch((err) => {
         console.error(err);
       });
@@ -32,41 +34,19 @@ function Dashboard() {
 		<Container>
 			dashboard
 			{user ? user.user_name : 'not logged in'}
+			<Row>search bar here</Row>
+			<Row>
+				<Col sm={8}>user info</Col>
+				<Col sm={4}>reminders</Col>
+			</Row>
+			<Row>Top Rooms</Row>
+			<Row>
+				<Col sm>room</Col>
+				<Col sm>room</Col>
+				<Col sm>room</Col>
+			</Row>
 		</Container>
   );
 }
 
 export default Dashboard;
-
-// let base_url = `https://tinyfac.es/api/data?limit=50&quality=0`;
-
-// function Storyslider() {
-//   const [Containers, setContainers] = useState([]);
-//   useEffect(() => {
-//     axios
-//       .get(base_url)
-//       .then((a) => {
-//         console.log(a.data);
-//         setContainers(a.data);
-//       })
-//       .catch((b) => {
-//         console.log(Error);
-//       });
-//   }, []);
-//   return (
-//     <div>
-//       {Containers &&
-//         Containers.map((Contain, index) => (
-//           <img
-//             src={Contain?.url}
-//             alt={Contain?.gender}
-//             key={index}
-//           />
-//         ))}
-//     </div>
-//   );
-// }
-
-// export default Storyslider
-
-// {Containers && <img src={Containers[0].url} alt={Containers[0].gender} />}
