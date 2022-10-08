@@ -38,6 +38,7 @@ model Message {
   id             String       @id @default(uuid())
   createdAt      DateTime     @default(now())
   room_timestamp DateTime
+  message         String
   user           User         @relation(fields: [user_id], references: [id])
   user_id        String
   party          Party        @relation(fields: [party_id], references: [id])
