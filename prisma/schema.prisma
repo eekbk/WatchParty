@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -21,6 +22,7 @@ model User {
   user_parties User_Party[]
   likes        Like[]
   upvotes      Upvote[]
+  playlists   Playlist[]
 }
 
 model Relation {
@@ -47,9 +49,11 @@ model Message {
 
 model Party {
   id           String       @id @default(uuid())
+  name          String?
+  description   String?
   messages     Message[]
-  playlist     Playlist     @relation(fields: [playlist_id], references: [id])
-  playlist_id  String
+  playlist     Playlist?     @relation(fields: [playlist_id], references: [id])
+  playlist_id  String?
   is_private   Boolean      @default(false)
   is_recurring Boolean      @default(false)
   date_time    DateTime
@@ -68,6 +72,8 @@ model Playlist {
   thumbnail       String
   parties         Party[]
   playlist_videos Playlist_Video[]
+  user           User?         @relation(fields: [user_id], references: [id])
+  user_id        String?
 }
 
 model Playlist_Video {
