@@ -118,24 +118,24 @@ app.get('/', (req, res) => {
   res.status(200).send();
 });
 
-app.post('/logout', (req, res) => {
-  if (req.session) {
-    req.session.destroy((err) => {
-      if (err) {
-        res.status(400).send('Unable to log out');
-      } else {
-        console.log(req.session, 'logout server........');
-        res.redirect('/home');
-        res.status(200).send('logged out worked');
-      }
-    });
-  } else {
-    res.end();
-  }
-});
+// app.post('/logout', (req, res) => {
+//   if (req.session) {
+//     req.session.destroy((err) => {
+//       if (err) {
+//         res.status(400).send('Unable to log out');
+//       } else {
+//         console.log(req.session, 'logout server........');
+//         res.redirect('/home');
+//         res.status(200).send('logged out worked');
+//       }
+//     });
+//   } else {
+//     res.end();
+//   }
+// });
 
 // endpoint for search queries
-app.get('/search/:q', async (req: Request, res: Response) => {
+app.get('/api/search/:q', async (req: Request, res: Response) => {
   // destructure the query from the req.body
   // const { q } = req.body;
   const { q } = req.params;
@@ -197,7 +197,7 @@ app.get('/search/:q', async (req: Request, res: Response) => {
 });
 
 // endpoint for seeding database
-app.post('/seed', async (req: Request, res: Response) => {
+app.post('/api/seed', async (req: Request, res: Response) => {
   const { table, dataObj } = req.body;
   try {
     const createdData = await prisma[table].createMany(dataObj);
