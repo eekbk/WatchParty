@@ -112,21 +112,21 @@ app.get('/', (req, res) => {
   res.status(200).send();
 });
 
-// app.post('/logout', (req, res) => {
-//   if (req.session) {
-//     req.session.destroy((err) => {
-//       if (err) {
-//         res.status(400).send('Unable to log out');
-//       } else {
-//         console.log(req.session, 'logout server........');
-//         res.redirect('/home');
-//         res.status(200).send('logged out worked');
-//       }
-//     });
-//   } else {
-//     res.end();
-//   }
-// });
+app.post('/logout', (req, res) => {
+  if (req.session) {
+    req.session.destroy((err) => {
+      if (err) {
+        res.status(400).send('Unable to log out');
+      } else {
+        console.log(req.session, 'logout server........');
+        res.redirect('/home');
+        res.status(200).send('logged out worked');
+      }
+    });
+  } else {
+    res.end();
+  }
+});
 
 // endpoint for search queries
 app.get('/api/search/:q', async (req: Request, res: Response) => {
