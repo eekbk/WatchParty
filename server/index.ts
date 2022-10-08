@@ -12,7 +12,8 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const passport = require('passport');
-const axios = require('axios');
+// const axios = require('axios');
+// const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { default: user } = require('./routes/user.ts');
 
@@ -23,9 +24,6 @@ const PORT = process.env.PORT || 4040;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve('client', 'dist')));
 app.use(express.json());
-
-app.use('api/user', user);
-app.use('api/party', party);
 
 passport.use(
   new GoogleStrategy(
@@ -81,9 +79,10 @@ passport.deserializeUser(async (id, done) => {
   });
   done(null, user);
 });
-// messages, users playlist
-app.post('/test', (req: any, res: Response) => {
-  console.log(req.user, 'req.user....');
+app.use('/api/user', user);
+app.use('/api/party', party);
+
+app.get('/test', (req: any, res: Response) => {
   res.json(req.user);
 });
 
@@ -127,67 +126,6 @@ app.post('/logout', (req, res) => {
   }
 });
 
-// endpoint for search queries
-app.get('/api/search/:q', async (req: Request, res: Response) => {
-  // destructure the query from the req.body
-  // const { q } = req.body;
-  const { q } = req.params;
-  const qSearch = q.replace(/&/g, ' | ');
-  // console.log('qsearch:', qSearch);
-  // const qSearch = q.replaceAll('&', ' | ');
-  // query the database for videos with description or title matching q
-  try {
-    const videos = await prisma.video.findMany({
-      where: {
-        OR: [
-          {
-            title: {
-              search: qSearch,
-            },
-          },
-          {
-            description: {
-              search: qSearch,
-            },
-          },
-        ],
-      },
-    });
-    // query the db for users matching q
-    const users = await prisma.user.findMany({
-      where: {
-        user_name: {
-          search: qSearch,
-        },
-      },
-    });
-    // query the db for parties with descrip or name matching q
-    const parties = await prisma.party.findMany({
-      where: {
-        OR: [
-          {
-            name: {
-              search: qSearch,
-            },
-          },
-          {
-            description: qSearch,
-          },
-        ],
-      },
-    });
-    const results = {
-      videos,
-      users,
-      parties,
-    };
-    res.status(200).send(results);
-  } catch (err) {
-    console.log('Error from search:\n', err);
-    res.sendStatus(500);
-  }
-});
-
 // endpoint for seeding database
 app.post('/api/seed', async (req: Request, res: Response) => {
   const { table, dataObj } = req.body;
@@ -198,50 +136,6 @@ app.post('/api/seed', async (req: Request, res: Response) => {
     console.log('Error from /seed', err);
     res.sendStatus(500);
   }
-});
-
-app.post('/video', (req: Request, res: Response) => {
-  const { videoId, videoUrl } = req.body;
-  prisma.video
-    .findFirst({
-      where: {
-        id: videoId,
-      },
-    })
-    .then((results) => {
-      if (results) {
-        res.status(200).send(results);
-      } else {
-        return Promise.resolve(
-          axios.get(
-            `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${process.env.YOUTUBE_KEY}`,
-          ),
-        );
-      }
-    })
-    .then((video: any) => {
-      console.log('video: ', video);
-      video = video.data;
-      const formattedVideo: any = {
-        id: videoId,
-        url: videoUrl,
-        title: video.items[0].snippet.title,
-        description: video.items[0].snippet.description,
-        thumbnail: video.items[0].snippet.thumbnails.default.url,
-      };
-      prisma.video.upsert({
-        where: {
-          id: videoId,
-        },
-        update: {},
-        create: formattedVideo,
-      });
-      res.send(formattedVideo);
-    })
-    .catch((err) => {
-      console.error('error: ', err);
-      res.sendStatus(err.response.status);
-    });
 });
 
 app.get('/*', (req: Request, res: Response) => {

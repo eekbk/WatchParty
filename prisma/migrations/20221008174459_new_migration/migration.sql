@@ -58,7 +58,7 @@ CREATE TABLE "Party" (
     "playlist_id" TEXT,
     "is_private" BOOLEAN NOT NULL DEFAULT false,
     "is_recurring" BOOLEAN NOT NULL DEFAULT false,
-    "date_time" TIMESTAMP(3) NOT NULL,
+    "date_time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "likes_count" INTEGER NOT NULL DEFAULT 0,
     "type" "Party_Type" NOT NULL,
     "status" "Status" NOT NULL DEFAULT 'UPCOMING',

@@ -7,13 +7,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { UserContext } from '../context';
 
-// useState, useContext useState,
 function Dashboard() {
   // get user data from nodejs and return in react jsl functional component using hooks
   // use axios to get user data from prisma DB and
   // get user data from express.js return to react functional component using hooks?
 
-  const { user, setUser }: { user: any; setUser: any } =		useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   // const [ data1, setData1 ] = useState([]);
 
   useEffect(() => {
@@ -31,21 +30,21 @@ function Dashboard() {
       });
   }, []);
   return (
-		<Container>
-			dashboard
-			{user ? user.user_name : 'not logged in'}
-			<Row>search bar here</Row>
-			<Row>
-				<Col sm={8}>user info</Col>
-				<Col sm={4}>reminders</Col>
-			</Row>
-			<Row>Top Rooms</Row>
-			<Row>
-				<Col sm>room</Col>
-				<Col sm>room</Col>
-				<Col sm>room</Col>
-			</Row>
-		</Container>
+    <Container>
+      dashboard
+      {user ? user.user_name : 'not logged in'}
+      <Row>search bar here</Row>
+      <Row>
+        <Col sm={8}>user info</Col>
+        <Col sm={4}>reminders</Col>
+      </Row>
+      <Row>Top Rooms</Row>
+      <Row>
+        <Col sm>room</Col>
+        <Col sm>room</Col>
+        <Col sm>room</Col>
+      </Row>
+    </Container>
   );
 }
 
