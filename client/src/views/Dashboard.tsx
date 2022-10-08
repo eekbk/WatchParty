@@ -8,7 +8,7 @@ function Dashboard() {
   useEffect(() => {
     axios
       .get('http://localhost:4040/test')
-      .then((data) => console.log(data, 'data axios.......'))
+    // .then((data) => console.log(data, 'data axios.......'))
       .catch((err) => {
         console.error(err);
       });
