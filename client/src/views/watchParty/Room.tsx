@@ -5,7 +5,7 @@ import {
 const { default: Video } = require('./Video.tsx');
 const { default: Chat } = require('./Chat.tsx');
 
-function WatchParty({ videos, user }: any) {
+function WatchParty({ videos, user, room }: any) {
   return (
 		<Container
   style={{
@@ -26,11 +26,15 @@ function WatchParty({ videos, user }: any) {
   bg="transparent"
   text="white"
 					>
-						<Video videos={videos} isAdmin={Math.random() < 0.5} room="test" />
+						<Video
+  videos={videos}
+  isAdmin={Math.random() < 0.5}
+  room={room || 'test'}
+						/>
 					</Card>
 				</Col>
 				<Col xs={5} md={3}>
-					<Chat user={user} room="test" />
+					<Chat user={user} room={room || 'test'} />
 				</Col>
 			</Row>
 		</Container>
