@@ -1,6 +1,7 @@
 // File for handling WatchParty endpoints
 import express, { Request, Response, Router } from 'express';
 import { Party } from '@prisma/client';
+import axios from 'axios';
 import { prisma } from '../db/index';
 
 const { default: dummyData } = require('../../dummyData.ts');
@@ -27,12 +28,18 @@ party.get('/', (req: Request, res: Response) => {
 });
 
 // Create a watch party
+// New rules: Either create from a playlist only or by adding videos individually.
 party.post('/', (req: Request, res: Response) => {
   // Get the party values out of the request body
-  const { party }: { party: Party } = req.body;
+  const { party, playlist }: { party: Party; playlist: any } = req.body;
   // Create the new party in the database
   prisma.party
-    .create({ data: party })
+    .create({
+      data: {
+        name: party.name,
+        description: party.description,
+      },
+    })
     .then(() => {
       res.sendStatus(200);
     })
@@ -62,5 +69,50 @@ party.put('/:partyId', (req: Request, res: Response) => {
     .catch((err) => {
       console.error(err);
       res.sendStatus(err.status);
+    });
+});
+
+party.post('/video', (req: Request, res: Response) => {
+  console.log('arrived');
+  const { videoId, videoUrl } = req.body;
+  prisma.video
+    .findFirst({
+      where: {
+        id: videoId,
+      },
+    })
+    .then((results) => {
+      if (results) {
+        res.status(200).send(results);
+      } else {
+        return Promise.resolve(
+          axios.get(
+            `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${process.env.YOUTUBE_KEY}`,
+          ),
+        );
+      }
+    })
+    .then((video: any) => {
+      console.log('video: ', video);
+      video = video.data;
+      const formattedVideo: any = {
+        id: videoId,
+        url: videoUrl,
+        title: video.items[0].snippet.title,
+        description: video.items[0].snippet.description,
+        thumbnail: video.items[0].snippet.thumbnails.default.url,
+      };
+      prisma.video.upsert({
+        where: {
+          id: videoId,
+        },
+        update: {},
+        create: formattedVideo,
+      });
+      res.send(formattedVideo);
+    })
+    .catch((err) => {
+      console.error('error: ', err);
+      res.sendStatus(err.response.status);
     });
 });

@@ -48,7 +48,7 @@ export function CreateParty() {
     const videoId: any = match[2];
     if (match && match[2].length === 11) {
       axios
-        .post('/video', { videoId, videoUrl: video })
+        .post('/api/party/video', { videoId, videoUrl: video })
         .then((vd) => {
           console.log(vd);
           setVideo('');

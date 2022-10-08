@@ -7,7 +7,7 @@ import axios from 'axios';
 function Dashboard() {
   useEffect(() => {
     axios
-      .get('http://localhost:4040/test')
+      .get('/api/user/')
       .then((data) => console.log(data, 'data axios.......'))
       .catch((err) => {
         console.error(err);
