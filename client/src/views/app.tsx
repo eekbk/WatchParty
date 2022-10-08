@@ -7,6 +7,7 @@ import SearchBar from '../SearchBar';
 
 function App(): JSX.Element {
   const { user } = useContext(UserContext);
+
   return (
 		<StyledBackgroundContainer fluid>
 			<Navbar expand="lg" style={{ height: '10vh' }}>
@@ -33,10 +34,15 @@ function App(): JSX.Element {
 							<Nav.Link to="/dashboard" as={Link}>
 								Dashboard
 							</Nav.Link>
+							<Nav.Link to="/home" as={Link}>
+								Home
+							</Nav.Link>
 							<Nav.Link hidden={user} href="/auth/google">
 								Login
 							</Nav.Link>
-							<Nav.Link hidden={!user}>Logout</Nav.Link>
+							<Nav.Link hidden={!user} href="/logout">
+								Logout
+							</Nav.Link>
 						</Nav>
 					</Navbar.Collapse>
 				</Container>

@@ -72,8 +72,8 @@ model Playlist {
   thumbnail       String
   parties         Party[]
   playlist_videos Playlist_Video[]
-  user           User?         @relation(fields: [user_id], references: [id])
-  user_id        String?
+  user            User?         @relation(fields: [user_id], references: [id])
+  user_id         String?
 }
 
 model Playlist_Video {
