@@ -3,6 +3,7 @@ import express, { Request, Response, Router } from 'express';
 import { Party } from '@prisma/client';
 import axios from 'axios';
 import { prisma } from '../db/index';
+import { YoutubeVideo } from '../../interfaces';
 
 const { default: dummyData } = require('../../dummyData.ts');
 
@@ -28,17 +29,24 @@ party.get('/', (req: Request, res: Response) => {
 });
 
 // Create a watch party
+// Create a playlist if not importing, then send playlist id to this endpoint either way
 // New rules: Either create from a playlist only or by adding videos individually.
 party.post('/', (req: Request, res: Response) => {
   // Get the party values out of the request body
-  const { party, playlist }: { party: Party; playlist: any } = req.body;
+  const { party, playlistId } = req.body;
   // Create the new party in the database
-  const { name, description }: { name: any; description: any } = party;
+  const { name, description, type } = party;
   prisma.party
     .create({
       data: {
         name,
+        type,
         description,
+        playlist: {
+          connect: {
+            id: playlistId,
+          },
+        },
       },
     })
     .then(() => {
@@ -93,15 +101,14 @@ party.post('/video', (req: Request, res: Response) => {
         );
       }
     })
-    .then((video: any) => {
-      console.log('video: ', video);
-      video = video.data;
-      const formattedVideo: any = {
+    .then((video: YoutubeVideo) => {
+      const tempVideo = video.data;
+      const formattedVideo = {
         id: videoId,
         url: videoUrl,
-        title: video.items[0].snippet.title,
-        description: video.items[0].snippet.description,
-        thumbnail: video.items[0].snippet.thumbnails.default.url,
+        title: tempVideo.items[0].snippet.title,
+        description: tempVideo.items[0].snippet.description,
+        thumbnail: tempVideo.items[0].snippet.thumbnails.default.url,
       };
       prisma.video.upsert({
         where: {
