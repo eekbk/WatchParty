@@ -43,8 +43,8 @@ function Video({ videos, isAdmin, room }: any) {
   };
 
   // Updates the duration
-  const setDuration = (sec) => {
-    setDur(sec);
+  const setDuration = () => {
+    setDur(videoPlayer.current.getDuration());
   };
 
   // pauses all clients
@@ -86,9 +86,23 @@ function Video({ videos, isAdmin, room }: any) {
         videoPlayer.current.seekTo(video.start, 'seconds');
       },
     );
+
+    return () => {
+      socket.off('pause');
+      socket.off('play');
+      socket.off('seek');
+      socket.off('giveRoom');
+    };
   }, []);
   return (
-		<Container fluid="md" style={{ height: '100%' }}>
+		<Container
+  fluid="md"
+  style={{
+			  height: '100%',
+			  float: 'left',
+			  marginLeft: '0px',
+  }}
+		>
 			<ReactPlayer
   ref={videoPlayer}
   config={{
@@ -106,6 +120,7 @@ function Video({ videos, isAdmin, room }: any) {
   onBufferEnd={() => {
 				  console.log('DONE');
   }}
+  onStart={setDuration}
   volume={volume}
   onDuration={setDuration}
   onProgress={updateTime}
@@ -125,9 +140,13 @@ function Video({ videos, isAdmin, room }: any) {
 			<Container fluid="md" style={{ height: '1.5rm', width: '10%' }}>
 				<Form.Range value={volume * 100} onChange={setVolume} />
 			</Container>
-			<PlayPause onClick={playVid}>Play</PlayPause>
+			<PlayPause disabled={!isAdmin} onClick={playVid}>
+				Play
+			</PlayPause>
 {' '}
-			<PlayPause onClick={pauseVid}>Pause</PlayPause>
+			<PlayPause disabled={!isAdmin} onClick={pauseVid}>
+				Pause
+			</PlayPause>
 			<Card.Body>
 				<Card.Title>
 					{videos[video] ? videos[video].snippet.title : 'Please Wait'}
