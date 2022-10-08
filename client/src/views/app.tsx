@@ -3,6 +3,7 @@ import { Nav, Navbar, Container } from 'react-bootstrap';
 import { useContext } from 'react';
 import { StyledBackgroundContainer } from '../styles';
 import { UserContext } from '../context';
+import SearchBar from '../SearchBar';
 
 function App(): JSX.Element {
   const { user } = useContext(UserContext);
@@ -40,6 +41,7 @@ function App(): JSX.Element {
 					</Navbar.Collapse>
 				</Container>
 			</Navbar>
+			<SearchBar />
 
 			<Outlet />
 		</StyledBackgroundContainer>
