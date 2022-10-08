@@ -99,9 +99,6 @@
     "react/jsx-closing-tag-location": [
       "off"
     ],
-    "react/jsx-indent": [
-      "off"
-    ],
     "no-useless-escape": [
       "off"
     ]

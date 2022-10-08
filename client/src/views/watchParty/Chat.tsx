@@ -7,16 +7,16 @@ const { default: Message } = require('./Message.tsx');
 
 const socket = io();
 
-function Chat({ user, room }): JSX.Element {
+function Chat({ user, room, dbMessages }): JSX.Element {
   // State vars
   const [chat, setChat] = useState('');
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(dbMessages);
   // functions
 
   // handles chat submit
   const submit = (e) => {
     if (chat.length >= 1) {
-      socket.emit('chat', { room, message: chat });
+      socket.emit('chat', { room, message: chat, user });
     }
     e.preventDefault();
   };
@@ -32,31 +32,31 @@ function Chat({ user, room }): JSX.Element {
   }, []);
   console.log(messages);
   return (
-		<Container
-  style={{
+    <Container
+      style={{
 			  textAlign: 'center',
-  }}
-		>
-			CHAT!!
-			<Form>
-				<Form.Control
-  value={chat}
-  onChange={(event) => setChat(event.target.value)}
-  placeholder="type here!"
-				/>
-				<StyledButton
-  type="submit"
-  onClick={(e) => {
+      }}
+    >
+      CHAT!!
+      <Form>
+        <Form.Control
+          value={chat}
+          onChange={(event) => setChat(event.target.value)}
+          placeholder="type here!"
+        />
+        <StyledButton
+          type="submit"
+          onClick={(e) => {
 					  submit(e);
-  }}
-				>
-					Send!
-				</StyledButton>
-			</Form>
-			{messages.map((message) => (
-				<Message message={message} />
-			))}
-		</Container>
+          }}
+        >
+          Send!
+        </StyledButton>
+      </Form>
+      {messages.map((message) => (
+        <Message message={message} user={user} />
+      ))}
+    </Container>
   );
 }
 export default Chat;
