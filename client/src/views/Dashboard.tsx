@@ -30,9 +30,9 @@ function Dashboard() {
   }, []);
   return (
 		<Container>
-dashboard
-{user ? user.user_name : 'not logged in'}
-</Container>
+			dashboard
+			{user ? user.user_name : 'not logged in'}
+		</Container>
   );
 }
 

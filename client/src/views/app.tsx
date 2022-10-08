@@ -3,6 +3,7 @@ import { Nav, Navbar, Container } from 'react-bootstrap';
 import { useContext } from 'react';
 import { StyledBackgroundContainer } from '../styles';
 import { UserContext } from '../context';
+import SearchBar from './search/SearchBar';
 
 function App(): JSX.Element {
   const { user } = useContext(UserContext);
@@ -36,6 +37,9 @@ function App(): JSX.Element {
 							<Nav.Link to="/home" as={Link}>
 								Home
 							</Nav.Link>
+							<Nav.Link to="/search" as={Link}>
+								SearchTemp
+							</Nav.Link>
 							<Nav.Link hidden={user} href="/auth/google">
 								Login
 							</Nav.Link>
@@ -46,6 +50,7 @@ function App(): JSX.Element {
 					</Navbar.Collapse>
 				</Container>
 			</Navbar>
+			<SearchBar />
 
 			<Outlet />
 		</StyledBackgroundContainer>
