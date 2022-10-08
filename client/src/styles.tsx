@@ -12,7 +12,7 @@ export const StyledVideoCard = styled(Card)`
 
 export const StyledButton = styled(Button)`
 	color: #ffed5d;
-	background-color: #8a25e2;
+	background-color: #ff30db;
 	border-color: #8a25e2;
 	&:hover {
 		background-color: #8a25e2;
@@ -36,13 +36,13 @@ export const StyledForm = styled(Form)`
 `;
 
 export const StyledBackgroundContainer = styled(Container)`
-	background-color: #ff30db;
+	background-color: #8a25e2;
 	height: 100vh;
 `;
 
 export const PlayPause = styled(Button)`
 	color: white;
-	background-color: #8a25e2;
+	background-color: #ff30db;
 	border-color: #8a25e2;
 	&:hover {
 		background-color: #8a25e2;

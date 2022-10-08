@@ -32,31 +32,31 @@ function Chat({ user, room }): JSX.Element {
   }, []);
   console.log(messages);
   return (
-		<Container
-  style={{
+    <Container
+      style={{
 			  textAlign: 'center',
-  }}
-		>
-			CHAT!!
-			<Form>
-				<Form.Control
-  value={chat}
-  onChange={(event) => setChat(event.target.value)}
-  placeholder="type here!"
-				/>
-				<StyledButton
-  type="submit"
-  onClick={(e) => {
+      }}
+    >
+      CHAT!!
+      <Form>
+        <Form.Control
+          value={chat}
+          onChange={(event) => setChat(event.target.value)}
+          placeholder="type here!"
+        />
+        <StyledButton
+          type="submit"
+          onClick={(e) => {
 					  submit(e);
-  }}
-				>
-					Send!
-				</StyledButton>
-			</Form>
-			{messages.map((message) => (
-				<Message message={message} />
-			))}
-		</Container>
+          }}
+        >
+          Send!
+        </StyledButton>
+      </Form>
+      {messages.map((message) => (
+        <Message message={message} />
+      ))}
+    </Container>
   );
 }
 export default Chat;
