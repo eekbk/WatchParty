@@ -104,6 +104,9 @@
     ],
     "implicit-arrow-linebreak": [
       "off"
+    ],
+    "react/jsx-indent": [
+      "warn"
     ]
   }
 }

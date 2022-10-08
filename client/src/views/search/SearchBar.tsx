@@ -59,19 +59,19 @@ function SearchBar() {
   };
 
   return (
-		<form>
-			<label htmlFor="search">
-				<input
-  type="text"
-  value={textVal}
-  onChange={handleChange}
-  placeholder="Search for Parties, Users, Videos..."
-				/>
-				<button type="button" value="Submit" onClick={handleSubmit}>
-					Search
-				</button>
-			</label>
-		</form>
+    <form>
+      <label htmlFor="search">
+        <input
+          type="text"
+          value={textVal}
+          onChange={handleChange}
+          placeholder="Search for Parties, Users, Videos..."
+        />
+        <button type="button" value="Submit" onClick={handleSubmit}>
+          Search
+        </button>
+      </label>
+    </form>
   );
 }
 export default SearchBar;

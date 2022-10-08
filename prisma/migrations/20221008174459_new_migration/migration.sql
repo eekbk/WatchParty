@@ -41,6 +41,7 @@ CREATE TABLE "Message" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "room_timestamp" TIMESTAMP(3) NOT NULL,
+    "message" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
     "party_id" TEXT NOT NULL,
     "type" "Message_Type" NOT NULL,
@@ -52,15 +53,15 @@ CREATE TABLE "Message" (
 -- CreateTable
 CREATE TABLE "Party" (
     "id" TEXT NOT NULL,
-    "playlist_id" TEXT NOT NULL,
+    "name" TEXT,
+    "description" TEXT,
+    "playlist_id" TEXT,
     "is_private" BOOLEAN NOT NULL DEFAULT false,
     "is_recurring" BOOLEAN NOT NULL DEFAULT false,
-    "date_time" TIMESTAMP(3) NOT NULL,
+    "date_time" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "likes_count" INTEGER NOT NULL DEFAULT 0,
     "type" "Party_Type" NOT NULL,
     "status" "Status" NOT NULL DEFAULT 'UPCOMING',
-    "name" TEXT,
-    "description" TEXT,
 
     CONSTRAINT "Party_pkey" PRIMARY KEY ("id")
 );
@@ -152,7 +153,7 @@ ALTER TABLE "Message" ADD CONSTRAINT "Message_user_id_fkey" FOREIGN KEY ("user_i
 ALTER TABLE "Message" ADD CONSTRAINT "Message_party_id_fkey" FOREIGN KEY ("party_id") REFERENCES "Party"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Party" ADD CONSTRAINT "Party_playlist_id_fkey" FOREIGN KEY ("playlist_id") REFERENCES "Playlist"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Party" ADD CONSTRAINT "Party_playlist_id_fkey" FOREIGN KEY ("playlist_id") REFERENCES "Playlist"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Playlist" ADD CONSTRAINT "Playlist_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;

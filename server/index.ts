@@ -25,13 +25,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve('client', 'dist')));
 app.use(express.json());
 
-// routes
-/*
-AT CAITY'S SUGGESTION: add 'api' before before the route endpoint of
-any backend routes to avoid front end navigation "crossing streams"
-with backend
-*/
-
 passport.use(
   new GoogleStrategy(
     {
@@ -206,50 +199,6 @@ app.post('/api/seed', async (req: Request, res: Response) => {
   }
 });
 
-app.post('/video', (req: Request, res: Response) => {
-  const { videoId, videoUrl } = req.body;
-  prisma.video
-    .findFirst({
-      where: {
-        id: videoId,
-      },
-    })
-    .then((results) => {
-      if (results) {
-        res.status(200).send(results);
-      } else {
-        return Promise.resolve(
-          axios.get(
-            `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${process.env.YOUTUBE_KEY}`,
-          ),
-        );
-      }
-    })
-    .then((video: any) => {
-      console.log('video: ', video);
-      video = video.data;
-      const formattedVideo: any = {
-        id: videoId,
-        url: videoUrl,
-        title: video.items[0].snippet.title,
-        description: video.items[0].snippet.description,
-        thumbnail: video.items[0].snippet.thumbnails.default.url,
-      };
-      prisma.video.upsert({
-        where: {
-          id: videoId,
-        },
-        update: {},
-        create: formattedVideo,
-      });
-      res.send(formattedVideo);
-    })
-    .catch((err) => {
-      console.error('error: ', err);
-      res.sendStatus(err.response.status);
-    });
-});
-
 app.get('/*', (req: Request, res: Response) => {
   res.sendFile(
     path.resolve(__dirname, '..', 'client', 'dist', 'index.html'),
@@ -262,7 +211,7 @@ app.get('/*', (req: Request, res: Response) => {
 });
 
 // socket.io testing
-io.on('connection', (socket: any) => {
+io.on('connection', (socket) => {
   socket.on('join', (room: string) => {
     socket.join(room);
     io.to(room).emit('roomCheck');
