@@ -25,12 +25,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve('client', 'dist')));
 app.use(express.json());
 
-// routes
-/*
-AT CAITY'S SUGGESTION: add 'api' before before the route endpoint of
-any backend routes to avoid front end navigation "crossing streams"
-with backend
-*/
 app.use('api/user', user);
 app.use('api/party', party);
 
@@ -139,9 +133,8 @@ app.get('/api/search/:q', async (req: Request, res: Response) => {
   // destructure the query from the req.body
   // const { q } = req.body;
   const { q } = req.params;
-  console.log('q:', q);
   const qSearch = q.replace(/&/g, ' | ');
-  console.log('qsearch:', qSearch);
+  // console.log('qsearch:', qSearch);
   // const qSearch = q.replaceAll('&', ' | ');
   // query the database for videos with description or title matching q
   try {
