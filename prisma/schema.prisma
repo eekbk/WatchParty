@@ -50,14 +50,14 @@ model Message {
 
 model Party {
   id           String       @id @default(uuid())
-  name          String?
-  description   String?
+  name         String?
+  description  String?
   messages     Message[]
   playlist     Playlist?     @relation(fields: [playlist_id], references: [id])
   playlist_id  String?
   is_private   Boolean      @default(false)
   is_recurring Boolean      @default(false)
-  date_time    DateTime
+  date_time    DateTime     @default(now())
   likes_count  Int          @default(0)
   type         Party_Type
   status       Status       @default(UPCOMING)

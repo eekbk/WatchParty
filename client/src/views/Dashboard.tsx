@@ -4,18 +4,18 @@ import { useEffect, useContext } from 'react';
 import { Container } from 'react-bootstrap';
 import axios from 'axios';
 import { UserContext } from '../context';
-// useState, useContext useState,
+
 function Dashboard() {
   // get user data from nodejs and return in react jsl functional component using hooks
   // use axios to get user data from prisma DB and
   // get user data from express.js return to react functional component using hooks?
 
-  const { user, setUser }: { user: any; setUser: any } =		useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   // const [ data1, setData1 ] = useState([]);
 
   useEffect(() => {
     axios
-      .post('http://localhost:4040/test')
+      .post('/api/user')
       .then((data) => {
         setUser(data.data);
         console.log(data.data, '2nd data....');
@@ -29,10 +29,10 @@ function Dashboard() {
       });
   }, []);
   return (
-		<Container>
-			dashboard
-			{user ? user.user_name : 'not logged in'}
-		</Container>
+    <Container>
+      dashboard
+      {user ? user.user_name : 'not logged in'}
+    </Container>
   );
 }
 

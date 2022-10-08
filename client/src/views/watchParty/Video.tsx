@@ -8,7 +8,7 @@ import { PlayPause } from '../../styles';
 
 const socket = io();
 
-function Video({ videos, isAdmin, room }: any) {
+function Video({ videos, isAdmin, room }) {
   // state vars
   const [isPlaying, setPause] = useState(false);
   const [pSeconds, setSeconds] = useState(0.0001);
@@ -16,7 +16,7 @@ function Video({ videos, isAdmin, room }: any) {
   const [volume, setVol] = useState(0.5);
   const [video, setVid] = useState(0);
 
-  const videoPlayer: any = useRef<ReactPlayer>(null);
+  const videoPlayer = useRef<ReactPlayer>(null);
 
   // TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -59,7 +59,7 @@ function Video({ videos, isAdmin, room }: any) {
   const playVid = () => {
     socket.emit('play', { room, bool: true });
   };
-  const updateTime = (data: any) => {
+  const updateTime = (data) => {
     setSeconds(data.playedSeconds);
   };
 
@@ -95,67 +95,67 @@ function Video({ videos, isAdmin, room }: any) {
     };
   }, []);
   return (
-		<Container
-  fluid="md"
-  style={{
+    <Container
+      fluid="md"
+      style={{
 			  height: '100%',
 			  float: 'left',
 			  marginLeft: '0px',
-  }}
-		>
-			<ReactPlayer
-  ref={videoPlayer}
-  config={{
+      }}
+    >
+      <ReactPlayer
+        ref={videoPlayer}
+        config={{
 				  youtube: {
 				    playerVars: {
 				      controls: 0,
 				      color: 'white',
 				    },
 				  },
-  }}
-  onEnded={changeVid}
-  onBuffer={() => {
+        }}
+        onEnded={changeVid}
+        onBuffer={() => {
 				  console.log('buffering');
-  }}
-  onBufferEnd={() => {
+        }}
+        onBufferEnd={() => {
 				  console.log('DONE');
-  }}
-  onStart={setDuration}
-  volume={volume}
-  onDuration={setDuration}
-  onProgress={updateTime}
-  playing={isPlaying}
-  url={
+        }}
+        onStart={setDuration}
+        volume={volume}
+        onDuration={setDuration}
+        onProgress={updateTime}
+        playing={isPlaying}
+        url={
 					videos[video]
 					  ? videos[video].url
 					  : 'https://www.youtube.com/watch?v=vZa0Yh6e7dw'
 				}
-  width="100%"
-  height="85%"
-  style={{
+        width="100%"
+        height="85%"
+        style={{
 				  pointerEvents: 'none',
-  }}
-			/>
-			<ProgressBar variant="info" now={pSeconds} max={duration} min={0} />
-			<Container fluid="md" style={{ height: '1.5rm', width: '10%' }}>
-				<Form.Range value={volume * 100} onChange={setVolume} />
-			</Container>
-			<PlayPause disabled={!isAdmin} onClick={playVid}>
-				Play
-			</PlayPause>
-{' '}
-			<PlayPause disabled={!isAdmin} onClick={pauseVid}>
-				Pause
-			</PlayPause>
-			<Card.Body>
-				<Card.Title>
-					{videos[video] ? videos[video].snippet.title : 'Please Wait'}
-				</Card.Title>
-				<Card.Text>
-					{videos[video] ? videos[video].snippet.description : 'Please Wait'}
-				</Card.Text>
-			</Card.Body>
-		</Container>
+        }}
+      />
+      <ProgressBar variant="info" now={pSeconds} max={duration} min={0} />
+      <Container fluid="md" style={{ height: '1.5rm', width: '10%' }}>
+        <Form.Range value={volume * 100} onChange={setVolume} />
+      </Container>
+      <PlayPause disabled={!isAdmin} onClick={playVid}>
+        Play
+      </PlayPause>
+      {' '}
+      <PlayPause disabled={!isAdmin} onClick={pauseVid}>
+        Pause
+      </PlayPause>
+      <Card.Body>
+        <Card.Title>
+          {videos[video] ? videos[video].snippet.title : 'Please Wait'}
+        </Card.Title>
+        <Card.Text>
+          {videos[video] ? videos[video].snippet.description : 'Please Wait'}
+        </Card.Text>
+      </Card.Body>
+    </Container>
   );
 }
 export default Video;
