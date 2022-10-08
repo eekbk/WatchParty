@@ -7,16 +7,21 @@ const { default: Message } = require('./Message.tsx');
 
 const socket = io();
 
-function Chat({ user, room, dbMessages }): JSX.Element {
+function Chat({
+  user, room, messages, setMessages,
+}): JSX.Element {
   // State vars
   const [chat, setChat] = useState('');
-  const [messages, setMessages] = useState(dbMessages);
+  // const [messages, setMessages] = useState(dbMessages);
   // functions
+
+  // console.log(messages), dbMessages;
 
   // handles chat submit
   const submit = (e) => {
     if (chat.length >= 1) {
       socket.emit('chat', { room, message: chat, user });
+      // setMessages((messages) => [...messages, chat])
     }
     e.preventDefault();
   };
@@ -24,13 +29,13 @@ function Chat({ user, room, dbMessages }): JSX.Element {
   // handle updates
   useEffect(() => {
     socket.on('chat', (message) => {
+      console.log(message);
       setMessages((messages) => [...messages, message]);
     });
     return () => {
       socket.off('chat');
     };
   }, []);
-  console.log(messages);
   return (
     <Container
       style={{

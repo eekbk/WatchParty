@@ -14,9 +14,10 @@ function WatchParty({ videos, user, room }: any) {
   const [dbMessages, setMessages] = useState([]);
 
   useEffect(() => {
-    socket.emit('getMessages');
+    socket.emit('getMessages', room || 'test');
 
     socket.on('getMessages', (messages) => {
+      console.log(messages);
       setMessages(messages);
     });
 
@@ -53,7 +54,12 @@ function WatchParty({ videos, user, room }: any) {
           </Card>
         </Col>
         <Col xs={5} md={3}>
-          <Chat user={user} room={room || 'test'} dbMessages={dbMessages} />
+          <Chat
+            user={user}
+            room={room || 'test'}
+            messages={dbMessages}
+            setMessages={setMessages}
+          />
         </Col>
       </Row>
     </Container>

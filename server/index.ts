@@ -3,7 +3,6 @@ import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import session from 'express-session';
-import { Message } from '@prisma/client';
 import { prisma } from './db/index';
 import { party } from './routes/watchParty';
 
@@ -242,35 +241,34 @@ io.on('connection', (socket: any) => {
 
   // sends a message to the room
   socket.on('chat', (chat: { room: string; message: string; user: string }) => {
-    const message: Message = {
-      message: chat.message,
-      id: 'test',
-      room_timestamp: '4:20',
-      createdAt: new Date(),
-      user_id: '02c77db4-2d73-4167-974b-1203b9f04850',
-      party_id: '261c4bdf-41ca-4685-87fc-367073ca4b3a',
-      type: 'COMMENT',
-      upvotes_count: 0,
-    };
-
     prisma.message
-      .create({ data: message })
-      .then((data) => {
-        console.log(data);
+      .create({
+        data: {
+          message: chat.message,
+          room_timestamp: '420',
+          user_id: '2548f808-526a-417b-8e18-87087904ee98',
+          party_id: '15b5a55e-2bb0-4115-96ab-6c9dc585877e',
+          type: 'COMMENT',
+        },
       })
       .catch((err) => {
         console.log(err);
       });
-    io.to('chat').emit(chat.message);
+    console.log(chat.room, chat.message);
+    io.to(chat.room).emit('chat', chat.message);
   });
 
   // Sends back all of the messages in the db by a room name
-  socket.on('getMessages', () => {
+  socket.on('getMessages', (room) => {
     prisma.message
-      .findMany()
+      .findMany({
+        where: {
+          party_id: room,
+        },
+      })
       .then((messages) => {
-        console.log(messages);
-        socket.broadcast.to('getMessage').emit(messages);
+        console.log(room);
+        io.to(room).emit('getMessages', messages);
       })
       .catch((err) => console.log(err));
   });

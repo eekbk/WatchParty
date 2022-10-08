@@ -40,7 +40,7 @@ CREATE TABLE "Relation" (
 CREATE TABLE "Message" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "room_timestamp" TIMESTAMP(3) NOT NULL,
+    "room_timestamp" TEXT NOT NULL,
     "message" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
     "party_id" TEXT NOT NULL,

@@ -5,7 +5,7 @@ function Message({ message, user }) {
     <Container>
       {user ? user.user_name : 'null'}
       :
-      {message}
+      {message.message || message}
     </Container>
   );
 }
