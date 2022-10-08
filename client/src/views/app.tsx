@@ -17,6 +17,9 @@ function App(): JSX.Element {
 					</Navbar.Brand>
 					<Navbar.Toggle aria-controls="basic-navbar-nav" />
 					<Navbar.Collapse id="basic-navbar-nav">
+						<Nav>
+							<SearchBar />
+						</Nav>
 						<Nav className="me-auto">
 							<Nav.Link to="/watchParty" as={Link}>
 								Party View
@@ -50,7 +53,6 @@ function App(): JSX.Element {
 					</Navbar.Collapse>
 				</Container>
 			</Navbar>
-			<SearchBar />
 
 			<Outlet />
 		</StyledBackgroundContainer>

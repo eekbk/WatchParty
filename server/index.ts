@@ -144,11 +144,13 @@ app.get('/api/search/:q', async (req: Request, res: Response) => {
           {
             title: {
               search: qSearch,
+              mode: 'insensitive',
             },
           },
           {
             description: {
               search: qSearch,
+              mode: 'insensitive',
             },
           },
         ],
@@ -159,6 +161,7 @@ app.get('/api/search/:q', async (req: Request, res: Response) => {
       where: {
         user_name: {
           search: qSearch,
+          mode: 'insensitive',
         },
       },
     });
@@ -169,10 +172,14 @@ app.get('/api/search/:q', async (req: Request, res: Response) => {
           {
             name: {
               search: qSearch,
+              mode: 'insensitive',
             },
           },
           {
-            description: qSearch,
+            description: {
+              search: qSearch,
+              mode: 'insensitive',
+            },
           },
         ],
       },
