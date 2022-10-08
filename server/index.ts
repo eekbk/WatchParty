@@ -12,7 +12,7 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const passport = require('passport');
-const axios = require('axios');
+// const axios = require('axios');
 // const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { default: user } = require('./routes/user.ts');
@@ -24,15 +24,6 @@ const PORT = process.env.PORT || 4040;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve('client', 'dist')));
 app.use(express.json());
-
-// routes
-/*
-AT CAITY'S SUGGESTION: add 'api' before before the route endpoint of
-any backend routes to avoid front end navigation "crossing streams"
-with backend
-*/
-app.use('api/user', user);
-app.use('api/party', party);
 
 passport.use(
   new GoogleStrategy(
@@ -88,9 +79,10 @@ passport.deserializeUser(async (id, done) => {
   });
   done(null, user);
 });
-// messages, users playlist
-app.post('/test', (req: any, res: Response) => {
-  console.log(req.user, 'req.user....');
+app.use('/api/user', user);
+app.use('/api/party', party);
+
+app.get('/test', (req: any, res: Response) => {
   res.json(req.user);
 });
 
