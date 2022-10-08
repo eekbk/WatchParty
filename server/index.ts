@@ -2,6 +2,7 @@
 import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
+import session from 'express-session';
 import { prisma } from './db/index';
 import { party } from './routes/watchParty';
 
@@ -12,7 +13,7 @@ const io = require('socket.io')(http);
 
 const passport = require('passport');
 const axios = require('axios');
-const session = require('express-session');
+// const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { default: user } = require('./routes/user.ts');
 
@@ -87,8 +88,9 @@ passport.deserializeUser(async (id, done) => {
   });
   done(null, user);
 });
-
-app.get('/test', (req: any, res: Response) => {
+// messages, users playlist
+app.post('/test', (req: any, res: Response) => {
+  console.log(req.user, 'req.user....');
   res.json(req.user);
 });
 
@@ -105,7 +107,7 @@ app.get(
 
 app.get(
   '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/' }),
+  passport.authenticate('google', { failureRedirect: '/home' }),
   (req: Request, res: Response) => {
     // Successful authentication, redirect home.
     res.redirect('/dashboard');
@@ -116,35 +118,21 @@ app.get('/', (req, res) => {
   res.status(200).send();
 });
 
-// const isLoggedIn = (req, res, next) => {
-//   if (req.user) {
-//     next();
-//   } else {
-//       res.status(401).send('Not Logged In');
-//     }
-//   }
-
-//   const isLoggedIn = require('./Middleware/auth')
-//   app.get('/', isLoggedIn,(req, res) => res.send(`Welcome ${req.user.displayName}!`))
-//   app.get('/logout', (req, res) => {
-//     req.session = null;
-//     req.logout();
-//     res.redirect('/');
-//   })
-
-// app.post('/logout', (req, res) => {
-//   if (req.session) {
-//     req.session.destroy((err) => {
-//       if (err) {
-//         res.status(400).send('Unable to log out');
-//       } else {
-//         res.status(200).send('logged out worked');
-//       }
-//     });
-//   } else {
-//     res.end();
-//   }
-// });
+app.post('/logout', (req, res) => {
+  if (req.session) {
+    req.session.destroy((err) => {
+      if (err) {
+        res.status(400).send('Unable to log out');
+      } else {
+        console.log(req.session, 'logout server........');
+        res.redirect('/home');
+        res.status(200).send('logged out worked');
+      }
+    });
+  } else {
+    res.end();
+  }
+});
 
 app.post('/video', (req: Request, res: Response) => {
   const { videoId, videoUrl } = req.body;
