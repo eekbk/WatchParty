@@ -240,8 +240,37 @@ io.on('connection', (socket: any) => {
   // Chat
 
   // sends a message to the room
-  socket.on('chat', (chat: { room: string; message: string }) => {
-    io.emit('chat', chat.message);
+  socket.on('chat', (chat: { room: string; message: string; user: string }) => {
+    prisma.message
+      .create({
+        data: {
+          message: chat.message,
+          room_timestamp: '420',
+          user_id: '2548f808-526a-417b-8e18-87087904ee98',
+          party_id: '15b5a55e-2bb0-4115-96ab-6c9dc585877e',
+          type: 'COMMENT',
+        },
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log(chat.room, chat.message);
+    io.to(chat.room).emit('chat', chat.message);
+  });
+
+  // Sends back all of the messages in the db by a room name
+  socket.on('getMessages', (room) => {
+    prisma.message
+      .findMany({
+        where: {
+          party_id: room,
+        },
+      })
+      .then((messages) => {
+        console.log(room);
+        io.to(room).emit('getMessages', messages);
+      })
+      .catch((err) => console.log(err));
   });
 });
 

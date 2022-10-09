@@ -28,6 +28,7 @@ function RouteHandler() {
               path="watchParty"
               element={(
                 <WatchParty
+                  room="15b5a55e-2bb0-4115-96ab-6c9dc585877e"
                   videos={[
 									  {
 									    url: 'https://www.youtube.com/watch?v=IGQBtbKSVhY',

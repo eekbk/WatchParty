@@ -1,7 +1,13 @@
 import { Container } from 'react-bootstrap';
 
-function Message({ message }) {
-  return <Container>{message}</Container>;
+function Message({ message, user }) {
+  return (
+    <Container>
+      {user ? user.user_name : 'null'}
+      :
+      {message.message || message}
+    </Container>
+  );
 }
 
 export default Message;
