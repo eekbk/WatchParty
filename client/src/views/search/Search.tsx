@@ -23,16 +23,15 @@ function Search() {
     if (kind === 'party') {
       navigate('/watchParty', { state: { party } });
     } else if (kind === 'video') {
-      console.log('the quote unquote party\n', party);
       // send an axios request to find all the rooms with a playlist that contains that video
       axios
         .get(`/api/search/party/${party}`)
         .then(({ data }) => {
-          console.log('The data from the get request:\n', data);
+          // console.log('The data from the get request:\n', data);
           const matchingParties = data.playlists
             .map((playlist) => playlist.parties)
             .flat();
-          console.log('matchingParties:\n', matchingParties);
+          // console.log('matchingParties:\n', matchingParties);
           setPartiesMatch(matchingParties);
         })
         .then(() => {
