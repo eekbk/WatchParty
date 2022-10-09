@@ -3,13 +3,26 @@ import { useLocation } from 'react-router-dom';
 import {
   Card, Container, Row, Col,
 } from 'react-bootstrap';
+import axios from 'axios';
+import io from 'socket.io-client';
 import { UserContext } from '../../context';
+
+const socket = io();
 
 const { default: Video } = require('./Video.tsx');
 const { default: Chat } = require('./Chat.tsx');
 
 function WatchParty({ videos, user, room }: any) {
   const [dbMessages, setMessages] = useState([]);
+  const [playListVideos, setPlaylistVideos] = useState([]);
+  const [party, setParty] = useState(null);
+
+  const currentUser = useContext(UserContext);
+  const { state } = useLocation();
+
+  const eraseThisFuncOnceYouUsePartyAndPlaylistVideos = () => {
+    console.log(party, playListVideos, currentUser);
+  };
 
   useEffect(() => {
     socket.emit('join', room);
@@ -28,6 +41,27 @@ function WatchParty({ videos, user, room }: any) {
       socket.off('getMessages');
       socket.off('chat');
     };
+  }, []);
+
+  // not sure if this should be in the above useEfect or keep them separate
+  useEffect(() => {
+    // get props out of useLocation
+    setParty(state.party);
+    console.log('state.party', state.party);
+    // axios request to get vids based on roomId
+    axios
+      .get(`/api/watchParty/playlist/${state.party.id}`)
+      .then(({ data }) => {
+        console.log('data in useEffect:\n', data);
+        setPlaylistVideos([1]);
+      })
+      .catch((err) => {
+        console.error('This is the error in useEffect:\n', err);
+      });
+    // erase this next line when you use party and playlistVideos
+    if (party === playListVideos) {
+      eraseThisFuncOnceYouUsePartyAndPlaylistVideos();
+    }
   }, []);
 
   return (
