@@ -24,7 +24,7 @@ function Video({ videos, isAdmin, room }) {
   // TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   if (isAdmin) {
-    console.log('YOU ARE S.P.E.C.I.A.L');
+    // console.log('YOU ARE S.P.E.C.I.A.L');
     socket.on('roomCheck', () => {
       socket.emit('giveRoom', { room, video, start: pSeconds });
     });
@@ -53,7 +53,7 @@ function Video({ videos, isAdmin, room }) {
   // pauses all clients
   const pauseVid = () => {
     setPause(false);
-    console.log(pSeconds);
+    // console.log(pSeconds);
     socket.emit('pause', { room, bool: false });
     socket.emit('seek', { room, amount: pSeconds });
     videoPlayer.current.seekTo(pSeconds, 'seconds');
@@ -75,7 +75,7 @@ function Video({ videos, isAdmin, room }) {
       setPause(arg);
     });
     socket.on('seek', (seconds: number) => {
-      console.log(seconds);
+      // console.log(seconds);
       videoPlayer.current.seekTo(seconds, 'seconds');
       setSeconds(seconds);
     });
@@ -117,10 +117,10 @@ function Video({ videos, isAdmin, room }) {
         }}
         onEnded={changeVid}
         onBuffer={() => {
-				  console.log('buffering');
+				  // console.log('buffering');
         }}
         onBufferEnd={() => {
-				  console.log('DONE');
+				  // console.log('DONE');
         }}
         onStart={setDuration}
         volume={volume}
