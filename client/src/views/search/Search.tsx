@@ -1,10 +1,19 @@
+import axios from 'axios';
 import { useContext } from 'react';
 import { Container, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+// import { playlist } from '../../../../server/routes/playlist';
 import { SearchContext } from '../../contexts/searchContext';
 
 function Search() {
-  const { usersMatch, partiesMatch, videosMatch } = useContext(SearchContext);
+  const {
+    usersMatch,
+    partiesMatch,
+    videosMatch,
+    setPartiesMatch,
+    setUsersMatch,
+    setVideosMatch,
+  } = useContext(SearchContext);
   const navigate = useNavigate();
 
   // const [view, setView] = useState('searchResults');
@@ -14,7 +23,27 @@ function Search() {
     if (kind === 'party') {
       navigate('/watchParty', { state: { party } });
     } else if (kind === 'video') {
+      console.log('the quote unquote party\n', party);
       // send an axios request to find all the rooms with a playlist that contains that video
+      axios
+        .get(`/api/search/party/${party}`)
+        .then(({ data }) => {
+          console.log('The data from the get request:\n', data);
+          const matchingParties = data.playlists
+            .map((playlist) => playlist.parties)
+            .flat();
+          console.log('matchingParties:\n', matchingParties);
+          setPartiesMatch(matchingParties);
+        })
+        .then(() => {
+          setUsersMatch([]);
+        })
+        .then(() => {
+          setVideosMatch([]);
+        })
+        .catch((err) => {
+          console.error('The error from handleCardClick:\n', err);
+        });
     }
   };
 
@@ -62,7 +91,7 @@ function Search() {
   //         </ul>
   //       </Container>
   //     );
-  //   } else if (view === 'videoClick') {
+  //   } if (view === 'videoClick') {
 
   //   }
   // };
