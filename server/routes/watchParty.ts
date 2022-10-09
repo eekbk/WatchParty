@@ -11,7 +11,7 @@ export const party: Router = express.Router();
 
 // Get video dummy data
 party.get('/test', (req: Request, res: Response) => {
-  res.status(200).send(JSON.stringify(dummyData[0]));
+  res.status(200).send(JSON.stringify(dummyData));
 });
 
 // Get all watch parties
@@ -25,6 +25,25 @@ party.get('/', (req: Request, res: Response) => {
     })
     .then((parties) => {
       res.status(200).send(JSON.stringify(parties));
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(err.status);
+    });
+});
+
+party.get('/topParties', (req: Request, res: Response) => {
+  // Retrieve all watch parties that have a not null id from the database
+  prisma.party
+    .findMany({
+      where: {
+        NOT: {
+          playlist_id: null,
+        },
+      },
+    }) // return where playlist id is truthy)
+    .then((playlists) => {
+      res.status(200).send(JSON.stringify(playlists));
     })
     .catch((err) => {
       console.error(err);

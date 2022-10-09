@@ -35,6 +35,7 @@ passport.use(
       callbackURL: `http://localhost:${PORT}/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
+      console.log(profile, 'profile......');
       const user = await prisma.user.findUnique({
         where: {
           googleId: profile.id,
@@ -46,6 +47,7 @@ passport.use(
           data: {
             user_name: profile.name.givenName,
             googleId: profile.id,
+            profile: profile.photos.value,
           },
         });
         if (newUser) {
@@ -266,26 +268,21 @@ app.get('/*', (req: Request, res: Response) => {
   );
 });
 
-// socket.io connection, listeners/emits
+// socket.io testing
 io.on('connection', (socket: any) => {
-  // tells a user which room to join
   socket.on('join', (room: string) => {
     socket.join(room);
     io.to(room).emit('roomCheck');
   });
-  // handles pause
   socket.on('pause', (pause: { room: string; bool: boolean }) => {
     socket.broadcast.to(pause.room).emit('pause', pause.bool);
   });
-  // handles play
   socket.on('play', (play: { room: string; bool: boolean }) => {
     io.to(play.room).emit('play', play.bool);
   });
-  // handles seek
   socket.on('seek', (seconds: { room: string; amount: number }) => {
     socket.broadcast.to(seconds.room).emit('seek', seconds.amount);
   });
-  // handles new users entering a watch party room
   socket.on(
     'giveRoom',
     (video: { room: string; video: number; start: number }) => {
