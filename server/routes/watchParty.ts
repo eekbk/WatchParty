@@ -192,3 +192,49 @@ party.post('/playlist', (req: Request, res: Response) => {
       res.sendStatus(err.status);
     });
 });
+
+/*
+trying
+to save
+this
+merge
+I
+hate
+merging
+lets
+see
+what
+happens
+when
+i
+do
+this
+ok
+hello
+d
+fdfdfdf
+*/
+
+// get the playlist attached to a party
+party.get('/playlist/:roomId', async (req: Request, res: Response) => {
+  const { roomId } = req.params;
+  console.log('roomId:\n', roomId);
+  try {
+    const playlistVideos = await prisma.party.findUnique({
+      where: {
+        id: roomId,
+      },
+      include: {
+        playlist: {
+          include: {
+            videos: true,
+          },
+        },
+      },
+    });
+
+    res.status(200).json(playlistVideos);
+  } catch (err) {
+    res.sendStatus(500);
+  }
+});

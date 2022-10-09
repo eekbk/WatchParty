@@ -15,6 +15,9 @@ function App(): JSX.Element {
           <Navbar.Brand to="/home" as={Link}>
             WatchParty
           </Navbar.Brand>
+          {/* <Nav>
+            <SearchBar />
+          </Nav> */}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
@@ -32,9 +35,6 @@ function App(): JSX.Element {
               </Nav.Link>
               <Nav.Link to="/home" as={Link}>
                 Home
-              </Nav.Link>
-              <Nav.Link to="/search" as={Link}>
-                SearchTemp
               </Nav.Link>
               <Nav.Link hidden={user} href="/auth/google">
                 Login
