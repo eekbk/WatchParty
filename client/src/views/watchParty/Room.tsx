@@ -21,10 +21,6 @@ function WatchParty() {
   const user = useContext(UserContext);
   const { state } = useLocation();
 
-  // const eraseThisFuncOnceYouUsePartyAndPlaylistVideos = () => {
-  //   console.log('THIS CONSOLELOG WILL BE ERASED!', room, playlistVideos, user);
-  // };
-
   // not sure if this should be in the below useEfect or keep them separate
   useEffect(() => {
     // get props out of useLocation
@@ -38,10 +34,6 @@ function WatchParty() {
       .catch((err) => {
         console.error('This is the error in useEffect:\n', err);
       });
-    // // erase this next line when you use party and playlistVideos
-    // if (room === playlistVideos) {
-    //   eraseThisFuncOnceYouUsePartyAndPlaylistVideos();
-    // }
   }, []);
 
   useEffect(() => {
