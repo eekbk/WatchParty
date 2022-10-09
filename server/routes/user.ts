@@ -27,8 +27,34 @@ user.get('/', (req: RequestWithUser, res: Response) => {
         },
       });
     })
-    .then((parties) => {
+    .then((parties: any) => {
       user.parties = parties;
+      return prisma.user_Party.findMany({
+        where: {
+          user_id: user.id,
+        },
+      });
+    })
+    .then((UP) => {
+      user.parties = user.parties.map((p) => {
+        p.role = UP.filter((up) => up.party_id === p.id)[0].role;
+        return p;
+      });
+      return prisma.user.findMany({
+        where: {
+          relatee: {
+            some: {
+              type: 'FOLLOW',
+              relator: {
+                id: user.id,
+              },
+            },
+          },
+        },
+      });
+    })
+    .then((friends) => {
+      user.friends = friends.map((f) => ({ id: f.id, username: f.user_name }));
       res.status(200).json(user);
     })
     .catch((err) => {
@@ -51,16 +77,16 @@ user.post('/playlist', (req: RequestWithUser, res: Response) => {
         thumbnail: thumbnail || '',
         user_id: user.id,
         playlist_videos: {
-          connect: videos.map((id: string) => ({ id })),
+          create: videos.map((id: string) => ({ video: { connect: { id } } })),
         },
       },
     })
-    .then(() => {
-      res.sendStatus(200);
+    .then((pl) => {
+      res.status(200).send(pl.id);
     })
     .catch((err) => {
       console.error(err);
-      res.sendStatus(err.status);
+      res.sendStatus(500);
     });
 });
 

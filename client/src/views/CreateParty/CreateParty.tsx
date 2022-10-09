@@ -1,11 +1,16 @@
 import {
-  Container, Row, Col, Accordion, CloseButton,
+  Container,
+  Row,
+  Col,
+  Accordion,
+  CloseButton,
+  Alert,
 } from 'react-bootstrap';
 import { Typeahead, Token } from 'react-bootstrap-typeahead';
 import { useState, useRef, useContext } from 'react';
 import axios from 'axios';
-import { StyledForm, StyledButton, StyledVideoCard } from '../styles';
-import { UserContext } from '../context';
+import { StyledForm, StyledButton, StyledVideoCard } from '../../styles';
+import { UserContext } from '../../context';
 
 const {
   Label, Text, Control, Group, Check,
@@ -14,7 +19,6 @@ const { Item, Header, Body } = Accordion;
 
 export function CreateParty() {
   const { user } = useContext(UserContext);
-  const temp = { playlists: [], friends: [] };
   const typeaheadRef = useRef(null);
   const [privateR, setPrivateR] = useState(false);
   const [archive, setArchive] = useState(false);
@@ -24,23 +28,93 @@ export function CreateParty() {
   const [invited, setInvited] = useState([]);
   const [admins, setAdmins] = useState([]);
   const [usePlaylist, setUsePlaylist] = useState(false);
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [playlistName, setPlaylistName] = useState('');
+  const [playlistDescription, setPlaylistDescription] = useState('');
+  const [importedPlaylist, setImportedPlaylist] = useState(null);
+  const [created, setCreated] = useState(false);
 
   const handleCreate = (e) => {
-    axios.post('/api/party', {
-      party: {
-        private: privateR,
-        creatorId: user.id,
-        archive,
-        playlist,
-        invited,
-        admins,
-      },
-      savePlaylist,
-    });
-  };
-
-  const handlePlaylistImport = (pl) => {
-    console.log('filler');
+    if (savePlaylist) {
+      axios
+        .post('/api/user/playlist', {
+          playlist: {
+            name: playlistName,
+            description: playlistDescription,
+            thumbnail: playlist[0].thumbnail,
+            videos: playlist.map((vd) => vd.id),
+          },
+        })
+        .then((playlistId) =>
+          axios.post('/api/party', {
+            party: {
+              name,
+              description,
+              is_private: privateR,
+              is_recurring: archive,
+              invitees: invited,
+              admins,
+              type: 'PARTY',
+            },
+            playlistId: playlistId.data,
+          }))
+        .then(() => {
+          setCreated(true);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else if (!usePlaylist) {
+      axios
+        .post('/api/party/playlist', {
+          playlist: {
+            name: playlistName,
+            description: playlistDescription,
+            thumbnail: playlist[0].thumbnail,
+            videos: playlist.map((vd) => vd.id),
+          },
+        })
+        .then((playlistId) =>
+          axios.post('/api/party', {
+            party: {
+              name,
+              description,
+              is_private: privateR,
+              is_recurring: archive,
+              invitees: invited,
+              admins,
+              type: 'PARTY',
+            },
+            playlistId: playlistId.data,
+          }))
+        .then(() => {
+          setCreated(true);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      axios
+        .post('/api/party', {
+          party: {
+            name,
+            description,
+            is_private: privateR,
+            is_recurring: archive,
+            invitees: invited,
+            admins,
+            type: 'PARTY',
+          },
+          playlistId: importedPlaylist.id,
+        })
+        .then(() => {
+          setCreated(true);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
   };
 
   const handleVideoAddition = () => {
@@ -68,23 +142,38 @@ export function CreateParty() {
   };
 
   const handleVideoRemoval = (i) => {
-    const tempPlaylist = playlist.slice();
-    tempPlaylist.splice(i, 1);
-    setPlaylist(tempPlaylist);
+    const userPlaylist = playlist.slice();
+    userPlaylist.splice(i, 1);
+    setPlaylist(userPlaylist);
   };
 
-  return (
+  return user && !created ? (
     <Container fluid="md">
       <Row>
         <Col fluid="md">
           <StyledForm>
             <Group>
               <Label>Room Name</Label>
-              <Control placeholder="Enter Room Name Here" />
+              <Control
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter Room Name Here"
+              />
             </Group>
             <Group>
               <Label>Description</Label>
-              <Control as="textarea" placeholder="Describe Room Here" />
+              <Control
+                onChange={(e) => setDescription(e.target.value)}
+                as="textarea"
+                placeholder="Describe Room Here"
+              />
+            </Group>
+            <Group>
+              <StyledButton
+                disabled={!playlist.length || !name}
+                onClick={handleCreate}
+              >
+                Create
+              </StyledButton>
             </Group>
           </StyledForm>
         </Col>
@@ -95,7 +184,7 @@ export function CreateParty() {
                 type="checkbox"
                 label="Import Playlist"
                 onChange={(e) => setUsePlaylist(e.target.checked)}
-                hidden={savePlaylist}
+                disabled={savePlaylist}
               />
               <Check
                 type="checkbox"
@@ -106,7 +195,7 @@ export function CreateParty() {
                 type="checkbox"
                 label="Save Videos as New Playlist"
                 onChange={(e) => setSavePlaylist(e.target.checked)}
-                hidden={usePlaylist}
+                disabled={usePlaylist}
               />
               <Check
                 type="checkbox"
@@ -114,7 +203,7 @@ export function CreateParty() {
                 onChange={(e) => setPrivateR(e.target.checked)}
               />
             </Group>
-            <Group hidden={privateR}>
+            <Group hidden={!privateR}>
               <Label>Invite friends to watch party</Label>
               <Typeahead
                 multiple
@@ -124,7 +213,7 @@ export function CreateParty() {
 								  // Keep the menu open when making multiple selections.
 								  typeaheadRef.current.toggleMenu();
                 }}
-                options={temp.friends.filter(
+                options={user.friends.filter(
 								  (f) => !invited.some((i) => f.id === i.id),
                 )}
                 placeholder="Enter usernames"
@@ -137,7 +226,6 @@ export function CreateParty() {
                 )}
               />
             </Group>
-
             <Group>
               <Label>Assign Admins</Label>
               <Typeahead
@@ -148,7 +236,7 @@ export function CreateParty() {
 								  // Keep the menu open when making multiple selections.
 								  typeaheadRef.current.toggleMenu();
                 }}
-                options={temp.friends}
+                options={user.friends}
                 placeholder="Enter usernames"
                 ref={typeaheadRef}
                 selected={admins}
@@ -166,11 +254,12 @@ export function CreateParty() {
             <Group hidden={!usePlaylist}>
               <Label>Choose Saved Playlist</Label>
               <Accordion>
-                {temp.playlists.map((pl, i) => (
+                {user.playlists.map((pl, i) => (
                   <Item eventKey={String(i)}>
-                    <Header>{pl.title}</Header>
+                    <Header>{pl.name}</Header>
+                    <Container as="img" src={pl.thumbnail} alt="" />
                     <Body>{pl.description}</Body>
-                    <StyledButton onClick={(pl) => handlePlaylistImport(pl)}>
+                    <StyledButton onClick={(e) => setImportedPlaylist(pl)}>
                     Import
 										</StyledButton>
                   </Item>
@@ -186,6 +275,25 @@ export function CreateParty() {
               />
               <Text>Choose a youtube video to add</Text>
               <StyledButton onClick={handleVideoAddition}>Add</StyledButton>
+            </Group>
+          </StyledForm>
+        </Col>
+        <Col fluid="md">
+          <StyledForm style={{ overflowY: 'scroll', maxHeight: '90vh' }}>
+            <Group hidden={!savePlaylist}>
+              <Label>Playlist Title</Label>
+              <Control
+                onChange={(e) => setPlaylistName(e.target.value)}
+                placeholder="Enter Playlist Title Here"
+              />
+            </Group>
+            <Group hidden={!savePlaylist}>
+              <Label>Description</Label>
+              <Control
+                onChange={(e) => setPlaylistDescription(e.target.value)}
+                as="textarea"
+                placeholder="Describe Playlist Here"
+              />
             </Group>
             <Group>
               <Label>Video List</Label>
@@ -204,24 +312,15 @@ export function CreateParty() {
             </Group>
           </StyledForm>
         </Col>
-        <Col fluid="md" hidden={!savePlaylist}>
-          <StyledForm>
-            <Group>
-              <Label>Playlist Title</Label>
-              <Control placeholder="Enter Playlist Title Here" />
-            </Group>
-            <Group>
-              <Label>Description</Label>
-              <Control as="textarea" placeholder="Describe Playlist Here" />
-            </Group>
-          </StyledForm>
-        </Col>
-      </Row>
-      <Row>
-        <StyledButton disabled={playlist.length} onClick={handleCreate}>
-          Create
-        </StyledButton>
       </Row>
     </Container>
+  ) : created ? (
+    <Alert key="success" variant="success">
+      Watch Party Created!
+    </Alert>
+  ) : (
+    <Alert key="warning" variant="warning">
+      Please log in to create Watch Parties
+    </Alert>
   );
 }

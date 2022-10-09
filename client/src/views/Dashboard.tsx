@@ -1,5 +1,4 @@
 // import axios from 'axios';
-// import { useState, useEffect } from 'react';
 import { useEffect, useContext } from 'react';
 import { Container } from 'react-bootstrap';
 import axios from 'axios';
@@ -15,7 +14,7 @@ function Dashboard() {
 
   useEffect(() => {
     axios
-      .post('/api/user')
+      .get('/api/user')
       .then((data) => {
         setUser(data.data);
         console.log(data.data, '2nd data....');
@@ -23,7 +22,6 @@ function Dashboard() {
       .then(() => {
         // console.log(user)
       })
-
       .catch((err) => {
         console.error(err);
       });
