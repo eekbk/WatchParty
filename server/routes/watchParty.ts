@@ -138,7 +138,7 @@ party.get('/playlist/:roomId', async (req: Request, res: Response) => {
       include: {
         playlist: {
           include: {
-            playlist_videos: true,
+            videos: true,
           },
         },
       },
