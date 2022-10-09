@@ -5,6 +5,7 @@ import * as dotenv from 'dotenv';
 import session from 'express-session';
 import { prisma } from './db/index';
 import { party } from './routes/watchParty';
+import { playlist } from './routes/playlist';
 
 const app: Express = express();
 
@@ -79,8 +80,10 @@ passport.deserializeUser(async (id, done) => {
   });
   done(null, user);
 });
+
 app.use('/api/user', user);
 app.use('/api/party', party);
+app.use('/api/playlist', playlist);
 
 app.get('/test', (req: any, res: Response) => {
   res.json(req.user);
