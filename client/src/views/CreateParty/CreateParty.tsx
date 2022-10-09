@@ -46,18 +46,19 @@ export function CreateParty() {
             videos: playlist.map((vd) => vd.id),
           },
         })
-        .then((playlistId) => axios.post('/api/party', {
-          party: {
-            name,
-            description,
-            is_private: privateR,
-            is_recurring: archive,
-            invitees: invited,
-            admins,
-            type: 'PARTY',
-          },
-          playlistId: playlistId.data,
-        }))
+        .then((playlistId) =>
+          axios.post('/api/party', {
+            party: {
+              name,
+              description,
+              is_private: privateR,
+              is_recurring: archive,
+              invitees: invited,
+              admins,
+              type: 'PARTY',
+            },
+            playlistId: playlistId.data,
+          }))
         .then(() => {
           setCreated(true);
         })
@@ -70,23 +71,23 @@ export function CreateParty() {
           playlist: {
             name: playlistName,
             description: playlistDescription,
-            // Placeholder
-            thumbnail: '',
+            thumbnail: playlist[0].thumbnail,
             videos: playlist.map((vd) => vd.id),
           },
         })
-        .then((playlistId) => axios.post('/api/party', {
-          party: {
-            name,
-            description,
-            is_private: privateR,
-            is_recurring: archive,
-            invitees: invited,
-            admins,
-            type: 'PARTY',
-          },
-          playlistId: playlistId.data,
-        }))
+        .then((playlistId) =>
+          axios.post('/api/party', {
+            party: {
+              name,
+              description,
+              is_private: privateR,
+              is_recurring: archive,
+              invitees: invited,
+              admins,
+              type: 'PARTY',
+            },
+            playlistId: playlistId.data,
+          }))
         .then(() => {
           setCreated(true);
         })

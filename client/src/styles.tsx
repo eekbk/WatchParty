@@ -4,7 +4,7 @@ import {
   Button, Form, Container, Card,
 } from 'react-bootstrap';
 // const { Title, Body, Img, Text } = Card;
-// const { Group } = Form;
+const { Group } = Form;
 // offcanvas responsive for menus that could be cluttered on mobile?
 // scrolling on navbar for when collapsed?
 // collapse and fade for wrapping conditionally visible components?
@@ -67,6 +67,32 @@ export const StyledForm = styled(Form)`
 // This is how you make your own:
 // https://www.w3schools.com/HOWTO/howto_css_custom_scrollbar.asp
 // https://levelup.gitconnected.com/build-on-hover-custom-scrollbar-in-react-d846194a7ea4
+
+export const StyledScrollableGroup = styled(Group)`
+	&::-webkit-scrollbar-thumb {
+		width: 20px;
+		opacity: 0;
+	}
+	&::-webkit-scrollbar {
+		width: 20px;
+		opacity: 0;
+	}
+	&:hover {
+		&::-webkit-scrollbar-thumb {
+			background: #021ffa;
+			opacity: 1;
+			border-radius: 10px;
+			&:active {
+				box-shadow: inset 0px 0px 10px red;
+			}
+		}
+		&::-webkit-scrollbar {
+			background: #ff6700;
+			opacity: 1;
+			border-radius: 10px;
+		}
+	}
+`;
 
 export const StyledBackgroundContainer = styled(Container)`
 	background-color: #8a25e2;
