@@ -21,11 +21,7 @@ function App(): JSX.Element {
               <Nav.Link to="/watchParty" as={Link}>
                 Party View
               </Nav.Link>
-              <Nav.Link
-                hidden={false /* hidden={!user} */}
-                to="/createParty"
-                as={Link}
-              >
+              <Nav.Link hidden={!user} to="/createParty" as={Link}>
                 Create Party
               </Nav.Link>
               <Nav.Link to="/profile" as={Link}>
@@ -48,10 +44,9 @@ function App(): JSX.Element {
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
+          <SearchBar />
         </Container>
       </Navbar>
-      <SearchBar />
-
       <Outlet />
     </StyledBackgroundContainer>
   );
