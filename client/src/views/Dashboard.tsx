@@ -1,5 +1,3 @@
-// import axios from 'axios';
-// import { useState, useEffect } from 'react';
 import { useEffect, useContext, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import axios from 'axios';
@@ -7,7 +5,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
 import CardGroup from 'react-bootstrap/CardGroup';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context';
@@ -116,7 +113,7 @@ function Dashboard() {
         </Row>
       ) : null}
       <Row>Top Rooms</Row>
-      {parties.length ? (
+      {parties && parties.length ? (
         <CardGroup>
           {topParties.map((party) => (
             <Card onClick={() => handleCardClick(party)}>
