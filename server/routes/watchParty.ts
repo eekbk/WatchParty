@@ -4,6 +4,7 @@ import { Party } from '@prisma/client';
 import axios from 'axios';
 import { prisma } from '../db/index';
 import { YoutubeVideo } from '../../interfaces';
+// import { Request } from 'aws-sdk';
 
 const { default: dummyData } = require('../../dummyData.ts');
 
@@ -123,4 +124,32 @@ party.post('/video', (req: Request, res: Response) => {
       console.error('error: ', err);
       res.sendStatus(err.response.status);
     });
+});
+
+// get the playlist attached to a party
+party.get('/playlist/:roomId', async (req: Request, res: Response) => {
+  const { roomId } = req.params;
+  console.log('roomId:\n', roomId);
+  try {
+    const playlistVideos = await prisma.party.findUnique({
+      where: {
+        id: roomId,
+      },
+      include: {
+        playlist: {
+          include: {
+            playlist_videos: true,
+          },
+        },
+      },
+    });
+    // const videos = await prisma.video.findMany({
+    //   where: {
+
+    //   }
+    // });
+    res.status(200).json(playlistVideos);
+  } catch (err) {
+    res.sendStatus(500);
+  }
 });
