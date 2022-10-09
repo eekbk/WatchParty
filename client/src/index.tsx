@@ -2,7 +2,7 @@
 import React /* useContext */ from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route /* redirect */ } from 'react-router-dom';
-import { CreateParty } from './views/CreateParty';
+import { CreateParty } from './views/CreateParty/CreateParty';
 import { UserContextProvider /* UserContext */ } from './context';
 import { SearchContextProvider } from './contexts/searchContext';
 

@@ -3,8 +3,7 @@ import express, { Request, Response, Router } from 'express';
 import { Party } from '@prisma/client';
 import axios from 'axios';
 import { prisma } from '../db/index';
-import { YoutubeVideo } from '../../interfaces';
-// import { Request } from 'aws-sdk';
+import { YoutubeVideo, RequestWithUser } from '../../interfaces';
 
 const { default: dummyData } = require('../../dummyData.ts');
 
@@ -18,8 +17,12 @@ party.get('/test', (req: Request, res: Response) => {
 // Get all watch parties
 party.get('/', (req: Request, res: Response) => {
   // Retrieve all watch parties from the database
-  prisma.party
-    .findMany()
+  prisma.video
+    .findFirst({
+      where: {
+        id: 'Jrg9KxGNeJY',
+      },
+    })
     .then((parties) => {
       res.status(200).send(JSON.stringify(parties));
     })
@@ -32,21 +35,52 @@ party.get('/', (req: Request, res: Response) => {
 // Create a watch party
 // Create a playlist if not importing, then send playlist id to this endpoint either way
 // New rules: Either create from a playlist only or by adding videos individually.
-party.post('/', (req: Request, res: Response) => {
+// type, status, is_recurring, is_private, user_parties
+party.post('/', (req: RequestWithUser, res: Response) => {
   // Get the party values out of the request body
   const { party, playlistId } = req.body;
+  console.log(playlistId);
   // Create the new party in the database
-  const { name, description, type } = party;
+  let {
+    name,
+    description,
+    type,
+    status,
+    is_private,
+    is_recurring,
+    admins,
+    invitees,
+  } = party;
+  invitees = invitees || [];
+  admins = admins || [];
+  const participants = admins
+    .map((id: string) => ({ role: 'ADMIN', user: { connect: { id } } }))
+    .concat(
+      invitees.map((id: string) => ({
+        role: 'NORMIE',
+        user: { connect: { id } },
+      })),
+    );
+  participants.push({
+    role: 'CREATOR',
+    user: { connect: { id: req.user.id } },
+  });
   prisma.party
     .create({
       data: {
         name,
         type,
         description,
+        status,
+        is_private,
+        is_recurring,
         playlist: {
           connect: {
             id: playlistId,
           },
+        },
+        user_parties: {
+          create: participants,
         },
       },
     })
@@ -83,8 +117,8 @@ party.put('/:partyId', (req: Request, res: Response) => {
 });
 
 party.post('/video', (req: Request, res: Response) => {
-  console.log('arrived');
   const { videoId, videoUrl } = req.body;
+  let formattedVideo;
   prisma.video
     .findFirst({
       where: {
@@ -103,28 +137,83 @@ party.post('/video', (req: Request, res: Response) => {
       }
     })
     .then((video: YoutubeVideo) => {
+      if (video === undefined) {
+        return undefined;
+      }
       const tempVideo = video.data;
-      const formattedVideo = {
+      formattedVideo = {
         id: videoId,
         url: videoUrl,
         title: tempVideo.items[0].snippet.title,
         description: tempVideo.items[0].snippet.description,
-        thumbnail: tempVideo.items[0].snippet.thumbnails.default.url,
+        thumbnail: tempVideo.items[0].snippet.thumbnails.medium.url,
       };
-      prisma.video.upsert({
+      return prisma.video.upsert({
         where: {
           id: videoId,
         },
         update: {},
         create: formattedVideo,
       });
+    })
+    .then((r) => {
+      if (r === undefined) {
+        return undefined;
+      }
       res.send(formattedVideo);
     })
     .catch((err) => {
       console.error('error: ', err);
-      res.sendStatus(err.response.status);
+      res.sendStatus(500);
     });
 });
+
+party.post('/playlist', (req: Request, res: Response) => {
+  const { playlist } = req.body;
+  const {
+    name, description, videos, thumbnail,
+  } = playlist;
+  prisma.playlist
+    .create({
+      data: {
+        name,
+        description,
+        thumbnail: thumbnail || '',
+        playlist_videos: {
+          create: videos.map((id: string) => ({ video: { connect: { id } } })),
+        },
+      },
+    })
+    .then((pl) => {
+      res.status(200).send(pl.id);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(err.status);
+    });
+});
+
+/*
+trying
+to save
+this
+merge
+I
+hate
+merging
+lets
+see
+what
+happens
+when
+i
+do
+this
+ok
+hello
+d
+fdfdfdf
+*/
 
 // get the playlist attached to a party
 party.get('/playlist/:roomId', async (req: Request, res: Response) => {
@@ -143,11 +232,7 @@ party.get('/playlist/:roomId', async (req: Request, res: Response) => {
         },
       },
     });
-    // const videos = await prisma.video.findMany({
-    //   where: {
 
-    //   }
-    // });
     res.status(200).json(playlistVideos);
   } catch (err) {
     res.sendStatus(500);

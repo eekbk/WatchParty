@@ -1,10 +1,11 @@
 import { Request } from 'express';
-import { Playlist, Party } from '@prisma/client';
+import { Playlist } from '@prisma/client';
 
 export interface User extends Express.User {
 	id: string;
 	playlists: Playlist[];
-	parties: Party[];
+	parties: any[];
+	friends: any[];
 }
 export interface RequestWithUser extends Request {
 	user: User;
@@ -16,7 +17,7 @@ export interface YoutubeVideo {
 				title: string;
 				description: string;
 				thumbnails: {
-					default: {
+					medium: {
 						url: string;
 					};
 				};

@@ -46,7 +46,6 @@ function WatchParty() {
 
   useEffect(() => {
     socket.emit('join', room);
-    console.log('arrived in room');
     socket.emit('getMessages', room || 'test');
     socket.on('getMessages', (messages) => {
       // console.log(messages);

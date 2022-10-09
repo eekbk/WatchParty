@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { Container, Form } from 'react-bootstrap';
-import { StyledButton } from '../../styles';
+import { StyledButton, StyledScrollableGroup } from '../../styles';
 
 const { default: Message } = require('./Message.tsx');
 
@@ -12,6 +12,7 @@ function Chat({
 }): JSX.Element {
   // State vars
   const [chat, setChat] = useState('');
+  const scrolly = useRef(null);
   // const [messages, setMessages] = useState(dbMessages);
   // functions
 
@@ -29,12 +30,11 @@ function Chat({
 
   // handle updates
   useEffect(() => {
-    console.log('arrived in chat');
-
+    scrolly.current.scrollTop = scrolly.current.scrollHeight;
     return () => {
       socket.off('chat');
     };
-  }, []);
+  }, [messages]);
   return (
     <Container
       style={{
@@ -43,18 +43,25 @@ function Chat({
     >
       CHAT!!
       <Form>
-        <Form.Control
-          value={chat}
-          onChange={(event) => setChat(event.target.value)}
-          placeholder="type here!"
-        />
-        <StyledButton type="submit" onClick={submit}>
-          Send!
-        </StyledButton>
+        <StyledScrollableGroup
+          ref={scrolly}
+          style={{ overflowY: 'scroll', minHeight: '70vh', maxHeight: '70vh' }}
+        >
+          {messages.map((message) => (
+            <Message message={message} user={user} />
+          ))}
+        </StyledScrollableGroup>
+        <Form.Group>
+          <Form.Control
+            value={chat}
+            onChange={(event) => setChat(event.target.value)}
+            placeholder="type here!"
+          />
+          <StyledButton type="submit" onClick={submit}>
+            Send!
+          </StyledButton>
+        </Form.Group>
       </Form>
-      {messages.map((message) => (
-        <Message message={message} user={user} />
-      ))}
     </Container>
   );
 }
