@@ -107,6 +107,12 @@
     ],
     "react/jsx-indent": [
       "warn"
+    ],
+    "prefer-const": [
+      "warn"
+    ],
+    "camelcase": [
+      "warn"
     ]
   }
 }
