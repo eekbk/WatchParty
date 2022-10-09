@@ -7,13 +7,11 @@ function Search() {
   const { usersMatch, partiesMatch, videosMatch } = useContext(SearchContext);
   const navigate = useNavigate();
 
-  const handleCardClick = (id, kind) => {
+  const handleCardClick = (party, kind) => {
     // reroute to watchParty specific watchParty
     if (kind === 'party') {
-      navigate('/watchParty');
-      console.log('what the');
+      navigate('/watchParty', { state: { party } });
     }
-    console.log(id);
   };
 
   return (
@@ -26,10 +24,7 @@ function Search() {
       {partiesMatch.length ? <h2>Parties</h2> : []}
       <ul>
         {partiesMatch.map((party) => (
-          <Card
-            key={party.id}
-            onClick={() => handleCardClick(party.id, 'party')}
-          >
+          <Card key={party.id} onClick={() => handleCardClick(party, 'party')}>
             <h3>{party.name}</h3>
             <p>{party.description}</p>
           </Card>
