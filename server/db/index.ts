@@ -5,6 +5,26 @@ export const prisma = new PrismaClient();
 
 // const main = async () => {
 //   // funcs interacting with the database
+//   // add playlist
+//   await prisma.playlist.createMany({
+//     data: [
+//       {
+//         name: 'Cat Videos',
+//         description: 'A bunch of cats',
+//         thumbnail: 'https://i.ytimg.com/vi/CtpdMkKvB6U/mqdefault.jpg',
+//       },
+//       {
+//         name: 'Anime',
+//         description: 'A bunch of Anime',
+//         thumbnail: 'https://i.ytimg.com/vi/5paBeSE3fRY/mqdefault.jpg',
+//       },
+//       {
+//         name: 'Sports Highlights',
+//         description: 'A bunch of highlights',
+//         thumbnail: 'https://i.ytimg.com/vi/oIgCd-4oDzI/default.jpg',
+//       },
+//     ],
+//   });
 //   // add user
 //   // add video
 // };
@@ -24,6 +44,7 @@ const playlist : any = {
   description: 'hello',
   thumbnail: 'hello'
 };
+
 prisma.playlist.create({ data: playlist })
 .then((r) => {
   console.log(r);

@@ -1,36 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { Container, Form } from 'react-bootstrap';
-import { StyledButton } from '../../styles';
+import { StyledButton, StyledScrollableGroup } from '../../styles';
 
 const { default: Message } = require('./Message.tsx');
 
 const socket = io();
 
-function Chat({ user, room }): JSX.Element {
+function Chat({
+  user, room, messages, setMessages,
+}): JSX.Element {
   // State vars
   const [chat, setChat] = useState('');
-  const [messages, setMessages] = useState([]);
+  const scrolly = useRef(null);
+  // const [messages, setMessages] = useState(dbMessages);
   // functions
+
+  // console.log(messages), dbMessages;
 
   // handles chat submit
   const submit = (e) => {
     if (chat.length >= 1) {
-      socket.emit('chat', { room, message: chat });
+      socket.emit('chat', { room, message: chat, user });
+      setChat('');
+      // setMessages((messages) => [...messages, chat])
     }
     e.preventDefault();
   };
 
   // handle updates
   useEffect(() => {
-    socket.on('chat', (message) => {
-      setMessages((messages) => [...messages, message]);
-    });
+    scrolly.current.scrollTop = scrolly.current.scrollHeight;
     return () => {
       socket.off('chat');
     };
-  }, []);
-  console.log(messages);
+  }, [messages]);
   return (
     <Container
       style={{
@@ -39,23 +43,25 @@ function Chat({ user, room }): JSX.Element {
     >
       CHAT!!
       <Form>
-        <Form.Control
-          value={chat}
-          onChange={(event) => setChat(event.target.value)}
-          placeholder="type here!"
-        />
-        <StyledButton
-          type="submit"
-          onClick={(e) => {
-					  submit(e);
-          }}
+        <StyledScrollableGroup
+          ref={scrolly}
+          style={{ overflowY: 'scroll', minHeight: '70vh', maxHeight: '70vh' }}
         >
-          Send!
-        </StyledButton>
+          {messages.map((message) => (
+            <Message message={message} user={user} />
+          ))}
+        </StyledScrollableGroup>
+        <Form.Group>
+          <Form.Control
+            value={chat}
+            onChange={(event) => setChat(event.target.value)}
+            placeholder="type here!"
+          />
+          <StyledButton type="submit" onClick={submit}>
+            Send!
+          </StyledButton>
+        </Form.Group>
       </Form>
-      {messages.map((message) => (
-        <Message message={message} />
-      ))}
     </Container>
   );
 }

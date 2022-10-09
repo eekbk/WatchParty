@@ -38,7 +38,7 @@ model Relation {
 model Message {
   id             String       @id @default(uuid())
   createdAt      DateTime     @default(now())
-  room_timestamp DateTime
+  room_timestamp String       
   message         String
   user           User         @relation(fields: [user_id], references: [id])
   user_id        String
@@ -76,6 +76,7 @@ model Playlist {
   playlist_videos Playlist_Video[]
   user            User?         @relation(fields: [user_id], references: [id])
   user_id         String?
+  videos          Video[]
 }
 
 model Playlist_Video {
@@ -94,6 +95,7 @@ model Video {
   thumbnail       String
   playlist_videos Playlist_Video[]
   actions         Action[]
+  playlists       Playlist[]
 }
 
 model User_Party {

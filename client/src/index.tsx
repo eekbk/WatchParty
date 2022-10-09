@@ -2,7 +2,7 @@
 import React /* useContext */ from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route /* redirect */ } from 'react-router-dom';
-import { CreateParty } from './views/CreateParty';
+import { CreateParty } from './views/CreateParty/CreateParty';
 import { UserContextProvider /* UserContext */ } from './context';
 import { SearchContextProvider } from './contexts/searchContext';
 
@@ -16,19 +16,20 @@ const { default: Search } = require('./views/search/Search.tsx');
 function RouteHandler() {
   // const {user} = useContext(UserContext);
   return (
-		<React.StrictMode>
-			<BrowserRouter>
-				<Routes>
-					<Route path="/" element={<App />}>
-						<Route path="" element={<Home />} />
-						<Route path="home" element={<Home />} />
-						<Route path="logout" element={<Logout />} />
-						<Route path="search" element={<Search />} />
-						<Route
-  path="watchParty"
-  element={(
-        <WatchParty
-          videos={[
+    <React.StrictMode>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route path="" element={<Home />} />
+            <Route path="home" element={<Home />} />
+            <Route path="logout" element={<Logout />} />
+            <Route path="search" element={<Search />} />
+            <Route
+              path="watchParty"
+              element={(
+                <WatchParty
+                  room="15b5a55e-2bb0-4115-96ab-6c9dc585877e"
+                  videos={[
 									  {
 									    url: 'https://www.youtube.com/watch?v=IGQBtbKSVhY',
 									    snippet: {
@@ -43,28 +44,28 @@ function RouteHandler() {
 									      description: 'A place to relax and chill',
 									    },
 									  },
-          ]}
-								/>
+                  ]}
+                />
       )}
-						/>
-						<Route
-  loader={null /* () => !user ? redirect('/') : null */}
-  path="createParty"
-  element={<CreateParty />}
-						/>
-						<Route path="profile" element={<div>Profile</div>} />
-						<Route path="dashboard" element={<Dashboard />} />
-					</Route>
-				</Routes>
-			</BrowserRouter>
-		</React.StrictMode>
+            />
+            <Route
+              loader={null /* () => !user ? redirect('/') : null */}
+              path="createParty"
+              element={<CreateParty />}
+            />
+            <Route path="profile" element={<div>Profile</div>} />
+            <Route path="dashboard" element={<Dashboard />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </React.StrictMode>
   );
 }
 
 ReactDOM.createRoot(document.getElementById('app')!).render(
-	<UserContextProvider>
-		<SearchContextProvider>
-			<RouteHandler />
-		</SearchContextProvider>
-	</UserContextProvider>,
+  <UserContextProvider>
+    <SearchContextProvider>
+      <RouteHandler />
+    </SearchContextProvider>
+  </UserContextProvider>,
 );
