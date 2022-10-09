@@ -7,30 +7,34 @@ const { default: Message } = require('./Message.tsx');
 
 const socket = io();
 
-function Chat({ user, room }): JSX.Element {
+function Chat({
+  user, room, messages, setMessages,
+}): JSX.Element {
   // State vars
   const [chat, setChat] = useState('');
-  const [messages, setMessages] = useState([]);
+  // const [messages, setMessages] = useState(dbMessages);
   // functions
+
+  // console.log(messages), dbMessages;
 
   // handles chat submit
   const submit = (e) => {
     if (chat.length >= 1) {
-      socket.emit('chat', { room, message: chat });
+      socket.emit('chat', { room, message: chat, user });
+      setChat('');
+      // setMessages((messages) => [...messages, chat])
     }
     e.preventDefault();
   };
 
   // handle updates
   useEffect(() => {
-    socket.on('chat', (message) => {
-      setMessages((messages) => [...messages, message]);
-    });
+    console.log('arrived in chat');
+
     return () => {
       socket.off('chat');
     };
   }, []);
-  console.log(messages);
   return (
     <Container
       style={{
@@ -44,17 +48,12 @@ function Chat({ user, room }): JSX.Element {
           onChange={(event) => setChat(event.target.value)}
           placeholder="type here!"
         />
-        <StyledButton
-          type="submit"
-          onClick={(e) => {
-					  submit(e);
-          }}
-        >
+        <StyledButton type="submit" onClick={submit}>
           Send!
         </StyledButton>
       </Form>
       {messages.map((message) => (
-        <Message message={message} />
+        <Message message={message} user={user} />
       ))}
     </Container>
   );

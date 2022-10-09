@@ -65,7 +65,6 @@ function Video({ videos, isAdmin, room }) {
 
   // updates once
   useEffect(() => {
-    socket.emit('join', 'test');
     socket.on('pause', (arg: boolean) => {
       setPause(arg);
     });
