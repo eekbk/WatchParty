@@ -21,33 +21,27 @@ function WatchParty() {
   const user = useContext(UserContext);
   const { state } = useLocation();
 
-  const eraseThisFuncOnceYouUsePartyAndPlaylistVideos = () => {
-    console.log('THIS CONSOLELOG WILL BE ERASED!', room, playlistVideos, user);
-  };
+  // const eraseThisFuncOnceYouUsePartyAndPlaylistVideos = () => {
+  //   console.log('THIS CONSOLELOG WILL BE ERASED!', room, playlistVideos, user);
+  // };
 
   // not sure if this should be in the below useEfect or keep them separate
   useEffect(() => {
     // get props out of useLocation
     setRoom(state.party);
-    // console.log('state.party', state.party);
     // axios request to get vids based on roomId
     axios
       .get(`/api/party/playlist/${state.party.id}`)
       .then(({ data }) => {
-        // console.log('data.playlist.videos in useEffect:\n', data.playlist.videos);
         setPlaylistVideos(data.playlist.videos);
-        // console.log('The playlistVIDS!!!!:\n', playlistVideos);
       })
       .catch((err) => {
         console.error('This is the error in useEffect:\n', err);
       });
-    setTimeout(() => {
-      console.log(playlistVideos);
-    }, 3000);
-    // erase this next line when you use party and playlistVideos
-    if (room === playlistVideos) {
-      eraseThisFuncOnceYouUsePartyAndPlaylistVideos();
-    }
+    // // erase this next line when you use party and playlistVideos
+    // if (room === playlistVideos) {
+    //   eraseThisFuncOnceYouUsePartyAndPlaylistVideos();
+    // }
   }, []);
 
   useEffect(() => {
