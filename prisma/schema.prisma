@@ -23,6 +23,7 @@ model User {
   likes        Like[]
   upvotes      Upvote[]
   playlists   Playlist[]
+  profile     String
 }
 
 model Relation {
