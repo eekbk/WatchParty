@@ -15,9 +15,9 @@ function App(): JSX.Element {
           <Navbar.Brand to="/home" as={Link}>
             WatchParty
           </Navbar.Brand>
-          <Nav>
+          {/* <Nav>
             <SearchBar />
-          </Nav>
+          </Nav> */}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
