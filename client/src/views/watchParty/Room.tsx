@@ -14,15 +14,21 @@ function WatchParty({ videos, user, room }: any) {
   const [dbMessages, setMessages] = useState([]);
 
   useEffect(() => {
+    socket.emit('join', room);
+    console.log('arrived in room');
     socket.emit('getMessages', room || 'test');
-
     socket.on('getMessages', (messages) => {
       console.log(messages);
       setMessages(messages);
     });
+    socket.on('chat', (message) => {
+      console.log(message);
+      setMessages((messages) => [...messages, message]);
+    });
 
     return () => {
       socket.off('getMessages');
+      socket.off('chat');
     };
   }, []);
 

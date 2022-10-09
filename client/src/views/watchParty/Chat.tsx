@@ -21,6 +21,7 @@ function Chat({
   const submit = (e) => {
     if (chat.length >= 1) {
       socket.emit('chat', { room, message: chat, user });
+      setChat('');
       // setMessages((messages) => [...messages, chat])
     }
     e.preventDefault();
@@ -28,10 +29,8 @@ function Chat({
 
   // handle updates
   useEffect(() => {
-    socket.on('chat', (message) => {
-      console.log(message);
-      setMessages((messages) => [...messages, message]);
-    });
+    console.log('arrived in chat');
+
     return () => {
       socket.off('chat');
     };
@@ -49,12 +48,7 @@ function Chat({
           onChange={(event) => setChat(event.target.value)}
           placeholder="type here!"
         />
-        <StyledButton
-          type="submit"
-          onClick={(e) => {
-					  submit(e);
-          }}
-        >
+        <StyledButton type="submit" onClick={submit}>
           Send!
         </StyledButton>
       </Form>
