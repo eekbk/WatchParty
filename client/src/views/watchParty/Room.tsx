@@ -2,10 +2,36 @@ import {
   Card, Container, Row, Col,
 } from 'react-bootstrap';
 
+import { useEffect, useState } from 'react';
+import io from 'socket.io-client';
+
+const socket = io();
+
 const { default: Video } = require('./Video.tsx');
 const { default: Chat } = require('./Chat.tsx');
 
-function WatchParty({ videos, user, room }) {
+function WatchParty({ videos, user, room }: any) {
+  const [dbMessages, setMessages] = useState([]);
+
+  useEffect(() => {
+    socket.emit('join', room);
+    console.log('arrived in room');
+    socket.emit('getMessages', room || 'test');
+    socket.on('getMessages', (messages) => {
+      console.log(messages);
+      setMessages(messages);
+    });
+    socket.on('chat', (message) => {
+      console.log(message);
+      setMessages((messages) => [...messages, message]);
+    });
+
+    return () => {
+      socket.off('getMessages');
+      socket.off('chat');
+    };
+  }, []);
+
   return (
     <Container
       style={{
@@ -34,7 +60,12 @@ function WatchParty({ videos, user, room }) {
           </Card>
         </Col>
         <Col xs={5} md={3}>
-          <Chat user={user} room={room || 'test'} />
+          <Chat
+            user={user}
+            room={room || 'test'}
+            messages={dbMessages}
+            setMessages={setMessages}
+          />
         </Col>
       </Row>
     </Container>
