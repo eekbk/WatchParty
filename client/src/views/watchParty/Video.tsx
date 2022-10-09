@@ -18,6 +18,9 @@ function Video({ videos, isAdmin, room }) {
 
   const videoPlayer = useRef<ReactPlayer>(null);
 
+  // ERICS TEST
+  // console.log('the videos in the video component:\n', videos);
+
   // TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   if (isAdmin) {
@@ -148,10 +151,10 @@ function Video({ videos, isAdmin, room }) {
       </PlayPause>
       <Card.Body>
         <Card.Title>
-          {videos[video] ? videos[video].snippet.title : 'Please Wait'}
+          {videos[video] ? videos[video].title : 'Please Wait'}
         </Card.Title>
         <Card.Text>
-          {videos[video] ? videos[video].snippet.description : 'Please Wait'}
+          {videos[video] ? videos[video].description : 'Please Wait'}
         </Card.Text>
       </Card.Body>
     </Container>
