@@ -71,7 +71,6 @@
     "prepare": "husky install",
     "pre-commit": "npx husky add .husky/pre-commit \"npx lint-staged\"",
     "husky-setup": "npm run prepare && pre-commit",
-    "pretest": "tsc --noEmit",
     "devStart": "nodemon script.ts"
   },
   "lint-staged": {
