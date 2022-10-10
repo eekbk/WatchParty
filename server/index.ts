@@ -47,7 +47,7 @@ passport.use(
           data: {
             user_name: profile.name.givenName,
             googleId: profile.id,
-            profile: profile.photos.value,
+            profile: profile.photos[0].value,
           },
         });
         if (newUser) {
