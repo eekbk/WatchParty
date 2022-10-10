@@ -12,6 +12,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
 
     steps:
       - uses: actions/checkout@v2
@@ -35,6 +37,8 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     needs: build
     environment:
       name: 'Production'
