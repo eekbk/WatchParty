@@ -15,14 +15,9 @@ function Video({ videos, isAdmin, room }) {
   const [video, setVid] = useState(0);
 
   const videoPlayer = useRef<ReactPlayer>(null);
-
-  // ERICS TEST
-  // console.log('the videos in the video component:\n', videos);
-
   // TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   if (isAdmin) {
-    // console.log('YOU ARE S.P.E.C.I.A.L');
     socket.on('roomCheck', () => {
       socket.emit('giveRoom', { room, video, start: pSeconds });
     });
@@ -51,7 +46,6 @@ function Video({ videos, isAdmin, room }) {
   // pauses all clients
   const pauseVid = () => {
     setPause(false);
-    // console.log(pSeconds);
     socket.emit('pause', { room, bool: false });
     socket.emit('seek', { room, amount: pSeconds });
     videoPlayer.current.seekTo(pSeconds, 'seconds');
@@ -69,9 +63,7 @@ function Video({ videos, isAdmin, room }) {
     socket.on('pause', (arg: boolean) => {
       setPause(arg);
     });
-    socket.on('play', (arg: boolean) => {
-      setPause(arg);
-    });
+
     socket.on('seek', (seconds: number) => {
       // console.log(seconds);
       videoPlayer.current.seekTo(seconds, 'seconds');

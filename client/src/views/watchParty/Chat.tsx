@@ -13,8 +13,6 @@ function Chat({
   // State vars
   const [chat, setChat] = useState('');
   const scrolly = useRef(null);
-  console.log(user);
-
   // functions
 
   // handles chat submit
