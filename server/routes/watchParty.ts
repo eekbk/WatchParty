@@ -1,6 +1,6 @@
 // File for handling WatchParty endpoints
 import express, { Request, Response, Router } from 'express';
-//import { Party } from '@prisma/client';
+// import { Party } from '@prisma/client';
 import axios from 'axios';
 import { prisma } from '../db/index';
 import { YoutubeVideo, RequestWithUser } from '../../interfaces';
@@ -11,7 +11,15 @@ export const party: Router = express.Router();
 party.get('/', (req: Request, res: Response) => {
   // Retrieve all watch parties from the database
   prisma.party
-    .findMany()
+    .findMany({
+      include: {
+        playlist: {
+          select: {
+            thumbnail: true,
+          },
+        },
+      },
+    })
     .then((parties) => {
       res.status(200).send(JSON.stringify(parties));
     })

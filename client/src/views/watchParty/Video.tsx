@@ -7,7 +7,7 @@ function Video({
   videos, status, room, user, socket,
 }) {
   // state vars
-  const [isPlaying, setPause] = useState(() => (!status));
+  const [isPlaying, setPause] = useState(() => !status);
   const [pSeconds, setSeconds] = useState(0.0001);
   const [duration, setDur] = useState(1);
   const [volume, setVol] = useState(0.5);
