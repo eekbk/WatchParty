@@ -47,7 +47,6 @@ party.get('/topParties', (req: Request, res: Response) => {
 party.post('/', (req: RequestWithUser, res: Response) => {
   // Get the party values out of the request body
   const { party, playlistId } = req.body;
-  console.log(playlistId);
   // Create the new party in the database
   let {
     name,

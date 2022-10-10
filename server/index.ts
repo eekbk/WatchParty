@@ -35,7 +35,6 @@ passport.use(
       callbackURL: `http://localhost:${PORT}/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log(profile, 'profile......');
       const user = await prisma.user.findUnique({
         where: {
           googleId: profile.id,
@@ -123,7 +122,6 @@ app.post('/logout', (req, res) => {
       if (err) {
         res.status(400).send('Unable to log out');
       } else {
-        console.log(req.session, 'logout server........');
         res.redirect('/home');
         res.status(200).send('logged out worked');
       }
@@ -233,7 +231,6 @@ app.post('/video', (req: Request, res: Response) => {
       }
     })
     .then((video: any) => {
-      console.log('video: ', video);
       video = video.data;
       const formattedVideo: any = {
         id: videoId,
@@ -305,9 +302,8 @@ io.on('connection', (socket: any) => {
         },
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
-    console.log(chat.room, chat.message);
     io.to(chat.room).emit('chat', chat.message);
   });
 
@@ -320,7 +316,6 @@ io.on('connection', (socket: any) => {
         },
       })
       .then((messages) => {
-        console.log(room);
         io.to(room).emit('getMessages', messages);
       })
       .catch((err) => console.log(err));

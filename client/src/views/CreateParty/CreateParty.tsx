@@ -126,7 +126,6 @@ export function CreateParty() {
       axios
         .post('/api/party/video', { videoId, videoUrl })
         .then((vd) => {
-          console.log(vd);
           setVideo('');
           setPlaylist(playlist.concat([vd.data]));
         })
@@ -136,7 +135,6 @@ export function CreateParty() {
         });
     } else {
       // Add alert for invalid url
-      console.log('invalid url');
       setVideo('');
     }
   };
