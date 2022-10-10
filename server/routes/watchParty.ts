@@ -203,7 +203,6 @@ party.post('/playlist', (req: Request, res: Response) => {
 // get the playlist attached to a party
 party.get('/playlist/:roomId', async (req: Request, res: Response) => {
   const { roomId } = req.params;
-  console.log('roomId:\n', roomId);
   try {
     const playlistVideos = await prisma.party.findUnique({
       where: {

@@ -105,10 +105,10 @@ app.get(
 
 app.get(
   '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/home' }),
+  passport.authenticate('google', { failureRedirect: '/' }),
   (req: Request, res: Response) => {
     // Successful authentication, redirect home.
-    res.redirect('/dashboard');
+    res.redirect('/');
   },
 );
 
@@ -122,7 +122,7 @@ app.post('/logout', (req, res) => {
       if (err) {
         res.status(400).send('Unable to log out');
       } else {
-        res.redirect('/home');
+        res.redirect('/');
         res.status(200).send('logged out worked');
       }
     });
@@ -275,6 +275,7 @@ io.on('connection', (socket: any) => {
     socket.broadcast.to(pause.room).emit('pause', pause.bool);
   });
   socket.on('play', (play: { room: string; bool: boolean }) => {
+    console.log(play.room);
     io.to(play.room).emit('play', play.bool);
   });
   socket.on('seek', (seconds: { room: string; amount: number }) => {

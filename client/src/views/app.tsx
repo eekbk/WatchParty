@@ -18,18 +18,15 @@ function App(): JSX.Element {
       .catch((err) => {
         console.error(err);
       });
-  });
+  }, []);
 
   return (
     <StyledBackgroundContainer fluid>
       <Navbar expand="lg" style={{ height: '10vh' }}>
         <Container>
-          <Navbar.Brand to="/home" as={Link}>
+          <Navbar.Brand to="/" as={Link}>
             WatchParty
           </Navbar.Brand>
-          {/* <Nav>
-            <SearchBar />
-          </Nav> */}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
@@ -41,12 +38,6 @@ function App(): JSX.Element {
               </Nav.Link>
               <Nav.Link to="/profile" as={Link}>
                 Profile
-              </Nav.Link>
-              <Nav.Link to="/dashboard" as={Link}>
-                Dashboard
-              </Nav.Link>
-              <Nav.Link to="/home" as={Link}>
-                Home
               </Nav.Link>
               <Nav.Link hidden={user} href="/auth/google">
                 Login

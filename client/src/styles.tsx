@@ -39,6 +39,7 @@ export const StyledForm = styled(Form)`
 	&::-webkit-scrollbar-thumb {
 		width: 20px;
 		opacity: 0;
+		box-shadow: inset 0px 0px 5px black;
 	}
 	&::-webkit-scrollbar {
 		width: 20px;
@@ -46,15 +47,15 @@ export const StyledForm = styled(Form)`
 	}
 	&:hover {
 		&::-webkit-scrollbar-thumb {
-			background: #021ffa;
+			background: #7d7d7d;
 			opacity: 1;
 			border-radius: 10px;
 			&:active {
-				box-shadow: inset 0px 0px 10px red;
+				border: 1px solid white;
 			}
 		}
 		&::-webkit-scrollbar {
-			background: #ff6700;
+			background: #3f3f3f;
 			opacity: 1;
 			border-radius: 10px;
 		}
@@ -72,6 +73,7 @@ export const StyledScrollableGroup = styled(Group)`
 	&::-webkit-scrollbar-thumb {
 		width: 20px;
 		opacity: 0;
+		box-shadow: inset 0px 0px 5px black;
 	}
 	&::-webkit-scrollbar {
 		width: 20px;
@@ -79,15 +81,15 @@ export const StyledScrollableGroup = styled(Group)`
 	}
 	&:hover {
 		&::-webkit-scrollbar-thumb {
-			background: #021ffa;
+			background: #7d7d7d;
 			opacity: 1;
 			border-radius: 10px;
 			&:active {
-				box-shadow: inset 0px 0px 10px red;
+				border: 1px solid white;
 			}
 		}
 		&::-webkit-scrollbar {
-			background: #ff6700;
+			background: #3f3f3f;
 			opacity: 1;
 			border-radius: 10px;
 		}

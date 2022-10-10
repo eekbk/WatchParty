@@ -21,6 +21,7 @@ function Dashboard() {
 
   useEffect(() => {
     // if (user) {
+
     axios
       .get('/api/party')
       .then((data: any) => {
@@ -30,12 +31,13 @@ function Dashboard() {
         console.error(err);
       });
   }, []);
-
   const handleCardClick = (party) => {
     axios
       .get(`/api/playlist/${party.playlist_id}`)
       .then((videos) => {
-        navigate('/watchParty', { state: { party: party.id, videos } });
+        navigate('/watchParty', {
+          state: { party: party.id, videos: videos.data },
+        });
       })
       .catch((err) => {
         console.error(err);
