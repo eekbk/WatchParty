@@ -13,3 +13,19 @@ playlist.post('/seed', async (req: Request, res: Response) => {
     res.sendStatus(500);
   }
 });
+
+playlist.get('/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  console.log('playlist id:\n', id);
+  prisma.video.findMany({
+    where: {
+      playlist_videos: {
+        some: {
+          playlist: {
+            id,
+          },
+        },
+      },
+    },
+  });
+});

@@ -5,14 +5,7 @@ import axios from 'axios';
 import { prisma } from '../db/index';
 import { YoutubeVideo, RequestWithUser } from '../../interfaces';
 
-const { default: dummyData } = require('../../dummyData.ts');
-
 export const party: Router = express.Router();
-
-// Get video dummy data
-party.get('/test', (req: Request, res: Response) => {
-  res.status(200).send(JSON.stringify(dummyData));
-});
 
 // Get all watch parties
 party.get('/', (req: Request, res: Response) => {
@@ -207,28 +200,6 @@ party.post('/playlist', (req: Request, res: Response) => {
       res.sendStatus(err.status);
     });
 });
-
-/*
-trying
-to save
-this
-merge
-I
-hate
-merging
-lets
-see
-what
-happens
-when
-i
-do
-this
-ok
-hello
-d
-fdfdfdf
-*/
 
 // get the playlist attached to a party
 party.get('/playlist/:roomId', async (req: Request, res: Response) => {

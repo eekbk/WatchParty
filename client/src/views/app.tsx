@@ -1,12 +1,24 @@
 import { Outlet, Link } from 'react-router-dom';
 import { Nav, Navbar, Container } from 'react-bootstrap';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import axios from 'axios';
 import { StyledBackgroundContainer } from '../styles';
 import { UserContext } from '../context';
 import SearchBar from './search/SearchBar';
 
 function App(): JSX.Element {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+
+  useEffect(() => {
+    axios
+      .get('/api/user')
+      .then((data) => {
+        setUser(data.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  });
 
   return (
     <StyledBackgroundContainer fluid>

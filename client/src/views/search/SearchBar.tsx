@@ -73,7 +73,7 @@ function SearchBar() {
   // }, []);
 
   return (
-    <InputGroup className="mb-2">
+    <InputGroup className="mb-2" style={{ maxWidth: '20vw' }}>
       <Form.Control
         type="text"
         value={textVal}

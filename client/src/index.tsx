@@ -7,7 +7,6 @@ import { UserContextProvider /* UserContext */ } from './context';
 import { SearchContextProvider } from './contexts/searchContext';
 
 const { default: App } = require('./views/app.tsx');
-const { default: Home } = require('./views/home.tsx');
 const { default: WatchParty } = require('./views/watchParty/Room.tsx');
 const { default: Dashboard } = require('./views/Dashboard.tsx');
 const { default: Logout } = require('./views/Logout.tsx');
@@ -20,8 +19,8 @@ function RouteHandler() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />}>
-            <Route path="" element={<Home />} />
-            <Route path="home" element={<Home />} />
+            <Route path="" element={<Dashboard />} />
+            <Route path="home" element={<Dashboard />} />
             <Route path="logout" element={<Logout />} />
             <Route path="search" element={<Search />} />
             <Route

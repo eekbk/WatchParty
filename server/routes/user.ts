@@ -7,6 +7,9 @@ const user: Router = express.Router();
 
 user.get('/', (req: RequestWithUser, res: Response) => {
   const { user } = req;
+  if (!user) {
+    res.sendStatus(400);
+  }
   prisma.playlist
     .findMany({
       where: {
