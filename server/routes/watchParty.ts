@@ -17,12 +17,8 @@ party.get('/test', (req: Request, res: Response) => {
 // Get all watch parties
 party.get('/', (req: Request, res: Response) => {
   // Retrieve all watch parties from the database
-  prisma.video
-    .findFirst({
-      where: {
-        id: 'Jrg9KxGNeJY',
-      },
-    })
+  prisma.party
+    .findMany()
     .then((parties) => {
       res.status(200).send(JSON.stringify(parties));
     })
