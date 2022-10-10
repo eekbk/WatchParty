@@ -25,16 +25,9 @@ function WatchParty() {
     socket.on('getMessages', (messages) => {
       setMessages(messages);
     });
-    socket.on('chat', (message) => {
-      setMessages((messages) => [...messages, message]);
-    });
-    socket.on('play', (arg: boolean) => {
-      console.log(arg);
-      // setPause(arg);
-    });
     return () => {
       socket.off('getMessages');
-      socket.off('chat');
+      socket.off('getStatus');
     };
   }, []);
 
@@ -59,9 +52,15 @@ function WatchParty() {
             text="white"
           >
             <Video
+              user={user}
               videos={state.videos}
-              isAdmin={Math.random() < 0.5}
+              status={
+								user.user
+								  ? user.user.parties.filter((party) => party.id === room)[0]
+								  : null
+							}
               room={room || 'test'}
+              socket={socket}
             />
           </Card>
         </Col>
@@ -71,6 +70,7 @@ function WatchParty() {
             room={room || 'test'}
             messages={dbMessages}
             setMessages={setMessages}
+            socket={socket}
           />
         </Col>
       </Row>

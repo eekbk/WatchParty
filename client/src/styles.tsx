@@ -102,7 +102,7 @@ export const StyledBackgroundContainer = styled(Container)`
 	flex-flow: flow wrap;
 `;
 
-export const PlayPause = styled(Button)`
+export const LButton = styled(Button)`
 	color: white;
 	background-color: #ff30db;
 	border-color: #8a25e2;
