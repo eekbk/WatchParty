@@ -1,12 +1,11 @@
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
-import io from 'socket.io-client';
 import { Container, ProgressBar, Form } from 'react-bootstrap';
 import { PlayPause } from '../../styles';
 
-const socket = io();
-
-function Video({ videos, isAdmin, room }) {
+function Video({
+  videos, isAdmin, room, user, socket,
+}) {
   // state vars
   const [isPlaying, setPause] = useState(false);
   const [pSeconds, setSeconds] = useState(0.0001);
@@ -60,10 +59,13 @@ function Video({ videos, isAdmin, room }) {
 
   // updates once
   useEffect(() => {
+    console.log(user);
     socket.on('pause', (arg: boolean) => {
       setPause(arg);
     });
-
+    socket.on('play', (arg: boolean) => {
+      setPause(arg);
+    });
     socket.on('seek', (seconds: number) => {
       // console.log(seconds);
       videoPlayer.current.seekTo(seconds, 'seconds');

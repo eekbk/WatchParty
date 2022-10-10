@@ -297,8 +297,8 @@ io.on('connection', (socket: any) => {
         data: {
           message: chat.message,
           room_timestamp: '420',
-          user_id: '2548f808-526a-417b-8e18-87087904ee98',
-          party_id: '15b5a55e-2bb0-4115-96ab-6c9dc585877e',
+          user_id: chat.user,
+          party_id: chat.room,
           type: 'COMMENT',
         },
       })
@@ -319,6 +319,18 @@ io.on('connection', (socket: any) => {
       .then((messages) => {
         io.to(room).emit('getMessages', messages);
       })
+      .catch((err) => console.log(err));
+  });
+
+  // Get's user by user id to get their name
+  socket.on('GetUser', (q: { room: string; userId: string }) => {
+    prisma.user
+      .findUnique({
+        where: {
+          id: q.userId,
+        },
+      })
+      .then((user) => io.to(q.room).emit('GetUser', user.user_name))
       .catch((err) => console.log(err));
   });
 });
