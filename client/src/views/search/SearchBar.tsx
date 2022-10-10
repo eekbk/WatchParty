@@ -20,7 +20,6 @@ function SearchBar() {
 
   const handleSubmit = (e) => {
     setIsLoading(true);
-    // console.log('button clicked!');
     e.preventDefault();
     const q = textVal.replaceAll(' ', '&');
     axios

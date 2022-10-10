@@ -27,11 +27,9 @@ function Search() {
       axios
         .get(`/api/search/party/${party}`)
         .then(({ data }) => {
-          // console.log('The data from the get request:\n', data);
           const matchingParties = data.playlists
             .map((playlist) => playlist.parties)
             .flat();
-          // console.log('matchingParties:\n', matchingParties);
           setPartiesMatch(matchingParties);
         })
         .then(() => {
