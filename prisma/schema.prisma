@@ -23,6 +23,7 @@ model User {
   likes        Like[]
   upvotes      Upvote[]
   playlists   Playlist[]
+  profile     String
 }
 
 model Relation {
@@ -75,6 +76,7 @@ model Playlist {
   playlist_videos Playlist_Video[]
   user            User?         @relation(fields: [user_id], references: [id])
   user_id         String?
+  videos          Video[]
 }
 
 model Playlist_Video {
@@ -93,6 +95,7 @@ model Video {
   thumbnail       String
   playlist_videos Playlist_Video[]
   actions         Action[]
+  playlists       Playlist[]
 }
 
 model User_Party {

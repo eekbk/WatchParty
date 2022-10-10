@@ -5,26 +5,34 @@ import axios from 'axios';
 import { prisma } from '../db/index';
 import { YoutubeVideo, RequestWithUser } from '../../interfaces';
 
-const { default: dummyData } = require('../../dummyData.ts');
-
 export const party: Router = express.Router();
-
-// Get video dummy data
-party.get('/test', (req: Request, res: Response) => {
-  res.status(200).send(JSON.stringify(dummyData[0]));
-});
 
 // Get all watch parties
 party.get('/', (req: Request, res: Response) => {
   // Retrieve all watch parties from the database
-  prisma.video
-    .findFirst({
-      where: {
-        id: 'Jrg9KxGNeJY',
-      },
-    })
+  prisma.party
+    .findMany()
     .then((parties) => {
       res.status(200).send(JSON.stringify(parties));
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(err.status);
+    });
+});
+
+party.get('/topParties', (req: Request, res: Response) => {
+  // Retrieve all watch parties that have a not null id from the database
+  prisma.party
+    .findMany({
+      where: {
+        NOT: {
+          playlist_id: null,
+        },
+      },
+    }) // return where playlist id is truthy)
+    .then((playlists) => {
+      res.status(200).send(JSON.stringify(playlists));
     })
     .catch((err) => {
       console.error(err);
@@ -191,4 +199,28 @@ party.post('/playlist', (req: Request, res: Response) => {
       console.error(err);
       res.sendStatus(err.status);
     });
+});
+
+// get the playlist attached to a party
+party.get('/playlist/:roomId', async (req: Request, res: Response) => {
+  const { roomId } = req.params;
+  console.log('roomId:\n', roomId);
+  try {
+    const playlistVideos = await prisma.party.findUnique({
+      where: {
+        id: roomId,
+      },
+      include: {
+        playlist: {
+          include: {
+            videos: true,
+          },
+        },
+      },
+    });
+
+    res.status(200).json(playlistVideos);
+  } catch (err) {
+    res.sendStatus(500);
+  }
 });
