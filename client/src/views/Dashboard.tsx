@@ -15,22 +15,11 @@ function Dashboard() {
   // use axios to get user data from prisma DB and
   // get user data from express.js return to react functional component using hooks?
 
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [parties, setParties] = useState([]);
-  const [dummy, setDummy] = useState([]);
-  const [topParties, setTopParties] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get('/api/user')
-      .then((data) => {
-        setUser(data.data);
-        console.log(data.data, 'user data....');
-      })
-      .catch((err) => {
-        console.error(err);
-      });
     // if (user) {
     axios
       .get('/api/party')
@@ -42,44 +31,10 @@ function Dashboard() {
         console.error(err);
       });
   }, []);
-  useEffect(() => {
-    axios
-      .get('/api/party/test')
-      .then((data: any) => {
-        setDummy(data.data.items);
-        console.log(data.data.items, 'data.data......');
-        console.log(
-          data.data.items[0].snippet.thumbnails.medium.url,
-          'dummy data......',
-        );
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-  useEffect(() => {
-    if (dummy.length > 0) {
-      console.log(
-        dummy[0].snippet.thumbnails.medium.url,
-        '2nd useEffect dummy[0].........',
-      );
-    }
-  }, [dummy]);
-  useEffect(() => {
-    axios
-      .get('/api/party/topParties')
-      .then((data: any) => {
-        setTopParties(data.data);
-        console.log(data.data, 'topParty data........');
-        console.log(topParties, 'topParty state data........');
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
 
   const handleCardClick = (party) => {
-    navigate('/watchParty', { state: { party } });
+    // axios.get
+    navigate('/watchParty', { state: { user, party: party.id } });
   };
   const handleProfileClick = () => {
     navigate('/profile');
@@ -115,7 +70,7 @@ function Dashboard() {
       <Row>Top Rooms</Row>
       {parties && parties.length ? (
         <CardGroup>
-          {topParties.map((party) => (
+          {parties.map((party) => (
             <Card onClick={() => handleCardClick(party)}>
               <Card.Img variant="top" src="holder.js/100px160" />
               <Card.Body>
