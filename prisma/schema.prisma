@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -13,7 +14,7 @@ datasource db {
 model User {
   id           String       @id @default(uuid())
   user_name    String
-  email        String       @unique
+  googleId     String       @unique
   follows      Int          @default(0)
   messages     Message[]
   relator      Relation[]   @relation("relator")
@@ -21,6 +22,8 @@ model User {
   user_parties User_Party[]
   likes        Like[]
   upvotes      Upvote[]
+  playlists   Playlist[]
+  profile     String
 }
 
 model Relation {
@@ -35,7 +38,8 @@ model Relation {
 model Message {
   id             String       @id @default(uuid())
   createdAt      DateTime     @default(now())
-  room_timestamp DateTime
+  room_timestamp String       
+  message         String
   user           User         @relation(fields: [user_id], references: [id])
   user_id        String
   party          Party        @relation(fields: [party_id], references: [id])
@@ -47,13 +51,15 @@ model Message {
 
 model Party {
   id           String       @id @default(uuid())
+  name         String?
+  description  String?
   messages     Message[]
-  playlist     Playlist     @relation(fields: [playlist_id], references: [id])
-  playlist_id  String
+  playlist     Playlist?     @relation(fields: [playlist_id], references: [id])
+  playlist_id  String?
   is_private   Boolean      @default(false)
   is_recurring Boolean      @default(false)
-  date_time    DateTime
-  likes_count  Int
+  date_time    DateTime     @default(now())
+  likes_count  Int          @default(0)
   type         Party_Type
   status       Status       @default(UPCOMING)
   user_parties User_Party[]
@@ -68,6 +74,9 @@ model Playlist {
   thumbnail       String
   parties         Party[]
   playlist_videos Playlist_Video[]
+  user            User?         @relation(fields: [user_id], references: [id])
+  user_id         String?
+  videos          Video[]
 }
 
 model Playlist_Video {
@@ -86,12 +95,14 @@ model Video {
   thumbnail       String
   playlist_videos Playlist_Video[]
   actions         Action[]
+  playlists       Playlist[]
 }
 
 model User_Party {
   id       String @id @default(uuid())
   user_id  String
   party_id String
+  role     Role
   user     User   @relation(fields: [user_id], references: [id])
   party    Party  @relation(fields: [party_id], references: [id])
 }

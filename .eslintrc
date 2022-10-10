@@ -87,6 +87,32 @@
     "react/react-in-jsx-scope": [
       "off"
     ],
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", "ts", "tsx"] }]
+    "react/jsx-filename-extension": [
+      1, { "extensions": [".js", ".jsx", "ts", "tsx"] }
+    ],
+    "import/prefer-default-export": [
+      "off"
+    ],
+    "import/no-unresolved": [
+      "off"
+    ],
+    "react/jsx-closing-tag-location": [
+      "off"
+    ],
+    "no-useless-escape": [
+      "off"
+    ],
+    "implicit-arrow-linebreak": [
+      "off"
+    ],
+    "react/jsx-indent": [
+      "warn"
+    ],
+    "prefer-const": [
+      "warn"
+    ],
+    "camelcase": [
+      "warn"
+    ]
   }
 }
