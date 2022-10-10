@@ -20,7 +20,6 @@ function SearchBar() {
 
   const handleSubmit = (e) => {
     setIsLoading(true);
-    // console.log('button clicked!');
     e.preventDefault();
     const q = textVal.replaceAll(' ', '&');
     axios
@@ -73,7 +72,7 @@ function SearchBar() {
   // }, []);
 
   return (
-    <InputGroup className="mb-2">
+    <InputGroup className="mb-2" style={{ maxWidth: '20vw' }}>
       <Form.Control
         type="text"
         value={textVal}

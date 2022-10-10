@@ -7,60 +7,67 @@ const user: Router = express.Router();
 
 user.get('/', (req: RequestWithUser, res: Response) => {
   const { user } = req;
-  prisma.playlist
-    .findMany({
-      where: {
-        user_id: user.id,
-      },
-    })
-    .then((playlists) => {
-      user.playlists = playlists;
-      return prisma.party.findMany({
-        where: {
-          user_parties: {
-            some: {
-              user: {
-                id: user.id,
-              },
-            },
-          },
-        },
-      });
-    })
-    .then((parties: any) => {
-      user.parties = parties;
-      return prisma.user_Party.findMany({
+  if (user === undefined) {
+    res.sendStatus(400);
+  } else {
+    prisma.playlist
+      .findMany({
         where: {
           user_id: user.id,
         },
-      });
-    })
-    .then((UP) => {
-      user.parties = user.parties.map((p) => {
-        p.role = UP.filter((up) => up.party_id === p.id)[0].role;
-        return p;
-      });
-      return prisma.user.findMany({
-        where: {
-          relatee: {
-            some: {
-              type: 'FOLLOW',
-              relator: {
-                id: user.id,
+      })
+      .then((playlists) => {
+        user.playlists = playlists;
+        return prisma.party.findMany({
+          where: {
+            user_parties: {
+              some: {
+                user: {
+                  id: user.id,
+                },
               },
             },
           },
-        },
+        });
+      })
+      .then((parties: any) => {
+        user.parties = parties;
+        return prisma.user_Party.findMany({
+          where: {
+            user_id: user.id,
+          },
+        });
+      })
+      .then((UP) => {
+        user.parties = user.parties.map((p) => {
+          p.role = UP.filter((up) => up.party_id === p.id)[0].role;
+          return p;
+        });
+        return prisma.user.findMany({
+          where: {
+            relatee: {
+              some: {
+                type: 'FOLLOW',
+                relator: {
+                  id: user.id,
+                },
+              },
+            },
+          },
+        });
+      })
+      .then((friends) => {
+        user.friends = friends.map((f) => ({
+          id: f.id,
+          username: f.user_name,
+        }));
+        res.status(200).json(user);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.sendStatus(err.status);
       });
-    })
-    .then((friends) => {
-      user.friends = friends.map((f) => ({ id: f.id, username: f.user_name }));
-      res.status(200).json(user);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(err.status);
-    });
+  }
 });
 
 user.post('/playlist', (req: RequestWithUser, res: Response) => {

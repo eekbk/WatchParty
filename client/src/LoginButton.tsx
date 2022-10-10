@@ -3,9 +3,7 @@ import axios from 'axios';
 
 function LoginButton() {
   const handleClick = () => {
-    axios.get('/auth/google').then(({ data }) => {
-      console.log('data:', data);
-    });
+    axios.get('/auth/google').catch((err) => console.error(err));
   };
 
   return (

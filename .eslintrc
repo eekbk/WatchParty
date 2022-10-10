@@ -113,6 +113,12 @@
     ],
     "camelcase": [
       "warn"
+    ],
+    "react/jsx-indent-props": [
+      "warn"
+    ],
+    "react/jsx-closing-bracket-location": [
+      "warn"
     ]
   }
 }
