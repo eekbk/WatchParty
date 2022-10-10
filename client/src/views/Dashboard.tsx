@@ -76,7 +76,7 @@ function Dashboard() {
       {parties && parties.length ? (
         <Col>
           <CardGroup>
-            {parties.slice(0, 3).map((party) => (
+            {parties.slice(0, 5).map((party) => (
               <Card onClick={() => handleCardClick(party)}>
                 <Card.Img variant="top" src={party.playlist.thumbnail} />
                 <Card.Body>
