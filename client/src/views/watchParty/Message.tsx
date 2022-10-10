@@ -3,11 +3,20 @@ import { Container } from 'react-bootstrap';
 function Message({ message, user }) {
   return (
     <Container
-      style={{ wordWrap: 'break-word', maxWidth: '20vw', paddingTop: '5px' }}
+      style={{ wordWrap: 'break-word', maxWidth: '20vw', height: '5vh' }}
     >
-      {user ? user.user_name : 'null'}
+      {user ? `${user.user_name} ` : 'null'}
       :
-      {message.message || message}
+      <Container
+        style={{
+				  backgroundColor: '#6929a9',
+				  maxWidth: '10vw',
+				  borderRadius: '10px',
+				  display: 'inline-block',
+        }}
+      >
+        {message.message || message}
+      </Container>
     </Container>
   );
 }

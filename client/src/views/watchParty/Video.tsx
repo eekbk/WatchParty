@@ -1,9 +1,7 @@
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
-import {
-  Container, ProgressBar, Form, Card,
-} from 'react-bootstrap';
+import { Container, ProgressBar, Form } from 'react-bootstrap';
 import { PlayPause } from '../../styles';
 
 const socket = io();
@@ -146,14 +144,14 @@ function Video({ videos, isAdmin, room }) {
       <PlayPause disabled={!isAdmin} onClick={pauseVid}>
         Pause
       </PlayPause>
-      <Card.Body>
+      {/* <Card.Body>
         <Card.Title>
           {videos[video] ? videos[video].snippet.title : 'Please Wait'}
         </Card.Title>
         <Card.Text>
           {videos[video] ? videos[video].snippet.description : 'Please Wait'}
         </Card.Text>
-      </Card.Body>
+      </Card.Body> */}
     </Container>
   );
 }

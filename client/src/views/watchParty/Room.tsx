@@ -17,11 +17,9 @@ function WatchParty({ videos, user, room }: any) {
     socket.emit('join', room);
     socket.emit('getMessages', room || 'test');
     socket.on('getMessages', (messages) => {
-      console.log(messages);
       setMessages(messages);
     });
     socket.on('chat', (message) => {
-      console.log(message);
       setMessages((messages) => [...messages, message]);
     });
 

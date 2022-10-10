@@ -13,17 +13,15 @@ function Chat({
   // State vars
   const [chat, setChat] = useState('');
   const scrolly = useRef(null);
-  // const [messages, setMessages] = useState(dbMessages);
-  // functions
+  console.log(user);
 
-  // console.log(messages), dbMessages;
+  // functions
 
   // handles chat submit
   const submit = (e) => {
     if (chat.length >= 1) {
       socket.emit('chat', { room, message: chat, user });
       setChat('');
-      // setMessages((messages) => [...messages, chat])
     }
     e.preventDefault();
   };
@@ -39,6 +37,9 @@ function Chat({
     <Container
       style={{
 			  textAlign: 'center',
+			  color: 'white',
+			  backgroundColor: '#332448',
+			  borderRadius: '5px',
       }}
     >
       CHAT!!
