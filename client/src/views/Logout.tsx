@@ -12,7 +12,6 @@ const Logout = () => {
     .get('/logout')
     .then((data) => {
       setUser(null);
-      console.log(data, 'in app logout......');
     })
   // .then(() => {
   //   navigate("/");

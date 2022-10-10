@@ -126,7 +126,6 @@ export function CreateParty() {
       axios
         .post('/api/party/video', { videoId, videoUrl })
         .then((vd) => {
-          console.log(vd);
           setVideo('');
           setPlaylist(playlist.concat([vd.data]));
         })
@@ -136,7 +135,6 @@ export function CreateParty() {
         });
     } else {
       // Add alert for invalid url
-      console.log('invalid url');
       setVideo('');
     }
   };
@@ -169,8 +167,9 @@ export function CreateParty() {
             </Group>
             <Group>
               <StyledButton
-                disabled={!playlist.length || !name}
+                disabled={(!playlist.length && !importedPlaylist) || !name}
                 onClick={handleCreate}
+                style={{ marginTop: '5px' }}
               >
                 Create
               </StyledButton>
@@ -259,9 +258,12 @@ export function CreateParty() {
                     <Header>{pl.name}</Header>
                     <Container as="img" src={pl.thumbnail} alt="" />
                     <Body>{pl.description}</Body>
-                    <StyledButton onClick={(e) => setImportedPlaylist(pl)}>
-                    Import
-										</StyledButton>
+                    <StyledButton
+                    style={{ marginTop: '5px' }}
+                    onClick={(e) => setImportedPlaylist(pl)}
+                  >
+  Import
+                  </StyledButton>
                   </Item>
                 ))}
               </Accordion>
@@ -274,6 +276,7 @@ export function CreateParty() {
                 value={video}
               />
               <Text>Choose a youtube video to add</Text>
+              <br />
               <StyledButton onClick={handleVideoAddition}>Add</StyledButton>
             </Group>
           </StyledForm>
@@ -295,21 +298,41 @@ export function CreateParty() {
                 placeholder="Describe Playlist Here"
               />
             </Group>
-            <Group>
-              <Label>Video List</Label>
-              {playlist.map((vd, i) => (
-                <StyledVideoCard>
-                  <CloseButton onClick={() => handleVideoRemoval(i)} />
-                  <StyledVideoCard.Title>{vd.title}</StyledVideoCard.Title>
-                  <StyledVideoCard.Body>
+            {!usePlaylist ? (
+              <Group>
+                <Label>Video List</Label>
+                {playlist.map((vd, i) => (
+                  <StyledVideoCard>
+                    <CloseButton onClick={() => handleVideoRemoval(i)} />
+                    <StyledVideoCard.Title>{vd.title}</StyledVideoCard.Title>
+                    <StyledVideoCard.Body>
                     <StyledVideoCard.Img src={vd.thumbnail} />
                     <StyledVideoCard.Text>
                     {vd.description.slice(0, 150)}
                   </StyledVideoCard.Text>
                   </StyledVideoCard.Body>
+                  </StyledVideoCard>
+                ))}
+              </Group>
+            ) : (
+              <Group>
+                <Label>Playlist</Label>
+                {importedPlaylist ? (
+                  <StyledVideoCard>
+                  <CloseButton onClick={() => setImportedPlaylist(null)} />
+                  <StyledVideoCard.Title>
+                  {importedPlaylist.title}
+                </StyledVideoCard.Title>
+                  <StyledVideoCard.Body>
+                  <StyledVideoCard.Img src={importedPlaylist.thumbnail} />
+                  <StyledVideoCard.Text>
+                  {importedPlaylist.description.slice(0, 150)}
+                </StyledVideoCard.Text>
+                </StyledVideoCard.Body>
                 </StyledVideoCard>
-              ))}
-            </Group>
+                ) : null}
+              </Group>
+            )}
           </StyledForm>
         </Col>
       </Row>
