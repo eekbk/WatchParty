@@ -1,13 +1,8 @@
+# Container image that runs your code
 FROM node:14 as base
 
-COPY package*.json ./
+# Copies your code file from your action repository to the filesystem path `/` of the container
+COPY entrypoint.sh /entrypoint.sh
 
-RUN npm i
-
-COPY . .
-
-FROM base as production
-
-ENV NODE_PATH=./build
-
-RUN npm run build
+# Code file to execute when the docker container starts up (`entrypoint.sh`)
+ENTRYPOINT ["/entrypoint.sh"]
