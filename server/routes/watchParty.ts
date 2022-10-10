@@ -11,7 +11,15 @@ export const party: Router = express.Router();
 party.get('/', (req: Request, res: Response) => {
   // Retrieve all watch parties from the database
   prisma.party
-    .findMany()
+    .findMany({
+      include: {
+        playlist: {
+          select: {
+            thumbnail: true,
+          },
+        },
+      },
+    })
     .then((parties) => {
       res.status(200).send(JSON.stringify(parties));
     })

@@ -20,8 +20,6 @@ function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if (user) {
-
     axios
       .get('/api/party')
       .then((data: any) => {
@@ -76,20 +74,22 @@ function Dashboard() {
       ) : null}
       <Row>Top Rooms</Row>
       {parties && parties.length ? (
-        <CardGroup>
-          {parties.map((party) => (
-            <Card onClick={() => handleCardClick(party)}>
-              <Card.Img variant="top" src="holder.js/100px160" />
-              <Card.Body>
-                <Card.Title>{party.name}</Card.Title>
-                <Card.Text>{party.description}</Card.Text>
-              </Card.Body>
-              <Card.Footer>
-                <small className="text-muted">Last updated 3 mins ago</small>
-              </Card.Footer>
-            </Card>
-          ))}
-        </CardGroup>
+        <Col>
+          <CardGroup>
+            {parties.slice(0, 3).map((party) => (
+              <Card onClick={() => handleCardClick(party)}>
+                <Card.Img variant="top" src={party.playlist.thumbnail} />
+                <Card.Body>
+                  <Card.Title>{party.name}</Card.Title>
+                  <Card.Text>{party.description}</Card.Text>
+                </Card.Body>
+                <Card.Footer>
+                  <small className="text-muted">Last updated 3 mins ago</small>
+                </Card.Footer>
+              </Card>
+            ))}
+          </CardGroup>
+        </Col>
       ) : null}
     </Container>
   );
