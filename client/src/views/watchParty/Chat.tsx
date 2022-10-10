@@ -25,7 +25,6 @@ function Chat({
   useEffect(() => {
     scrolly.current.scrollTop = scrolly.current.scrollHeight;
     socket.on('chat', (message) => {
-      console.log(message);
       setMessages((messages) => [...messages, message]);
     });
     return () => {

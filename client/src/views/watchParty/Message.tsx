@@ -16,17 +16,21 @@ function Message({ message, user, socket }) {
     <Container
       style={{ wordWrap: 'break-word', maxWidth: '20vw', height: '5vh' }}
     >
-      {user_name || 'null'}
+      {user_name}
       :
       <Container
         style={{
-				  backgroundColor: '#6929a9',
+				  backgroundColor: user.user
+				    ? user.user.id !== message.user_id
+				      ? '#6929a9'
+				      : '#8e298e'
+				    : '#6929a9',
 				  maxWidth: '10vw',
 				  borderRadius: '10px',
 				  display: 'inline-block',
         }}
       >
-        {message.message || message}
+        {message.message}
       </Container>
     </Container>
   );

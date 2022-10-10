@@ -21,14 +21,13 @@ function WatchParty() {
 
   useEffect(() => {
     socket.emit('join', room);
-    socket.emit('getStatus', { room, user: user.user.id });
     socket.emit('getMessages', room || 'test');
     socket.on('getMessages', (messages) => {
       setMessages(messages);
     });
     return () => {
       socket.off('getMessages');
-      socket.off('chat');
+      socket.off('getStatus');
     };
   }, []);
 
@@ -55,7 +54,11 @@ function WatchParty() {
             <Video
               user={user}
               videos={state.videos}
-              isAdmin={Math.random() < 0.5}
+              status={
+								user.user
+								  ? user.user.parties.filter((party) => party.id === room)[0]
+								  : null
+							}
               room={room || 'test'}
               socket={socket}
             />

@@ -1,35 +1,61 @@
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
 import { Container, ProgressBar, Form } from 'react-bootstrap';
-import { PlayPause } from '../../styles';
+import { LButton } from '../../styles';
 
 function Video({
-  videos, isAdmin, room, user, socket,
+  videos, status, room, user, socket,
 }) {
   // state vars
-  const [isPlaying, setPause] = useState(false);
+  const [isPlaying, setPause] = useState(() => (!status));
   const [pSeconds, setSeconds] = useState(0.0001);
   const [duration, setDur] = useState(1);
   const [volume, setVol] = useState(0.5);
   const [video, setVid] = useState(0);
 
   const videoPlayer = useRef<ReactPlayer>(null);
-  // TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-  if (isAdmin) {
+  if (status) {
     socket.on('roomCheck', () => {
-      socket.emit('giveRoom', { room, video, start: pSeconds });
+      socket.emit('giveRoom', {
+        room,
+        video,
+        start: pSeconds,
+        playing: isPlaying,
+      });
     });
   }
-
-  // TEST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
   // functions
 
   // Plays next video in playlist
-  const changeVid = () => {
+  const changeVid = (bool) => {
     setSeconds(0);
-    setVid(video + 1);
+    if (bool) {
+      if (video < videos.length) {
+        socket.emit('giveRoom', {
+          room,
+          video: video + 1,
+          start: pSeconds,
+          playing: isPlaying,
+        });
+        setVid(video + 1);
+      } else {
+        socket.emit('giveRoom', {
+          room,
+          video,
+          start: pSeconds,
+          playing: isPlaying,
+        });
+      }
+    } else {
+      socket.emit('giveRoom', {
+        room,
+        video: video ? video - 1 : video,
+        start: pSeconds,
+        playing: isPlaying,
+      });
+      setVid(video ? video - 1 : video);
+    }
+    videoPlayer.current.seekTo(0, 'seconds');
   };
 
   // updates volume
@@ -59,7 +85,6 @@ function Video({
 
   // updates once
   useEffect(() => {
-    console.log(user);
     socket.on('pause', (arg: boolean) => {
       setPause(arg);
     });
@@ -74,10 +99,18 @@ function Video({
 
     socket.on(
       'giveRoom',
-      (video: { room: string; video: number; start: number }) => {
+      (video: {
+				room: string;
+				video: number;
+				start: number;
+				playing: boolean;
+			}) => {
         setVid(video.video);
+        setPause(() => {
+          videoPlayer.current.seekTo(video.start, 'seconds');
+          return video.playing;
+        });
         setSeconds(video.start);
-        videoPlayer.current.seekTo(video.start, 'seconds');
       },
     );
 
@@ -107,7 +140,9 @@ function Video({
 				    },
 				  },
         }}
-        onEnded={changeVid}
+        onEnded={() => {
+				  changeVid(true);
+        }}
         onBuffer={() => {
 				  // console.log('buffering');
         }}
@@ -134,21 +169,21 @@ function Video({
       <Container fluid="md" style={{ height: '1.5rm', width: '10%' }}>
         <Form.Range value={volume * 100} onChange={setVolume} />
       </Container>
-      <PlayPause disabled={!isAdmin} onClick={playVid}>
+      <LButton disabled={!status} onClick={playVid}>
         Play
-      </PlayPause>
+      </LButton>
       {' '}
-      <PlayPause disabled={!isAdmin} onClick={pauseVid}>
+      <LButton disabled={!status} onClick={pauseVid}>
         Pause
-      </PlayPause>
-      {/* <Card.Body>
-        <Card.Title>
-          {videos[video] ? videos[video].title : 'Please Wait'}
-        </Card.Title>
-        <Card.Text>
-          {videos[video] ? videos[video].description : 'Please Wait'}
-        </Card.Text>
-      </Card.Body> */}
+      </LButton>
+      {' '}
+      <LButton disabled={!status} onClick={() => changeVid(false)}>
+        Back
+      </LButton>
+      {' '}
+      <LButton disabled={!status} onClick={() => changeVid(true)}>
+        Next
+      </LButton>
     </Container>
   );
 }
