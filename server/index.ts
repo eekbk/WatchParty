@@ -20,7 +20,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { default: user } = require('./routes/user.ts');
 
 dotenv.config();
-const PORT = process.env.PORT || 4040;
+const PORT = process.env.DATABASE_PORT;
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
