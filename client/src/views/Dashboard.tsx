@@ -25,7 +25,6 @@ function Dashboard() {
       .get('/api/party')
       .then((data: any) => {
         setParties(data.data);
-        console.log(data.data, 'party data........');
       })
       .catch((err) => {
         console.error(err);
@@ -33,8 +32,14 @@ function Dashboard() {
   }, []);
 
   const handleCardClick = (party) => {
-    // axios.get
-    navigate('/watchParty', { state: { user, party: party.id } });
+    axios
+      .get(`/api/playlist/${party.playlist_id}`)
+      .then((videos) => {
+        navigate('/watchParty', { state: { party: party.id, videos } });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
   const handleProfileClick = () => {
     navigate('/profile');
