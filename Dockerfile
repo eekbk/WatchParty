@@ -6,5 +6,5 @@ WORKDIR /app
 # Bundle app source
 COPY . .
 
-EXPOSE 5432
+EXPOSE 8080
 CMD [ "npm", "start" ]
