@@ -1,6 +1,6 @@
 // File for handling WatchParty endpoints
 import express, { Request, Response, Router } from 'express';
-import { Party } from '@prisma/client';
+//import { Party } from '@prisma/client';
 import axios from 'axios';
 import { prisma } from '../db/index';
 import { YoutubeVideo, RequestWithUser } from '../../interfaces';
@@ -105,7 +105,7 @@ party.put('/:partyId', (req: Request, res: Response) => {
   // Get the party id out of the request params
   const { partyId } = req.params;
   // Get the updated values out of the request body
-  const { party }: { party: Party } = req.body;
+  const { party }: { party: any } = req.body;
   // Update the party with the updated values with the matching id in the database
   prisma.party
     .update({

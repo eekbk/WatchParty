@@ -64,8 +64,10 @@
     "webpack-cli": "^4.10.0"
   },
   "scripts": {
-    "build": "webpack --watch",
-    "start": "nodemon server/index.ts",
+    "devbuild": "webpack --watch",
+    "devstart": "nodemon server/index.ts",
+    "build": "webpack",
+    "start": "node server/index.ts",
     "prepare": "husky install",
     "pre-commit": "npx husky add .husky/pre-commit \"npx lint-staged\"",
     "husky-setup": "npm run prepare && pre-commit",
