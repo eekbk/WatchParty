@@ -275,7 +275,6 @@ io.on('connection', (socket: any) => {
     socket.broadcast.to(pause.room).emit('pause', pause.bool);
   });
   socket.on('play', (play: { room: string; bool: boolean }) => {
-    console.log(play.room);
     io.to(play.room).emit('play', play.bool);
   });
   socket.on('seek', (seconds: { room: string; amount: number }) => {
@@ -283,7 +282,12 @@ io.on('connection', (socket: any) => {
   });
   socket.on(
     'giveRoom',
-    (video: { room: string; video: number; start: number }) => {
+    (video: {
+			room: string;
+			video: number;
+			start: number;
+			playing: boolean;
+		}) => {
       socket.broadcast.to(video.room).emit('giveRoom', video);
     },
   );
@@ -302,10 +306,10 @@ io.on('connection', (socket: any) => {
           type: 'COMMENT',
         },
       })
+      .then((message) => io.to(chat.room).emit('chat', message))
       .catch((err) => {
         console.error(err);
       });
-    io.to(chat.room).emit('chat', chat.message);
   });
 
   // Sends back all of the messages in the db by a room name
@@ -319,6 +323,18 @@ io.on('connection', (socket: any) => {
       .then((messages) => {
         io.to(room).emit('getMessages', messages);
       })
+      .catch((err) => console.log(err));
+  });
+
+  // Get's user by user id to get their name
+  socket.on('GetUser', (q: { room: string; userId: string }) => {
+    prisma.user
+      .findUnique({
+        where: {
+          id: q.userId,
+        },
+      })
+      .then((user) => io.to(q.room).emit('GetUser', user.user_name))
       .catch((err) => console.log(err));
   });
 });
