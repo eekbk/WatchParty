@@ -119,6 +119,9 @@
     ],
     "react/jsx-closing-bracket-location": [
       "warn"
+    ],
+    "react/jsx-one-expression-per-line": [
+      "warn"
     ]
   }
 }
