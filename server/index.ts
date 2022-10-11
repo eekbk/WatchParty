@@ -32,7 +32,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `https://watch-party.azurewebsites.net/auth/google/callback`,
+      callbackURL: `http://localhost:${PORT}/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       const user = await prisma.user.findUnique({
@@ -334,7 +334,9 @@ io.on('connection', (socket: any) => {
           id: q.userId,
         },
       })
-      .then((user) => io.to(q.room).emit('GetUser', user.user_name))
+      .then((user) => {
+        io.to(q.room).emit('GetUser', user.user_name);
+      })
       .catch((err) => console.log(err));
   });
 });

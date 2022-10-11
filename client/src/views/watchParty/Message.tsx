@@ -6,6 +6,7 @@ function Message({ message, user, socket }) {
   useEffect(() => {
     socket.emit('GetUser', { room: message.party_id, userId: message.user_id });
     socket.on('GetUser', (userName) => {
+      console.log(message, userName);
       setUserName(userName);
     });
     return () => {
@@ -14,7 +15,12 @@ function Message({ message, user, socket }) {
   }, []);
   return (
     <Container
-      style={{ wordWrap: 'break-word', maxWidth: '20vw', height: '5vh' }}
+      style={{
+			  wordWrap: 'break-word',
+			  maxWidth: '20vw',
+			  marginTop: '5px',
+			  marginBottom: '5px',
+      }}
     >
       {user_name}
       :
