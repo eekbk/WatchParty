@@ -20,7 +20,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { default: user } = require('./routes/user.ts');
 
 dotenv.config();
-const PORT = process.env.PORT || 4040;
+const PORT = process.env.DATABASE_PORT || 4040;
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -35,7 +35,6 @@ passport.use(
       callbackURL: `http://localhost:${PORT}/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log(profile, 'profile......');
       const user = await prisma.user.findUnique({
         where: {
           googleId: profile.id,
@@ -106,10 +105,10 @@ app.get(
 
 app.get(
   '/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/home' }),
+  passport.authenticate('google', { failureRedirect: '/' }),
   (req: Request, res: Response) => {
     // Successful authentication, redirect home.
-    res.redirect('/dashboard');
+    res.redirect('/');
   },
 );
 
@@ -123,8 +122,7 @@ app.post('/logout', (req, res) => {
       if (err) {
         res.status(400).send('Unable to log out');
       } else {
-        console.log(req.session, 'logout server........');
-        res.redirect('/home');
+        res.redirect('/');
         res.status(200).send('logged out worked');
       }
     });
@@ -233,7 +231,6 @@ app.post('/video', (req: Request, res: Response) => {
       }
     })
     .then((video: any) => {
-      console.log('video: ', video);
       video = video.data;
       const formattedVideo: any = {
         id: videoId,
@@ -285,7 +282,12 @@ io.on('connection', (socket: any) => {
   });
   socket.on(
     'giveRoom',
-    (video: { room: string; video: number; start: number }) => {
+    (video: {
+			room: string;
+			video: number;
+			start: number;
+			playing: boolean;
+		}) => {
       socket.broadcast.to(video.room).emit('giveRoom', video);
     },
   );
@@ -299,16 +301,15 @@ io.on('connection', (socket: any) => {
         data: {
           message: chat.message,
           room_timestamp: '420',
-          user_id: '2548f808-526a-417b-8e18-87087904ee98',
-          party_id: '15b5a55e-2bb0-4115-96ab-6c9dc585877e',
+          user_id: chat.user,
+          party_id: chat.room,
           type: 'COMMENT',
         },
       })
+      .then((message) => io.to(chat.room).emit('chat', message))
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
-    console.log(chat.room, chat.message);
-    io.to(chat.room).emit('chat', chat.message);
   });
 
   // Sends back all of the messages in the db by a room name
@@ -320,8 +321,21 @@ io.on('connection', (socket: any) => {
         },
       })
       .then((messages) => {
-        console.log(room);
         io.to(room).emit('getMessages', messages);
+      })
+      .catch((err) => console.log(err));
+  });
+
+  // Get's user by user id to get their name
+  socket.on('GetUser', (q: { room: string; userId: string }) => {
+    prisma.user
+      .findUnique({
+        where: {
+          id: q.userId,
+        },
+      })
+      .then((user) => {
+        io.to(q.room).emit('GetUser', user.user_name);
       })
       .catch((err) => console.log(err));
   });

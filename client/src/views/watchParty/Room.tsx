@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import {
   Card, Container, Row, Col,
 } from 'react-bootstrap';
-import axios from 'axios';
 import io from 'socket.io-client';
 import { UserContext } from '../../context';
 
@@ -14,27 +13,11 @@ const { default: Chat } = require('./Chat.tsx');
 
 // function WatchParty({ videos, user, room }: any) {
 function WatchParty() {
+  // state vars
   const [dbMessages, setMessages] = useState([]);
-  const [playlistVideos, setPlaylistVideos] = useState([]);
-  const [room, setRoom] = useState(null);
-
   const user = useContext(UserContext);
   const { state } = useLocation();
-
-  // not sure if this should be in the below useEfect or keep them separate
-  useEffect(() => {
-    // get props out of useLocation
-    setRoom(state.party);
-    // axios request to get vids based on roomId
-    axios
-      .get(`/api/party/playlist/${state.party.id}`)
-      .then(({ data }) => {
-        setPlaylistVideos(data.playlist.videos);
-      })
-      .catch((err) => {
-        console.error('This is the error in useEffect:\n', err);
-      });
-  }, []);
+  const room = state.party;
 
   useEffect(() => {
     socket.emit('join', room);
@@ -42,20 +25,11 @@ function WatchParty() {
     socket.on('getMessages', (messages) => {
       setMessages(messages);
     });
-    socket.on('chat', (message) => {
-      setMessages((messages) => [...messages, message]);
-    });
-
     return () => {
       socket.off('getMessages');
-      socket.off('chat');
+      socket.off('getStatus');
     };
-  }, [room]);
-
-  // // UNCOMMENT TO CHECK IF PLAYLIST VIDEOS ARE BEING UPDATED
-  // useEffect(() => {
-  //   console.log('THIRD useEffect playlistVideos:\n', playlistVideos);
-  // }, [playlistVideos]);
+  }, []);
 
   return (
     <Container
@@ -78,9 +52,15 @@ function WatchParty() {
             text="white"
           >
             <Video
-              videos={playlistVideos}
-              isAdmin={Math.random() < 0.5}
+              user={user}
+              videos={state.videos}
+              status={
+								user.user
+								  ? user.user.parties.filter((party) => party.id === room)[0]
+								  : null
+							}
               room={room || 'test'}
+              socket={socket}
             />
           </Card>
         </Col>
@@ -90,6 +70,7 @@ function WatchParty() {
             room={room || 'test'}
             messages={dbMessages}
             setMessages={setMessages}
+            socket={socket}
           />
         </Col>
       </Row>
