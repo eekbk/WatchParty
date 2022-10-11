@@ -23,7 +23,12 @@ function Dashboard() {
     axios
       .get('/api/party')
       .then((data: any) => {
-        setParties(data.data);
+        setParties(
+          data.data.sort(
+            (a, b) =>
+              Number(new Date(b.date_time)) - Number(new Date(a.date_time)),
+          ),
+        );
       })
       .catch((err) => {
         console.error(err);
@@ -84,7 +89,9 @@ function Dashboard() {
                   <Card.Text>{party.description}</Card.Text>
                 </Card.Body>
                 <Card.Footer>
-                  <small className="text-muted">Last updated 3 mins ago</small>
+                  <small className="text-muted">
+                    Starting on: {party.date_time.slice(0, 10)}
+                  </small>
                 </Card.Footer>
               </Card>
             ))}
