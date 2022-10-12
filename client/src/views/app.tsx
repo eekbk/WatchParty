@@ -36,6 +36,9 @@ function App(): JSX.Element {
               <Nav.Link to="/profile" as={Link}>
                 Profile
               </Nav.Link>
+              <Nav.Link to="/dm" as={Link}>
+                DMs
+              </Nav.Link>
               <Nav.Link hidden={user} href="/auth/google">
                 Login
               </Nav.Link>

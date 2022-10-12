@@ -6,7 +6,6 @@ function Message({ message, user, socket }) {
   useEffect(() => {
     socket.emit('GetUser', { room: message.party_id, userId: message.user_id });
     socket.on('GetUser', (userName) => {
-      console.log(message, userName);
       setUserName(userName);
     });
     return () => {
