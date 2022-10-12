@@ -6,7 +6,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 // import { playlist } from '../../../../server/routes/playlist';
 import { SearchContext } from '../../contexts/searchContext';
-import { UserContext } from '../../context';
+// import { UserContext } from '../../context';
 
 function Search() {
   const {
