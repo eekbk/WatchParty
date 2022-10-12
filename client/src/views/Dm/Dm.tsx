@@ -6,6 +6,8 @@ import { Container, Form } from 'react-bootstrap';
 import { UserContext } from '../../context';
 import { StyledButton, StyledScrollableGroup } from '../../styles';
 
+const { default: DmMessage } = require('./DmMessage.tsx');
+
 function Dm({ socket, room }) {
   // other vars
   const scrolly = useRef(null);
@@ -13,6 +15,7 @@ function Dm({ socket, room }) {
   // state vars
   const user = useContext(UserContext);
   const [chat, setChat] = useState('');
+  const [messages, setMessages] = useState(() => []);
 
   // Functions
   const submit = (e) => {
@@ -20,25 +23,38 @@ function Dm({ socket, room }) {
       type: 'DM',
       receiverId: HARDID,
       message: chat,
-      user: user.user.id,
+      user: user.user,
     });
+    setMessages([
+      ...messages,
+      { message: chat, username: user.user.user_name, user_id: user.user.id },
+    ]);
     e.preventDefault();
   };
 
   useEffect(() => {
+    // emitters
+
     socket.emit('join', { room, type: 'DM' });
-    socket.emit('userData', user);
-    socket.on('data', (userData) => {
-      console.log(userData);
+    socket.emit('getMessages');
+    // listeners
+
+    socket.on('getMessages', (dmMessages) => {
+      setMessages(dmMessages);
     });
+    // receives a Dm chat and logs it for now
     socket.on('DmChat', (message) => {
       console.log(message);
+      setMessages((oldMessages) => [...oldMessages, message]);
     });
+
+    // turn off listeners
     return () => {
       socket.off('DmChat');
-      socket.off('data');
+      socket.off('getMessages');
     };
   }, []);
+  console.log(messages);
   return (
     <Container
       style={{
@@ -53,7 +69,11 @@ function Dm({ socket, room }) {
         <StyledScrollableGroup
           ref={scrolly}
           style={{ overflowY: 'scroll', minHeight: '70vh', maxHeight: '70vh' }}
-        />
+        >
+          {messages.map((message) => (
+            <DmMessage message={message} user={user} />
+          ))}
+        </StyledScrollableGroup>
         <Form.Group>
           <Form.Control
             value={chat}

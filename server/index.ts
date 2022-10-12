@@ -323,16 +323,18 @@ io.on('connection', (socket: any) => {
 
   // Sends back all of the messages in the db by a room name
   socket.on('getMessages', (room) => {
-    prisma.message
-      .findMany({
-        where: {
-          party_id: room,
-        },
-      })
-      .then((messages) => {
-        io.to(room).emit('getMessages', messages);
-      })
-      .catch((err) => console.log(err));
+    if (room) {
+      prisma.message
+        .findMany({
+          where: {
+            party_id: room,
+          },
+        })
+        .then((messages) => {
+          io.to(room).emit('getMessages', messages);
+        })
+        .catch((err) => console.log(err));
+    }
   });
 
   // Get's user by user id to get their name
@@ -358,9 +360,15 @@ io.on('connection', (socket: any) => {
   // Sends out chat to dm-d user
   socket.on(
     'DmChat',
-    (chat: { dmId: string; message: string; user: string; type: any }) => {
+    (chat: { dmId: string; message: string; user: any; type: any }) => {
       console.log('Dm', chat);
-      io.to(chat.dmId).emit('DmChat', chat.message);
+      socket.broadcast
+        .to(chat.dmId)
+        .emit('DmChat', {
+          message: chat.message,
+          username: chat.user.user_name,
+          user_id: chat.user.id,
+        });
     },
   );
 });
