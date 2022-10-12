@@ -17,6 +17,7 @@ function WatchParty() {
   const [dbMessages, setMessages] = useState([]);
   const user = useContext(UserContext);
   const { state } = useLocation();
+  const [videos, setVideos] = useState(state.videos);
   const room = state.party;
 
   useEffect(() => {
@@ -53,7 +54,8 @@ function WatchParty() {
           >
             <Video
               user={user}
-              videos={state.videos}
+              videos={videos}
+              setVideos={setVideos}
               status={
 								user.user
 								  ? user.user.parties.filter((party) => party.id === room)[0]
