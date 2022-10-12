@@ -265,12 +265,18 @@ app.get('/*', (req: Request, res: Response) => {
   );
 });
 
-// socket.io testing
+// Socket.io events and listeners
 io.on('connection', (socket: any) => {
-  socket.on('join', (room: string) => {
-    socket.join(room);
-    io.to(room).emit('roomCheck');
+  // Joining a watch party
+  socket.on('join', (place: { room: string; type: string }) => {
+    if (place.type === 'DM') {
+      socket.join(place.room);
+    } else {
+      socket.join(place.room);
+      io.to(place.room).emit('roomCheck');
+    }
   });
+
   socket.on('pause', (pause: { room: string; bool: boolean }) => {
     socket.broadcast.to(pause.room).emit('pause', pause.bool);
   });
@@ -295,35 +301,40 @@ io.on('connection', (socket: any) => {
   // Chat
 
   // sends a message to the room
-  socket.on('chat', (chat: { room: string; message: string; user: string }) => {
-    prisma.message
-      .create({
-        data: {
-          message: chat.message,
-          room_timestamp: '420',
-          user_id: chat.user,
-          party_id: chat.room,
-          type: 'COMMENT',
-        },
-      })
-      .then((message) => io.to(chat.room).emit('chat', message))
-      .catch((err) => {
-        console.error(err);
-      });
-  });
+  socket.on(
+    'chat',
+    (chat: { room: string; message: string; user: string; type: any }) => {
+      prisma.message
+        .create({
+          data: {
+            message: chat.message,
+            room_timestamp: '420',
+            user_id: chat.user,
+            party_id: chat.room,
+            type: chat.type,
+          },
+        })
+        .then((message) => io.to(chat.room).emit('chat', message))
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+  );
 
   // Sends back all of the messages in the db by a room name
   socket.on('getMessages', (room) => {
-    prisma.message
-      .findMany({
-        where: {
-          party_id: room,
-        },
-      })
-      .then((messages) => {
-        io.to(room).emit('getMessages', messages);
-      })
-      .catch((err) => console.log(err));
+    if (room) {
+      prisma.message
+        .findMany({
+          where: {
+            party_id: room,
+          },
+        })
+        .then((messages) => {
+          io.to(room).emit('getMessages', messages);
+        })
+        .catch((err) => console.log(err));
+    }
   });
 
   // Get's user by user id to get their name
@@ -334,9 +345,32 @@ io.on('connection', (socket: any) => {
           id: q.userId,
         },
       })
-      .then((user) => io.to(q.room).emit('GetUser', user.user_name))
+      .then((user) => {
+        io.to(q.room).emit('GetUser', user.user_name);
+      })
       .catch((err) => console.log(err));
   });
+
+  // Direct Messages
+
+  // Sends user data out
+  socket.on('userData', ({ user }) => {
+    socket.broadcast.emit('data', user);
+  });
+  // Sends out chat to dm-d user
+  socket.on(
+    'DmChat',
+    (chat: { dmId: string; message: string; user: any; type: any }) => {
+      console.log('Dm', chat);
+      socket.broadcast
+        .to(chat.dmId)
+        .emit('DmChat', {
+          message: chat.message,
+          username: chat.user.user_name,
+          user_id: chat.user.id,
+        });
+    },
+  );
 });
 
 http.listen(PORT, () => {

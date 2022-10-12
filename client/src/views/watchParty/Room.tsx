@@ -3,16 +3,13 @@ import { useLocation } from 'react-router-dom';
 import {
   Card, Container, Row, Col,
 } from 'react-bootstrap';
-import io from 'socket.io-client';
 import { UserContext } from '../../context';
-
-const socket = io();
 
 const { default: Video } = require('./Video.tsx');
 const { default: Chat } = require('./Chat.tsx');
 
 // function WatchParty({ videos, user, room }: any) {
-function WatchParty() {
+function WatchParty({ socket }) {
   // state vars
   const [dbMessages, setMessages] = useState([]);
   const user = useContext(UserContext);
@@ -20,7 +17,7 @@ function WatchParty() {
   const room = state.party;
 
   useEffect(() => {
-    socket.emit('join', room);
+    socket.emit('join', { room, type: 'PARTY' });
     socket.emit('getMessages', room || 'test');
     socket.on('getMessages', (messages) => {
       setMessages(messages);

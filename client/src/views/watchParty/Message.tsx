@@ -14,7 +14,12 @@ function Message({ message, user, socket }) {
   }, []);
   return (
     <Container
-      style={{ wordWrap: 'break-word', maxWidth: '20vw', height: '5vh' }}
+      style={{
+			  wordWrap: 'break-word',
+			  maxWidth: '20vw',
+			  marginTop: '5px',
+			  marginBottom: '5px',
+      }}
     >
       {user_name}
       :
