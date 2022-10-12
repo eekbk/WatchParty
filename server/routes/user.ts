@@ -1,6 +1,6 @@
 // File for handling user endpoints
 import express, { Response, Router } from 'express';
-import { RequestWithUser } from '../../interfaces';
+import { RequestWithUser } from '../../interfaces/interfaces';
 import { prisma } from '../db/index';
 
 const user: Router = express.Router();
@@ -61,6 +61,24 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           id: f.id,
           username: f.user_name,
         }));
+        return prisma.user.findMany({
+          where: {
+            relatee: {
+              some: {
+                type: 'BLOCK',
+                relator: {
+                  id: user.id,
+                },
+              },
+            },
+          },
+        });
+      })
+      .then((enemies) => {
+        user.enemies = enemies.map((f) => ({
+          id: f.id,
+          username: f.user_name,
+        }));
         res.status(200).json(user);
       })
       .catch((err) => {
@@ -91,5 +109,7 @@ user.post('/playlist', (req: RequestWithUser, res: Response) => {
       res.sendStatus(500);
     });
 });
+
+user.post('/');
 
 export default user;

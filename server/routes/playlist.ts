@@ -28,8 +28,13 @@ playlist.get('/:id', (req: Request, res: Response) => {
     .then((videos) => {
       res.status(200).send(
         JSON.stringify(
-          videos.map(({ video: { url, title, description } }) => ({
+          videos.map(({
+            video: {
+              url, title, description, thumbnail,
+            },
+          }) => ({
             url,
+            thumbnail,
             snippet: {
               title,
               description,

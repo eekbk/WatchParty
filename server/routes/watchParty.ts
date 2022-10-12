@@ -3,7 +3,7 @@ import express, { Request, Response, Router } from 'express';
 import { Party } from '@prisma/client';
 import axios from 'axios';
 import { prisma } from '../db/index';
-import { YoutubeVideo, RequestWithUser } from '../../interfaces';
+import { YoutubeVideo, RequestWithUser } from '../../interfaces/interfaces';
 
 export const party: Router = express.Router();
 
