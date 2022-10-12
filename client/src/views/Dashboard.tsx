@@ -7,7 +7,9 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import { useNavigate } from 'react-router-dom';
+import ListGroup from 'react-bootstrap/ListGroup';
 import { UserContext } from '../context';
+
 // import Carousel from 'react-bootstrap/Carousel';
 
 function Dashboard() {
@@ -23,7 +25,13 @@ function Dashboard() {
     axios
       .get('/api/party')
       .then((data: any) => {
-        setParties(data.data);
+        console.log(data.data, 'data.data api/party......');
+        setParties(
+          data.data.sort(
+            (a, b) =>
+              Number(new Date(b.date_time)) - Number(new Date(a.date_time)),
+          ),
+        );
       })
       .catch((err) => {
         console.error(err);
@@ -33,6 +41,7 @@ function Dashboard() {
     axios
       .get(`/api/playlist/${party.playlist_id}`)
       .then((videos) => {
+        console.log(parties, 'videos api/playlist......');
         navigate('/watchParty', {
           state: { party: party.id, videos: videos.data },
         });
@@ -52,23 +61,41 @@ function Dashboard() {
       {user ? (
         <Row>
           <Col sm={8}>
-            <Card style={{ width: '18rem' }}>
+            <Card style={{ width: '14rem' }}>
               {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
               <Card.Img variant="top" src={user.profile} />
               <Card.Body>
                 <Card.Title>
                   {user.user_name}
-                  &apos;s profile info
+                  &apos;s dashboard
                 </Card.Title>
-                <Card.Text>random giberish</Card.Text>
+                <Card.Text>Trick or Treat</Card.Text>
                 <Button variant="primary" onClick={() => handleProfileClick()}>
                   profile
                 </Button>
               </Card.Body>
             </Card>
           </Col>
-          <Col sm={4}>
-            <Card style={{ width: '18rem' }} />
+          <Col />
+          <Col sm={3}>
+            {/* <Card style={{ width: '18rem' }} /> */}
+            <ListGroup>
+              <ListGroup.Item action variant="dark">
+                Upcoming Watch Parties
+              </ListGroup.Item>
+              {parties.slice(0, 5).map((party) => (
+                <ListGroup.Item
+                  action
+                  variant="light"
+                  onClick={() => handleCardClick(party)}
+                  key={party}
+                >
+                  <Col>{party.date_time.slice(5, 10)}</Col>
+                  {' '}
+                  {party.name}
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
           </Col>
         </Row>
       ) : null}
@@ -84,7 +111,9 @@ function Dashboard() {
                   <Card.Text>{party.description}</Card.Text>
                 </Card.Body>
                 <Card.Footer>
-                  <small className="text-muted">Last updated 3 mins ago</small>
+                  <small className="text-muted">
+                    Starting on: {party.date_time.slice(0, 10)}
+                  </small>
                 </Card.Footer>
               </Card>
             ))}
