@@ -6,6 +6,10 @@ export interface User extends Express.User {
 	playlists: Playlist[];
 	parties: any[];
 	friends: any[];
+	followers: any[];
+	following: any[];
+	blockers: any[];
+	blocking: any[];
 }
 export interface RequestWithUser extends Request {
 	user: User;
