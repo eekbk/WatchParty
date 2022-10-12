@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -22,10 +22,29 @@ model User {
   user_parties User_Party[]
   likes        Like[]
   upvotes      Upvote[]
-  playlists   Playlist[]
-  profile     String
+  playlists    Playlist[]
+  followed_by  User[]       @relation("UserFollows")
+  following    User[]       @relation("UserFollows")
+  blocking     User[]       @relation("UserBlocks")
+  blocked_by   User[]       @relation("UserBlocks")
+  profile      String
 }
 
+// model Follow {
+//   id String @id @default(uuid())
+//   follower User @relation("follower", fields: [follower_id], references: [id])
+//   follower_id String
+//   following User  @relation("following", fields: [following_id], references: [id])
+//   following_id  String
+// }
+
+// model Block {
+//   id  String  @id @default(uuid())
+//   blocker User @relation("blocker", fields: [blocker_id], references: [id])
+//   blocker_id  String
+//   got_blocked User @relation("got_blocked", fields: [got_blocked_id], references: [id])
+//   got_blocked_id String
+// }
 model Relation {
   id         String        @id @default(uuid())
   relator    User          @relation("relator", fields: [relator_id], references: [id])
@@ -38,8 +57,8 @@ model Relation {
 model Message {
   id             String       @id @default(uuid())
   createdAt      DateTime     @default(now())
-  room_timestamp String       
-  message         String
+  room_timestamp String
+  message        String
   user           User         @relation(fields: [user_id], references: [id])
   user_id        String
   party          Party        @relation(fields: [party_id], references: [id])
@@ -54,7 +73,7 @@ model Party {
   name         String?
   description  String?
   messages     Message[]
-  playlist     Playlist?     @relation(fields: [playlist_id], references: [id])
+  playlist     Playlist?    @relation(fields: [playlist_id], references: [id])
   playlist_id  String?
   is_private   Boolean      @default(false)
   is_recurring Boolean      @default(false)
@@ -74,7 +93,7 @@ model Playlist {
   thumbnail       String
   parties         Party[]
   playlist_videos Playlist_Video[]
-  user            User?         @relation(fields: [user_id], references: [id])
+  user            User?            @relation(fields: [user_id], references: [id])
   user_id         String?
   videos          Video[]
 }
