@@ -92,22 +92,4 @@ user.post('/playlist', (req: RequestWithUser, res: Response) => {
     });
 });
 
-// // endpoint for adding or removing a follow
-// user.put('/follows', (req: Request, res: Response) => {
-//   // deconstruct the req.body
-//   const { followedId, followingId, isFollowing } = req.body;
-//   // find the user with id of the following user
-//   if (!isFollowing) {
-//     prisma.user.update({
-//       where: {
-//         id: followingId,
-//       },
-//     })
-
-//   }
-//     // connect the followed Id to the followingId
-//     // increment the follows of the followed id up or down
-//     //
-// });
-
 export default user;
