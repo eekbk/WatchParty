@@ -256,70 +256,70 @@ app.post('/video', (req: Request, res: Response) => {
     });
 });
 
-// create a relation between current user and followed for a follow click
-app.post('/api/user/follow', async (req: Request, res: Response) => {
-  // deconstruct req body
-  const { followerId, followedId } = req.body;
-  // create a new relation between the follower and the followed
-  try {
-    await prisma.relation.create({
-      data: {
-        relator_id: followerId,
-        relatee_id: followedId,
-        type: 'FOLLOW',
-      },
-    });
-    await prisma.user.update({
-      where: {
-        id: followedId,
-      },
-      data: {
-        follows: {
-          increment: 1,
-        },
-      },
-    });
-    res.sendStatus(201);
-  } catch (err) {
-    console.log('This is error please fix now:\n', err);
-    res.sendStatus(500);
-  }
-});
+// // create a relation between current user and followed for a follow click
+// app.post('/api/user/follow', async (req: Request, res: Response) => {
+//   // deconstruct req body
+//   const { followerId, followedId } = req.body;
+//   // create a new relation between the follower and the followed
+//   try {
+//     await prisma.relation.create({
+//       data: {
+//         relator_id: followerId,
+//         relatee_id: followedId,
+//         type: 'FOLLOW',
+//       },
+//     });
+//     await prisma.user.update({
+//       where: {
+//         id: followedId,
+//       },
+//       data: {
+//         follows: {
+//           increment: 1,
+//         },
+//       },
+//     });
+//     res.sendStatus(201);
+//   } catch (err) {
+//     console.log('This is error please fix now:\n', err);
+//     res.sendStatus(500);
+//   }
+// });
 
-// delete a relation between current user and followed
-app.delete('/api/user/follow', (req: Request, res: Response) => {
-  // deconstruct req body
-  const { followerId, followedId } = req.body;
+// // delete a relation between current user and followed
+// app.delete('/api/user/follow', (req: Request, res: Response) => {
+//   // deconstruct req body
+//   const { followerId, followedId } = req.body;
 
-  prisma.relation
-    .deleteMany({
-      where: {
-        relator_id: followerId,
-        relatee_id: followedId,
-      },
-    })
-    .then(() => {
-      prisma.user.update({
-        where: {
-          id: followedId,
-        },
-        data: {
-          follows: {
-            decrement: 1,
-          },
-        },
-      });
-    })
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      console.error('Err from follow delete:\n', err);
-      res.sendStatus(500);
-    });
+//   prisma.relation
+//     .deleteMany({
+//       where: {
+//         relator_id: followerId,
+//         relatee_id: followedId,
+//       },
+//     })
+//     .then(() => {
+//       prisma.user.update({
+//         where: {
+//           id: followedId,
+//         },
+//         data: {
+//           follows: {
+//             decrement: 1,
+//           },
+//         },
+//       });
+//     })
+//     .then(() => {
+//       res.sendStatus(200);
+//     })
+//     .catch((err) => {
+//       console.error('Err from follow delete:\n', err);
+//       res.sendStatus(500);
+//     });
 
-  // delete the relation between the follower and the followed
-});
+//   // delete the relation between the follower and the followed
+// });
 
 app.get('/*', (req: Request, res: Response) => {
   res.sendFile(
