@@ -2,9 +2,10 @@ import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
 import { Container, ProgressBar, Form } from 'react-bootstrap';
 import { LButton } from '../../styles';
+import { Playlist } from './Playlist';
 
 function Video({
-  videos, status, room, user, socket,
+  videos, setVideos, status, room, user, socket,
 }) {
   // state vars
   const [isPlaying, setPause] = useState(() => !status);
@@ -130,6 +131,7 @@ function Video({
 			  marginLeft: '0px',
       }}
     >
+      <Playlist videos={videos} setVideos={setVideos} />
       <ReactPlayer
         ref={videoPlayer}
         config={{
