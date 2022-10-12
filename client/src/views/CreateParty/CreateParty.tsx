@@ -18,7 +18,7 @@ const {
 const { Item, Header, Body } = Accordion;
 
 export function CreateParty() {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const typeaheadRef = useRef(null);
   const [privateR, setPrivateR] = useState(false);
   const [archive, setArchive] = useState(false);
@@ -34,8 +34,10 @@ export function CreateParty() {
   const [playlistDescription, setPlaylistDescription] = useState('');
   const [importedPlaylist, setImportedPlaylist] = useState(null);
   const [created, setCreated] = useState(false);
+  const [date, setDate] = useState(new Date(Date.now()));
 
   const handleCreate = (e) => {
+    console.log(date);
     if (savePlaylist) {
       axios
         .post('/api/user/playlist', {
@@ -44,6 +46,7 @@ export function CreateParty() {
             description: playlistDescription,
             thumbnail: playlist[0].thumbnail,
             videos: playlist.map((vd) => vd.id),
+            user_id: user.id,
           },
         })
         .then((playlistId) =>
@@ -51,15 +54,19 @@ export function CreateParty() {
             party: {
               name,
               description,
+              date_time: date,
               is_private: privateR,
               is_recurring: archive,
               invitees: invited,
               admins,
               type: 'PARTY',
+              user_id: user.id,
             },
             playlistId: playlistId.data,
           }))
-        .then(() => {
+        .then(() => axios.get('/api/user'))
+        .then((data) => {
+          setUser(data.data);
           setCreated(true);
         })
         .catch((err) => {
@@ -80,15 +87,19 @@ export function CreateParty() {
             party: {
               name,
               description,
+              date_time: date,
               is_private: privateR,
               is_recurring: archive,
               invitees: invited,
               admins,
               type: 'PARTY',
+              user_id: user.id,
             },
             playlistId: playlistId.data,
           }))
-        .then(() => {
+        .then(() => axios.get('/api/user'))
+        .then((data) => {
+          setUser(data.data);
           setCreated(true);
         })
         .catch((err) => {
@@ -100,15 +111,19 @@ export function CreateParty() {
           party: {
             name,
             description,
+            date_time: date,
             is_private: privateR,
             is_recurring: archive,
             invitees: invited,
             admins,
             type: 'PARTY',
+            user_id: user.id,
           },
           playlistId: importedPlaylist.id,
         })
-        .then(() => {
+        .then(() => axios.get('/api/user'))
+        .then((data) => {
+          setUser(data.data);
           setCreated(true);
         })
         .catch((err) => {
@@ -163,6 +178,19 @@ export function CreateParty() {
                 onChange={(e) => setDescription(e.target.value)}
                 as="textarea"
                 placeholder="Describe Room Here"
+              />
+            </Group>
+            <Group>
+              <Label>Start Date</Label>
+              <Control
+                as="input"
+                value={date.toISOString().slice(0, 10)}
+                min={new Date().toISOString().slice(0, 10)}
+                max={new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
+								  .toISOString()
+								  .slice(0, 10)}
+                type="date"
+                onChange={(e) => setDate(new Date(e.target.value))}
               />
             </Group>
             <Group>
