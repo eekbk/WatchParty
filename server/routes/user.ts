@@ -72,17 +72,12 @@ user.get('/', (req: RequestWithUser, res: Response) => {
 
 user.post('/playlist', (req: RequestWithUser, res: Response) => {
   const { playlist } = req.body;
-  const { user } = req;
-  const {
-    name, description, videos, thumbnail,
-  } = playlist;
+  const { videos } = playlist;
+  delete playlist.videos;
   prisma.playlist
     .create({
       data: {
-        name,
-        description,
-        thumbnail: thumbnail || '',
-        user_id: user.id,
+        ...playlist,
         playlist_videos: {
           create: videos.map((id: string) => ({ video: { connect: { id } } })),
         },

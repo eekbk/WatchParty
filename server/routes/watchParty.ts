@@ -1,6 +1,6 @@
 // File for handling WatchParty endpoints
 import express, { Request, Response, Router } from 'express';
-// import { Party } from '@prisma/client';
+import { Party } from '@prisma/client';
 import axios from 'axios';
 import { prisma } from '../db/index';
 import { YoutubeVideo, RequestWithUser } from '../../interfaces';
@@ -12,6 +12,9 @@ party.get('/', (req: Request, res: Response) => {
   // Retrieve all watch parties from the database
   prisma.party
     .findMany({
+      where: {
+        type: 'PARTY',
+      },
       include: {
         playlist: {
           select: {
@@ -49,9 +52,6 @@ party.get('/topParties', (req: Request, res: Response) => {
 });
 
 // Create a watch party
-// Create a playlist if not importing, then send playlist id to this endpoint either way
-// New rules: Either create from a playlist only or by adding videos individually.
-// type, status, is_recurring, is_private, user_parties
 party.post('/', (req: RequestWithUser, res: Response) => {
   // Get the party values out of the request body
   const { party, playlistId } = req.body;
@@ -65,6 +65,8 @@ party.post('/', (req: RequestWithUser, res: Response) => {
     is_recurring,
     admins,
     invitees,
+    date_time,
+    user_id,
   } = party;
   invitees = invitees || [];
   admins = admins || [];
@@ -73,19 +75,28 @@ party.post('/', (req: RequestWithUser, res: Response) => {
     .concat(
       invitees.map((id: string) => ({
         role: 'NORMIE',
-        user: { connect: { id } },
+        user: {
+          connect: {
+            id,
+          },
+        },
       })),
     );
   participants.push({
     role: 'CREATOR',
-    user: { connect: { id: req.user.id } },
+    user: {
+      connect: {
+        id: user_id,
+      },
+    },
   });
   prisma.party
     .create({
       data: {
         name,
-        type,
         description,
+        date_time,
+        type,
         status,
         is_private,
         is_recurring,
@@ -104,7 +115,7 @@ party.post('/', (req: RequestWithUser, res: Response) => {
     })
     .catch((err) => {
       console.error(err);
-      res.sendStatus(err.status);
+      res.sendStatus(500);
     });
 });
 
@@ -113,7 +124,7 @@ party.put('/:partyId', (req: Request, res: Response) => {
   // Get the party id out of the request params
   const { partyId } = req.params;
   // Get the updated values out of the request body
-  const { party }: { party: any } = req.body;
+  const { party }: { party: Party } = req.body;
   // Update the party with the updated values with the matching id in the database
   prisma.party
     .update({
