@@ -4,17 +4,24 @@ import { Button } from 'react-bootstrap';
 import { UserContext } from '../context';
 
 function FollowButton({ otherUserId, follows, setFollows }: any) {
+  // console.log('FOLLOWS:', follows);
   const { user, setUser } = useContext(UserContext);
   const [isFollowing, setIsFollowing] = useState(false);
   const [aToggle, setAToggle] = useState(false);
 
   useEffect(() => {
+    console.log('user.following:', user.following);
+    console.log('otherUserId in useEffect:\n', otherUserId);
+    // if user's following array includes the userId of the otherUser
     if (user.following.includes(otherUserId)) {
+      // set is Following to true
       setIsFollowing(true);
     } else {
       setIsFollowing(false);
     }
-  }, []);
+  }, [user]);
+
+  // console.log('otherUserId in useEffect:\n', otherUserId);
 
   const handleClick = async () => {
     if (isFollowing) {
@@ -30,8 +37,10 @@ function FollowButton({ otherUserId, follows, setFollows }: any) {
     } else {
       try {
         await axios.post('/api/user/follow', {
-          followerId: user.id,
-          followedId: otherUserId,
+          data: {
+            followerId: user.id,
+            followedId: otherUserId,
+          },
         });
         await setIsFollowing(true);
         setFollows(follows + 1);
