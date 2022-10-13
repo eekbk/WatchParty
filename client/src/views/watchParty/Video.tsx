@@ -93,7 +93,6 @@ function Video({
       setPause(arg);
     });
     socket.on('seek', (seconds: number) => {
-      // console.log(seconds);
       videoPlayer.current.seekTo(seconds, 'seconds');
       setSeconds(seconds);
     });
@@ -144,12 +143,6 @@ function Video({
         }}
         onEnded={() => {
 				  changeVid(true);
-        }}
-        onBuffer={() => {
-				  // console.log('buffering');
-        }}
-        onBufferEnd={() => {
-				  // console.log('DONE');
         }}
         onStart={setDuration}
         volume={volume}

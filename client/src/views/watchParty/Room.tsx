@@ -7,13 +7,11 @@ import io from 'socket.io-client';
 import axios from 'axios';
 import { UserContext } from '../../context';
 
-const socket = io();
-
 const { default: Video } = require('./Video.tsx');
 const { default: Chat } = require('./Chat.tsx');
 
 // function WatchParty({ videos, user, room }: any) {
-function WatchParty() {
+function WatchParty({ socket }) {
   // state vars
   const [dbMessages, setMessages] = useState([]);
   const user = useContext(UserContext);
@@ -22,7 +20,7 @@ function WatchParty() {
   const room = state.party;
 
   useEffect(() => {
-    socket.emit('join', room.id);
+    socket.emit('join', { room: room.id, type: 'PARTY' });
     socket.emit('getMessages', room.id || 'test');
     socket.on('getMessages', (messages) => {
       setMessages(messages);

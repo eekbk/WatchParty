@@ -12,6 +12,9 @@ party.get('/', (req: Request, res: Response) => {
   // Retrieve all watch parties from the database
   prisma.party
     .findMany({
+      where: {
+        type: 'PARTY',
+      },
       include: {
         playlist: {
           select: {

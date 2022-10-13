@@ -2,6 +2,7 @@
 import React /* useContext */ from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route /* redirect */ } from 'react-router-dom';
+import io from 'socket.io-client';
 import { CreateParty } from './views/CreateParty/CreateParty';
 import { UserContextProvider /* UserContext */ } from './context';
 import { SearchContextProvider } from './contexts/searchContext';
@@ -11,9 +12,11 @@ const { default: WatchParty } = require('./views/watchParty/Room.tsx');
 const { default: Dashboard } = require('./views/Dashboard.tsx');
 const { default: Logout } = require('./views/Logout.tsx');
 const { default: Search } = require('./views/search/Search.tsx');
+const { default: Dm } = require('./views/Dm/Dm.tsx');
+
+const socket = io();
 
 function RouteHandler() {
-  // const {user} = useContext(UserContext);
   return (
     <React.StrictMode>
       <BrowserRouter>
@@ -22,9 +25,10 @@ function RouteHandler() {
             <Route path="" element={<Dashboard />} />
             <Route path="logout" element={<Logout />} />
             <Route path="search" element={<Search />} />
-            <Route path="watchParty" element={<WatchParty />} />
+            <Route path="watchParty" element={<WatchParty socket={socket} />} />
             <Route path="createParty" element={<CreateParty />} />
             <Route path="profile" element={<div>Profile</div>} />
+            <Route path="dm" element={<Dm socket={socket} />} />
           </Route>
         </Routes>
       </BrowserRouter>
