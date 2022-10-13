@@ -6,8 +6,10 @@ import { prisma } from '../db/index';
 const user: Router = express.Router();
 
 user.get('/', (req: RequestWithUser, res: Response) => {
+  console.log('got to the endpoint!');
   const { user } = req;
   if (user === undefined) {
+    console.log('wait is this what happened?');
     res.sendStatus(400);
   } else {
     prisma.playlist
@@ -61,7 +63,7 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           id: f.id,
           username: f.user_name,
         }));
-        user.followers = user.friends;
+        user.followers = user.friends.map((friend) => friend.id);
         return prisma.user.findMany({
           where: {
             relator: {
@@ -76,10 +78,7 @@ user.get('/', (req: RequestWithUser, res: Response) => {
         });
       })
       .then((following: any) => {
-        user.following = following.map((following) => ({
-          id: following.id,
-          username: following.user_name,
-        }));
+        user.following = following.map((follow) => follow.id);
         return prisma.user.findMany({
           where: {
             relatee: {
@@ -116,10 +115,11 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           id: blocked.id,
           username: blocked.user_name,
         }));
+        console.log('made it to the status!');
         res.status(200).json(user);
       })
       .catch((err) => {
-        console.error(err);
+        console.log('AN ERROR WHATS IT MEAN?!?!:\n', err);
         res.sendStatus(err.status);
       });
   }
@@ -152,27 +152,45 @@ export default user;
 // create a relation between current user and followed for a follow click
 user.post('/follow', async (req: RequestWithUser, res: Response) => {
   // deconstruct req body
+  console.log(
+    '!!!!!!!!!!!!!!!!!The req.body:\n',
+    req.body,
+    '\n!!!!!!!!!!!!!!!!!!',
+  );
   const { followerId, followedId } = req.body;
   // create a new relation between the follower and the followed
   try {
-    await prisma.relation.create({
-      data: {
+    const existingFollow = await prisma.relation.findFirst({
+      where: {
         relator_id: followerId,
         relatee_id: followedId,
         type: 'FOLLOW',
       },
     });
-    await prisma.user.update({
-      where: {
-        id: followedId,
-      },
-      data: {
-        follows: {
-          increment: 1,
+    if (existingFollow) {
+      console.log('Hey you already following, foo!');
+      res.sendStatus(200);
+    } else {
+      await prisma.relation.create({
+        data: {
+          relator_id: followerId,
+          relatee_id: followedId,
+          type: 'FOLLOW',
         },
-      },
-    });
-    res.sendStatus(201);
+      });
+      const updatedUser = await prisma.user.update({
+        where: {
+          id: followedId,
+        },
+        data: {
+          follows: {
+            increment: 1,
+          },
+        },
+      });
+      console.log('that updated user:\n', updatedUser);
+      res.sendStatus(201);
+    }
   } catch (err) {
     console.log('This is error please fix now:\n', err);
     res.sendStatus(500);
@@ -181,6 +199,7 @@ user.post('/follow', async (req: RequestWithUser, res: Response) => {
 
 // delete a relation between current user and followed
 user.delete('/follow', (req: RequestWithUser, res: Response) => {
+  console.log('!!!!!!!req.body in DELETE FOLLOW', req.body, '^^^^^^^^^');
   // deconstruct req body
   const { followerId, followedId } = req.body;
 
@@ -191,7 +210,7 @@ user.delete('/follow', (req: RequestWithUser, res: Response) => {
         relatee_id: followedId,
       },
     })
-    .then(() => {
+    .then(() =>
       prisma.user.update({
         where: {
           id: followedId,
@@ -201,9 +220,9 @@ user.delete('/follow', (req: RequestWithUser, res: Response) => {
             decrement: 1,
           },
         },
-      });
-    })
-    .then(() => {
+      }))
+    .then((data) => {
+      console.log('heres the data after the update:\n', data);
       res.sendStatus(200);
     })
     .catch((err) => {
