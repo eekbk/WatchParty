@@ -31,12 +31,6 @@ function Search() {
   // }, [user]);
 
   const handleCardClick = (party, kind) => {
-    // reroute to watchParty specific watchParty
-    // console.log(
-    //   `what is passed in as 'party' when kind is '${kind}': ${JSON.stringify(
-    //     party,
-    //   )}`,
-    // );
     if (kind === 'party') {
       axios
         .get(`/api/playlist/${party.playlist_id}`)
@@ -75,22 +69,6 @@ function Search() {
     }
   };
 
-  // handle the follow click
-  // const handleFollowClick = (userMatch) => {
-  //   // if the other user is not already followed
-  //   if (!user.following.includes(userMatch.id)) {
-  //     axios.post('api/user/follow', { followerId: user.id, followedId: userMatch.id })
-  //       .then(() => {
-  //         console.log('Nailed IT!');
-  //       })
-  //       .catch((err) => {
-  //         console.error('error in old FollowClick:\n', err);
-  //       });
-  //   }
-  //   // send an axios request to follow the other user
-  //   // otherwise
-  // };
-
   return (
     <Container>
       {!partiesMatch.length && !usersMatch.length && !videosMatch.length ? (
@@ -100,12 +78,6 @@ function Search() {
       )}
       {partiesMatch.length ? <h2>Parties</h2> : []}
       <ul>
-        {/* {partiesMatch.map((party) => (
-          <Card key={party.id} onClick={() => handleCardClick(party, 'party')}>
-            <h3>{party.name}</h3>
-            <p>{party.description}</p>
-          </Card>
-        ))} */}
         <Col>
           <CardGroup>
             {partiesMatch.slice(0, 5).map((party) => (
@@ -145,36 +117,11 @@ function Search() {
         <Col>
           <CardGroup>
             {usersMatch.slice(0, 5).map((userMatch) => (
-              <>
-                {/* <Card
-                  style={{
-								  maxWidth: '18rem',
-                  }}
-                  onClick={() => handleCardClick(userMatch, 'user')}
-                >
-                  <Card.Img
-                    variant="top"
-                    src="https://i.ytimg.com/vi/CtpdMkKvB6U/mqdefault.jpg"
-                  />
-                  <Card.Body>
-                    <Card.Title>{userMatch.user_name}</Card.Title>
-                    <Card.Text>{userMatch.follows}</Card.Text>
-                  </Card.Body>
-                  <Card.Footer>
-                    {/* <Button
-                    onClick={() =>
-                      handleFollowClick(userMatch)}>{user.following.includes(userMatch.id)
-                    ? 'Unfollow' : 'Follow' }</Button> */}
-                {/* <Button>DM</Button>
-                    <FollowButton otherUserId={userMatch.id} />
-                  </Card.Footer>
-                </Card> */}
-                <ModCard
-                  obj={userMatch}
-                  kind="user"
-                  handleCardClick={handleCardClick}
-                />
-              </>
+              <ModCard
+                obj={userMatch}
+                kind="user"
+                handleCardClick={handleCardClick}
+              />
             ))}
           </CardGroup>
         </Col>
