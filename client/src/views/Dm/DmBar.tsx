@@ -34,7 +34,7 @@ function DmBar({ user, socket, changeDm }) {
     {' '}
     {party.party_id[0]}
   </Container>
-        ))
+				  ))
 			  : null}
     </StyledScrollableGroup>
   );

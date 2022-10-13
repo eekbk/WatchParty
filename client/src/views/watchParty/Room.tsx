@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import {
   Card, Container, Row, Col,
 } from 'react-bootstrap';
+// import io from 'socket.io-client';
 import { UserContext } from '../../context';
 
 const { default: Video } = require('./Video.tsx');
@@ -15,10 +16,11 @@ function WatchParty({ socket }) {
   const user = useContext(UserContext);
   const { state } = useLocation();
   const room = state.party;
+  const [playlist, setPlaylist] = useState(room.videos);
 
   useEffect(() => {
-    socket.emit('join', { room, type: 'PARTY' });
-    socket.emit('getMessages', room || 'test');
+    socket.emit('join', { room: room.id, type: 'PARTY' });
+    socket.emit('getMessages', room.id || 'test');
     socket.on('getMessages', (messages) => {
       setMessages(messages);
     });
@@ -50,13 +52,14 @@ function WatchParty({ socket }) {
           >
             <Video
               user={user}
-              videos={state.videos}
+              playlist={playlist}
+              setPlaylist={setPlaylist}
               status={
 								user.user
-								  ? user.user.parties.filter((party) => party.id === room)[0]
+								  ? user.user.parties.filter((party) => party.id === room.id)[0]
 								  : null
 							}
-              room={room || 'test'}
+              room={room}
               socket={socket}
             />
           </Card>
@@ -64,7 +67,7 @@ function WatchParty({ socket }) {
         <Col xs={5} md={3}>
           <Chat
             user={user}
-            room={room || 'test'}
+            room={room.id || 'test'}
             messages={dbMessages}
             setMessages={setMessages}
             socket={socket}
