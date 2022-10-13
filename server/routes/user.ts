@@ -24,7 +24,6 @@ user.get('/', (req: RequestWithUser, res: Response) => {
         },
       })
       .then((playlists: any) => {
-        console.log('checking playlists:', playlists[0].playlist_videos);
         user.playlists = playlists;
         return prisma.party.findMany({
           where: {

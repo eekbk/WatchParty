@@ -20,7 +20,6 @@ function Search() {
 
   const handleCardClick = (party, kind) => {
     // reroute to watchParty specific watchParty
-    console.log(party);
     if (kind === 'party') {
       navigate('/watchParty', {
         state: { party: party.id, videos: party.videos },
