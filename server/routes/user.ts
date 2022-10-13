@@ -143,9 +143,6 @@ user.post('/playlist', (req: RequestWithUser, res: Response) => {
       res.sendStatus(500);
     });
 });
-
-export default user;
-
 // create a relation between current user and followed for a follow click
 user.post('/follow', async (req: RequestWithUser, res: Response) => {
   // deconstruct req body
@@ -222,3 +219,37 @@ user.delete('/follow', (req: RequestWithUser, res: Response) => {
 
   // delete the relation between the follower and the followed
 });
+
+// create a relation between current user and followed for a follow click
+user.post('/block', async (req: RequestWithUser, res: Response) => {
+  // deconstruct req body
+  const { blockerId, blockedId } = req.body;
+  // create a new relation between the follower and the followed
+  try {
+    const existingBlock = await prisma.relation.findFirst({
+      where: {
+        relator_id: blockerId,
+        relatee_id: blockedId,
+        type: 'BLOCK',
+      },
+    });
+    if (existingBlock) {
+      console.log('Hey you already blocking, foo!');
+      res.sendStatus(200);
+    } else {
+      await prisma.relation.create({
+        data: {
+          relator_id: blockerId,
+          relatee_id: blockedId,
+          type: 'BLOCK',
+        },
+      });
+      res.sendStatus(201);
+    }
+  } catch (err) {
+    console.log('This is error please fix now:\n', err);
+    res.sendStatus(500);
+  }
+});
+
+export default user;
