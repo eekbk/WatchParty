@@ -16,6 +16,7 @@ model User {
   user_name    String
   googleId     String       @unique
   follows      Int          @default(0)
+  thumbnail   String?
   messages     Message[]
   relator      Relation[]   @relation("relator")
   relatee      Relation[]   @relation("relatee")
