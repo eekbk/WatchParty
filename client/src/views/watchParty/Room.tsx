@@ -3,8 +3,7 @@ import { useLocation } from 'react-router-dom';
 import {
   Card, Container, Row, Col,
 } from 'react-bootstrap';
-import io from 'socket.io-client';
-import axios from 'axios';
+// import io from 'socket.io-client';
 import { UserContext } from '../../context';
 
 const { default: Video } = require('./Video.tsx');
@@ -16,8 +15,8 @@ function WatchParty({ socket }) {
   const [dbMessages, setMessages] = useState([]);
   const user = useContext(UserContext);
   const { state } = useLocation();
-  const [playlist, setPlaylist] = useState([]);
   const room = state.party;
+  const [playlist, setPlaylist] = useState(room.videos);
 
   useEffect(() => {
     socket.emit('join', { room: room.id, type: 'PARTY' });
@@ -29,17 +28,6 @@ function WatchParty({ socket }) {
       socket.off('getMessages');
       socket.off('getStatus');
     };
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`/api/playlist/party/${room.id}`)
-      .then(({ data: pl }) => {
-        setPlaylist(pl.playlist.playlist_videos.map((plv) => plv.video));
-      })
-      .catch((err) => {
-        console.error(err);
-      });
   }, []);
 
   return (

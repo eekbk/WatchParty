@@ -15,8 +15,16 @@ user.get('/', (req: RequestWithUser, res: Response) => {
         where: {
           user_id: user.id,
         },
+        include: {
+          playlist_videos: {
+            select: {
+              video: true,
+            },
+          },
+        },
       })
-      .then((playlists) => {
+      .then((playlists: any) => {
+        console.log('checking playlists:', playlists[0].playlist_videos);
         user.playlists = playlists;
         return prisma.party.findMany({
           where: {
@@ -27,6 +35,9 @@ user.get('/', (req: RequestWithUser, res: Response) => {
                 },
               },
             },
+          },
+          include: {
+            videos: true,
           },
         });
       })

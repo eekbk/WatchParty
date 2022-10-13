@@ -10,6 +10,7 @@ const { Item } = ListGroup;
 export function Playlist({ playlist, setPlaylist, room }) {
   const [video, setVideo] = useState('');
   const [clicked, setClicked] = useState(false);
+
   const handleVideoAddition = () => {
     const regExp =			/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = video.match(regExp);
@@ -21,7 +22,7 @@ export function Playlist({ playlist, setPlaylist, room }) {
         .then((vd) => {
           setVideo('');
           setPlaylist(playlist.concat([vd.data]));
-          // update playlist in database at post to api/playlist/video
+          // do some work here
         })
         .catch((err) => {
           console.error(err);
@@ -33,18 +34,10 @@ export function Playlist({ playlist, setPlaylist, room }) {
   };
 
   const handleVideoRemoval = (i) => {
+    // do some work here
     const vids = playlist.slice();
-    console.log(room);
-    axios
-      .put('/api/playlist/video', {
-        video_id: vids[i].id,
-        playlist_id: room.playlist_id,
-      })
-      .then(() => {
-        vids.splice(i, 1);
-        setPlaylist(vids);
-      })
-      .catch((err) => console.error(err));
+    vids.splice(i, 1);
+    setPlaylist(vids);
   };
 
   return (

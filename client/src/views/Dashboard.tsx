@@ -23,6 +23,7 @@ function Dashboard() {
     axios
       .get('/api/party')
       .then((data: any) => {
+        console.log(data.data);
         setParties(
           data.data.sort(
             (a, b) =>
@@ -35,16 +36,9 @@ function Dashboard() {
       });
   }, []);
   const handleCardClick = (party) => {
-    axios
-      .get(`/api/playlist/${party.playlist_id}`)
-      .then((videos) => {
-        navigate('/watchParty', {
-          state: { party, videos: videos.data },
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    navigate('/watchParty', {
+      state: { party, videos: party.videos },
+    });
   };
   const handleProfileClick = () => {
     navigate('/profile');
@@ -83,7 +77,7 @@ function Dashboard() {
           <CardGroup>
             {parties.slice(0, 5).map((party) => (
               <Card onClick={() => handleCardClick(party)}>
-                <Card.Img variant="top" src={party.playlist.thumbnail} />
+                <Card.Img variant="top" src={party.thumbnail} />
                 <Card.Body>
                   <Card.Title>{party.name}</Card.Title>
                   <Card.Text>{party.description}</Card.Text>

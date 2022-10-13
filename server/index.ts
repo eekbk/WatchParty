@@ -14,7 +14,6 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const passport = require('passport');
-const axios = require('axios');
 // const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { default: user } = require('./routes/user.ts');
@@ -209,49 +208,6 @@ app.post('/api/seed', async (req: Request, res: Response) => {
     console.log('Error from /seed', err);
     res.sendStatus(500);
   }
-});
-
-app.post('/video', (req: Request, res: Response) => {
-  const { videoId, videoUrl } = req.body;
-  prisma.video
-    .findFirst({
-      where: {
-        id: videoId,
-      },
-    })
-    .then((results) => {
-      if (results) {
-        res.status(200).send(results);
-      } else {
-        return Promise.resolve(
-          axios.get(
-            `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${process.env.YOUTUBE_KEY}`,
-          ),
-        );
-      }
-    })
-    .then((video: any) => {
-      video = video.data;
-      const formattedVideo: any = {
-        id: videoId,
-        url: videoUrl,
-        title: video.items[0].title,
-        description: video.items[0].description,
-        thumbnail: video.items[0].thumbnails.default.url,
-      };
-      prisma.video.upsert({
-        where: {
-          id: videoId,
-        },
-        update: {},
-        create: formattedVideo,
-      });
-      res.send(formattedVideo);
-    })
-    .catch((err) => {
-      console.error('error: ', err);
-      res.sendStatus(err.response.status);
-    });
 });
 
 app.get('/*', (req: Request, res: Response) => {
