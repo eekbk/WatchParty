@@ -29,7 +29,7 @@ function Dashboard() {
     axios
       .get('/api/party')
       .then((data: any) => {
-        console.log(data.data, 'data.data api/party......');
+        console.log(data.data);
         setParties(
           data.data.sort(
             (a, b) =>
@@ -50,17 +50,9 @@ function Dashboard() {
       });
   }, []);
   const handleCardClick = (party) => {
-    axios
-      .get(`/api/playlist/${party.playlist_id}`)
-      .then((videos) => {
-        console.log(parties, 'videos api/playlist......');
-        navigate('/watchParty', {
-          state: { party: party.id, videos: videos.data },
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    navigate('/watchParty', {
+      state: { party, videos: party.videos },
+    });
   };
   const handleProfileClick = () => {
     navigate('/profile');
@@ -117,38 +109,20 @@ function Dashboard() {
       {parties && parties.length ? (
         <Col>
           <CardGroup>
-            {parties.slice(0, 5).map((party) =>
-						  (!party.is_private ? (
-  <Card onClick={() => handleCardClick(party)}>
-    <Card.Img variant="top" src={party.playlist.thumbnail} />
-    <Card.Body>
-      <Card.Title>{party.name}</Card.Title>
-      <Card.Text>{party.description}</Card.Text>
-    </Card.Body>
-    <Card.Footer>
-      <small className="text-muted">
-        Starting on:
-        {' '}
-        {party.date_time.slice(0, 10)}
-      </small>
-    </Card.Footer>
-  </Card>
-						  ) : (
-  <Card onClick={() => handleCardClick(party)}>
-    <Card.Img variant="top" src={party.playlist.thumbnail} />
-    <Card.Body>
-      <Card.Title>{party.name}</Card.Title>
-      <Card.Text>{party.description}</Card.Text>
-    </Card.Body>
-    <Card.Footer>
-      <small className="text-muted">
-        Starting on:
-        {' '}
-        {party.date_time.slice(0, 10)}
-      </small>
-    </Card.Footer>
-  </Card>
-						  )))}
+            {parties.slice(0, 5).map((party) => (
+              <Card onClick={() => handleCardClick(party)}>
+                <Card.Img variant="top" src={party.thumbnail} />
+                <Card.Body>
+                  <Card.Title>{party.name}</Card.Title>
+                  <Card.Text>{party.description}</Card.Text>
+                </Card.Body>
+                <Card.Footer>
+                  <small className="text-muted">
+                    Starting on: {party.date_time.slice(0, 10)}
+                  </small>
+                </Card.Footer>
+              </Card>
+            ))}
           </CardGroup>
         </Col>
       ) : null}

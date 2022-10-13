@@ -3,7 +3,7 @@ import express, { Request, Response, Router } from 'express';
 import { Party } from '@prisma/client';
 import axios from 'axios';
 import { prisma } from '../db/index';
-import { YoutubeVideo, RequestWithUser } from '../../interfaces';
+import { YoutubeVideo, RequestWithUser } from '../../interfaces/interfaces';
 
 export const party: Router = express.Router();
 
@@ -15,35 +15,10 @@ party.get('/', (req: Request, res: Response) => {
       where: {
         type: 'PARTY',
       },
-      include: {
-        playlist: {
-          select: {
-            thumbnail: true,
-          },
-        },
-      },
     })
     .then((parties) => {
+      console.log(parties);
       res.status(200).send(JSON.stringify(parties));
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(err.status);
-    });
-});
-
-party.get('/topParties', (req: Request, res: Response) => {
-  // Retrieve all watch parties that have a not null id from the database
-  prisma.party
-    .findMany({
-      where: {
-        NOT: {
-          playlist_id: null,
-        },
-      },
-    }) // return where playlist id is truthy)
-    .then((playlists) => {
-      res.status(200).send(JSON.stringify(playlists));
     })
     .catch((err) => {
       console.error(err);
@@ -54,7 +29,7 @@ party.get('/topParties', (req: Request, res: Response) => {
 // Create a watch party
 party.post('/', (req: RequestWithUser, res: Response) => {
   // Get the party values out of the request body
-  const { party, playlistId } = req.body;
+  const { party } = req.body;
   // Create the new party in the database
   let {
     name,
@@ -62,11 +37,13 @@ party.post('/', (req: RequestWithUser, res: Response) => {
     type,
     status,
     is_private,
-    is_recurring,
+    will_archive,
     admins,
     invitees,
     date_time,
     user_id,
+    videos,
+    thumbnail,
   } = party;
   invitees = invitees || [];
   admins = admins || [];
@@ -99,11 +76,10 @@ party.post('/', (req: RequestWithUser, res: Response) => {
         type,
         status,
         is_private,
-        is_recurring,
-        playlist: {
-          connect: {
-            id: playlistId,
-          },
+        will_archive,
+        thumbnail,
+        videos: {
+          connect: videos,
         },
         user_parties: {
           create: participants,
@@ -192,52 +168,4 @@ party.post('/video', (req: Request, res: Response) => {
       console.error('error: ', err);
       res.sendStatus(500);
     });
-});
-
-party.post('/playlist', (req: Request, res: Response) => {
-  const { playlist } = req.body;
-  const {
-    name, description, videos, thumbnail,
-  } = playlist;
-  prisma.playlist
-    .create({
-      data: {
-        name,
-        description,
-        thumbnail: thumbnail || '',
-        playlist_videos: {
-          create: videos.map((id: string) => ({ video: { connect: { id } } })),
-        },
-      },
-    })
-    .then((pl) => {
-      res.status(200).send(pl.id);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(err.status);
-    });
-});
-
-// get the playlist attached to a party
-party.get('/playlist/:roomId', async (req: Request, res: Response) => {
-  const { roomId } = req.params;
-  try {
-    const playlistVideos = await prisma.party.findUnique({
-      where: {
-        id: roomId,
-      },
-      include: {
-        playlist: {
-          include: {
-            videos: true,
-          },
-        },
-      },
-    });
-
-    res.status(200).json(playlistVideos);
-  } catch (err) {
-    res.sendStatus(500);
-  }
 });

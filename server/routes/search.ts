@@ -55,6 +55,9 @@ search.get('/:q', async (req: Request, res: Response) => {
           },
         ],
       },
+      include: {
+        videos: true,
+      },
     });
     const results = {
       videos,
@@ -77,11 +80,7 @@ search.get('/party/:videoId', async (req: Request, res: Response) => {
         id: videoId,
       },
       include: {
-        playlists: {
-          include: {
-            parties: true,
-          },
-        },
+        parties: true,
       },
     });
     res.status(200).send(parties);
