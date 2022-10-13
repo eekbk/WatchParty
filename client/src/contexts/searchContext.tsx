@@ -18,8 +18,8 @@ export function SearchContextProvider({ children }) {
     [usersMatch, partiesMatch, videosMatch],
   );
   return (
-		<SearchContext.Provider value={searchVal}>
-			{children}
-		</SearchContext.Provider>
+    <SearchContext.Provider value={searchVal}>
+      {children}
+    </SearchContext.Provider>
   );
 }

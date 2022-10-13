@@ -27,17 +27,15 @@ export function CreateParty() {
   const [video, setVideo] = useState('');
   const [invited, setInvited] = useState([]);
   const [admins, setAdmins] = useState([]);
-  const [usePlaylist, setUsePlaylist] = useState(false);
+  const [showPlaylists, setShowPlaylists] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [playlistName, setPlaylistName] = useState('');
   const [playlistDescription, setPlaylistDescription] = useState('');
-  const [importedPlaylist, setImportedPlaylist] = useState(null);
   const [created, setCreated] = useState(false);
   const [date, setDate] = useState(new Date(Date.now()));
 
-  const handleCreate = (e) => {
-    // console.log(date);
+  const handleCreate = () => {
     if (savePlaylist) {
       axios
         .post('/api/user/playlist', {
@@ -49,53 +47,22 @@ export function CreateParty() {
             user_id: user.id,
           },
         })
-        .then((playlistId) =>
+        .then(() =>
           axios.post('/api/party', {
             party: {
               name,
               description,
               date_time: date,
               is_private: privateR,
-              is_recurring: archive,
+              will_archive: archive,
               invitees: invited,
+              status: 'UPCOMING',
               admins,
               type: 'PARTY',
               user_id: user.id,
+              thumbnail: playlist[0].thumbnail,
+              videos: playlist.map((vd) => vd.id),
             },
-            playlistId: playlistId.data,
-          }))
-        .then(() => axios.get('/api/user'))
-        .then((data) => {
-          setUser(data.data);
-          setCreated(true);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    } else if (!usePlaylist) {
-      axios
-        .post('/api/party/playlist', {
-          playlist: {
-            name: playlistName,
-            description: playlistDescription,
-            thumbnail: playlist[0].thumbnail,
-            videos: playlist.map((vd) => vd.id),
-          },
-        })
-        .then((playlistId) =>
-          axios.post('/api/party', {
-            party: {
-              name,
-              description,
-              date_time: date,
-              is_private: privateR,
-              is_recurring: archive,
-              invitees: invited,
-              admins,
-              type: 'PARTY',
-              user_id: user.id,
-            },
-            playlistId: playlistId.data,
           }))
         .then(() => axios.get('/api/user'))
         .then((data) => {
@@ -115,11 +82,13 @@ export function CreateParty() {
             is_private: privateR,
             is_recurring: archive,
             invitees: invited,
+            status: 'UPCOMING',
             admins,
             type: 'PARTY',
             user_id: user.id,
+            thumbnail: playlist[0].thumbnail,
+            videos: playlist.map((vd) => ({ id: vd.id })),
           },
-          playlistId: importedPlaylist.id,
         })
         .then(() => axios.get('/api/user'))
         .then((data) => {
@@ -155,9 +124,9 @@ export function CreateParty() {
   };
 
   const handleVideoRemoval = (i) => {
-    const userPlaylist = playlist.slice();
-    userPlaylist.splice(i, 1);
-    setPlaylist(userPlaylist);
+    const pl = playlist.slice();
+    pl.splice(i, 1);
+    setPlaylist(pl);
   };
 
   return user && !created ? (
@@ -195,7 +164,7 @@ export function CreateParty() {
             </Group>
             <Group>
               <StyledButton
-                disabled={(!playlist.length && !importedPlaylist) || !name}
+                disabled={!playlist.length || !name}
                 onClick={handleCreate}
                 style={{ marginTop: '5px' }}
               >
@@ -210,8 +179,7 @@ export function CreateParty() {
               <Check
                 type="checkbox"
                 label="Import Playlist"
-                onChange={(e) => setUsePlaylist(e.target.checked)}
-                disabled={savePlaylist}
+                onChange={(e) => setShowPlaylists(e.target.checked)}
               />
               <Check
                 type="checkbox"
@@ -222,7 +190,6 @@ export function CreateParty() {
                 type="checkbox"
                 label="Save Videos as New Playlist"
                 onChange={(e) => setSavePlaylist(e.target.checked)}
-                disabled={usePlaylist}
               />
               <Check
                 type="checkbox"
@@ -278,7 +245,7 @@ export function CreateParty() {
         </Col>
         <Col fluid="md">
           <StyledForm>
-            <Group hidden={!usePlaylist}>
+            <Group hidden={!showPlaylists}>
               <Label>Choose Saved Playlist</Label>
               <Accordion>
                 {user.playlists.map((pl, i) => (
@@ -288,7 +255,7 @@ export function CreateParty() {
                     <Body>{pl.description}</Body>
                     <StyledButton
                     style={{ marginTop: '5px' }}
-                    onClick={(e) => setImportedPlaylist(pl)}
+                    onClick={() => setPlaylist(playlist.concat(pl.videos))}
                   >
   Import
                   </StyledButton>
@@ -296,7 +263,11 @@ export function CreateParty() {
                 ))}
               </Accordion>
             </Group>
-            <Group hidden={usePlaylist}>
+          </StyledForm>
+        </Col>
+        <Col fluid="md">
+          <StyledForm>
+            <Group>
               <Label>Youtube Video Url</Label>
               <Control
                 placeholder="Paste Url Here"
@@ -326,41 +297,21 @@ export function CreateParty() {
                 placeholder="Describe Playlist Here"
               />
             </Group>
-            {!usePlaylist ? (
-              <Group>
-                <Label>Video List</Label>
-                {playlist.map((vd, i) => (
-                  <StyledVideoCard>
-                    <CloseButton onClick={() => handleVideoRemoval(i)} />
-                    <StyledVideoCard.Title>{vd.title}</StyledVideoCard.Title>
-                    <StyledVideoCard.Body>
+            <Group>
+              <Label>Video List</Label>
+              {playlist.map((vd, i) => (
+                <StyledVideoCard>
+                  <CloseButton onClick={() => handleVideoRemoval(i)} />
+                  <StyledVideoCard.Title>{vd.title}</StyledVideoCard.Title>
+                  <StyledVideoCard.Body>
                     <StyledVideoCard.Img src={vd.thumbnail} />
                     <StyledVideoCard.Text>
                     {vd.description.slice(0, 150)}
                   </StyledVideoCard.Text>
                   </StyledVideoCard.Body>
-                  </StyledVideoCard>
-                ))}
-              </Group>
-            ) : (
-              <Group>
-                <Label>Playlist</Label>
-                {importedPlaylist ? (
-                  <StyledVideoCard>
-                  <CloseButton onClick={() => setImportedPlaylist(null)} />
-                  <StyledVideoCard.Title>
-                  {importedPlaylist.title}
-                </StyledVideoCard.Title>
-                  <StyledVideoCard.Body>
-                  <StyledVideoCard.Img src={importedPlaylist.thumbnail} />
-                  <StyledVideoCard.Text>
-                  {importedPlaylist.description.slice(0, 150)}
-                </StyledVideoCard.Text>
-                </StyledVideoCard.Body>
                 </StyledVideoCard>
-                ) : null}
-              </Group>
-            )}
+              ))}
+            </Group>
           </StyledForm>
         </Col>
       </Row>

@@ -32,16 +32,9 @@ function Search() {
 
   const handleCardClick = (party, kind) => {
     if (kind === 'party') {
-      axios
-        .get(`/api/playlist/${party.playlist_id}`)
-        .then((videos) => {
-          navigate('/watchParty', {
-            state: { party: party.id, videos: videos.data },
-          });
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      navigate('/watchParty', {
+        state: { party: party.id, videos: party.videos },
+      });
     } else if (kind === 'video') {
       // send an axios request to find all the rooms with a playlist that contains that video
       axios

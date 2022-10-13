@@ -24,11 +24,11 @@ model User {
   likes        Like[]
   upvotes      Upvote[]
   playlists    Playlist[]
+  profile      String
   followed_by  User[]       @relation("UserFollows")
   following    User[]       @relation("UserFollows")
   blocking     User[]       @relation("UserBlocks")
   blocked_by   User[]       @relation("UserBlocks")
-  profile      String
 }
 
 // model Follow {
@@ -58,7 +58,7 @@ model Relation {
 model Message {
   id             String       @id @default(uuid())
   createdAt      DateTime     @default(now())
-  room_timestamp String
+  room_timestamp String?       
   message        String
   user           User         @relation(fields: [user_id], references: [id])
   user_id        String
@@ -74,17 +74,16 @@ model Party {
   name         String?
   description  String?
   messages     Message[]
-  playlist     Playlist?    @relation(fields: [playlist_id], references: [id])
-  playlist_id  String?
   is_private   Boolean      @default(false)
-  is_recurring Boolean      @default(false)
+  will_archive Boolean      @default(false)
   date_time    DateTime     @default(now())
   likes_count  Int          @default(0)
   type         Party_Type
   status       Status       @default(UPCOMING)
   user_parties User_Party[]
-  actions      Action[]
   likes        Like[]
+  videos       Video[]      
+  thumbnail    String?
 }
 
 model Playlist {
@@ -92,11 +91,9 @@ model Playlist {
   name            String
   description     String
   thumbnail       String
-  parties         Party[]
   playlist_videos Playlist_Video[]
   user            User?            @relation(fields: [user_id], references: [id])
   user_id         String?
-  videos          Video[]
 }
 
 model Playlist_Video {
@@ -114,8 +111,7 @@ model Video {
   description     String
   thumbnail       String
   playlist_videos Playlist_Video[]
-  actions         Action[]
-  playlists       Playlist[]
+  parties         Party[]
 }
 
 model User_Party {
@@ -125,17 +121,6 @@ model User_Party {
   role     Role   @default(NORMIE)
   user     User   @relation(fields: [user_id], references: [id])
   party    Party  @relation(fields: [party_id], references: [id])
-}
-
-model Action {
-  id                   String      @id @default(uuid())
-  party_id             String
-  party                Party       @relation(fields: [party_id], references: [id])
-  video_id             String
-  video                Video       @relation(fields: [video_id], references: [id])
-  type                 Action_Type
-  action_timestamp     DateTime
-  move_video_timestamp DateTime
 }
 
 model Like {
@@ -179,12 +164,4 @@ enum Message_Type {
 enum Relation_Type {
   BLOCK
   FOLLOW
-}
-
-enum Action_Type {
-  START
-  STOP
-  MOVE
-  SKIP
-  SELECT
 }

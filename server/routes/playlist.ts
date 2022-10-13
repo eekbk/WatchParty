@@ -14,6 +14,31 @@ playlist.post('/seed', async (req: Request, res: Response) => {
   }
 });
 
+playlist.post('/', (req: Request, res: Response) => {
+  const { playlist } = req.body;
+  const {
+    name, description, videos, thumbnail,
+  } = playlist;
+  prisma.playlist
+    .create({
+      data: {
+        name,
+        description,
+        thumbnail: thumbnail || '',
+        playlist_videos: {
+          create: videos.map((id: string) => ({ video: { connect: { id } } })),
+        },
+      },
+    })
+    .then((pl) => {
+      res.status(200).send(pl.id);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(err.status);
+    });
+});
+
 playlist.get('/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   prisma.playlist_Video
@@ -26,17 +51,44 @@ playlist.get('/:id', (req: Request, res: Response) => {
       },
     })
     .then((videos) => {
-      res.status(200).send(
-        JSON.stringify(
-          videos.map(({ video: { url, title, description } }) => ({
-            url,
-            snippet: {
-              title,
-              description,
-            },
-          })),
-        ),
-      );
+      res.status(200).send(JSON.stringify(videos));
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
+
+playlist.put('/video', (req: Request, res: Response) => {
+  const { video_id, playlist_id } = req.body;
+  prisma.playlist_Video
+    .deleteMany({
+      where: {
+        playlist_id,
+        video_id,
+      },
+    })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
+
+playlist.post('/video', (req: Request, res: Response) => {
+  // Add video to playlist
+  const { video_id, playlist_id } = req.body;
+  prisma.playlist_Video
+    .create({
+      data: {
+        video_id,
+        playlist_id,
+      },
+    })
+    .then(() => {
+      res.sendStatus(200);
     })
     .catch((err) => {
       console.error(err);

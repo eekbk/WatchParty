@@ -15,7 +15,6 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const passport = require('passport');
-const axios = require('axios');
 // const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const { default: user } = require('./routes/user.ts');
@@ -214,114 +213,6 @@ app.post('/api/seed', async (req: Request, res: Response) => {
   }
 });
 
-app.post('/video', (req: Request, res: Response) => {
-  const { videoId, videoUrl } = req.body;
-  prisma.video
-    .findFirst({
-      where: {
-        id: videoId,
-      },
-    })
-    .then((results) => {
-      if (results) {
-        res.status(200).send(results);
-      } else {
-        return Promise.resolve(
-          axios.get(
-            `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${process.env.YOUTUBE_KEY}`,
-          ),
-        );
-      }
-    })
-    .then((video: any) => {
-      video = video.data;
-      const formattedVideo: any = {
-        id: videoId,
-        url: videoUrl,
-        title: video.items[0].snippet.title,
-        description: video.items[0].snippet.description,
-        thumbnail: video.items[0].snippet.thumbnails.default.url,
-      };
-      prisma.video.upsert({
-        where: {
-          id: videoId,
-        },
-        update: {},
-        create: formattedVideo,
-      });
-      res.send(formattedVideo);
-    })
-    .catch((err) => {
-      console.error('error: ', err);
-      res.sendStatus(err.response.status);
-    });
-});
-
-// // create a relation between current user and followed for a follow click
-// app.post('/api/user/follow', async (req: Request, res: Response) => {
-//   // deconstruct req body
-//   const { followerId, followedId } = req.body;
-//   // create a new relation between the follower and the followed
-//   try {
-//     await prisma.relation.create({
-//       data: {
-//         relator_id: followerId,
-//         relatee_id: followedId,
-//         type: 'FOLLOW',
-//       },
-//     });
-//     await prisma.user.update({
-//       where: {
-//         id: followedId,
-//       },
-//       data: {
-//         follows: {
-//           increment: 1,
-//         },
-//       },
-//     });
-//     res.sendStatus(201);
-//   } catch (err) {
-//     console.log('This is error please fix now:\n', err);
-//     res.sendStatus(500);
-//   }
-// });
-
-// // delete a relation between current user and followed
-// app.delete('/api/user/follow', (req: Request, res: Response) => {
-//   // deconstruct req body
-//   const { followerId, followedId } = req.body;
-
-//   prisma.relation
-//     .deleteMany({
-//       where: {
-//         relator_id: followerId,
-//         relatee_id: followedId,
-//       },
-//     })
-//     .then(() => {
-//       prisma.user.update({
-//         where: {
-//           id: followedId,
-//         },
-//         data: {
-//           follows: {
-//             decrement: 1,
-//           },
-//         },
-//       });
-//     })
-//     .then(() => {
-//       res.sendStatus(200);
-//     })
-//     .catch((err) => {
-//       console.error('Err from follow delete:\n', err);
-//       res.sendStatus(500);
-//     });
-
-//   // delete the relation between the follower and the followed
-// });
-
 app.get('/*', (req: Request, res: Response) => {
   res.sendFile(
     path.resolve(__dirname, '..', 'client', 'dist', 'index.html'),
@@ -333,18 +224,26 @@ app.get('/*', (req: Request, res: Response) => {
   );
 });
 
-// socket.io testing
+// Socket.io events and listeners
 io.on('connection', (socket: any) => {
-  socket.on('join', (room: string) => {
-    socket.join(room);
-    io.to(room).emit('roomCheck');
+  // Joining a watch party
+  socket.on('join', (place: { room: string; type: string }) => {
+    if (place.type === 'DM') {
+      socket.join(place.room);
+    } else {
+      socket.join(place.room);
+      io.to(place.room).emit('roomCheck');
+    }
   });
+  // pauses all WatchParties by roomId
   socket.on('pause', (pause: { room: string; bool: boolean }) => {
     socket.broadcast.to(pause.room).emit('pause', pause.bool);
   });
+  // play all WatchParties by roomId
   socket.on('play', (play: { room: string; bool: boolean }) => {
     io.to(play.room).emit('play', play.bool);
   });
+  // tells watchParty room what time to seek to
   socket.on('seek', (seconds: { room: string; amount: number }) => {
     socket.broadcast.to(seconds.room).emit('seek', seconds.amount);
   });
@@ -362,36 +261,47 @@ io.on('connection', (socket: any) => {
 
   // Chat
 
-  // sends a message to the room
-  socket.on('chat', (chat: { room: string; message: string; user: string }) => {
-    prisma.message
-      .create({
-        data: {
-          message: chat.message,
-          room_timestamp: '420',
-          user_id: chat.user,
-          party_id: chat.room,
-          type: 'COMMENT',
-        },
-      })
-      .then((message) => io.to(chat.room).emit('chat', message))
-      .catch((err) => {
-        console.error(err);
-      });
-  });
+  // sends a message to a watchParty chat
+  // create new message in db as well
+  socket.on(
+    'chat',
+    (chat: { room: string; message: string; user: string; type: any }) => {
+      prisma.message
+        .create({
+          data: {
+            message: chat.message,
+            room_timestamp: '420',
+            user_id: chat.user,
+            party_id: chat.room,
+            type: chat.type,
+          },
+        })
+        .then((message) => io.to(chat.room).emit('chat', message))
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+  );
 
-  // Sends back all of the messages in the db by a room name
+  // Sends back all of the messages in the db by a roomId
+  // this includes dm rooms!
   socket.on('getMessages', (room) => {
-    prisma.message
-      .findMany({
-        where: {
-          party_id: room,
-        },
-      })
-      .then((messages) => {
-        io.to(room).emit('getMessages', messages);
-      })
-      .catch((err) => console.log(err));
+    if (room) {
+      prisma.message
+        .findMany({
+          where: {
+            party_id: room,
+          },
+          select: {
+            user: true,
+            message: true,
+          },
+        })
+        .then((messages) => {
+          io.to(room).emit('getMessages', messages);
+        })
+        .catch((err) => console.log(err));
+    }
   });
 
   // Get's user by user id to get their name
@@ -402,8 +312,102 @@ io.on('connection', (socket: any) => {
           id: q.userId,
         },
       })
-      .then((user) => io.to(q.room).emit('GetUser', user.user_name))
+      .then((user) => {
+        io.to(q.room).emit('GetUser', user.user_name);
+      })
       .catch((err) => console.log(err));
+  });
+
+  // Direct Messages
+
+  // Use this endpoint to create connections between users!
+  // Users is an array of userIds not the googleIds.
+  // Supports group messaging
+  socket.on('createConnection', (users) => {
+    // how we create the two users for now
+    const dm: any = users.map((user) => ({
+      role: 'CREATOR',
+      user: {
+        connect: {
+          id: user,
+        },
+      },
+    }));
+    // creates the dm joining two users
+    prisma.party
+      .create({
+        data: {
+          type: 'DM',
+          user_parties: {
+            create: dm,
+          },
+        },
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+  });
+
+  // Sends out chat to dm-d user
+  socket.on(
+    'DmChat',
+    (chat: { dmId: string; message: string; user: any; type: any }) => {
+      prisma.message
+        .create({
+          data: {
+            message: chat.message,
+            room_timestamp: '420',
+            user_id: chat.user.id,
+            party_id: chat.dmId,
+            type: chat.type,
+          },
+        })
+        .then(() =>
+          socket.broadcast.to(chat.dmId).emit('DmChat', {
+            message: chat.message,
+            user: {
+              user_name: chat.user.user_name,
+              id: chat.user.id,
+            },
+          }))
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+  );
+  // gives all user parties with type "DM"
+  socket.on('getDms', (user) => {
+    if (user.user) {
+      prisma.user_Party
+        .findMany({
+          where: {
+            user_id: user.user.id,
+            party: {
+              type: 'DM',
+            },
+          },
+        })
+        .then((parties) => {
+          Promise.all(
+            parties.map((party) =>
+              prisma.user.findFirst({
+                where: {
+                  user_parties: {
+                    some: {
+                      party_id: party.party_id,
+                      NOT: [
+                        {
+                          user_id: user.user.id,
+                        },
+                      ],
+                    },
+                  },
+                },
+              })),
+          ).then((userInfo) => socket.emit('getDms', { userInfo, parties }));
+        });
+    }
   });
 });
 

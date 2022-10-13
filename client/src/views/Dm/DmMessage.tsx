@@ -1,17 +1,6 @@
 import { Container } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
 
-function Message({ message, user, socket }) {
-  const [user_name, setUserName] = useState(null);
-  useEffect(() => {
-    socket.emit('GetUser', { room: message.party_id, userId: message.user_id });
-    socket.on('GetUser', (userName) => {
-      setUserName(userName);
-    });
-    return () => {
-      socket.off('GetUser');
-    };
-  }, []);
+function DmMessage({ message, user }) {
   return (
     <Container
       style={{
@@ -21,12 +10,12 @@ function Message({ message, user, socket }) {
 			  marginBottom: '5px',
       }}
     >
-      {user_name}
+      {message.user.user_name}
       :
       <Container
         style={{
 				  backgroundColor: user.user
-				    ? user.user.id !== message.user_id
+				    ? user.user.id !== message.user.id
 				      ? '#6929a9'
 				      : '#8e298e'
 				    : '#6929a9',
@@ -41,4 +30,4 @@ function Message({ message, user, socket }) {
   );
 }
 
-export default Message;
+export default DmMessage;

@@ -15,7 +15,12 @@ function Chat({
   // handles chat submit
   const submit = (e) => {
     if (chat.length >= 1) {
-      socket.emit('chat', { room, message: chat, user: user.user.id });
+      socket.emit('chat', {
+        room,
+        message: chat,
+        user: user.user.id,
+        type: 'COMMENT',
+      });
       setChat('');
     }
     e.preventDefault();
