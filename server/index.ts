@@ -36,6 +36,7 @@ passport.use(
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
+      console.log('theProfile:\n', profile);
       const user = await prisma.user.findUnique({
         where: {
           googleId: profile.id,
@@ -45,7 +46,7 @@ passport.use(
       if (!user) {
         const newUser = await prisma.user.create({
           data: {
-            user_name: profile.name.givenName,
+            user_name: profile.name.givenName + profile.name.familyName[0],
             googleId: profile.id,
             profile: profile.photos[0].value,
           },
