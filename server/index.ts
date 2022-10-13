@@ -353,24 +353,36 @@ io.on('connection', (socket: any) => {
 
   // Direct Messages
 
-  // Sends user data out
-  socket.on('userData', ({ user }) => {
-    socket.broadcast.emit('data', user);
-  });
   // Sends out chat to dm-d user
   socket.on(
     'DmChat',
     (chat: { dmId: string; message: string; user: any; type: any }) => {
       console.log('Dm', chat);
-      socket.broadcast
-        .to(chat.dmId)
-        .emit('DmChat', {
-          message: chat.message,
-          username: chat.user.user_name,
-          user_id: chat.user.id,
-        });
+      socket.broadcast.to(chat.dmId).emit('DmChat', {
+        message: chat.message,
+        username: chat.user.user_name,
+        user_id: chat.user.id,
+      });
     },
   );
+  // gives all user parties with type "DM"
+  socket.on('getDms', (user) => {
+    if (user.user) {
+      prisma.user_Party
+        .findMany({
+          where: {
+            user_id: user.user.id,
+            party: {
+              type: 'PARTY',
+            },
+          },
+          select: {
+            party_id: true,
+          },
+        })
+        .then((parties) => io.emit('getDms', parties));
+    }
+  });
 });
 
 http.listen(PORT, () => {
