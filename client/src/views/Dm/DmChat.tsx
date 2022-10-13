@@ -5,40 +5,42 @@ import { StyledButton, StyledScrollableGroup } from '../../styles';
 
 const { default: DmMessage } = require('./DmMessage.tsx');
 
-function DmChat({ socket, room, user }) {
+function DmChat({
+  socket, room, user, messages, setMessages,
+}) {
   // other vars
   const scrolly = useRef(null);
-  const HARDID = 'b7f41e79-a42b-4922-a35b-378fa3356e96';
   // state vars
   const [chat, setChat] = useState('');
-  const [messages, setMessages] = useState(() => []);
 
   // Functions
   const submit = (e) => {
     socket.emit('DmChat', {
+      dmId: room,
       type: 'DM',
-      receiverId: HARDID,
       message: chat,
       user: user.user,
     });
     setMessages([
       ...messages,
-      { message: chat, username: user.user.user_name, user_id: user.user.id },
+      {
+        message: chat,
+        user: { user_name: user.user.user_name, id: user.user.id },
+      },
     ]);
+    setChat('');
     e.preventDefault();
   };
 
   useEffect(() => {
     // emitters
-
-    socket.emit('join', { room, type: 'DM' });
-    socket.emit('getMessages');
+    socket.emit('getMessages', room);
     // listeners
 
     socket.on('getMessages', (dmMessages) => {
       setMessages(dmMessages);
     });
-    // receives a Dm chat and logs it for now
+    // receives a Dm chat and logs prints it
     socket.on('DmChat', (message) => {
       console.log(message);
       setMessages((oldMessages) => [...oldMessages, message]);
