@@ -10,10 +10,14 @@ function ModCard({ obj, kind, handleCardClick }) {
   const [follows, setFollows] = useState(obj.follows || 0);
 
   useEffect(() => {
+    // if the card is a user
     if (kind === 'user') {
+      // set the card title to the username
       setCardTitle(obj.user_name);
+      // set the card Text to the number of follows
       setCardText(follows);
     }
+    // run this again when follows changes
   }, [follows]);
 
   // console.log('hello there');
