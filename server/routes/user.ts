@@ -62,21 +62,18 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           username: f.user_name,
         }));
         user.followers = user.friends.map((friend) => friend.id);
-        return prisma.user.findMany({
+        return prisma.relation.findMany({
           where: {
-            relator: {
-              some: {
-                type: 'FOLLOW',
-                relatee: {
-                  id: user.id,
-                },
-              },
-            },
+            relator_id: user.id,
+            type: 'FOLLOW',
+          },
+          select: {
+            relatee_id: true,
           },
         });
       })
       .then((following: any) => {
-        user.following = following.map((follow) => follow.id);
+        user.following = following.map((follow) => follow.relatee_id);
         return prisma.user.findMany({
           where: {
             relatee: {
