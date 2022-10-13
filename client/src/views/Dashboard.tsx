@@ -9,9 +9,12 @@ import CardGroup from 'react-bootstrap/CardGroup';
 import { useNavigate } from 'react-router-dom';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { UserContext } from '../context';
+// import { StyledForm, StyledButton, StyledVideoCard } from '../../styles';
 
 // import Carousel from 'react-bootstrap/Carousel';
-
+// const {
+//   Label, Text, Control, Group, Check,
+// } = StyledForm;
 function Dashboard() {
   // get user data from nodejs and return in react jsl functional component using hooks
   // use axios to get user data from prisma DB and
@@ -33,6 +36,9 @@ function Dashboard() {
               Number(new Date(b.date_time)) - Number(new Date(a.date_time)),
           ),
         );
+        for (let i = 0; i < data.data.length; i + 1) {
+          console.log(data.data[i].likes_count, 'likes.....');
+        }
       })
     // .then((data: any) => {
     //   console.log(data.data, 'data.data2.....')
@@ -62,7 +68,7 @@ function Dashboard() {
 
   return (
     <Container>
-      {user ? user.user_name : ' not logged in'}
+      <Row>{user ? user.user_name : 'Not logged in'}</Row>
       <Row />
       {user ? (
         <Row>
@@ -85,8 +91,8 @@ function Dashboard() {
           <Col />
           <Col sm={3}>
             {/* <Card style={{ width: '18rem' }} /> */}
+            {/* <StyledForm> */}
             <ListGroup>
-              {/* {user ? () : null}set up conditional so this doesnt show for unlogged user */}
               <ListGroup.Item action variant="dark">
                 Upcoming Watch Parties
               </ListGroup.Item>
@@ -103,40 +109,46 @@ function Dashboard() {
                 </ListGroup.Item>
               ))}
             </ListGroup>
+            {/* </StyledForm> */}
           </Col>
         </Row>
       ) : null}
-      <Row>Top Rooms</Row>
+      <Row> Top Rooms</Row>
       {parties && parties.length ? (
         <Col>
           <CardGroup>
-            {parties.slice(0, 5).map((party) => (!party.is_private ? (
-              <Card onClick={() => handleCardClick(party)}>
-                <Card.Img variant="top" src={party.playlist.thumbnail} />
-                <Card.Body>
-                  <Card.Title>{party.name}</Card.Title>
-                  <Card.Text>{party.description}</Card.Text>
-                </Card.Body>
-                <Card.Footer>
-                  <small className="text-muted">
-                    Starting on: {party.date_time.slice(0, 10)}
-                  </small>
-                </Card.Footer>
-              </Card>
-            ) : (
-              <Card onClick={() => handleCardClick(party)}>
-                <Card.Img variant="top" src={party.playlist.thumbnail} />
-                <Card.Body>
-                  <Card.Title>{party.name}</Card.Title>
-                  <Card.Text>{party.description}</Card.Text>
-                </Card.Body>
-                <Card.Footer>
-                  <small className="text-muted">
-                  Starting on: {party.date_time.slice(0, 10)}
-                </small>
-                </Card.Footer>
-              </Card>
-            )))}
+            {parties.slice(0, 5).map((party) =>
+						  (!party.is_private ? (
+  <Card onClick={() => handleCardClick(party)}>
+    <Card.Img variant="top" src={party.playlist.thumbnail} />
+    <Card.Body>
+      <Card.Title>{party.name}</Card.Title>
+      <Card.Text>{party.description}</Card.Text>
+    </Card.Body>
+    <Card.Footer>
+      <small className="text-muted">
+        Starting on:
+        {' '}
+        {party.date_time.slice(0, 10)}
+      </small>
+    </Card.Footer>
+  </Card>
+						  ) : (
+  <Card onClick={() => handleCardClick(party)}>
+    <Card.Img variant="top" src={party.playlist.thumbnail} />
+    <Card.Body>
+      <Card.Title>{party.name}</Card.Title>
+      <Card.Text>{party.description}</Card.Text>
+    </Card.Body>
+    <Card.Footer>
+      <small className="text-muted">
+        Starting on:
+        {' '}
+        {party.date_time.slice(0, 10)}
+      </small>
+    </Card.Footer>
+  </Card>
+						  )))}
           </CardGroup>
         </Col>
       ) : null}

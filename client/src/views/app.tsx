@@ -1,5 +1,7 @@
 import { Outlet, Link } from 'react-router-dom';
-import { Nav, Navbar, Container } from 'react-bootstrap';
+import {
+  Nav, Navbar, Container, Button,
+} from 'react-bootstrap';
 import { useContext, useEffect } from 'react';
 import axios from 'axios';
 import { StyledBackgroundContainer } from '../styles';
@@ -20,6 +22,17 @@ function App(): JSX.Element {
       });
   }, []);
 
+  const handleLogout = () => {
+    axios
+      .get('/logout')
+      .then((data) => {
+        setUser(null);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   return (
     <StyledBackgroundContainer fluid>
       <Navbar expand="lg" style={{ height: '10vh' }}>
@@ -39,10 +52,10 @@ function App(): JSX.Element {
               <Nav.Link to="/dm" as={Link}>
                 DMs
               </Nav.Link>
-              <Nav.Link hidden={user} href="/auth/google">
+              <Nav.Link hidden={user} as={Button} href="/auth/google">
                 Login
               </Nav.Link>
-              <Nav.Link hidden={!user} href="/logout">
+              <Nav.Link hidden={!user} as={Button} onClick={handleLogout}>
                 Logout
               </Nav.Link>
             </Nav>

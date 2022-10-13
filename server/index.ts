@@ -276,13 +276,15 @@ io.on('connection', (socket: any) => {
       io.to(place.room).emit('roomCheck');
     }
   });
-
+  // pauses all WatchParties by roomId
   socket.on('pause', (pause: { room: string; bool: boolean }) => {
     socket.broadcast.to(pause.room).emit('pause', pause.bool);
   });
+  // play all WatchParties by roomId
   socket.on('play', (play: { room: string; bool: boolean }) => {
     io.to(play.room).emit('play', play.bool);
   });
+  // tells watchParty room what time to seek to
   socket.on('seek', (seconds: { room: string; amount: number }) => {
     socket.broadcast.to(seconds.room).emit('seek', seconds.amount);
   });
@@ -300,7 +302,8 @@ io.on('connection', (socket: any) => {
 
   // Chat
 
-  // sends a message to the room
+  // sends a message to a watchParty chat
+  // create new message in db as well
   socket.on(
     'chat',
     (chat: { room: string; message: string; user: string; type: any }) => {
@@ -321,13 +324,18 @@ io.on('connection', (socket: any) => {
     },
   );
 
-  // Sends back all of the messages in the db by a room name
+  // Sends back all of the messages in the db by a roomId
+  // this includes dm rooms!
   socket.on('getMessages', (room) => {
     if (room) {
       prisma.message
         .findMany({
           where: {
             party_id: room,
+          },
+          select: {
+            user: true,
+            message: true,
           },
         })
         .then((messages) => {
@@ -353,22 +361,95 @@ io.on('connection', (socket: any) => {
 
   // Direct Messages
 
-  // Sends user data out
-  socket.on('userData', ({ user }) => {
-    socket.broadcast.emit('data', user);
+  // Use this endpoint to create connections between users!
+  // Users is an array of userIds not the googleIds.
+  // Supports group messaging
+  socket.on('createConnection', (users) => {
+    // how we create the two users for now
+    const dm: any = users.map((user) => ({
+      role: 'CREATOR',
+      user: {
+        connect: {
+          id: user,
+        },
+      },
+    }));
+    // creates the dm joining two users
+    prisma.party
+      .create({
+        data: {
+          type: 'DM',
+          user_parties: {
+            create: dm,
+          },
+        },
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
   });
+
   // Sends out chat to dm-d user
   socket.on(
     'DmChat',
     (chat: { dmId: string; message: string; user: any; type: any }) => {
-      console.log('Dm', chat);
-      socket.broadcast.to(chat.dmId).emit('DmChat', {
-        message: chat.message,
-        username: chat.user.user_name,
-        user_id: chat.user.id,
-      });
+      prisma.message
+        .create({
+          data: {
+            message: chat.message,
+            room_timestamp: '420',
+            user_id: chat.user.id,
+            party_id: chat.dmId,
+            type: chat.type,
+          },
+        })
+        .then(() =>
+          socket.broadcast.to(chat.dmId).emit('DmChat', {
+            message: chat.message,
+            user: {
+              user_name: chat.user.user_name,
+              id: chat.user.id,
+            },
+          }))
+        .catch((err) => {
+          console.error(err);
+        });
     },
   );
+  // gives all user parties with type "DM"
+  socket.on('getDms', (user) => {
+    if (user.user) {
+      prisma.user_Party
+        .findMany({
+          where: {
+            user_id: user.user.id,
+            party: {
+              type: 'DM',
+            },
+          },
+        })
+        .then((parties) => {
+          Promise.all(
+            parties.map((party) =>
+              prisma.user.findFirst({
+                where: {
+                  user_parties: {
+                    some: {
+                      party_id: party.party_id,
+                      NOT: [
+                        {
+                          user_id: user.user.id,
+                        },
+                      ],
+                    },
+                  },
+                },
+              })),
+          ).then((userInfo) => socket.emit('getDms', { userInfo, parties }));
+        });
+    }
+  });
 });
 
 http.listen(PORT, () => {
