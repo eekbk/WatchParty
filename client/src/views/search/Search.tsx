@@ -1,12 +1,15 @@
 import axios from 'axios';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import {
-  Button, Container, Card, CardGroup, Col,
+  Container, Card, CardGroup, Col,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import ModCard from './ModCard';
+// import FollowButton from '../../buttons/FollowButton';
 // import { playlist } from '../../../../server/routes/playlist';
 import { SearchContext } from '../../contexts/searchContext';
 // import { UserContext } from '../../context';
+import { UserContext } from '../../context';
 
 function Search() {
   const {
@@ -17,13 +20,23 @@ function Search() {
     setUsersMatch,
     setVideosMatch,
   } = useContext(SearchContext);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
   // const [view, setView] = useState('searchResults');
+  useEffect(() => {
+    console.log('is this doing anything????');
+    // console.log('user.following.length:', user.following.length);
+    // console.log('user.followers.length:', user.followers.length);
+  }, [user]);
 
   const handleCardClick = (party, kind) => {
     // reroute to watchParty specific watchParty
-    console.log(party);
+    console.log(
+      `what is passed in as 'party' when kind is '${kind}': ${JSON.stringify(
+        party,
+      )}`,
+    );
     if (kind === 'party') {
       axios
         .get(`/api/playlist/${party.playlist_id}`)
@@ -56,15 +69,27 @@ function Search() {
         });
     } else if (kind === 'user') {
       console.log(party);
+      console.log(user);
       // send an axios request to get the user data
       // navigate over to a profile page sort of page for the person
     }
   };
 
   // handle the follow click
-  const handleFollowClick = () => {
-    // send an axios put request to follow the other user
-  };
+  // const handleFollowClick = (userMatch) => {
+  //   // if the other user is not already followed
+  //   if (!user.following.includes(userMatch.id)) {
+  //     axios.post('api/user/follow', { followerId: user.id, followedId: userMatch.id })
+  //       .then(() => {
+  //         console.log('Nailed IT!');
+  //       })
+  //       .catch((err) => {
+  //         console.error('error in old FollowClick:\n', err);
+  //       });
+  //   }
+  //   // send an axios request to follow the other user
+  //   // otherwise
+  // };
 
   return (
     <Container>
@@ -120,25 +145,36 @@ function Search() {
         <Col>
           <CardGroup>
             {usersMatch.slice(0, 5).map((userMatch) => (
-              <Card
-                style={{
+              <>
+                {/* <Card
+                  style={{
 								  maxWidth: '18rem',
-                }}
-                onClick={() => handleCardClick(userMatch, 'user')}
-              >
-                <Card.Img
-                  variant="top"
-                  src="https://i.ytimg.com/vi/CtpdMkKvB6U/mqdefault.jpg"
+                  }}
+                  onClick={() => handleCardClick(userMatch, 'user')}
+                >
+                  <Card.Img
+                    variant="top"
+                    src="https://i.ytimg.com/vi/CtpdMkKvB6U/mqdefault.jpg"
+                  />
+                  <Card.Body>
+                    <Card.Title>{userMatch.user_name}</Card.Title>
+                    <Card.Text>{userMatch.follows}</Card.Text>
+                  </Card.Body>
+                  <Card.Footer>
+                    {/* <Button
+                    onClick={() =>
+                      handleFollowClick(userMatch)}>{user.following.includes(userMatch.id)
+                    ? 'Unfollow' : 'Follow' }</Button> */}
+                {/* <Button>DM</Button>
+                    <FollowButton otherUserId={userMatch.id} />
+                  </Card.Footer>
+                </Card> */}
+                <ModCard
+                  obj={userMatch}
+                  kind="user"
+                  handleCardClick={handleCardClick}
                 />
-                <Card.Body>
-                  <Card.Title>{userMatch.user_name}</Card.Title>
-                  <Card.Text>{userMatch.follows}</Card.Text>
-                </Card.Body>
-                <Card.Footer>
-                  <Button onClick={handleFollowClick}>Follow</Button>
-                  <Button>DM</Button>
-                </Card.Footer>
-              </Card>
+              </>
             ))}
           </CardGroup>
         </Col>
