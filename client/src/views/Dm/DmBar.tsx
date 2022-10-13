@@ -10,6 +10,9 @@ function DmBar({ user, socket }) {
     socket.on('getDms', (people) => {
       console.log(people);
     });
+    return () => {
+      socket.off('getDms');
+    };
   }, []);
 
   return (

@@ -353,6 +353,43 @@ io.on('connection', (socket: any) => {
 
   // Direct Messages
 
+  // create dm and joins two users
+  socket.on('createConnection', (users) => {
+    // how we create the two users for now
+    const dm: any = [
+      {
+        role: 'CREATOR',
+        user: {
+          connect: {
+            id: users[0],
+          },
+        },
+      },
+      {
+        role: 'CREATOR',
+        user: {
+          connect: {
+            id: users[1],
+          },
+        },
+      },
+    ];
+    // creates the dm joining two users
+    prisma.party
+      .create({
+        data: {
+          type: 'DM',
+          user_parties: {
+            create: dm,
+          },
+        },
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+  });
+
   // Sends out chat to dm-d user
   socket.on(
     'DmChat',
@@ -373,14 +410,14 @@ io.on('connection', (socket: any) => {
           where: {
             user_id: user.user.id,
             party: {
-              type: 'PARTY',
+              type: 'DM',
             },
           },
-          select: {
-            party_id: true,
-          },
+          // select: {
+          //   party_id: true,
+          // },
         })
-        .then((parties) => io.emit('getDms', parties));
+        .then((parties) => socket.emit('getDms', parties));
     }
   });
 });
