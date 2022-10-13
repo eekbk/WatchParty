@@ -151,9 +151,11 @@ user.post('/follow', async (req: RequestWithUser, res: Response) => {
   try {
     const existingFollow = await prisma.relation.findFirst({
       where: {
-        relator_id: followerId,
-        relatee_id: followedId,
-        type: 'FOLLOW',
+        AND: [
+          { relator_id: followerId },
+          { relatee_id: followedId },
+          { type: 'FOLLOW' },
+        ],
       },
     });
     if (existingFollow) {
@@ -193,8 +195,11 @@ user.delete('/follow', (req: RequestWithUser, res: Response) => {
   prisma.relation
     .deleteMany({
       where: {
-        relator_id: followerId,
-        relatee_id: followedId,
+        AND: [
+          { relator_id: followerId },
+          { relatee_id: followedId },
+          { type: 'FOLLOW' },
+        ],
       },
     })
     .then(() =>
@@ -228,9 +233,11 @@ user.post('/block', async (req: RequestWithUser, res: Response) => {
   try {
     const existingBlock = await prisma.relation.findFirst({
       where: {
-        relator_id: blockerId,
-        relatee_id: blockedId,
-        type: 'BLOCK',
+        AND: [
+          { relator_id: blockerId },
+          { relatee_id: blockedId },
+          { type: 'BLOCK' },
+        ],
       },
     });
     if (existingBlock) {
@@ -250,6 +257,33 @@ user.post('/block', async (req: RequestWithUser, res: Response) => {
     console.log('This is error please fix now:\n', err);
     res.sendStatus(500);
   }
+});
+
+// delete a BLOCK between current user and BLOCKed
+user.delete('/block', (req: RequestWithUser, res: Response) => {
+  // deconstruct req body
+  const { blockerId, blockedId } = req.body;
+
+  prisma.relation
+    .deleteMany({
+      where: {
+        AND: [
+          { relator_id: blockerId },
+          { relatee_id: blockedId },
+          { type: 'BLOCK' },
+        ],
+      },
+    })
+    .then(() => {
+      // console.log('heres the data after the update:\n', data);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('Err from follow delete:\n', err);
+      res.sendStatus(500);
+    });
+
+  // delete the relation between the follower and the followed
 });
 
 export default user;
