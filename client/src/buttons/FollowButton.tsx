@@ -4,21 +4,17 @@ import { Button } from 'react-bootstrap';
 import { UserContext } from '../context';
 
 function FollowButton({ otherUserId, follows, setFollows }: any) {
-  console.log('FOLLOWS:', follows);
   const { user, setUser } = useContext(UserContext);
   const [isFollowing, setIsFollowing] = useState(false);
   const [aToggle, setAToggle] = useState(false);
 
   useEffect(() => {
     if (user.following.includes(otherUserId)) {
-      console.log('otherUserId in useEffect:\n', otherUserId);
       setIsFollowing(true);
     } else {
       setIsFollowing(false);
     }
   }, []);
-
-  console.log('otherUserId in useEffect:\n', otherUserId);
 
   const handleClick = async () => {
     if (isFollowing) {

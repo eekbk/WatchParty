@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import {
   Container, Card, CardGroup, Col,
 } from 'react-bootstrap';
@@ -24,19 +24,19 @@ function Search() {
   const navigate = useNavigate();
 
   // const [view, setView] = useState('searchResults');
-  useEffect(() => {
-    console.log('is this doing anything????');
-    // console.log('user.following.length:', user.following.length);
-    // console.log('user.followers.length:', user.followers.length);
-  }, [user]);
+  // useEffect(() => {
+  //   console.log('is this doing anything????');
+  //   // console.log('user.following.length:', user.following.length);
+  //   // console.log('user.followers.length:', user.followers.length);
+  // }, [user]);
 
   const handleCardClick = (party, kind) => {
     // reroute to watchParty specific watchParty
-    console.log(
-      `what is passed in as 'party' when kind is '${kind}': ${JSON.stringify(
-        party,
-      )}`,
-    );
+    // console.log(
+    //   `what is passed in as 'party' when kind is '${kind}': ${JSON.stringify(
+    //     party,
+    //   )}`,
+    // );
     if (kind === 'party') {
       axios
         .get(`/api/playlist/${party.playlist_id}`)

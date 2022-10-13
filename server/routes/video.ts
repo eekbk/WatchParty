@@ -19,7 +19,7 @@ video.get('/playlists/:videoId', (req: Request, res: Response) => {
       },
     })
     .then((parties) => {
-      console.log('the parties:\n', parties);
+      // console.log('the parties:\n', parties);
       res.status(200).send(parties);
     })
     .catch((err) => {

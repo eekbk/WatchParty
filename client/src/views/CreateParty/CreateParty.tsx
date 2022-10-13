@@ -37,7 +37,7 @@ export function CreateParty() {
   const [date, setDate] = useState(new Date(Date.now()));
 
   const handleCreate = (e) => {
-    console.log(date);
+    // console.log(date);
     if (savePlaylist) {
       axios
         .post('/api/user/playlist', {

@@ -6,10 +6,8 @@ import { prisma } from '../db/index';
 const user: Router = express.Router();
 
 user.get('/', (req: RequestWithUser, res: Response) => {
-  console.log('got to the endpoint!');
   const { user } = req;
   if (user === undefined) {
-    console.log('wait is this what happened?');
     res.sendStatus(400);
   } else {
     prisma.playlist
@@ -115,7 +113,6 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           id: blocked.id,
           username: blocked.user_name,
         }));
-        console.log('made it to the status!');
         res.status(200).json(user);
       })
       .catch((err) => {
@@ -152,11 +149,6 @@ export default user;
 // create a relation between current user and followed for a follow click
 user.post('/follow', async (req: RequestWithUser, res: Response) => {
   // deconstruct req body
-  console.log(
-    '!!!!!!!!!!!!!!!!!The req.body:\n',
-    req.body,
-    '\n!!!!!!!!!!!!!!!!!!',
-  );
   const { followerId, followedId } = req.body;
   // create a new relation between the follower and the followed
   try {
@@ -178,7 +170,7 @@ user.post('/follow', async (req: RequestWithUser, res: Response) => {
           type: 'FOLLOW',
         },
       });
-      const updatedUser = await prisma.user.update({
+      await prisma.user.update({
         where: {
           id: followedId,
         },
@@ -188,7 +180,6 @@ user.post('/follow', async (req: RequestWithUser, res: Response) => {
           },
         },
       });
-      console.log('that updated user:\n', updatedUser);
       res.sendStatus(201);
     }
   } catch (err) {
@@ -199,7 +190,6 @@ user.post('/follow', async (req: RequestWithUser, res: Response) => {
 
 // delete a relation between current user and followed
 user.delete('/follow', (req: RequestWithUser, res: Response) => {
-  console.log('!!!!!!!req.body in DELETE FOLLOW', req.body, '^^^^^^^^^');
   // deconstruct req body
   const { followerId, followedId } = req.body;
 
@@ -221,8 +211,8 @@ user.delete('/follow', (req: RequestWithUser, res: Response) => {
           },
         },
       }))
-    .then((data) => {
-      console.log('heres the data after the update:\n', data);
+    .then(() => {
+      // console.log('heres the data after the update:\n', data);
       res.sendStatus(200);
     })
     .catch((err) => {
