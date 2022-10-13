@@ -39,7 +39,7 @@ function Dashboard() {
       .get(`/api/playlist/${party.playlist_id}`)
       .then((videos) => {
         navigate('/watchParty', {
-          state: { party: party.id, videos: videos.data },
+          state: { party, videos: videos.data },
         });
       })
       .catch((err) => {

@@ -4,6 +4,7 @@ import {
   Card, Container, Row, Col,
 } from 'react-bootstrap';
 import io from 'socket.io-client';
+import axios from 'axios';
 import { UserContext } from '../../context';
 
 const socket = io();
@@ -17,12 +18,12 @@ function WatchParty() {
   const [dbMessages, setMessages] = useState([]);
   const user = useContext(UserContext);
   const { state } = useLocation();
-  const [videos, setVideos] = useState(state.videos);
+  const [playlist, setPlaylist] = useState([]);
   const room = state.party;
 
   useEffect(() => {
-    socket.emit('join', room);
-    socket.emit('getMessages', room || 'test');
+    socket.emit('join', room.id);
+    socket.emit('getMessages', room.id || 'test');
     socket.on('getMessages', (messages) => {
       setMessages(messages);
     });
@@ -30,6 +31,17 @@ function WatchParty() {
       socket.off('getMessages');
       socket.off('getStatus');
     };
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`/api/playlist/party/${room.id}`)
+      .then(({ data: pl }) => {
+        setPlaylist(pl.playlist.playlist_videos.map((plv) => plv.video));
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   return (
@@ -54,14 +66,14 @@ function WatchParty() {
           >
             <Video
               user={user}
-              videos={videos}
-              setVideos={setVideos}
+              playlist={playlist}
+              setPlaylist={setPlaylist}
               status={
 								user.user
-								  ? user.user.parties.filter((party) => party.id === room)[0]
+								  ? user.user.parties.filter((party) => party.id === room.id)[0]
 								  : null
 							}
-              room={room || 'test'}
+              room={room}
               socket={socket}
             />
           </Card>
@@ -69,7 +81,7 @@ function WatchParty() {
         <Col xs={5} md={3}>
           <Chat
             user={user}
-            room={room || 'test'}
+            room={room.id || 'test'}
             messages={dbMessages}
             setMessages={setMessages}
             socket={socket}

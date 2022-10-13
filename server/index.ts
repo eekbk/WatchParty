@@ -235,9 +235,9 @@ app.post('/video', (req: Request, res: Response) => {
       const formattedVideo: any = {
         id: videoId,
         url: videoUrl,
-        title: video.items[0].snippet.title,
-        description: video.items[0].snippet.description,
-        thumbnail: video.items[0].snippet.thumbnails.default.url,
+        title: video.items[0].title,
+        description: video.items[0].description,
+        thumbnail: video.items[0].thumbnails.default.url,
       };
       prisma.video.upsert({
         where: {

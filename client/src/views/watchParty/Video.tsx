@@ -5,7 +5,7 @@ import { LButton } from '../../styles';
 import { Playlist } from './Playlist';
 
 function Video({
-  videos, setVideos, status, room, user, socket,
+  playlist, setPlaylist, status, room, user, socket,
 }) {
   // state vars
   const [isPlaying, setPause] = useState(() => !status);
@@ -31,7 +31,7 @@ function Video({
   const changeVid = (bool) => {
     setSeconds(0);
     if (bool) {
-      if (video < videos.length) {
+      if (video < playlist.length) {
         socket.emit('giveRoom', {
           room,
           video: video + 1,
@@ -101,7 +101,7 @@ function Video({
     socket.on(
       'giveRoom',
       (video: {
-				room: string;
+				room: any;
 				video: number;
 				start: number;
 				playing: boolean;
@@ -131,7 +131,7 @@ function Video({
 			  marginLeft: '0px',
       }}
     >
-      <Playlist videos={videos} setVideos={setVideos} />
+      <Playlist room={room} playlist={playlist} setPlaylist={setPlaylist} />
       <ReactPlayer
         ref={videoPlayer}
         config={{
@@ -157,8 +157,8 @@ function Video({
         onProgress={updateTime}
         playing={isPlaying}
         url={
-					videos[video]
-					  ? videos[video].url
+					playlist[video]
+					  ? playlist[video].url
 					  : 'https://www.youtube.com/watch?v=vZa0Yh6e7dw'
 				}
         width="100%"
