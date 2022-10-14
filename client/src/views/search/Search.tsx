@@ -1,9 +1,15 @@
 import axios from 'axios';
 import { useContext } from 'react';
-import { Container, Card } from 'react-bootstrap';
+import {
+  Container, Card, CardGroup, Col,
+} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import ModCard from './ModCard';
+// import FollowButton from '../../buttons/FollowButton';
 // import { playlist } from '../../../../server/routes/playlist';
 import { SearchContext } from '../../contexts/searchContext';
+// import { UserContext } from '../../context';
+import { UserContext } from '../../context';
 
 function Search() {
   const {
@@ -14,12 +20,17 @@ function Search() {
     setUsersMatch,
     setVideosMatch,
   } = useContext(SearchContext);
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
   // const [view, setView] = useState('searchResults');
+  // useEffect(() => {
+  //   console.log('is this doing anything????');
+  //   // console.log('user.following.length:', user.following.length);
+  //   // console.log('user.followers.length:', user.followers.length);
+  // }, [user]);
 
   const handleCardClick = (party, kind) => {
-    // reroute to watchParty specific watchParty
     if (kind === 'party') {
       navigate('/watchParty', {
         state: { party: party.id, videos: party.videos },
@@ -43,8 +54,14 @@ function Search() {
         .catch((err) => {
           console.error('The error from handleCardClick:\n', err);
         });
+    } else if (kind === 'user') {
+      console.log('party:\n', party);
+      console.log('user:\n', user);
+      // send an axios request to get the user data
+      // navigate over to a profile page sort of page for the person
     }
   };
+
   return (
     <Container>
       {!partiesMatch.length && !usersMatch.length && !videosMatch.length ? (
@@ -54,24 +71,60 @@ function Search() {
       )}
       {partiesMatch.length ? <h2>Parties</h2> : []}
       <ul>
-        {partiesMatch.map((party) => (
-          <Card key={party.id} onClick={() => handleCardClick(party, 'party')}>
-            <h3>{party.name}</h3>
-            <p>{party.description}</p>
-          </Card>
-        ))}
+        <Col>
+          <CardGroup>
+            {partiesMatch.slice(0, 5).map((party) => (
+              <Card
+                style={{
+								  maxWidth: '18rem',
+                }}
+                onClick={() => handleCardClick(party, 'party')}
+              >
+                <Card.Img
+                  variant="top"
+                  src="https://i.ytimg.com/vi/CtpdMkKvB6U/mqdefault.jpg"
+                />
+                <Card.Body>
+                  <Card.Title>{party.name}</Card.Title>
+                  <Card.Text>{party.description}</Card.Text>
+                </Card.Body>
+                {/* <Card.Footer>
+                  <small className="text-muted">Last updated 3 mins ago</small>
+                </Card.Footer> */}
+              </Card>
+            ))}
+          </CardGroup>
+        </Col>
       </ul>
       {usersMatch.length ? <h2>Users</h2> : []}
       <ul>
-        {usersMatch.map((user) => (
-          <Card key={user.id} onClick={() => handleCardClick(user.id, 'user')}>
+        {/* {usersMatch.map((user) => (
+          <Card key={user.id} onClick={() => handleCardClick(user, 'user')}>
             <h3>{user.user_name}</h3>
             <h4>
               followers:
               {user.follows}
             </h4>
           </Card>
-        ))}
+        ))} */}
+        <Col>
+          <CardGroup>
+            {usersMatch
+						  .filter(
+						    (match) =>
+						      !user.blockers.includes(match.id)
+									&& !user.blocking.includes(match.id),
+              )
+						  .slice(0, 5)
+						  .map((userMatch) => (
+  <ModCard
+    obj={userMatch}
+    kind="user"
+    handleCardClick={handleCardClick}
+  />
+						  ))}
+          </CardGroup>
+        </Col>
       </ul>
       {videosMatch.length ? <h2>Videos</h2> : []}
       <ul>

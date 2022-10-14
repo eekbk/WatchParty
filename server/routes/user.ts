@@ -78,32 +78,71 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           id: f.id,
           username: f.user_name,
         }));
-        return prisma.user.findMany({
+        user.followers = user.friends.map((friend) => friend.id);
+        return prisma.relation.findMany({
           where: {
-            relatee: {
-              some: {
-                type: 'BLOCK',
-                relator: {
-                  id: user.id,
-                },
-              },
-            },
+            relator_id: user.id,
+            type: 'FOLLOW',
+          },
+          select: {
+            relatee_id: true,
           },
         });
       })
-      .then((enemies) => {
-        user.enemies = enemies.map((f) => ({
-          id: f.id,
-          username: f.user_name,
-        }));
+      .then((following: any) => {
+        user.following = following.map((follow) => follow.relatee_id);
+        return prisma.relation.findMany({
+          where: {
+            relatee_id: user.id,
+            type: 'BLOCK',
+          },
+          select: {
+            relator_id: true,
+          },
+        });
+      })
+      .then((blockers) => {
+        user.blockers = blockers.map((blocker) => blocker.relator_id);
+        return prisma.relation.findMany({
+          where: {
+            relator_id: user.id,
+            type: 'BLOCK',
+          },
+          select: {
+            relatee_id: true,
+          },
+        });
+      })
+      .then((blocking) => {
+        user.blocking = blocking.map((blocked) => blocked.relatee_id);
         res.status(200).json(user);
       })
       .catch((err) => {
-        console.error(err);
+        console.log('AN ERROR WHATS IT MEAN?!?!:\n', err);
         res.sendStatus(err.status);
       });
   }
 });
+
+// find the follows through the join table
+user.get(
+  '/explicit/followers/:id',
+  async (req: RequestWithUser, res: Response) => {
+    const { id } = req.params;
+    try {
+      const num = await prisma.relation.count({
+        where: {
+          relatee_id: id,
+          type: 'FOLLOW',
+        },
+      });
+      res.status(200).json(num);
+    } catch (err) {
+      console.log('The err from getting followers:\n', err);
+      res.sendStatus(err.status);
+    }
+  },
+);
 
 user.post('/playlist', (req: RequestWithUser, res: Response) => {
   const { playlist } = req.body;
@@ -122,9 +161,152 @@ user.post('/playlist', (req: RequestWithUser, res: Response) => {
       res.status(200).send(pl.id);
     })
     .catch((err) => {
-      console.error(err);
+      console.error('ERROR ERROR ERROR', err);
       res.sendStatus(500);
     });
+});
+
+// create a relation between current user and followed for a follow click
+user.post('/follow', async (req: RequestWithUser, res: Response) => {
+  // deconstruct req body
+  const { followerId, followedId } = req.body;
+  // create a new relation between the follower and the followed
+  try {
+    const existingFollow = await prisma.relation.findFirst({
+      where: {
+        AND: [
+          { relator_id: followerId },
+          { relatee_id: followedId },
+          { type: 'FOLLOW' },
+        ],
+      },
+    });
+    if (existingFollow) {
+      console.log('Hey you already following, foo!');
+      res.sendStatus(200);
+    } else {
+      console.log('we got into the else statement');
+      await prisma.relation.create({
+        data: {
+          relator_id: followerId,
+          relatee_id: followedId,
+          type: 'FOLLOW',
+        },
+      });
+      res.sendStatus(201);
+    }
+  } catch (err) {
+    console.log('This is error please fix now:\n', err);
+    res.sendStatus(500);
+  }
+});
+
+// delete a relation between current user and followed
+user.delete('/follow', (req: RequestWithUser, res: Response) => {
+  // deconstruct req body
+  const { followerId, followedId } = req.body;
+
+  prisma.relation
+    .deleteMany({
+      where: {
+        AND: [
+          { relator_id: followerId },
+          { relatee_id: followedId },
+          { type: 'FOLLOW' },
+        ],
+      },
+    })
+    .then(() => {
+      // console.log('heres the data after the update:\n', data);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('Err from follow delete:\n', err);
+      res.sendStatus(500);
+    });
+
+  // delete the relation between the follower and the followed
+});
+
+// create a relation between current user and followed for a follow click
+user.post('/block', async (req: RequestWithUser, res: Response) => {
+  // deconstruct req body
+  const { blockerId, blockedId } = req.body;
+  // create a new relation between the follower and the followed
+  try {
+    const existingBlock = await prisma.relation.findFirst({
+      where: {
+        AND: [
+          { relator_id: blockerId },
+          { relatee_id: blockedId },
+          { type: 'BLOCK' },
+        ],
+      },
+    });
+    if (existingBlock) {
+      console.log('Hey you already blocking, foo!');
+      res.sendStatus(200);
+    } else {
+      await prisma.relation.create({
+        data: {
+          relator_id: blockerId,
+          relatee_id: blockedId,
+          type: 'BLOCK',
+        },
+      });
+      await prisma.relation.deleteMany({
+        where: {
+          OR: [
+            {
+              AND: [
+                { relatee_id: blockedId },
+                { relator_id: blockerId },
+                { type: 'FOLLOW' },
+              ],
+            },
+            {
+              AND: [
+                { relatee_id: blockerId },
+                { relator_id: blockedId },
+                { type: 'FOLLOW' },
+              ],
+            },
+          ],
+        },
+      });
+      res.sendStatus(201);
+    }
+  } catch (err) {
+    console.log('This is error please fix now:\n', err);
+    res.sendStatus(500);
+  }
+});
+
+// delete a BLOCK between current user and BLOCKed
+user.delete('/block', (req: RequestWithUser, res: Response) => {
+  // deconstruct req body
+  const { blockerId, blockedId } = req.body;
+
+  prisma.relation
+    .deleteMany({
+      where: {
+        AND: [
+          { relator_id: blockerId },
+          { relatee_id: blockedId },
+          { type: 'BLOCK' },
+        ],
+      },
+    })
+    .then(() => {
+      // console.log('heres the data after the update:\n', data);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error('Err from follow delete:\n', err);
+      res.sendStatus(500);
+    });
+
+  // delete the relation between the follower and the followed
 });
 
 user.post('/');
