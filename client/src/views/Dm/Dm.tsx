@@ -26,10 +26,15 @@ function Dm({ socket, room }) {
       setMessages(dmMessages);
     });
   };
+  /**
+	 * CAITY POINTED THIS OUT
+	 *
+	 * I REFUSED TO DELETE IT!!!!!!!
+	 */
+  // useEffect(() => {
+  //   // emitters
+  // }, []);
 
-  useEffect(() => {
-    // emitters
-  }, []);
   return (
     <Container
       style={{
