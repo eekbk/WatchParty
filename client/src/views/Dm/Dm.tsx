@@ -13,7 +13,6 @@ function Dm({ socket, room }) {
 
   // Functions
   const changeDm = (e) => {
-    // console.log('roomChange should occur');
     setRoom((e.target as HTMLInputElement).id);
     socket.emit('join', {
       room: (e.target as HTMLInputElement).id,

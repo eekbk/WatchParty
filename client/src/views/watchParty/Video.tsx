@@ -18,7 +18,7 @@ function Video({
   if (status) {
     socket.on('roomCheck', () => {
       socket.emit('giveRoom', {
-        room,
+        room: room.id,
         video,
         start: pSeconds,
         playing: isPlaying,
@@ -33,7 +33,7 @@ function Video({
     if (bool) {
       if (video < playlist.length) {
         socket.emit('giveRoom', {
-          room,
+          room: room.id,
           video: video + 1,
           start: pSeconds,
           playing: isPlaying,
@@ -41,7 +41,7 @@ function Video({
         setVid(video + 1);
       } else {
         socket.emit('giveRoom', {
-          room,
+          room: room.id,
           video,
           start: pSeconds,
           playing: isPlaying,
@@ -49,7 +49,7 @@ function Video({
       }
     } else {
       socket.emit('giveRoom', {
-        room,
+        room: room.id,
         video: video ? video - 1 : video,
         start: pSeconds,
         playing: isPlaying,
@@ -72,13 +72,13 @@ function Video({
   // pauses all clients
   const pauseVid = () => {
     setPause(false);
-    socket.emit('pause', { room, bool: false });
-    socket.emit('seek', { room, amount: pSeconds });
+    socket.emit('pause', { room: room.id, bool: false });
+    socket.emit('seek', { room: room.id, amount: pSeconds });
     videoPlayer.current.seekTo(pSeconds, 'seconds');
   };
   // plays all clients
   const playVid = () => {
-    socket.emit('play', { room, bool: true });
+    socket.emit('play', { room: room.id, bool: true });
   };
   const updateTime = (data) => {
     setSeconds(data.playedSeconds);
@@ -130,7 +130,12 @@ function Video({
 			  marginLeft: '0px',
       }}
     >
-      <Playlist room={room} playlist={playlist} setPlaylist={setPlaylist} />
+      <Playlist
+        room={room}
+        playlist={playlist}
+        setPlaylist={setPlaylist}
+        status={status}
+      />
       <ReactPlayer
         ref={videoPlayer}
         config={{

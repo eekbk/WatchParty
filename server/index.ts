@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as dotenv from 'dotenv';
 import session from 'express-session';
 import { prisma } from './db/index';
-import { party } from './routes/watchParty';
+import { party } from './routes/party';
 import { playlist } from './routes/playlist';
 import { search } from './routes/search';
 import { video } from './routes/video';
@@ -208,7 +208,7 @@ app.post('/api/seed', async (req: Request, res: Response) => {
     const createdData = await prisma[table].createMany(dataObj);
     res.status(201).send(createdData);
   } catch (err) {
-    console.log('Error from /seed', err);
+    console.error('Error from /seed', err);
     res.sendStatus(500);
   }
 });
@@ -300,7 +300,7 @@ io.on('connection', (socket: any) => {
         .then((messages) => {
           io.to(room).emit('getMessages', messages);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.error(err));
     }
   });
 
@@ -315,7 +315,7 @@ io.on('connection', (socket: any) => {
       .then((user) => {
         io.to(q.room).emit('GetUser', user.user_name);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   });
 
   // Direct Messages
@@ -343,10 +343,7 @@ io.on('connection', (socket: any) => {
           },
         },
       })
-      .then((data) => {
-        // console.log(data);
-      })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   });
 
   // Sends out chat to dm-d user
