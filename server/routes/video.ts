@@ -3,6 +3,8 @@ import { prisma } from '../db/index';
 
 export const video: Router = express.Router();
 
+// !!!!!! change to search without playlist
+
 video.get('/playlists/:videoId', (req: Request, res: Response) => {
   const { videoId } = req.params;
   prisma.playlist_Video
@@ -12,9 +14,9 @@ video.get('/playlists/:videoId', (req: Request, res: Response) => {
       },
       include: {
         playlist: {
-          include: {
-            parties: true,
-          },
+          // include: {
+          //   parties: true,
+          // },
         },
       },
     })
