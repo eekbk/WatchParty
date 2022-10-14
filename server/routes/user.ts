@@ -24,7 +24,7 @@ user.get('/', (req: RequestWithUser, res: Response) => {
         },
       })
       .then((playlists: any) => {
-        console.log('checking playlists:', playlists[0].playlist_videos);
+        // console.log('checking playlists:', playlists[0].playlist_videos);
         user.playlists = playlists;
         return prisma.party.findMany({
           where: {
@@ -155,6 +155,12 @@ user.post('/playlist', (req: RequestWithUser, res: Response) => {
 user.post('/follow', async (req: RequestWithUser, res: Response) => {
   // deconstruct req body
   const { followerId, followedId } = req.body;
+  console.log(
+    'this is followerId:',
+    followerId,
+    '\nthis is followedId:',
+    followedId,
+  );
   // create a new relation between the follower and the followed
   try {
     const existingFollow = await prisma.relation.findFirst({
@@ -170,21 +176,12 @@ user.post('/follow', async (req: RequestWithUser, res: Response) => {
       console.log('Hey you already following, foo!');
       res.sendStatus(200);
     } else {
+      console.log('we got into the else statement');
       await prisma.relation.create({
         data: {
           relator_id: followerId,
           relatee_id: followedId,
           type: 'FOLLOW',
-        },
-      });
-      await prisma.user.update({
-        where: {
-          id: followedId,
-        },
-        data: {
-          follows: {
-            increment: 1,
-          },
         },
       });
       res.sendStatus(201);
@@ -210,17 +207,6 @@ user.delete('/follow', (req: RequestWithUser, res: Response) => {
         ],
       },
     })
-    .then(() =>
-      prisma.user.update({
-        where: {
-          id: followedId,
-        },
-        data: {
-          follows: {
-            decrement: 1,
-          },
-        },
-      }))
     .then(() => {
       // console.log('heres the data after the update:\n', data);
       res.sendStatus(200);
@@ -295,5 +281,50 @@ user.delete('/block', (req: RequestWithUser, res: Response) => {
 });
 
 user.post('/');
+
+// // TRY THIS IN THE IMPLICIT MANNER
+// // create a relation between current user and followed for a follow click
+// user.post('/implicit/follow', async (req: RequestWithUser, res: Response) => {
+//   // deconstruct req body
+//   const { followerId, followedId } = req.body;
+//   // create a new relation between the follower and the followed
+//   try {
+//     const existingFollow = await prisma.relation.findFirst({
+//       where: {
+//         AND: [
+//           { relator_id: followerId },
+//           { relatee_id: followedId },
+//           { type: 'FOLLOW' },
+//         ],
+//       },
+//     });
+//     if (existingFollow) {
+//       console.log('Hey you already following, foo!');
+//       res.sendStatus(200);
+//     } else {
+//       await prisma.relation.create({
+//         data: {
+//           relator_id: followerId,
+//           relatee_id: followedId,
+//           type: 'FOLLOW',
+//         },
+//       });
+//       // await prisma.user.update({
+//       //   where: {
+//       //     id: followedId,
+//       //   },
+//       //   data: {
+//       //     follows: {
+//       //       increment: 1,
+//       //     },
+//       //   },
+//       // });
+//       res.sendStatus(201);
+//     }
+//   } catch (err) {
+//     console.log('This is error please fix now:\n', err);
+//     res.sendStatus(500);
+//   }
+// });
 
 export default user;
