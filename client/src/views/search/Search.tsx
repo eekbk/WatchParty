@@ -55,8 +55,8 @@ function Search() {
           console.error('The error from handleCardClick:\n', err);
         });
     } else if (kind === 'user') {
-      console.log(party);
-      console.log(user);
+      console.log('party:\n', party);
+      console.log('user:\n', user);
       // send an axios request to get the user data
       // navigate over to a profile page sort of page for the person
     }
@@ -109,13 +109,20 @@ function Search() {
         ))} */}
         <Col>
           <CardGroup>
-            {usersMatch.slice(0, 5).map((userMatch) => (
-              <ModCard
-                obj={userMatch}
-                kind="user"
-                handleCardClick={handleCardClick}
-              />
-            ))}
+            {usersMatch
+						  .filter(
+						    (match) =>
+						      !user.blockers.includes(match.id)
+									&& !user.blocking.includes(match.id),
+              )
+						  .slice(0, 5)
+						  .map((userMatch) => (
+  <ModCard
+    obj={userMatch}
+    kind="user"
+    handleCardClick={handleCardClick}
+  />
+						  ))}
           </CardGroup>
         </Col>
       </ul>
