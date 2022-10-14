@@ -57,7 +57,7 @@ function ModCard({ obj, kind, handleCardClick }) {
       <Card.Img variant="top" src={obj.profile} />
       <Card.Body>
         <Card.Title>{cardTitle}</Card.Title>
-        <Card.Text>ModCard bABY</Card.Text>
+        <Card.Text>{isFollowing ? 'following ✅' : ''}</Card.Text>
         <Card.Text>{cardText}</Card.Text>
       </Card.Body>
       <Card.Footer>
