@@ -4,7 +4,7 @@ import { UserContext } from '../context';
 // const navigate = useNavigate();
 // import { Navigate } from 'react-router-dom';
 
-const Logout = () => {
+function Logout() {
   const { setUser } = useContext(UserContext);
 
   // setUser(null);
@@ -19,5 +19,7 @@ const Logout = () => {
     .catch((err) => {
       console.error(err);
     });
-};
+
+  return null;
+}
 export default Logout;
