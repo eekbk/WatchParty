@@ -36,6 +36,9 @@ function App(): JSX.Element {
               <Nav.Link to="/profile" as={Link}>
                 Profile
               </Nav.Link>
+              <Nav.Link to="/miccheck" as={Link}>
+                MicCheck
+              </Nav.Link>
               <Nav.Link to="/dm" as={Link}>
                 DMs
               </Nav.Link>
