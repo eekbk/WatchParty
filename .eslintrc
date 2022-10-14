@@ -24,13 +24,7 @@
     ]
   },
   "rules": {
-    "import/extensions": [
-      "warn",
-      "always",
-      {
-        "ignorePackages": true
-      }
-    ],
+    "import/extensions": 0,
     "no-unused-vars": [
       "warn",
       {
