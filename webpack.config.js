@@ -3,7 +3,7 @@ const path = require('path');
 const srcDir = path.resolve(__dirname, 'client', 'src', 'index.tsx');
 module.exports = {
   mode: 'development',
-  entry: path.resolve(srcDir),
+  entry: [path.resolve(srcDir)],
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
@@ -19,15 +19,17 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/env', '@babel/react', '@babel/preset-typescript'],
-            plugins: ['@babel/plugin-proposal-class-properties'],
+            presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+            // plugins: ['plugin-proposal-class-properties', 'plugin-transform-runtime'],
           },
         },
       },
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: ['ts-loader'],
+        use: {
+          loader: 'ts-loader',
+        },
       },
       {
         test: /\.(css|scss)$/,
