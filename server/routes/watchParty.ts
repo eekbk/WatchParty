@@ -169,3 +169,31 @@ party.post('/video', (req: Request, res: Response) => {
       res.sendStatus(500);
     });
 });
+
+// Gets all archived WatchParties
+party.get('/archive', (req, res) => {
+  prisma.party
+    .findMany({
+      where: {
+        status: 'ARCHIVED',
+      },
+    })
+    .then((archives) => res.status(200).send(JSON.stringify(archives)))
+    .catch((err) => res.status(404).send(JSON.stringify(err)));
+});
+
+// Archives A watchParty
+party.post('/archive', (req, res) => {
+  const party = req.body;
+  prisma.party
+    .update({
+      where: {
+        id: party.id,
+      },
+      data: {
+        status: 'ARCHIVED',
+      },
+    })
+    .then((data) => res.status(201).send(JSON.stringify(data)))
+    .catch((err) => res.status(404).send(JSON.stringify(err)));
+});
