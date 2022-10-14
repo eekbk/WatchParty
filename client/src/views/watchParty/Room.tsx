@@ -19,6 +19,7 @@ function WatchParty({ socket }) {
   const [playlist, setPlaylist] = useState(room.videos);
 
   useEffect(() => {
+    console.log(room);
     socket.emit('join', { room: room.id, type: 'PARTY' });
     socket.emit('getMessages', room.id || 'test');
     socket.on('getMessages', (messages) => {
