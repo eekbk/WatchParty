@@ -85,42 +85,30 @@ user.get('/', (req: RequestWithUser, res: Response) => {
       })
       .then((following: any) => {
         user.following = following.map((follow) => follow.relatee_id);
-        return prisma.user.findMany({
+        return prisma.relation.findMany({
           where: {
-            relatee: {
-              some: {
-                type: 'BLOCK',
-                relator: {
-                  id: user.id,
-                },
-              },
-            },
+            relatee_id: user.id,
+            type: 'BLOCK',
+          },
+          select: {
+            relator_id: true,
           },
         });
       })
       .then((blockers) => {
-        user.blockers = blockers.map((blocker) => ({
-          id: blocker.id,
-          username: blocker.user_name,
-        }));
-        return prisma.user.findMany({
+        user.blockers = blockers.map((blocker) => blocker.relator_id);
+        return prisma.relation.findMany({
           where: {
-            relator: {
-              some: {
-                type: 'BLOCK',
-                relatee: {
-                  id: user.id,
-                },
-              },
-            },
+            relator_id: user.id,
+            type: 'BLOCK',
+          },
+          select: {
+            relatee_id: true,
           },
         });
       })
       .then((blocking) => {
-        user.blocking = blocking.map((blocked) => ({
-          id: blocked.id,
-          username: blocked.user_name,
-        }));
+        user.blocking = blocking.map((blocked) => blocked.relatee_id);
         res.status(200).json(user);
       })
       .catch((err) => {
@@ -129,6 +117,26 @@ user.get('/', (req: RequestWithUser, res: Response) => {
       });
   }
 });
+
+// find the follows through the join table
+user.get(
+  '/explicit/followers/:id',
+  async (req: RequestWithUser, res: Response) => {
+    const { id } = req.params;
+    try {
+      const num = await prisma.relation.count({
+        where: {
+          relatee_id: id,
+          type: 'FOLLOW',
+        },
+      });
+      res.status(200).json(num);
+    } catch (err) {
+      console.log('The err from getting followers:\n', err);
+      res.sendStatus(err.status);
+    }
+  },
+);
 
 user.post('/playlist', (req: RequestWithUser, res: Response) => {
   const { playlist } = req.body;
@@ -151,16 +159,11 @@ user.post('/playlist', (req: RequestWithUser, res: Response) => {
       res.sendStatus(500);
     });
 });
+
 // create a relation between current user and followed for a follow click
 user.post('/follow', async (req: RequestWithUser, res: Response) => {
   // deconstruct req body
   const { followerId, followedId } = req.body;
-  console.log(
-    'this is followerId:',
-    followerId,
-    '\nthis is followedId:',
-    followedId,
-  );
   // create a new relation between the follower and the followed
   try {
     const existingFollow = await prisma.relation.findFirst({
@@ -301,50 +304,5 @@ user.delete('/block', (req: RequestWithUser, res: Response) => {
 });
 
 user.post('/');
-
-// // TRY THIS IN THE IMPLICIT MANNER
-// // create a relation between current user and followed for a follow click
-// user.post('/implicit/follow', async (req: RequestWithUser, res: Response) => {
-//   // deconstruct req body
-//   const { followerId, followedId } = req.body;
-//   // create a new relation between the follower and the followed
-//   try {
-//     const existingFollow = await prisma.relation.findFirst({
-//       where: {
-//         AND: [
-//           { relator_id: followerId },
-//           { relatee_id: followedId },
-//           { type: 'FOLLOW' },
-//         ],
-//       },
-//     });
-//     if (existingFollow) {
-//       console.log('Hey you already following, foo!');
-//       res.sendStatus(200);
-//     } else {
-//       await prisma.relation.create({
-//         data: {
-//           relator_id: followerId,
-//           relatee_id: followedId,
-//           type: 'FOLLOW',
-//         },
-//       });
-//       // await prisma.user.update({
-//       //   where: {
-//       //     id: followedId,
-//       //   },
-//       //   data: {
-//       //     follows: {
-//       //       increment: 1,
-//       //     },
-//       //   },
-//       // });
-//       res.sendStatus(201);
-//     }
-//   } catch (err) {
-//     console.log('This is error please fix now:\n', err);
-//     res.sendStatus(500);
-//   }
-// });
 
 export default user;
