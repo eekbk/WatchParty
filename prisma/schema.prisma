@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
 
@@ -29,6 +29,21 @@ model User {
   blocked_by   User[]       @relation("UserBlocks")
 }
 
+// model Follow {
+//   id String @id @default(uuid())
+//   follower User @relation("follower", fields: [follower_id], references: [id])
+//   follower_id String
+//   following User  @relation("following", fields: [following_id], references: [id])
+//   following_id  String
+// }
+
+// model Block {
+//   id  String  @id @default(uuid())
+//   blocker User @relation("blocker", fields: [blocker_id], references: [id])
+//   blocker_id  String
+//   got_blocked User @relation("got_blocked", fields: [got_blocked_id], references: [id])
+//   got_blocked_id String
+// }
 model Relation {
   id         String        @id @default(uuid())
   relator    User          @relation("relator", fields: [relator_id], references: [id])

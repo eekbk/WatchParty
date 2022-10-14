@@ -42,7 +42,7 @@ function DmChat({
     });
     // receives a Dm chat and logs prints it
     socket.on('DmChat', (message) => {
-      console.log(message);
+      // console.log(message);
       setMessages((oldMessages) => [...oldMessages, message]);
     });
 

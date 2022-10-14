@@ -17,7 +17,7 @@ party.get('/', (req: Request, res: Response) => {
       },
     })
     .then((parties) => {
-      console.log(parties);
+      // console.log(parties);
       res.status(200).send(JSON.stringify(parties));
     })
     .catch((err) => {
