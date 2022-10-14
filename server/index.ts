@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as dotenv from 'dotenv';
 import session from 'express-session';
 import { prisma } from './db/index';
-import { party } from './routes/watchParty';
+import { party } from './routes/party';
 import { playlist } from './routes/playlist';
 import { search } from './routes/search';
 

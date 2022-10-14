@@ -130,7 +130,12 @@ function Video({
 			  marginLeft: '0px',
       }}
     >
-      <Playlist room={room} playlist={playlist} setPlaylist={setPlaylist} />
+      <Playlist
+        room={room}
+        playlist={playlist}
+        setPlaylist={setPlaylist}
+        status={status}
+      />
       <ReactPlayer
         ref={videoPlayer}
         config={{

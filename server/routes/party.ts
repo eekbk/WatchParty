@@ -15,6 +15,9 @@ party.get('/', (req: Request, res: Response) => {
       where: {
         type: 'PARTY',
       },
+      include: {
+        videos: true,
+      },
     })
     .then((parties) => {
       res.status(200).send(JSON.stringify(parties));
@@ -165,6 +168,56 @@ party.post('/video', (req: Request, res: Response) => {
     })
     .catch((err) => {
       console.error('error: ', err);
+      res.sendStatus(500);
+    });
+});
+
+party.put('/addVideo/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { video } = req.body;
+  prisma.party
+    .update({
+      where: {
+        id,
+      },
+      data: {
+        videos: {
+          connect: {
+            id: video,
+          },
+        },
+      },
+    })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
+
+party.put('/removeVideo/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { video } = req.body;
+  prisma.party
+    .update({
+      where: {
+        id,
+      },
+      data: {
+        videos: {
+          disconnect: {
+            id: video,
+          },
+        },
+      },
+    })
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error(err);
       res.sendStatus(500);
     });
 });

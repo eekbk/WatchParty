@@ -24,7 +24,14 @@ user.get('/', (req: RequestWithUser, res: Response) => {
         },
       })
       .then((playlists: any) => {
-        user.playlists = playlists;
+        user.playlists = playlists.map((pl) => ({
+          id: pl.id,
+          name: pl.name,
+          description: pl.description,
+          user_id: pl.user_id,
+          thumbnail: pl.thumbnail,
+          videos: pl.playlist_videos.map((plv) => plv.video),
+        }));
         return prisma.party.findMany({
           where: {
             user_parties: {

@@ -7,7 +7,9 @@ import { StyledListGroup } from './styles';
 const { Group, Control, Text } = Form;
 const { Item } = ListGroup;
 
-export function Playlist({ playlist, setPlaylist, room }) {
+export function Playlist({
+  playlist, setPlaylist, room, status,
+}) {
   const [video, setVideo] = useState('');
   const [clicked, setClicked] = useState(false);
 
@@ -22,7 +24,9 @@ export function Playlist({ playlist, setPlaylist, room }) {
         .then((vd) => {
           setVideo('');
           setPlaylist(playlist.concat([vd.data]));
-          // do some work here
+          return axios.put(`/api/party/addVideo/${room.id}`, {
+            video: vd.data.id,
+          });
         })
         .catch((err) => {
           console.error(err);
@@ -34,10 +38,10 @@ export function Playlist({ playlist, setPlaylist, room }) {
   };
 
   const handleVideoRemoval = (i) => {
-    // do some work here
-    const vids = playlist.slice();
-    vids.splice(i, 1);
-    setPlaylist(vids);
+    const videos = playlist.slice();
+    videos.splice(i, 1);
+    axios.put(`/api/party/removeVideo/${room.id}`, { video: playlist[i].id });
+    setPlaylist(videos);
   };
 
   return (
@@ -50,12 +54,12 @@ export function Playlist({ playlist, setPlaylist, room }) {
 			  width: '30%',
 			  position: 'absolute',
       }}
+      hidden={!status}
     >
       <Item
         style={{
 				  display: 'flex',
 				  justifyContent: 'space-between',
-				  height: '4vh',
         }}
       >
         <h5 style={{ alignSelf: 'center' }}>Playlist</h5>
