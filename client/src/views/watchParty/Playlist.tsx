@@ -71,7 +71,7 @@ export function Playlist({ playlist, setPlaylist, room }) {
             <StyledVideoCard.Body>
               <StyledVideoCard.Img src={video.thumbnail} />
               <StyledVideoCard.Text>
-                {console.log(video)}
+                {/* {console.log(video)} */}
                 {video.description.slice(0, 150)}
               </StyledVideoCard.Text>
             </StyledVideoCard.Body>
