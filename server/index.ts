@@ -35,7 +35,6 @@ passport.use(
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
-      // console.log('theProfile:\n', profile);
       const user = await prisma.user.findUnique({
         where: {
           googleId: profile.id,

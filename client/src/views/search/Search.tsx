@@ -23,13 +23,6 @@ function Search() {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
-  // const [view, setView] = useState('searchResults');
-  // useEffect(() => {
-  //   console.log('is this doing anything????');
-  //   // console.log('user.following.length:', user.following.length);
-  //   // console.log('user.followers.length:', user.followers.length);
-  // }, [user]);
-
   const handleCardClick = (party, kind) => {
     if (kind === 'party') {
       navigate('/watchParty', {
@@ -98,15 +91,6 @@ function Search() {
       </ul>
       {usersMatch.length ? <h2>Users</h2> : []}
       <ul>
-        {/* {usersMatch.map((user) => (
-          <Card key={user.id} onClick={() => handleCardClick(user, 'user')}>
-            <h3>{user.user_name}</h3>
-            <h4>
-              followers:
-              {user.follows}
-            </h4>
-          </Card>
-        ))} */}
         <Col>
           <CardGroup>
             {usersMatch
