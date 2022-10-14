@@ -245,6 +245,26 @@ user.post('/block', async (req: RequestWithUser, res: Response) => {
           type: 'BLOCK',
         },
       });
+      await prisma.relation.deleteMany({
+        where: {
+          OR: [
+            {
+              AND: [
+                { relatee_id: blockedId },
+                { relator_id: blockerId },
+                { type: 'FOLLOW' },
+              ],
+            },
+            {
+              AND: [
+                { relatee_id: blockerId },
+                { relator_id: blockedId },
+                { type: 'FOLLOW' },
+              ],
+            },
+          ],
+        },
+      });
       res.sendStatus(201);
     }
   } catch (err) {
