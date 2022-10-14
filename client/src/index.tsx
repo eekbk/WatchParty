@@ -1,4 +1,5 @@
 // File for root element
+import 'regenerator-runtime/runtime';
 import React /* useContext */ from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route /* redirect */ } from 'react-router-dom';
@@ -6,13 +7,13 @@ import io from 'socket.io-client';
 import { CreateParty } from './views/CreateParty/CreateParty';
 import { UserContextProvider /* UserContext */ } from './context';
 import { SearchContextProvider } from './contexts/searchContext';
-
-const { default: App } = require('./views/app.tsx');
-const { default: WatchParty } = require('./views/watchParty/Room.tsx');
-const { default: Dashboard } = require('./views/Dashboard.tsx');
-const { default: Logout } = require('./views/Logout.tsx');
-const { default: Search } = require('./views/search/Search.tsx');
-const { default: Dm } = require('./views/Dm/Dm.tsx');
+import Dictaphone from './views/search/Dictaphone';
+import App from './views/app';
+import WatchParty from './views/watchParty/Room';
+import Dashboard from './views/Dashboard';
+import Logout from './views/Logout';
+import Search from './views/search/Search';
+import Dm from './views/Dm/Dm';
 
 const socket = io();
 
@@ -29,6 +30,7 @@ function RouteHandler() {
             <Route path="createParty" element={<CreateParty />} />
             <Route path="profile" element={<div>Profile</div>} />
             <Route path="dm" element={<Dm socket={socket} />} />
+            <Route path="miccheck" element={<Dictaphone />} />
           </Route>
         </Routes>
       </BrowserRouter>
