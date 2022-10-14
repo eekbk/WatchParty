@@ -23,7 +23,6 @@ function Dashboard() {
     axios
       .get('/api/party')
       .then((data: any) => {
-        // console.log(data.data);
         setParties(
           data.data.sort(
             (a, b) =>
@@ -36,6 +35,7 @@ function Dashboard() {
       });
   }, []);
   const handleCardClick = (party) => {
+    console.log(party);
     navigate('/watchParty', {
       state: { party, videos: party.videos },
     });
