@@ -66,7 +66,7 @@ search.get('/:q', async (req: Request, res: Response) => {
     };
     res.status(200).send(results);
   } catch (err) {
-    console.log('Error from search:\n', err);
+    console.error('Error from search:\n', err);
     res.sendStatus(500);
   }
 });
@@ -85,7 +85,7 @@ search.get('/party/:videoId', async (req: Request, res: Response) => {
     });
     res.status(200).send(parties);
   } catch (err) {
-    console.log('The error from :videoId endpoint:\n', err);
+    console.error('The error from :videoId endpoint:\n', err);
     res.sendStatus(500);
   }
 });

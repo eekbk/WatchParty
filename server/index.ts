@@ -4,9 +4,10 @@ import * as path from 'path';
 import * as dotenv from 'dotenv';
 import session from 'express-session';
 import { prisma } from './db/index';
-import { party } from './routes/watchParty';
+import { party } from './routes/party';
 import { playlist } from './routes/playlist';
 import { search } from './routes/search';
+import { video } from './routes/video';
 
 const app: Express = express();
 
@@ -34,6 +35,7 @@ passport.use(
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
+      // console.log('theProfile:\n', profile);
       const user = await prisma.user.findUnique({
         where: {
           googleId: profile.id,
@@ -43,7 +45,7 @@ passport.use(
       if (!user) {
         const newUser = await prisma.user.create({
           data: {
-            user_name: profile.name.givenName,
+            user_name: profile.name.givenName + profile.name.familyName[0],
             googleId: profile.id,
             profile: profile.photos[0].value,
           },
@@ -86,6 +88,7 @@ app.use('/api/user', user);
 app.use('/api/party', party);
 app.use('/api/playlist', playlist);
 app.use('/api/search', search);
+app.use('/api/video', video);
 
 app.get('/test', (req: any, res: Response) => {
   res.json(req.user);
@@ -97,7 +100,7 @@ app.get(
     'google',
     { scope: ['profile'] },
     (req: Request, res: Response) => {
-      console.log('not empty now');
+      // console.log('not empty now');
     },
   ),
 );
@@ -205,7 +208,7 @@ app.post('/api/seed', async (req: Request, res: Response) => {
     const createdData = await prisma[table].createMany(dataObj);
     res.status(201).send(createdData);
   } catch (err) {
-    console.log('Error from /seed', err);
+    console.error('Error from /seed', err);
     res.sendStatus(500);
   }
 });
@@ -297,7 +300,7 @@ io.on('connection', (socket: any) => {
         .then((messages) => {
           io.to(room).emit('getMessages', messages);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.error(err));
     }
   });
 
@@ -312,7 +315,7 @@ io.on('connection', (socket: any) => {
       .then((user) => {
         io.to(q.room).emit('GetUser', user.user_name);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   });
 
   // Direct Messages
@@ -340,10 +343,7 @@ io.on('connection', (socket: any) => {
           },
         },
       })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(err));
   });
 
   // Sends out chat to dm-d user

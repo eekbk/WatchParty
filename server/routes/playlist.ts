@@ -4,7 +4,6 @@ import { prisma } from '../db/index';
 export const playlist: Router = express.Router();
 
 playlist.post('/seed', async (req: Request, res: Response) => {
-  console.log('inside the playlist seed');
   try {
     await prisma.playlist.create(req.body);
     res.sendStatus(201);
