@@ -36,9 +36,9 @@ function Dashboard() {
               Number(new Date(b.date_time)) - Number(new Date(a.date_time)),
           ),
         );
-        for (let i = 0; i < data.data.length; i + 1) {
-          console.log(data.data[i].likes_count, 'likes.....');
-        }
+        // for (let i = 0; i < data.data.length; i++) {
+        //   console.log(data.data[i].likes_count, 'likes.....');
+        // }
       })
     // .then((data: any) => {
     //   console.log(data.data, 'data.data2.....')
@@ -56,6 +56,10 @@ function Dashboard() {
   };
   const handleProfileClick = () => {
     navigate('/profile');
+  };
+
+  const handleCalendarClick = () => {
+    navigate('/calendar');
   };
 
   return (
@@ -86,7 +90,15 @@ function Dashboard() {
             {/* <StyledForm> */}
             <ListGroup>
               <ListGroup.Item action variant="dark">
-                Upcoming Watch Parties
+                <Col>Upcoming Watch Parties</Col>
+                <Col>
+                  <Button
+                    variant="primary"
+                    onClick={() => handleCalendarClick()}
+                  >
+  Calendar
+                  </Button>
+                </Col>
               </ListGroup.Item>
               {parties.slice(0, 5).map((party) => (
                 <ListGroup.Item

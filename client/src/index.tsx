@@ -10,7 +10,7 @@ import { SearchContextProvider } from './contexts/searchContext';
 const { default: App } = require('./views/app.tsx');
 const { default: WatchParty } = require('./views/watchParty/Room.tsx');
 const { default: Dashboard } = require('./views/Dashboard.tsx');
-const { default: Logout } = require('./views/Logout.tsx');
+// const { default: Logout } = require('./views/Logout.tsx');
 const { default: Search } = require('./views/search/Search.tsx');
 const { default: Dm } = require('./views/Dm/Dm.tsx');
 
