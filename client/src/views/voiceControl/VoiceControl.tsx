@@ -44,14 +44,14 @@ function VoiceControl() {
         'privacy please',
         'turn voice control off',
       ],
-      callback: () => handleSwitch(),
+      callback: () => handleVoiceToggle(),
     },
     {
       command: ['clear', 'reset'],
       callback: ({ resetTranscript }) => resetTranscript(),
     },
     {
-      command: ['search for *', 'look for *', 'show me *'],
+      command: ['search for *', 'look for *', 'show me *', 'look up *'],
       callback: (verbalSearch) => setSearchVal(verbalSearch),
     },
     {
@@ -86,15 +86,17 @@ function VoiceControl() {
 
   // const redirect: any = '';
   // !!!!!!!!!!!!!!!! try this is useeffect
-  if (redirectUrl) {
-    if (pages.includes(redirectUrl)) {
-      navigate(urls[redirectUrl]);
-    } else {
-      alert('Page not recognized');
+  useEffect(() => {
+    if (redirectUrl) {
+      if (pages.includes(redirectUrl)) {
+        navigate(urls[redirectUrl]);
+      } else {
+        alert('Page not recognized');
+      }
     }
-  }
+  }, [redirectUrl]);
 
-  const handleSwitch = async () => {
+  const handleVoiceToggle = async () => {
     if (!listening) {
       await SpeechRecognition.startListening({ continuous: true });
       setIsSwitchOn(true);
@@ -121,7 +123,7 @@ function VoiceControl() {
         id="vc-switch"
         label={isSwitchOn ? 'Voice Control ON' : 'Voice Control OFF'}
 				// title={forceRerender}
-        onChange={handleSwitch}
+        onChange={handleVoiceToggle}
         checked={isSwitchOn}
       />
       {isSwitchOn ? <p>{transcript}</p> : []}
