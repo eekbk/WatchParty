@@ -17,6 +17,7 @@ function WatchParty({ socket }) {
   const { state } = useLocation();
   const room = state.party;
   const [playlist, setPlaylist] = useState(room.videos);
+  const [participants, setParticipants] = useState(room.users);
 
   useEffect(() => {
     socket.emit('join', { room: room.id, type: 'PARTY' });
@@ -54,6 +55,8 @@ function WatchParty({ socket }) {
               user={user}
               playlist={playlist}
               setPlaylist={setPlaylist}
+              participants={participants}
+              setParticipants={setParticipants}
               status={
 								user.user
 								  ? user.user.parties.filter((party) => party.id === room.id)[0]

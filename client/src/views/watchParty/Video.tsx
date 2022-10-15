@@ -1,11 +1,21 @@
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
-import { Container, ProgressBar, Form } from 'react-bootstrap';
+import {
+  Container, ProgressBar, Form, Row, Col,
+} from 'react-bootstrap';
 import { LButton } from '../../styles';
 import { Playlist } from './Playlist';
+import { Participants } from './Participants';
 
 function Video({
-  playlist, setPlaylist, status, room, user, socket,
+  playlist,
+  setPlaylist,
+  participants,
+  setParticipants,
+  status,
+  room,
+  user,
+  socket,
 }) {
   // state vars
   const [isPlaying, setPause] = useState(() => !status);
@@ -121,6 +131,7 @@ function Video({
       socket.off('giveRoom');
     };
   }, []);
+  // Positioning of playlist and participants needs work
   return (
     <Container
       fluid="md"
@@ -130,12 +141,24 @@ function Video({
 			  marginLeft: '0px',
       }}
     >
-      <Playlist
-        room={room}
-        playlist={playlist}
-        setPlaylist={setPlaylist}
-        status={status}
-      />
+      <Row style={{ position: 'absolute', width: '100%', maxHeight: '85%' }}>
+        <Col md={2}>
+          <Playlist
+            room={room}
+            playlist={playlist}
+            setPlaylist={setPlaylist}
+            status={status}
+          />
+        </Col>
+        <Col md={2}>
+          <Participants
+            room={room}
+            status={status}
+            participants={participants}
+            setParticipants={setParticipants}
+          />
+        </Col>
+      </Row>
       <ReactPlayer
         ref={videoPlayer}
         config={{
