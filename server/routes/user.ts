@@ -62,35 +62,44 @@ user.get('/', (req: RequestWithUser, res: Response) => {
         });
         return prisma.user.findMany({
           where: {
-            relatee: {
+            relator: {
               some: {
-                type: 'FOLLOW',
-                relator: {
-                  id: user.id,
-                },
+                relatee_id: user.id,
               },
             },
           },
+          select: {
+            id: true,
+            user_name: true,
+          },
         });
       })
-      .then((friends) => {
-        user.friends = friends.map((f) => ({
+      .then((tempFollowers) => {
+        user.tempFollowers = tempFollowers.map((f) => ({
           id: f.id,
           username: f.user_name,
         }));
-        user.followers = user.friends.map((friend) => friend.id);
-        return prisma.relation.findMany({
+        user.followers = user.tempFollowers.map((friend) => friend.id);
+        return prisma.user.findMany({
           where: {
-            relator_id: user.id,
-            type: 'FOLLOW',
+            relatee: {
+              some: {
+                relator_id: user.id,
+              },
+            },
           },
           select: {
-            relatee_id: true,
+            id: true,
+            user_name: true,
           },
         });
       })
-      .then((following: any) => {
-        user.following = following.map((follow) => follow.relatee_id);
+      .then((tempFollowing) => {
+        user.tempFollowing = tempFollowing.map((f) => ({
+          id: f.id,
+          username: f.user_name,
+        }));
+        user.following = tempFollowing.map((follow) => follow.id);
         return prisma.relation.findMany({
           where: {
             relatee_id: user.id,
@@ -309,6 +318,24 @@ user.delete('/block', (req: RequestWithUser, res: Response) => {
   // delete the relation between the follower and the followed
 });
 
-user.post('/');
+user.get('/test', (req: RequestWithUser, res: Response) => {
+  prisma.user_Party
+    .findMany({
+      where: {
+        user_id: '7071f636-db37-43e9-8f43-824c42f7014d',
+      },
+    })
+    .then((results) => console.log(results));
+  // prisma.relation.create({
+  //   data: {
+  //     relator_id: '4fa291b8-f7d8-4044-8980-4a3e76fc2456',
+  //     relatee_id: '7071f636-db37-43e9-8f43-824c42f7014d',
+  //     type: 'FOLLOW',
+  //   }
+  // })
+  // .then(relations=>{
+  //   res.status(200).send(relations);
+  // })
+});
 
 export default user;

@@ -7,7 +7,9 @@ export interface User extends Express.User {
 	parties: any[];
 	friends: any[];
 	followers: any[];
+	tempFollowers: any[];
 	following: any[];
+	tempFollowing: any[];
 	blockers: any[];
 	blocking: any[];
 	enemies: any[];
