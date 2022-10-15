@@ -16,10 +16,12 @@ function WatchParty({ socket }) {
   const user = useContext(UserContext);
   const { state } = useLocation();
   const room = state.party;
+  const isArchived = state.isArchived || false;
   const [playlist, setPlaylist] = useState(room.videos);
   const [participants, setParticipants] = useState(room.users);
 
   useEffect(() => {
+    console.log(user);
     socket.emit('join', { room: room.id, type: 'PARTY' });
     socket.emit('getMessages', room.id || 'test');
     socket.on('getMessages', (messages) => {
@@ -52,6 +54,7 @@ function WatchParty({ socket }) {
             text="white"
           >
             <Video
+              isArchived={isArchived}
               user={user}
               playlist={playlist}
               setPlaylist={setPlaylist}
@@ -69,6 +72,7 @@ function WatchParty({ socket }) {
         </Col>
         <Col xs={5} md={3}>
           <Chat
+            isArchived={isArchived}
             user={user}
             room={room.id || 'test'}
             messages={dbMessages}

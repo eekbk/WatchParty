@@ -5,7 +5,12 @@ import { StyledButton, StyledScrollableGroup } from '../../styles';
 const { default: Message } = require('./Message.tsx');
 
 function Chat({
-  user, room, messages, setMessages, socket,
+  user,
+  room,
+  messages,
+  setMessages,
+  socket,
+  isArchived,
 }): JSX.Element {
   // State vars
   const [chat, setChat] = useState('');
@@ -57,11 +62,12 @@ function Chat({
         </StyledScrollableGroup>
         <Form.Group>
           <Form.Control
+            disabled={isArchived}
             value={chat}
             onChange={(event) => setChat(event.target.value)}
             placeholder="type here!"
           />
-          <StyledButton type="submit" onClick={submit}>
+          <StyledButton type="submit" disabled={isArchived} onClick={submit}>
             Send!
           </StyledButton>
         </Form.Group>

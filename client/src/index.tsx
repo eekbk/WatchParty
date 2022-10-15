@@ -13,6 +13,7 @@ const { default: Dashboard } = require('./views/Dashboard.tsx');
 const { default: Logout } = require('./views/Logout.tsx');
 const { default: Search } = require('./views/search/Search.tsx');
 const { default: Dm } = require('./views/Dm/Dm.tsx');
+const { default: Archive } = require('./views/Archive/Archive.tsx');
 
 const socket = io();
 
@@ -29,6 +30,7 @@ function RouteHandler() {
             <Route path="createParty" element={<CreateParty />} />
             <Route path="profile" element={<div>Profile</div>} />
             <Route path="dm" element={<Dm socket={socket} />} />
+            <Route path="archive" element={<Archive />} />
           </Route>
         </Routes>
       </BrowserRouter>
