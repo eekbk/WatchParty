@@ -28,29 +28,6 @@ party.get('/', (req: Request, res: Response) => {
     });
 });
 
-// Get all watch parties
-// party.get('/user', (req: Request, res: Response) => {
-//   // Retrieve watch party from that user from the database
-//   const { user } = req;
-//   prisma.party
-//     .findMany({
-//       where: {
-//         type: 'PARTY',
-//         user_id: user.id,
-//       },
-//       include: {
-//         videos: true,
-//       },
-//     })
-//     .then((parties) => {
-//       res.status(200).send(JSON.stringify(parties));
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.sendStatus(err.status);
-//     });
-// });
-
 // Create a watch party
 party.post('/', (req: RequestWithUser, res: Response) => {
   // Get the party values out of the request body
