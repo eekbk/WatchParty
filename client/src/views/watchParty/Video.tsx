@@ -47,22 +47,20 @@ function Video({
         });
         setVid(video + 1);
         if (!playlist[video + 1] && room.will_archive) {
+          console.log('ARCHIVE ME PLEASE!!', room);
+          const data = JSON.stringify(room);
           const config = {
             method: 'post',
             url: 'http://localhost:4040/api/party/archive',
             headers: {
               'Content-Type': 'application/json',
             },
-            data: { party: room, user: user.user },
+            data,
           };
 
-          axios(config)
-            .then((response) => {
-              console.log(response.data);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          axios(config).catch((error) => {
+            console.log(error);
+          });
         }
       } else {
         socket.emit('giveRoom', {
@@ -196,11 +194,7 @@ function Video({
       </Container>
       <LButton
         disabled={
-					isArchived
-					  ? false
-					  : status
-					    ? status.role !== 'CREATOR'
-					    : true
+					isArchived ? false : status ? status.role !== 'CREATOR' : true
 				}
         onClick={playVid}
       >
@@ -209,11 +203,7 @@ function Video({
       {' '}
       <LButton
         disabled={
-					isArchived
-					  ? false
-					  : status
-					    ? status.role !== 'CREATOR'
-					    : true
+					isArchived ? false : status ? status.role !== 'CREATOR' : true
 				}
         onClick={pauseVid}
       >
@@ -222,11 +212,7 @@ function Video({
       {' '}
       <LButton
         disabled={
-					isArchived
-					  ? false
-					  : status
-					    ? status.role !== 'CREATOR'
-					    : true
+					isArchived ? false : status ? status.role !== 'CREATOR' : true
 				}
         onClick={() => changeVid(false)}
       >
@@ -235,11 +221,7 @@ function Video({
       {' '}
       <LButton
         disabled={
-					isArchived
-					  ? false
-					  : status
-					    ? status.role !== 'CREATOR'
-					    : true
+					isArchived ? false : status ? status.role !== 'CREATOR' : true
 				}
         onClick={() => changeVid(true)}
       >
