@@ -13,8 +13,6 @@ function VoiceControl() {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const [searchVal, setSearchVal] = useState('');
 
-  const newFunc = () => 1;
-
   const { setVideosMatch, setUsersMatch, setPartiesMatch } =		useContext(SearchContext);
 
   const searchRequest = (text) => {
@@ -69,7 +67,7 @@ function VoiceControl() {
     transcript,
     listening,
     resetTranscript,
-    browserSupportsSpeechRecognition,
+    // browserSupportsSpeechRecognition,
   } = useSpeechRecognition({ commands });
 
   const pages = [
@@ -100,7 +98,7 @@ function VoiceControl() {
   }, [redirectUrl]);
 
   const sendFunc = () => {
-    console.log('we in the send');
+    // console.log('we in the send');
     if (searchVal) {
       searchRequest(searchVal);
     }

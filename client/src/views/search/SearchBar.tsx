@@ -6,7 +6,6 @@ import { Button, Form, InputGroup } from 'react-bootstrap';
 import { IoSearch } from 'react-icons/io5';
 import { CgSearchLoading } from 'react-icons/cg';
 import { SearchContext } from '../../contexts/searchContext';
-import { VoiceContext } from '../../contexts/voiceContext';
 
 function SearchBar() {
   const [textVal, setTextVal] = useState('');

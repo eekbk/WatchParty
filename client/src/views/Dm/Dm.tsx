@@ -1,7 +1,7 @@
-import { useEffect, useContext, useState } from 'react';
+import { /* useEffect, */ useContext, useState } from 'react';
 // import { useLocation } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
-import { Socket } from 'socket.io';
+// import { Socket } from 'socket.io';
 import { UserContext } from '../../context';
 
 const { default: DmBar } = require('./DmBar.tsx');
