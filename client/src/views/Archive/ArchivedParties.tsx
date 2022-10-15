@@ -13,9 +13,9 @@ function ArchiveParties({ parties }) {
   };
   return (
     <Container>
-      <Row>
+      <Row sm={3} lg={4} md={4}>
         {parties.map((party) => (
-          <Col>
+          <Col style={{ padding: '5px' }}>
             <Card onClick={() => handleCardClick(party)}>
               <Card.Img variant="top" src={party.thumbnail} />
               <Card.Body>

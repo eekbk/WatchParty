@@ -14,6 +14,9 @@ party.get('/', (req: Request, res: Response) => {
     .findMany({
       where: {
         type: 'PARTY',
+        NOT: {
+          status: 'ARCHIVED',
+        },
       },
       include: {
         videos: true,
