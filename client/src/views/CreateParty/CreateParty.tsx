@@ -74,6 +74,7 @@ export function CreateParty() {
           console.error(err);
         });
     } else {
+      console.log(archive);
       axios
         .post('/api/party', {
           party: {
@@ -82,6 +83,7 @@ export function CreateParty() {
             date_time: date,
             is_private: privateR,
             is_recurring: archive,
+            will_archive: archive,
             invitees: invited,
             status: 'UPCOMING',
             admins,
