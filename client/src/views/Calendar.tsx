@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import Button, { Container } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 // import Row from 'react-bootstrap/Row';
 // import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
@@ -65,19 +65,19 @@ function Calendar() {
             <th>Date</th>
             <th>Party Name</th>
             <th>created-by</th>
-            <th>watch now</th>
+            {/* <th>watch now</th> */}
           </tr>
         </thead>
-        {parties.map((party) => (
-          <tbody>
-            <tr>
+        <tbody>
+          {parties.map((party) => (
+            <tr onClick={() => handleCardClick(party)}>
               <td>{party.date_time.slice(0, 10)}</td>
               <td>{party.name}</td>
               <td>{party.user_name}</td>
-              <Button onClick={() => handleCardClick(party)}>watch</Button>
+              {/* <Button onClick={() => handleCardClick(party)}>watch</Button> */}
             </tr>
-          </tbody>
-        ))}
+          ))}
+        </tbody>
       </Table>
     </Container>
   );
