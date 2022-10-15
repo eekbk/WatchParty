@@ -1,22 +1,7 @@
 import { Container } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
 
 function Message({ message, user, socket }) {
-  const [user_name, setUserName] = useState(null);
-  useEffect(() => {
-    if (message.user.id) {
-      socket.emit('GetUser', {
-        room: message.party_id,
-        userId: message.user.id,
-      });
-    }
-    socket.on('GetUser', (userName) => {
-      setUserName(userName);
-    });
-    return () => {
-      socket.off('GetUser');
-    };
-  }, []);
+  console.log(message);
   return (
     <Container
       style={{
@@ -26,7 +11,7 @@ function Message({ message, user, socket }) {
 			  marginBottom: '5px',
       }}
     >
-      {user_name}
+      {message.user.user_name}
       :
       <Container
         style={{
