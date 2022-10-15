@@ -35,9 +35,8 @@ function Dashboard() {
       });
   }, []);
   const handleCardClick = (party) => {
-    console.log(party);
     navigate('/watchParty', {
-      state: { party, videos: party.videos },
+      state: { party },
     });
   };
   const handleProfileClick = () => {
