@@ -275,6 +275,9 @@ io.on('connection', (socket: any) => {
             party_id: chat.room,
             type: chat.type,
           },
+          include: {
+            user: true,
+          },
         })
         .then((message) => io.to(chat.room).emit('chat', message))
         .catch((err) => {

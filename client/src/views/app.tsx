@@ -52,10 +52,10 @@ function App(): JSX.Element {
               <Nav.Link to="/dm" as={Link}>
                 DMs
               </Nav.Link>
-              {/* <Nav.Link to="/scrollDash" as={Link}>
-                Scroll
-              </Nav.Link> */}
-              <Nav.Link hidden={user} as={Button} href="/auth/google">
+              <Nav.Link to="/archive" as={Link}>
+                Archives
+              </Nav.Link>
+              <Nav.Link hidden={user} href="/auth/google">
                 Login
               </Nav.Link>
               <Nav.Link hidden={!user} as={Button} onClick={handleLogout}>

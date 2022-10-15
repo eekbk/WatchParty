@@ -1,11 +1,23 @@
+import axios from 'axios';
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
-import { Container, ProgressBar, Form } from 'react-bootstrap';
+import {
+  Container, ProgressBar, Form, Row, Col,
+} from 'react-bootstrap';
 import { LButton } from '../../styles';
 import { Playlist } from './Playlist';
+import { Participants } from './Participants';
 
 function Video({
-  playlist, setPlaylist, status, room, user, socket,
+  playlist,
+  setPlaylist,
+  participants,
+  setParticipants,
+  status,
+  room,
+  user,
+  socket,
+  isArchived,
 }) {
   // state vars
   const [isPlaying, setPause] = useState(() => !status);
@@ -39,6 +51,22 @@ function Video({
           playing: isPlaying,
         });
         setVid(video + 1);
+        if (!playlist[video + 1] && room.will_archive) {
+          console.log('ARCHIVE ME PLEASE!!', room);
+          const data = JSON.stringify(room);
+          const config = {
+            method: 'post',
+            url: 'http://localhost:4040/api/party/archive',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            data,
+          };
+
+          axios(config).catch((error) => {
+            console.log(error);
+          });
+        }
       } else {
         socket.emit('giveRoom', {
           room: room.id,
@@ -121,6 +149,7 @@ function Video({
       socket.off('giveRoom');
     };
   }, []);
+  // Positioning of playlist and participants needs work
   return (
     <Container
       fluid="md"
@@ -130,12 +159,24 @@ function Video({
 			  marginLeft: '0px',
       }}
     >
-      <Playlist
-        room={room}
-        playlist={playlist}
-        setPlaylist={setPlaylist}
-        status={status}
-      />
+      <Row style={{ position: 'absolute', width: '100%', maxHeight: '85%' }}>
+        <Col md={2}>
+          <Playlist
+            room={room}
+            playlist={playlist}
+            setPlaylist={setPlaylist}
+            status={status}
+          />
+        </Col>
+        <Col md={2}>
+          <Participants
+            room={room}
+            status={status}
+            participants={participants}
+            setParticipants={setParticipants}
+          />
+        </Col>
+      </Row>
       <ReactPlayer
         ref={videoPlayer}
         config={{
@@ -169,19 +210,39 @@ function Video({
       <Container fluid="md" style={{ height: '1.5rm', width: '10%' }}>
         <Form.Range value={volume * 100} onChange={setVolume} />
       </Container>
-      <LButton disabled={!status} onClick={playVid}>
+      <LButton
+        disabled={
+					isArchived ? false : status ? status.role !== 'CREATOR' : true
+				}
+        onClick={playVid}
+      >
         Play
       </LButton>
       {' '}
-      <LButton disabled={!status} onClick={pauseVid}>
+      <LButton
+        disabled={
+					isArchived ? false : status ? status.role !== 'CREATOR' : true
+				}
+        onClick={pauseVid}
+      >
         Pause
       </LButton>
       {' '}
-      <LButton disabled={!status} onClick={() => changeVid(false)}>
+      <LButton
+        disabled={
+					isArchived ? false : status ? status.role !== 'CREATOR' : true
+				}
+        onClick={() => changeVid(false)}
+      >
         Back
       </LButton>
       {' '}
-      <LButton disabled={!status} onClick={() => changeVid(true)}>
+      <LButton
+        disabled={
+					isArchived ? false : status ? status.role !== 'CREATOR' : true
+				}
+        onClick={() => changeVid(true)}
+      >
         Next
       </LButton>
     </Container>

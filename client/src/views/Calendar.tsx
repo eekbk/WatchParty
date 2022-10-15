@@ -51,7 +51,9 @@ function Calendar() {
             <tr onClick={() => handleCardClick(party)}>
               <td>{party.date_time.slice(0, 10)}</td>
               <td>{party.name}</td>
-              <td>{party.user_name}</td>
+              <td>
+                {party.users.filter((u) => u.role === 'CREATOR')[0].username}
+              </td>
             </tr>
           ))}
         </tbody>

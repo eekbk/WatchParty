@@ -13,7 +13,7 @@ const { default: Dashboard } = require('./views/Dashboard.tsx');
 const { default: Calendar } = require('./views/Calendar.tsx');
 const { default: Search } = require('./views/search/Search.tsx');
 const { default: Dm } = require('./views/Dm/Dm.tsx');
-const { default: ScrollDash } = require('./views/ScrollDash.tsx');
+const { default: Archive } = require('./views/Archive/Archive.tsx');
 
 const socket = io();
 
@@ -26,11 +26,11 @@ function RouteHandler() {
             <Route path="" element={<Dashboard />} />
             <Route path="search" element={<Search />} />
             <Route path="calendar" element={<Calendar />} />
-            <Route path="scrollDash" element={<ScrollDash />} />
             <Route path="watchParty" element={<WatchParty socket={socket} />} />
             <Route path="createParty" element={<CreateParty />} />
             <Route path="profile" element={<div>Profile</div>} />
             <Route path="dm" element={<Dm socket={socket} />} />
+            <Route path="archive" element={<Archive />} />
           </Route>
         </Routes>
       </BrowserRouter>
