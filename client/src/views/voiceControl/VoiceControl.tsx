@@ -84,8 +84,6 @@ function VoiceControl() {
     'create party': '/createParty',
   };
 
-  // const redirect: any = '';
-  // !!!!!!!!!!!!!!!! try this is useeffect
   useEffect(() => {
     if (redirectUrl) {
       if (pages.includes(redirectUrl)) {
@@ -107,29 +105,16 @@ function VoiceControl() {
     }
   };
 
-  // console.log({transcript});
-  // useEffect(() => {
-  //   // check if the VC is on
-  //   if (isVCOn) {
-  //     SpeechRecognition.startListening({ continuous: true });
-  //   } else {
-  //     SpeechRecognition.abortListening();
-  //   }
-  // }, [isVCOn]);
   return (
     <Form>
       <Form.Check
         type="switch"
         id="vc-switch"
         label={isSwitchOn ? 'Voice Control ON' : 'Voice Control OFF'}
-				// title={forceRerender}
         onChange={handleVoiceToggle}
         checked={isSwitchOn}
       />
       {isSwitchOn ? <p>{transcript}</p> : []}
-      {/* <Form.Control
-        type="text"
-      /> */}
     </Form>
   );
 }
