@@ -22,7 +22,7 @@ function Dashboard() {
         setParties(
           data.data.sort(
             (a, b) =>
-              Number(new Date(b.date_time)) - Number(new Date(a.date_time)),
+              Number(new Date(a.date_time)) - Number(new Date(b.date_time)),
           ),
         );
       })
