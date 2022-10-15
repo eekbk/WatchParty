@@ -38,13 +38,13 @@ function ModCard({ obj, kind, handleCardClick }) {
       // setCardText(follows);
     }
     // run this again when follows changes
-  }, [follows]);
+  }, [follows, user.following]); // maybe add user here
 
   useEffect(() => {
     if (user.following.includes(obj.id)) {
       setIsFollowing(true);
     }
-  }, []);
+  }, [user.following]);
 
   // console.log('hello there');
   return (
