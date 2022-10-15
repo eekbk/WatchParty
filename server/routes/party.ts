@@ -271,3 +271,31 @@ party.post('/role', (req: RequestWithUser, res: Response) => {
       res.sendStatus(500);
     });
 });
+
+party.delete('/role', (req: RequestWithUser, res: Response) => {
+  const { user_id, party_id } = req.body;
+  prisma.user_Party
+    .deleteMany({
+      where: {
+        AND: [
+          {
+            user_id: {
+              contains: user_id,
+            },
+          },
+          {
+            party_id: {
+              contains: party_id,
+            },
+          },
+        ],
+      },
+    })
+    .then((results) => {
+      console.log('success: ', results);
+      res.sendStatus(200);
+    })
+    .catch(() => {
+      res.sendStatus(500);
+    });
+});

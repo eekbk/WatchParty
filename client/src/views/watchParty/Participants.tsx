@@ -13,16 +13,30 @@ export function Participants({
 
   const changeRole = (i) => {
     const tempParticipants = participants.slice();
-    tempParticipants[i].role =			tempParticipants[i].role === 'ADMIN' ? 'NORMIE' : 'ADMIN';
-    axios
-      .post('/api/party/role', {
-        user_id: participants[i].id,
-        party_id: room.id,
-        role: tempParticipants[i].role,
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    if (room.is_private) {
+      tempParticipants[i].role =				tempParticipants[i].role === 'ADMIN' ? 'NORMIE' : 'ADMIN';
+      setParticipants(tempParticipants);
+      axios
+        .post('/api/party/role', {
+          user_id: participants[i].id,
+          party_id: room.id,
+          role: tempParticipants[i].role,
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      axios
+        .delete('/api/party/role', {
+          data: {
+            user_id: participants[i].id,
+            party_id: room.id,
+          },
+        })
+        .catch((err) => console.error(err));
+      tempParticipants.splice(i, 1);
+      setParticipants(tempParticipants);
+    }
   };
 
   return (
