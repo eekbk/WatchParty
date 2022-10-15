@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -9,11 +9,19 @@ import { SearchContext } from '../../contexts/searchContext';
 
 function VoiceControl() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [redirectUrl, setRedirectUrl] = useState('');
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const [searchVal, setSearchVal] = useState('');
 
-  const { setVideosMatch, setUsersMatch, setPartiesMatch } =		useContext(SearchContext);
+  const {
+    usersMatch,
+    videosMatch,
+    partiesMatch,
+    setVideosMatch,
+    setUsersMatch,
+    setPartiesMatch,
+  } = useContext(SearchContext);
 
   const searchRequest = (text) => {
     const q = text.replaceAll(' ', '&').replaceAll(' and ', '&');
@@ -61,6 +69,14 @@ function VoiceControl() {
       command: ['enter', 'send', 'make it so'],
       callback: () => sendFunc(),
     },
+    {
+      command: ['follow *'],
+      callback: (person) => follow(person),
+    },
+    {
+      command: ['unfollow *'],
+      callback: (person) => unFollow(person),
+    },
   ];
 
   const {
@@ -97,6 +113,10 @@ function VoiceControl() {
     }
   }, [redirectUrl]);
 
+  useEffect(() => {
+    console.log('location.pathname', location.pathname);
+  }, [location.pathname]);
+
   const sendFunc = () => {
     // console.log('we in the send');
     if (searchVal) {
@@ -113,6 +133,34 @@ function VoiceControl() {
       setIsSwitchOn(false);
       resetTranscript();
     }
+  };
+
+  const follow = (text) => {
+    // if you're on the search page,
+    // you could filter through the usersmatch for people with the same name
+    if (location.pathname === '/search') {
+      console.log(text);
+    }
+    // send an axios request to add the relationship
+    // send a request to update the user
+    // hope and pray that the card is listening
+    // map through the following with names array on the user
+    // it would be nice to check if this was the user they meant
+    // if so,
+  };
+
+  const unFollow = (text) => {
+    // if you're on the search page,
+    // you could filter through the usersmatch for people with the same name
+    if (location.pathname === '/search') {
+      console.log(text);
+    }
+    // send an axios request to add the relationship
+    // send a request to update the user
+    // hope and pray that the card is listening
+    // map through the following with names array on the user
+    // it would be nice to check if this was the user they meant
+    // if so,
   };
 
   return (
