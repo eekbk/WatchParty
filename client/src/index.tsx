@@ -10,9 +10,10 @@ import { SearchContextProvider } from './contexts/searchContext';
 const { default: App } = require('./views/app.tsx');
 const { default: WatchParty } = require('./views/watchParty/Room.tsx');
 const { default: Dashboard } = require('./views/Dashboard.tsx');
-// const { default: Logout } = require('./views/Logout.tsx');
+const { default: Calendar } = require('./views/Calendar.tsx');
 const { default: Search } = require('./views/search/Search.tsx');
 const { default: Dm } = require('./views/Dm/Dm.tsx');
+const { default: ScrollDash } = require('./views/ScrollDash.tsx');
 
 const socket = io();
 
@@ -24,6 +25,8 @@ function RouteHandler() {
           <Route path="/" element={<App />}>
             <Route path="" element={<Dashboard />} />
             <Route path="search" element={<Search />} />
+            <Route path="calendar" element={<Calendar />} />
+            <Route path="scrollDash" element={<ScrollDash />} />
             <Route path="watchParty" element={<WatchParty socket={socket} />} />
             <Route path="createParty" element={<CreateParty />} />
             <Route path="profile" element={<div>Profile</div>} />

@@ -9,8 +9,14 @@ import CardGroup from 'react-bootstrap/CardGroup';
 import { useNavigate } from 'react-router-dom';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { UserContext } from '../context';
-// import { StyledForm, StyledButton, StyledVideoCard } from '../../styles';
+// const { Item } = ListGroup;
+// import { StyledVideoCard, StyledButton } from '../styles';
+// import { StyledListGroup } from './watchParty/styles';
 
+// import { StyledForm, StyledButton, StyledVideoCard } from '../../styles';
+// import {  StyledButton } from './../styles';
+// import { StyledListGroup } from './watchParty/styles';
+// import Playlist from './watchParty/Playlist'
 // import Carousel from 'react-bootstrap/Carousel';
 // const {
 //   Label, Text, Control, Group, Check,
@@ -24,6 +30,14 @@ function Dashboard() {
   const [parties, setParties] = useState([]);
   // const [likes, setLikes] = useState([]);
   const navigate = useNavigate();
+  // const [clicked, setClicked] = useState(false);
+
+  // const handleVideoRemoval = (i) => {
+  //   const videos = playlist.slice();
+  //   videos.splice(i, 1);
+  //   axios.put(`/api/party/removeVideo/${room.id}`, { video: playlist[i].id });
+  //   setPlaylist(videos);
+  // };
 
   useEffect(() => {
     axios
@@ -61,6 +75,9 @@ function Dashboard() {
   const handleCalendarClick = () => {
     navigate('/calendar');
   };
+  const handleScrollClick = () => {
+    navigate('/scrollDash');
+  };
 
   return (
     <Container>
@@ -88,16 +105,32 @@ function Dashboard() {
           <Col sm={3}>
             {/* <Card style={{ width: '18rem' }} /> */}
             {/* <StyledForm> */}
-            <ListGroup>
+            <ListGroup
+              style={{
+							  overflowY: 'scroll',
+              }}
+            >
               <ListGroup.Item action variant="dark">
                 <Col>Upcoming Watch Parties</Col>
                 <Col>
-                  <Button
+                  <Row>
+                    <Col>
+                    <Button
                     variant="primary"
                     onClick={() => handleCalendarClick()}
                   >
   Calendar
                   </Button>
+                  </Col>
+                    <Col>
+                    <Button
+                    variant="primary"
+                    onClick={() => handleScrollClick()}
+                  >
+  profile
+                  </Button>
+                  </Col>
+                  </Row>
                 </Col>
               </ListGroup.Item>
               {parties.slice(0, 5).map((party) => (
@@ -113,6 +146,41 @@ function Dashboard() {
                 </ListGroup.Item>
               ))}
             </ListGroup>
+
+            {/* <StyledListGroup
+              id="dropdown-basic-button"
+              title="Playlist"
+              style={{
+                overflowY: 'scroll',
+                maxHeight: '85%',
+                width: '30%',
+                position: 'absolute',
+              }}
+              // hidden={!status}
+              >
+                <Item
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}>
+               <h5 style={{ alignSelf: 'center' }}>Upcoming</h5>
+                  <StyledButton onClick={() => setClicked(!clicked)}>
+                    {clicked ? 'Close' : 'Open'}
+                  </StyledButton>
+                </Item>
+                {parties.slice(0, 5).map((party) => (
+                <ListGroup.Item
+                  action
+                  variant="light"
+                  onClick={() => handleCardClick(party)}
+                  key={party}
+                >
+                  <Col>{party.date_time.slice(5, 10)}</Col>
+                  {' '}
+                  {party.name}
+                </ListGroup.Item>
+              ))}
+              </StyledListGroup> */}
             {/* </StyledForm> */}
           </Col>
         </Row>
