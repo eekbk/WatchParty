@@ -98,7 +98,8 @@ export const StyledScrollableGroup = styled(Group)`
 
 export const StyledBackgroundContainer = styled(Container)`
 	background-color: #8a25e2;
-	height: 100vh;
+	height: fit-content;
+	min-height: 100vh;
 	flex-flow: flow wrap;
 `;
 

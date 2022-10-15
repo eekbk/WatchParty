@@ -13,6 +13,7 @@ import Dashboard from './views/Dashboard';
 import Logout from './views/Logout';
 import Search from './views/search/Search';
 import Dm from './views/Dm/Dm';
+import Archive from './views/Archive/Archive';
 
 const socket = io();
 
@@ -29,6 +30,7 @@ function RouteHandler() {
             <Route path="createParty" element={<CreateParty />} />
             <Route path="profile" element={<div>Profile</div>} />
             <Route path="dm" element={<Dm socket={socket} />} />
+            <Route path="archive" element={<Archive />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -42,6 +42,9 @@ function App() {
               <Nav.Link to="/dm" as={Link}>
                 DMs
               </Nav.Link>
+              <Nav.Link to="/archive" as={Link}>
+                Archives
+              </Nav.Link>
               <Nav.Link hidden={user} href="/auth/google">
                 Login
               </Nav.Link>

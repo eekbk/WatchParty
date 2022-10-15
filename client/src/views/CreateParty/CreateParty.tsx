@@ -10,6 +10,7 @@ import { Typeahead, Token } from 'react-bootstrap-typeahead';
 import { useState, useRef, useContext } from 'react';
 import axios from 'axios';
 import { StyledForm, StyledButton, StyledVideoCard } from '../../styles';
+// import { UnStyledForm } from './styles';
 import { UserContext } from '../../context';
 
 const {
@@ -73,6 +74,7 @@ export function CreateParty() {
           console.error(err);
         });
     } else {
+      console.log(archive);
       axios
         .post('/api/party', {
           party: {
@@ -81,6 +83,7 @@ export function CreateParty() {
             date_time: date,
             is_private: privateR,
             is_recurring: archive,
+            will_archive: archive,
             invitees: invited,
             status: 'UPCOMING',
             admins,
@@ -245,7 +248,20 @@ export function CreateParty() {
         </Col>
         <Col fluid="md">
           <StyledForm>
-            <Group hidden={!showPlaylists}>
+            <Group>
+              <Label>Youtube Video Url</Label>
+              <Control
+                placeholder="Paste Url Here"
+                onChange={(e) => setVideo(e.target.value)}
+                value={video}
+              />
+              <Text>Choose a youtube video to add</Text>
+              <br />
+              <StyledButton onClick={handleVideoAddition}>Add</StyledButton>
+            </Group>
+          </StyledForm>
+          <StyledForm style={{ marginTop: '10px' }} hidden={!showPlaylists}>
+            <Group>
               <Label>Choose Saved Playlist</Label>
               <Accordion>
                 {user.playlists.map((pl, i) => (
@@ -268,35 +284,30 @@ export function CreateParty() {
         <Col fluid="md">
           <StyledForm>
             <Group>
-              <Label>Youtube Video Url</Label>
-              <Control
-                placeholder="Paste Url Here"
-                onChange={(e) => setVideo(e.target.value)}
-                value={video}
-              />
-              <Text>Choose a youtube video to add</Text>
-              <br />
-              <StyledButton onClick={handleVideoAddition}>Add</StyledButton>
-            </Group>
-          </StyledForm>
-        </Col>
-        <Col fluid="md">
-          <StyledForm style={{ overflowY: 'scroll', maxHeight: '90vh' }}>
-            <Group hidden={!savePlaylist}>
               <Label>Playlist Title</Label>
               <Control
                 onChange={(e) => setPlaylistName(e.target.value)}
-                placeholder="Enter Playlist Title Here"
+                placeholder="Enter Playlist Title"
+                disabled={!savePlaylist}
               />
             </Group>
-            <Group hidden={!savePlaylist}>
+            <Group>
               <Label>Description</Label>
               <Control
                 onChange={(e) => setPlaylistDescription(e.target.value)}
                 as="textarea"
-                placeholder="Describe Playlist Here"
+                placeholder="Describe Playlist"
+                disabled={!savePlaylist}
               />
             </Group>
+          </StyledForm>
+          <StyledForm
+            style={{
+						  overflowY: 'scroll',
+						  maxHeight: '80vh',
+						  marginTop: '10px',
+            }}
+          >
             <Group>
               <Label>Video List</Label>
               {playlist.map((vd, i) => (

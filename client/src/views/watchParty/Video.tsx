@@ -1,3 +1,4 @@
+import axios from 'axios';
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
 import { Container, ProgressBar, Form } from 'react-bootstrap';
@@ -5,7 +6,13 @@ import { LButton } from '../../styles';
 import { Playlist } from './Playlist';
 
 function Video({
-  playlist, setPlaylist, status, room, user, socket,
+  playlist,
+  setPlaylist,
+  status,
+  room,
+  user,
+  socket,
+  isArchived,
 }) {
   // state vars
   const [isPlaying, setPause] = useState(() => !status);
@@ -18,7 +25,7 @@ function Video({
   if (status) {
     socket.on('roomCheck', () => {
       socket.emit('giveRoom', {
-        room,
+        room: room.id,
         video,
         start: pSeconds,
         playing: isPlaying,
@@ -33,15 +40,31 @@ function Video({
     if (bool) {
       if (video < playlist.length) {
         socket.emit('giveRoom', {
-          room,
+          room: room.id,
           video: video + 1,
           start: pSeconds,
           playing: isPlaying,
         });
         setVid(video + 1);
+        if (!playlist[video + 1] && room.will_archive) {
+          console.log('ARCHIVE ME PLEASE!!', room);
+          const data = JSON.stringify(room);
+          const config = {
+            method: 'post',
+            url: 'http://localhost:4040/api/party/archive',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            data,
+          };
+
+          axios(config).catch((error) => {
+            console.log(error);
+          });
+        }
       } else {
         socket.emit('giveRoom', {
-          room,
+          room: room.id,
           video,
           start: pSeconds,
           playing: isPlaying,
@@ -49,7 +72,7 @@ function Video({
       }
     } else {
       socket.emit('giveRoom', {
-        room,
+        room: room.id,
         video: video ? video - 1 : video,
         start: pSeconds,
         playing: isPlaying,
@@ -72,13 +95,13 @@ function Video({
   // pauses all clients
   const pauseVid = () => {
     setPause(false);
-    socket.emit('pause', { room, bool: false });
-    socket.emit('seek', { room, amount: pSeconds });
+    socket.emit('pause', { room: room.id, bool: false });
+    socket.emit('seek', { room: room.id, amount: pSeconds });
     videoPlayer.current.seekTo(pSeconds, 'seconds');
   };
   // plays all clients
   const playVid = () => {
-    socket.emit('play', { room, bool: true });
+    socket.emit('play', { room: room.id, bool: true });
   };
   const updateTime = (data) => {
     setSeconds(data.playedSeconds);
@@ -130,7 +153,12 @@ function Video({
 			  marginLeft: '0px',
       }}
     >
-      <Playlist room={room} playlist={playlist} setPlaylist={setPlaylist} />
+      <Playlist
+        room={room}
+        playlist={playlist}
+        setPlaylist={setPlaylist}
+        status={status}
+      />
       <ReactPlayer
         ref={videoPlayer}
         config={{
@@ -164,19 +192,39 @@ function Video({
       <Container fluid="md" style={{ height: '1.5rm', width: '10%' }}>
         <Form.Range value={volume * 100} onChange={setVolume} />
       </Container>
-      <LButton disabled={!status} onClick={playVid}>
+      <LButton
+        disabled={
+					isArchived ? false : status ? status.role !== 'CREATOR' : true
+				}
+        onClick={playVid}
+      >
         Play
       </LButton>
       {' '}
-      <LButton disabled={!status} onClick={pauseVid}>
+      <LButton
+        disabled={
+					isArchived ? false : status ? status.role !== 'CREATOR' : true
+				}
+        onClick={pauseVid}
+      >
         Pause
       </LButton>
       {' '}
-      <LButton disabled={!status} onClick={() => changeVid(false)}>
+      <LButton
+        disabled={
+					isArchived ? false : status ? status.role !== 'CREATOR' : true
+				}
+        onClick={() => changeVid(false)}
+      >
         Back
       </LButton>
       {' '}
-      <LButton disabled={!status} onClick={() => changeVid(true)}>
+      <LButton
+        disabled={
+					isArchived ? false : status ? status.role !== 'CREATOR' : true
+				}
+        onClick={() => changeVid(true)}
+      >
         Next
       </LButton>
     </Container>

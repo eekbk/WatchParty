@@ -3,18 +3,11 @@ const path = require('path');
 const srcDir = path.resolve(__dirname, 'client', 'src', 'index.tsx');
 module.exports = {
   mode: 'development',
-  entry: [path.resolve(srcDir)],
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
-  },
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'client', 'dist'),
-  },
+  entry: path.resolve(srcDir),
   module: {
     rules: [
       {
-        test: /.(tsx|ts)$/,
+        test: /.(tsx?)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -40,5 +33,12 @@ module.exports = {
         use: ['file-loader'],
       },
     ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'client', 'dist'),
   },
 };
