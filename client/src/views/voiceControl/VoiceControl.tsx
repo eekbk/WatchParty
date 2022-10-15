@@ -1,9 +1,11 @@
-import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
+import { SearchContext } from '../../contexts/searchContext';
 
 function VoiceControl() {
   const navigate = useNavigate();
@@ -11,13 +13,28 @@ function VoiceControl() {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const [searchVal, setSearchVal] = useState('');
 
-  // const switchToggle = () => {
+  const { setVideosMatch, setUsersMatch, setPartiesMatch } =		useContext(SearchContext);
 
-  // }
+  const searchRequest = (text) => {
+    const q = text.replaceAll(' ', '&').replaceAll(' and ', '&');
+    axios
+      .get(`/api/search/${q}`)
+      .then(({ data }) => {
+        setVideosMatch(data.videos);
+        setUsersMatch(data.users);
+        setPartiesMatch(data.parties);
+      })
+      .then(() => {
+        navigate('/search');
+      })
+      .catch((err) => {
+        console.error('The Error from handleSubmit:', err);
+      });
+  };
 
   const commands = [
     {
-      command: ['Go to *', 'Open *'],
+      command: ['Go to *', 'Open *', 'Go back *'],
       callback: (redirectPage) => setRedirectUrl(redirectPage),
     },
     {
@@ -29,8 +46,12 @@ function VoiceControl() {
       callback: ({ resetTranscript }) => resetTranscript(),
     },
     {
-      command: ['search for *'],
+      command: ['search for *', 'look for *', 'show me *'],
       callback: (verbalSearch) => setSearchVal(verbalSearch),
+    },
+    {
+      command: ['enter', 'send'],
+      callback: () => searchRequest(searchVal),
     },
   ];
 
