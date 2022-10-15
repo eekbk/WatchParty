@@ -5,10 +5,10 @@ import axios from 'axios';
 import { StyledBackgroundContainer } from '../styles';
 import { UserContext } from '../context';
 import SearchBar from './search/SearchBar';
+import VoiceControl from './voiceControl/VoiceControl';
 
-function App(): JSX.Element {
+function App() {
   const { user, setUser } = useContext(UserContext);
-
   useEffect(() => {
     axios
       .get('/api/user')
@@ -54,6 +54,7 @@ function App(): JSX.Element {
         </Container>
       </Navbar>
       <Outlet />
+      <VoiceControl />
     </StyledBackgroundContainer>
   );
 }
