@@ -6,6 +6,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
 import { SearchContext } from '../../contexts/searchContext';
+import { UserContext } from '../../context';
 
 function VoiceControl() {
   const navigate = useNavigate();
@@ -22,6 +23,8 @@ function VoiceControl() {
     setUsersMatch,
     setPartiesMatch,
   } = useContext(SearchContext);
+
+  const { user, setUser } = useContext(UserContext);
 
   const searchRequest = (text) => {
     const q = text.replaceAll(' ', '&').replaceAll(' and ', '&');
@@ -115,6 +118,9 @@ function VoiceControl() {
 
   useEffect(() => {
     console.log('location.pathname', location.pathname);
+    if (usersMatch) {
+      console.log('usersMatch:', usersMatch);
+    }
   }, [location.pathname]);
 
   const sendFunc = () => {
@@ -135,15 +141,31 @@ function VoiceControl() {
     }
   };
 
-  const follow = (text) => {
+  const follow = async (text) => {
     // if you're on the search page,
     // you could filter through the usersmatch for people with the same name
     if (location.pathname === '/search') {
-      console.log(text);
+      console.log('text:', text);
+      // filter and map thru the usersmatch, finding the id of the otherUser
+      const followTargetId = usersMatch
+        .filter((user) => user.user_name === text)
+        .map((userObj) => userObj.id)[0];
+      // console.log('followTargetId', followTargetId);
+
+      try {
+        // send an axios request to add the relationship
+        await axios.post('/api/user/follow', {
+          followerId: user.id,
+          followedId: followTargetId,
+        });
+        // send a request to update the user
+        const newUserData = await axios.get('/api/user');
+        await setUser(newUserData.data);
+        // hope and pray that the card is listening
+      } catch (err) {
+        console.error('The error from verbal follow:', err);
+      }
     }
-    // send an axios request to add the relationship
-    // send a request to update the user
-    // hope and pray that the card is listening
     // map through the following with names array on the user
     // it would be nice to check if this was the user they meant
     // if so,
