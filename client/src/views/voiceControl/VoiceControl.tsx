@@ -13,6 +13,8 @@ function VoiceControl() {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
   const [searchVal, setSearchVal] = useState('');
 
+  const newFunc = () => 1;
+
   const { setVideosMatch, setUsersMatch, setPartiesMatch } =		useContext(SearchContext);
 
   const searchRequest = (text) => {
@@ -27,6 +29,9 @@ function VoiceControl() {
       .then(() => {
         navigate('/search');
       })
+      .then(() => {
+        setSearchVal('');
+      })
       .catch((err) => {
         console.error('The Error from handleSubmit:', err);
       });
@@ -34,7 +39,7 @@ function VoiceControl() {
 
   const commands = [
     {
-      command: ['Go to *', 'Open *', 'Go back *'],
+      command: ['Go to *', 'Open *', 'Go back *', 'take me to *', 'take me *'],
       callback: (redirectPage) => setRedirectUrl(redirectPage),
     },
     {
@@ -56,7 +61,7 @@ function VoiceControl() {
     },
     {
       command: ['enter', 'send', 'make it so'],
-      callback: () => searchRequest(searchVal),
+      callback: () => sendFunc(),
     },
   ];
 
@@ -93,6 +98,13 @@ function VoiceControl() {
       }
     }
   }, [redirectUrl]);
+
+  const sendFunc = () => {
+    console.log('we in the send');
+    if (searchVal) {
+      searchRequest(searchVal);
+    }
+  };
 
   const handleVoiceToggle = async () => {
     if (!listening) {
