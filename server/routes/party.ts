@@ -17,9 +17,28 @@ party.get('/', (req: Request, res: Response) => {
       },
       include: {
         videos: true,
+        user_parties: {
+          select: {
+            role: true,
+            user: {
+              select: {
+                user_name: true,
+                id: true,
+              },
+            },
+          },
+        },
       },
     })
-    .then((parties) => {
+    .then((parties: any) => {
+      parties.forEach((pt) => {
+        pt.users = pt.user_parties.map((usr) => ({
+          id: usr.user.id,
+          username: usr.user.user_name,
+          role: usr.role,
+        }));
+        delete pt.user_parties;
+      });
       res.status(200).send(JSON.stringify(parties));
     })
     .catch((err) => {
@@ -218,6 +237,37 @@ party.put('/removeVideo/:id', (req: Request, res: Response) => {
     })
     .catch((err) => {
       console.error(err);
+      res.sendStatus(500);
+    });
+});
+
+party.post('/role', (req: RequestWithUser, res: Response) => {
+  const { user_id, party_id, role } = req.body;
+  prisma.user_Party
+    .updateMany({
+      where: {
+        AND: [
+          {
+            user_id: {
+              contains: user_id,
+            },
+          },
+          {
+            party_id: {
+              contains: party_id,
+            },
+          },
+        ],
+      },
+      data: {
+        role,
+      },
+    })
+    .then((results) => {
+      console.log('success: ', results);
+      res.sendStatus(200);
+    })
+    .catch(() => {
       res.sendStatus(500);
     });
 });
