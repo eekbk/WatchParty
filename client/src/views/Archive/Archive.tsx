@@ -18,7 +18,6 @@ function Archive() {
     axios(config)
       .then((response) => {
         setParties(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);

@@ -173,11 +173,20 @@ party.post('/video', (req: Request, res: Response) => {
 });
 
 // Gets all archived WatchParties
-party.get('/archive', (req, res) => {
+party.get('/archive', (req: RequestWithUser, res: Response) => {
+  const { user } = req;
   prisma.party
     .findMany({
       where: {
         status: 'ARCHIVED',
+        user_parties: {
+          some: {
+            user_id: user.id,
+          },
+        },
+      },
+      include: {
+        videos: true,
       },
     })
     .then((archives) => res.status(200).send(JSON.stringify(archives)))
@@ -185,7 +194,7 @@ party.get('/archive', (req, res) => {
 });
 
 // Archives A watchParty
-party.post('/archive', (req, res) => {
+party.post('/archive', (req: RequestWithUser, res: Response) => {
   const party = req.body;
   prisma.party
     .update({
