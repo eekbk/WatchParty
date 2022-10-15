@@ -8,8 +8,8 @@ import SpeechRecognition, {
 function VoiceControl() {
   const navigate = useNavigate();
   const [redirectUrl, setRedirectUrl] = useState('');
-  const [isVCOn, setIsVCOn] = useState(false);
   const [isSwitchOn, setIsSwitchOn] = useState(false);
+  const [searchVal, setSearchVal] = useState('');
 
   // const switchToggle = () => {
 
@@ -27,6 +27,10 @@ function VoiceControl() {
     {
       command: ['clear', 'reset'],
       callback: ({ resetTranscript }) => resetTranscript(),
+    },
+    {
+      command: ['search for *'],
+      callback: (verbalSearch) => setSearchVal(verbalSearch),
     },
   ];
 
@@ -75,6 +79,7 @@ function VoiceControl() {
     }
   };
 
+  // console.log({transcript});
   // useEffect(() => {
   //   // check if the VC is on
   //   if (isVCOn) {
