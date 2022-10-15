@@ -7,7 +7,6 @@ import io from 'socket.io-client';
 import { CreateParty } from './views/CreateParty/CreateParty';
 import { UserContextProvider /* UserContext */ } from './context';
 import { SearchContextProvider } from './contexts/searchContext';
-import Dictaphone from './views/search/Dictaphone';
 import App from './views/app';
 import WatchParty from './views/watchParty/Room';
 import Dashboard from './views/Dashboard';
@@ -30,7 +29,6 @@ function RouteHandler() {
             <Route path="createParty" element={<CreateParty />} />
             <Route path="profile" element={<div>Profile</div>} />
             <Route path="dm" element={<Dm socket={socket} />} />
-            <Route path="miccheck" element={<Dictaphone />} />
           </Route>
         </Routes>
       </BrowserRouter>
