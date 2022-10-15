@@ -57,7 +57,26 @@ search.get('/:q', async (req: Request, res: Response) => {
       },
       include: {
         videos: true,
+        user_parties: {
+          select: {
+            role: true,
+            user: {
+              select: {
+                user_name: true,
+                id: true,
+              },
+            },
+          },
+        },
       },
+    });
+    parties.forEach((pt: any) => {
+      pt.users = pt.user_parties.map((usr) => ({
+        id: usr.user.id,
+        username: usr.user.user_name,
+        role: usr.role,
+      }));
+      delete pt.user_parties;
     });
     const results = {
       videos,

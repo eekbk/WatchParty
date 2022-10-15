@@ -18,6 +18,7 @@ function WatchParty({ socket }) {
   const room = state.party;
   const isArchived = state.isArchived || false;
   const [playlist, setPlaylist] = useState(room.videos);
+  const [participants, setParticipants] = useState(room.users);
 
   useEffect(() => {
     console.log(user);
@@ -57,6 +58,8 @@ function WatchParty({ socket }) {
               user={user}
               playlist={playlist}
               setPlaylist={setPlaylist}
+              participants={participants}
+              setParticipants={setParticipants}
               status={
 								user.user
 								  ? user.user.parties.filter((party) => party.id === room.id)[0]

@@ -56,9 +56,9 @@ export function CreateParty() {
               date_time: date,
               is_private: privateR,
               will_archive: archive,
-              invitees: invited,
+              invitees: invited.map((i) => i.id),
               status: 'UPCOMING',
-              admins,
+              admins: admins.map((a) => a.id),
               type: 'PARTY',
               user_id: user.id,
               thumbnail: playlist[0].thumbnail,
@@ -82,11 +82,10 @@ export function CreateParty() {
             description,
             date_time: date,
             is_private: privateR,
-            is_recurring: archive,
             will_archive: archive,
-            invitees: invited,
+            invitees: invited.map((i) => i.id),
             status: 'UPCOMING',
-            admins,
+            admins: admins.map((a) => a.id),
             type: 'PARTY',
             user_id: user.id,
             thumbnail: playlist[0].thumbnail,
@@ -201,8 +200,9 @@ export function CreateParty() {
               />
             </Group>
             <Group hidden={!privateR}>
-              <Label>Invite friends to watch party</Label>
+              <Label>Invite people to your watch party</Label>
               <Typeahead
+                labelKey={(option: any) => option.username}
                 multiple
                 id="keep-menu-open"
                 onChange={(selected) => {
@@ -210,9 +210,7 @@ export function CreateParty() {
 								  // Keep the menu open when making multiple selections.
 								  typeaheadRef.current.toggleMenu();
                 }}
-                options={user.friends.filter(
-								  (f) => !invited.some((i) => f.id === i.id),
-                )}
+                options={user.tempFollowing}
                 placeholder="Enter usernames"
                 ref={typeaheadRef}
                 selected={invited}
@@ -226,14 +224,14 @@ export function CreateParty() {
             <Group>
               <Label>Assign Admins</Label>
               <Typeahead
+                labelKey={(option: any) => option.username}
                 multiple
                 id="keep-menu-open"
                 onChange={(selected) => {
 								  setAdmins(selected);
-								  // Keep the menu open when making multiple selections.
 								  typeaheadRef.current.toggleMenu();
                 }}
-                options={user.friends}
+                options={privateR ? invited : user.tempFollowing}
                 placeholder="Enter usernames"
                 ref={typeaheadRef}
                 selected={admins}

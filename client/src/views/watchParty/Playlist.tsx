@@ -50,9 +50,6 @@ export function Playlist({
       title="Playlist"
       style={{
 			  overflowY: 'scroll',
-			  maxHeight: '85%',
-			  width: '30%',
-			  position: 'absolute',
       }}
       hidden={!status}
     >
@@ -62,7 +59,7 @@ export function Playlist({
 				  justifyContent: 'space-between',
         }}
       >
-        <h5 style={{ alignSelf: 'center' }}>Playlist</h5>
+        <h5 style={{ alignSelf: 'center', marginRight: '10px' }}>Playlist</h5>
         <StyledButton onClick={() => setClicked(!clicked)}>
           {clicked ? 'Close' : 'Open'}
         </StyledButton>

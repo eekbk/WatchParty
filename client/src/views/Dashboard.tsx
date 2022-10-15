@@ -36,7 +36,7 @@ function Dashboard() {
   }, []);
   const handleCardClick = (party) => {
     navigate('/watchParty', {
-      state: { party, videos: party.videos },
+      state: { party },
     });
   };
   const handleProfileClick = () => {
