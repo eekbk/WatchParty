@@ -38,7 +38,12 @@ function VoiceControl() {
       callback: (redirectPage) => setRedirectUrl(redirectPage),
     },
     {
-      command: ['Turn off mic', 'Stop listening', 'privacy please'],
+      command: [
+        'Turn off mic',
+        'Stop listening',
+        'privacy please',
+        'turn voice control off',
+      ],
       callback: () => handleSwitch(),
     },
     {
@@ -50,7 +55,7 @@ function VoiceControl() {
       callback: (verbalSearch) => setSearchVal(verbalSearch),
     },
     {
-      command: ['enter', 'send'],
+      command: ['enter', 'send', 'make it so'],
       callback: () => searchRequest(searchVal),
     },
   ];
@@ -80,7 +85,7 @@ function VoiceControl() {
   };
 
   // const redirect: any = '';
-
+  // !!!!!!!!!!!!!!!! try this is useeffect
   if (redirectUrl) {
     if (pages.includes(redirectUrl)) {
       navigate(urls[redirectUrl]);
@@ -114,7 +119,7 @@ function VoiceControl() {
       <Form.Check
         type="switch"
         id="vc-switch"
-        label="Voice Control On/Off"
+        label={isSwitchOn ? 'Voice Control ON' : 'Voice Control OFF'}
 				// title={forceRerender}
         onChange={handleSwitch}
         checked={isSwitchOn}
