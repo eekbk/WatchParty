@@ -71,6 +71,7 @@ party.post('/', (req: RequestWithUser, res: Response) => {
   } = party;
   invitees = invitees || [];
   admins = admins || [];
+  invitees = invitees.filter((i) => !admins.some((a) => i.id === a.id));
   const participants = admins
     .map((id: string) => ({ role: 'ADMIN', user: { connect: { id } } }))
     .concat(
