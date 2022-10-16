@@ -1,5 +1,7 @@
 import { Outlet, Link } from 'react-router-dom';
-import { Nav, Navbar, Container } from 'react-bootstrap';
+import {
+  Nav, Navbar, Container, Button,
+} from 'react-bootstrap';
 import { useContext, useEffect } from 'react';
 import axios from 'axios';
 import { StyledBackgroundContainer } from '../styles';
@@ -19,6 +21,17 @@ function App() {
         console.error(err);
       });
   }, []);
+
+  const handleLogout = () => {
+    axios
+      .get('/logout')
+      .then((data) => {
+        setUser(null);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   return (
     <StyledBackgroundContainer fluid>
@@ -45,7 +58,7 @@ function App() {
               <Nav.Link hidden={user} href="/auth/google">
                 Login
               </Nav.Link>
-              <Nav.Link hidden={!user} href="/logout">
+              <Nav.Link hidden={!user} as={Button} onClick={handleLogout}>
                 Logout
               </Nav.Link>
             </Nav>

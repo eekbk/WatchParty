@@ -7,14 +7,10 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import { useNavigate } from 'react-router-dom';
+import ListGroup from 'react-bootstrap/ListGroup';
 import { UserContext } from '../context';
-// import Carousel from 'react-bootstrap/Carousel';
 
 function Dashboard() {
-  // get user data from nodejs and return in react jsl functional component using hooks
-  // use axios to get user data from prisma DB and
-  // get user data from express.js return to react functional component using hooks?
-
   const { user } = useContext(UserContext);
   const [parties, setParties] = useState([]);
   const navigate = useNavigate();
@@ -26,7 +22,7 @@ function Dashboard() {
         setParties(
           data.data.sort(
             (a, b) =>
-              Number(new Date(b.date_time)) - Number(new Date(a.date_time)),
+              Number(new Date(a.date_time)) - Number(new Date(b.date_time)),
           ),
         );
       })
@@ -43,34 +39,81 @@ function Dashboard() {
     navigate('/profile');
   };
 
+  const handleCalendarClick = () => {
+    navigate('/calendar');
+  };
+  const handleScrollClick = () => {
+    navigate('/scrollDash');
+  };
+
   return (
     <Container>
-      {user ? user.user_name : ' not logged in'}
+      <Row>{user ? user.user_name : 'Not logged in'}</Row>
       <Row />
       {user ? (
         <Row>
           <Col sm={8}>
-            <Card style={{ width: '18rem' }}>
-              {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+            <Card style={{ width: '14rem' }}>
               <Card.Img variant="top" src={user.profile} />
               <Card.Body>
                 <Card.Title>
                   {user.user_name}
-                  &apos;s profile info
+                  &apos;s dashboard
                 </Card.Title>
-                <Card.Text>random giberish</Card.Text>
+                <Card.Text>Trick or Treat</Card.Text>
                 <Button variant="primary" onClick={() => handleProfileClick()}>
                   profile
                 </Button>
               </Card.Body>
             </Card>
           </Col>
-          <Col sm={4}>
-            <Card style={{ width: '18rem' }} />
+          <Col />
+          <Col sm={3}>
+            <ListGroup
+              style={{
+							  overflowY: 'scroll',
+              }}
+            >
+              <ListGroup.Item action variant="dark">
+                <Col>Upcoming Watch Parties</Col>
+                <Col>
+                  <Row>
+                    <Col>
+                    <Button
+                    variant="primary"
+                    onClick={() => handleCalendarClick()}
+                  >
+  Calendar
+                  </Button>
+                  </Col>
+                    <Col>
+                    <Button
+                    variant="primary"
+                    onClick={() => handleScrollClick()}
+                  >
+  profile
+                  </Button>
+                  </Col>
+                  </Row>
+                </Col>
+              </ListGroup.Item>
+              {parties.slice(0, 5).map((party) => (
+                <ListGroup.Item
+                  action
+                  variant="light"
+                  onClick={() => handleCardClick(party)}
+                  key={party}
+                >
+                  <Col>{party.date_time.slice(5, 10)}</Col>
+                  {' '}
+                  {party.name}
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
           </Col>
         </Row>
       ) : null}
-      <Row>Top Rooms</Row>
+      <Row> Top Rooms</Row>
       {parties && parties.length ? (
         <Col>
           <CardGroup>

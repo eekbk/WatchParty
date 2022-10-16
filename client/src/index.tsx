@@ -14,6 +14,7 @@ import Logout from './views/Logout';
 import Search from './views/search/Search';
 import Dm from './views/Dm/Dm';
 import Archive from './views/Archive/Archive';
+import Calendar from './views/Calendar';
 
 const socket = io();
 
@@ -24,8 +25,8 @@ function RouteHandler() {
         <Routes>
           <Route path="/" element={<App />}>
             <Route path="" element={<Dashboard />} />
-            <Route path="logout" element={<Logout />} />
             <Route path="search" element={<Search />} />
+            <Route path="calendar" element={<Calendar />} />
             <Route path="watchParty" element={<WatchParty socket={socket} />} />
             <Route path="createParty" element={<CreateParty />} />
             <Route path="profile" element={<div>Profile</div>} />
