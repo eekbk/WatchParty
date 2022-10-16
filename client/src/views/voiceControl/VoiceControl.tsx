@@ -166,23 +166,28 @@ function VoiceControl() {
         console.error('The error from verbal follow:', err);
       }
     }
-    // map through the following with names array on the user
-    // it would be nice to check if this was the user they meant
-    // if so,
   };
 
-  const unFollow = (text) => {
+  const unFollow = async (text) => {
+    console.log('text', text);
     // if you're on the search page,
     // you could filter through the usersmatch for people with the same name
     if (location.pathname === '/search') {
-      console.log(text);
+      const followTargetId = usersMatch
+        .filter((user) => user.user_name === text)
+        .map((userObj) => userObj.id)[0];
+      try {
+        console.log('followTargetId:', followTargetId);
+        // send an axios request to delete the relationship
+        await axios.delete('/api/user/follow', {
+          data: { followerId: user.id, followedId: followTargetId },
+        });
+        const newUserData = await axios.get('/api/user');
+        await setUser(newUserData.data);
+      } catch (err) {
+        console.error('The error from verbal unFollow:', err);
+      }
     }
-    // send an axios request to add the relationship
-    // send a request to update the user
-    // hope and pray that the card is listening
-    // map through the following with names array on the user
-    // it would be nice to check if this was the user they meant
-    // if so,
   };
 
   return (
