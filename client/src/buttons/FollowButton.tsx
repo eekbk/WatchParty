@@ -55,7 +55,9 @@ function FollowButton({
   };
 
   return (
-    <Button onClick={handleClick}>{isFollowing ? 'unfollow' : 'follow'}</Button>
+    <Button size="sm" onClick={handleClick}>
+      {isFollowing ? 'unfollow' : 'follow'}
+    </Button>
   );
 }
 
