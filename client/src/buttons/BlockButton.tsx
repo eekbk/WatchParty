@@ -41,7 +41,9 @@ function BlockButton({ otherUserId, isBlocking, setIsBlocking }: any) {
   };
 
   return (
-    <Button onClick={handleClick}>{isBlocking ? 'unblock' : 'block'}</Button>
+    <Button size="sm" onClick={handleClick}>
+      {isBlocking ? 'unblock' : ' block '}
+    </Button>
   );
 }
 
