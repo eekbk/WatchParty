@@ -1,6 +1,5 @@
 // File for handling WatchParty endpoints
 import express, { Request, Response, Router } from 'express';
-import { Party } from '@prisma/client';
 import axios from 'axios';
 import { prisma } from '../db/index';
 import { YoutubeVideo, RequestWithUser } from '../../interfaces/interfaces';
@@ -50,11 +49,9 @@ party.get('/', (req: Request, res: Response) => {
     });
 });
 
-// Create a watch party
+// Creates a watch party
 party.post('/', (req: RequestWithUser, res: Response) => {
-  // Get the party values out of the request body
   const { party } = req.body;
-  // Create the new party in the database
   let {
     name,
     description,
@@ -120,29 +117,7 @@ party.post('/', (req: RequestWithUser, res: Response) => {
     });
 });
 
-// Update a watch party
-party.put('/:partyId', (req: Request, res: Response) => {
-  // Get the party id out of the request params
-  const { partyId } = req.params;
-  // Get the updated values out of the request body
-  const { party }: { party: Party } = req.body;
-  // Update the party with the updated values with the matching id in the database
-  prisma.party
-    .update({
-      where: {
-        id: partyId,
-      },
-      data: party,
-    })
-    .then(() => {
-      res.sendStatus(300);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(err.status);
-    });
-});
-
+// Gets a video from the youtube api and stores its relevant information in the database
 party.post('/video', (req: Request, res: Response) => {
   const { videoId, videoUrl } = req.body;
   let formattedVideo;
@@ -231,6 +206,8 @@ party.post('/archive', (req: RequestWithUser, res: Response) => {
     .then((data) => res.status(201).send(JSON.stringify(data)))
     .catch((err) => res.status(404).send(JSON.stringify(err)));
 });
+
+// Adds a video to an existing watch party
 party.put('/addVideo/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const { video } = req.body;
@@ -256,6 +233,7 @@ party.put('/addVideo/:id', (req: Request, res: Response) => {
     });
 });
 
+// Removes a video from an existing watch party
 party.put('/removeVideo/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const { video } = req.body;
@@ -281,6 +259,7 @@ party.put('/removeVideo/:id', (req: Request, res: Response) => {
     });
 });
 
+// Changes a user's role in a watch party
 party.post('/role', (req: RequestWithUser, res: Response) => {
   const { user_id, party_id, role } = req.body;
   prisma.user_Party
@@ -311,6 +290,7 @@ party.post('/role', (req: RequestWithUser, res: Response) => {
     });
 });
 
+// Removes a user's connection to a watch party
 party.delete('/role', (req: RequestWithUser, res: Response) => {
   const { user_id, party_id } = req.body;
   prisma.user_Party

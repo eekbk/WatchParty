@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import axios from 'axios';
 
+// TODO: Make a profile page
 function Dashboard() {
   useEffect(() => {
     axios.get('/test').catch((err) => {

@@ -25,7 +25,7 @@ function App(): JSX.Element {
   const handleLogout = () => {
     axios
       .get('/logout')
-      .then((data) => {
+      .then(() => {
         setUser(null);
       })
       .catch((err) => {

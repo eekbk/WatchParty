@@ -7,7 +7,6 @@ import { prisma } from './db/index';
 import { party } from './routes/party';
 import { playlist } from './routes/playlist';
 import { search } from './routes/search';
-import { video } from './routes/video';
 
 const app: Express = express();
 
@@ -84,15 +83,11 @@ passport.deserializeUser(async (id, done) => {
   done(null, user);
 });
 
+// Routes
 app.use('/api/user', user);
 app.use('/api/party', party);
 app.use('/api/playlist', playlist);
 app.use('/api/search', search);
-app.use('/api/video', video);
-
-app.get('/test', (req: any, res: Response) => {
-  res.json(req.user);
-});
 
 app.get(
   '/auth/google',
@@ -130,86 +125,6 @@ app.post('/logout', (req, res) => {
     });
   } else {
     res.end();
-  }
-});
-
-// // endpoint for search queries
-// app.get('/api/search/:q', async (req: Request, res: Response) => {
-//   // destructure the query from the req.body
-//   // const { q } = req.body;
-//   const { q } = req.params;
-//   const qSearch = q.replace(/&/g, ' | ');
-//   // console.log('qsearch:', qSearch);
-//   // const qSearch = q.replaceAll('&', ' | ');
-//   // query the database for videos with description or title matching q
-//   try {
-//     const videos = await prisma.video.findMany({
-//       where: {
-//         OR: [
-//           {
-//             title: {
-//               search: qSearch,
-//               mode: 'insensitive',
-//             },
-//           },
-//           {
-//             description: {
-//               search: qSearch,
-//               mode: 'insensitive',
-//             },
-//           },
-//         ],
-//       },
-//     });
-//     // query the db for users matching q
-//     const users = await prisma.user.findMany({
-//       where: {
-//         user_name: {
-//           search: qSearch,
-//           mode: 'insensitive',
-//         },
-//       },
-//     });
-//     // query the db for parties with descrip or name matching q
-//     const parties = await prisma.party.findMany({
-//       where: {
-//         OR: [
-//           {
-//             name: {
-//               search: qSearch,
-//               mode: 'insensitive',
-//             },
-//           },
-//           {
-//             description: {
-//               search: qSearch,
-//               mode: 'insensitive',
-//             },
-//           },
-//         ],
-//       },
-//     });
-//     const results = {
-//       videos,
-//       users,
-//       parties,
-//     };
-//     res.status(200).send(results);
-//   } catch (err) {
-//     console.log('Error from search:\n', err);
-//     res.sendStatus(500);
-//   }
-// });
-
-// endpoint for seeding database
-app.post('/api/seed', async (req: Request, res: Response) => {
-  const { table, dataObj } = req.body;
-  try {
-    const createdData = await prisma[table].createMany(dataObj);
-    res.status(201).send(createdData);
-  } catch (err) {
-    console.error('Error from /seed', err);
-    res.sendStatus(500);
   }
 });
 

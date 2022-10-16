@@ -4,27 +4,15 @@ import { prisma } from '../db/index';
 
 export const playlist: Router = express.Router();
 
-playlist.post('/seed', async (req: Request, res: Response) => {
-  try {
-    await prisma.playlist.create(req.body);
-    res.sendStatus(201);
-  } catch (err) {
-    console.error('err from playlist seed:', err);
-    res.sendStatus(500);
-  }
-});
-
+// Creates a playlist of videos associated with a specific user
 playlist.post('/', (req: Request, res: Response) => {
   const { playlist } = req.body;
-  const {
-    name, description, videos, thumbnail,
-  } = playlist;
+  const { videos } = playlist;
+  delete playlist.videos;
   prisma.playlist
     .create({
       data: {
-        name,
-        description,
-        thumbnail: thumbnail || '',
+        ...playlist,
         playlist_videos: {
           create: videos.map((id: string) => ({ video: { connect: { id } } })),
         },
@@ -35,63 +23,6 @@ playlist.post('/', (req: Request, res: Response) => {
     })
     .catch((err) => {
       console.error(err);
-      res.sendStatus(err.status);
-    });
-});
-
-playlist.get('/:id', (req: Request, res: Response) => {
-  const { id } = req.params;
-  prisma.playlist_Video
-    .findMany({
-      where: {
-        playlist_id: id,
-      },
-      include: {
-        video: true,
-      },
-    })
-    .then((videos) => {
-      res.status(200).send(JSON.stringify(videos));
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
-});
-
-playlist.put('/video', (req: Request, res: Response) => {
-  const { video_id, playlist_id } = req.body;
-  prisma.playlist_Video
-    .deleteMany({
-      where: {
-        playlist_id,
-        video_id,
-      },
-    })
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
-});
-
-playlist.post('/video', (req: Request, res: Response) => {
-  // Add video to playlist
-  const { video_id, playlist_id } = req.body;
-  prisma.playlist_Video
-    .create({
-      data: {
-        video_id,
-        playlist_id,
-      },
-    })
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err) => {
-      console.error(err);
       res.sendStatus(500);
     });
 });
@@ -99,8 +30,8 @@ playlist.post('/video', (req: Request, res: Response) => {
 // Adds videos from a youtube playlist to the database
 playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
   const { playlistId } = req.params;
-  let formattedPlaylist; let
-    tempPlaylist;
+  let formattedPlaylist;
+  let tempPlaylist;
   axios
     .get(
       `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${process.env.YOUTUBE_KEY}`,
@@ -142,16 +73,17 @@ playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
             }
           }
         })(),
-      ).then(() => Promise.all(
-        formattedPlaylist.map((video) =>
-          prisma.video.upsert({
-            where: {
-              id: video.id,
-            },
-            update: {},
-            create: video,
-          })),
-      ));
+      ).then(() =>
+        Promise.all(
+          formattedPlaylist.map((video) =>
+            prisma.video.upsert({
+              where: {
+                id: video.id,
+              },
+              update: {},
+              create: video,
+            })),
+        ));
     })
     .then((r) => {
       if (r === undefined) {

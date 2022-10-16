@@ -30,6 +30,7 @@ function Dashboard() {
         console.error(err);
       });
   }, []);
+
   const handleCardClick = (party) => {
     navigate('/watchParty', {
       state: { party },
@@ -38,12 +39,11 @@ function Dashboard() {
   const handleProfileClick = () => {
     navigate('/profile');
   };
-
   const handleCalendarClick = () => {
     navigate('/calendar');
   };
   const handleScrollClick = () => {
-    navigate('/scrollDash');
+    navigate('/profile');
   };
 
   return (

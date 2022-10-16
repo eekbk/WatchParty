@@ -9,7 +9,7 @@ function Archive() {
   useEffect(() => {
     const config = {
       method: 'get',
-      url: 'http://localhost:4040/api/party/archive',
+      url: '/api/party/archive',
       headers: {
         'Content-Type': 'application/json',
       },

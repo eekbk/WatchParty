@@ -36,10 +36,12 @@ export function CreateParty() {
   const [created, setCreated] = useState(false);
   const [date, setDate] = useState(new Date(Date.now()));
 
+  // Creates the party in the database
   const handleCreate = () => {
+    // Creates the new playlist in the database
     if (savePlaylist) {
       axios
-        .post('/api/user/playlist', {
+        .post('/api/playlist', {
           playlist: {
             name: playlistName,
             description: playlistDescription,
@@ -77,6 +79,7 @@ export function CreateParty() {
       });
   };
 
+  // Creates the video in the database
   const handleVideoAddition = () => {
     const regExp =			/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = video.match(regExp);
@@ -94,11 +97,12 @@ export function CreateParty() {
           setVideo('');
         });
     } else {
-      // Add alert for invalid url
+      // TODO: Add alert for invalid url
       setVideo('');
     }
   };
 
+  // Creates all of the videos from the playlist in the database
   const handlePlaylistAddition = () => {
     const regExp =			/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?list=|\&list=)([^#\&\?]*).*/;
     const match = youtubePlaylist.match(regExp);
@@ -126,11 +130,12 @@ export function CreateParty() {
           setYoutubePlaylist('');
         });
     } else {
-      // Add alert for invalid url
+      // TODO: Add alert for invalid url
       setYoutubePlaylist('');
     }
   };
 
+  // Removes a video from the current list of videos
   const handleVideoRemoval = (i) => {
     const pl = playlist.slice();
     pl.splice(i, 1);
