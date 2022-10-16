@@ -55,7 +55,7 @@ function App(): JSX.Element {
               <Nav.Link to="/archive" as={Link}>
                 Archives
               </Nav.Link>
-              <Nav.Link hidden={user} href="/auth/google">
+              <Nav.Link hidden={user} as={Button} href="/auth/google">
                 Login
               </Nav.Link>
               <Nav.Link hidden={!user} as={Button} onClick={handleLogout}>
