@@ -79,7 +79,7 @@ party.post('/', (req: RequestWithUser, res: Response) => {
             id,
           },
         },
-      })),
+      }))
     );
   participants.push({
     role: 'CREATOR',
@@ -133,8 +133,8 @@ party.post('/video', (req: Request, res: Response) => {
       } else {
         return Promise.resolve(
           axios.get(
-            `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${process.env.YOUTUBE_KEY}`,
-          ),
+            `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${process.env.YOUTUBE_KEY}`
+          )
         );
       }
     })

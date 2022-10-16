@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { useContext } from 'react';
-import {
-  Container, Card, CardGroup, Col,
-} from 'react-bootstrap';
+import { Container, Card, CardGroup, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ModCard from './ModCard';
 // import FollowButton from '../../buttons/FollowButton';
@@ -67,7 +65,7 @@ function Search() {
       {!partiesMatch.length && !usersMatch.length && !videosMatch.length ? (
         <h2>No Matches Found</h2>
       ) : (
-			  []
+        []
       )}
       {partiesMatch.length ? <h2>Parties</h2> : []}
       <ul>
@@ -76,7 +74,7 @@ function Search() {
             {partiesMatch.slice(0, 5).map((party) => (
               <Card
                 style={{
-								  maxWidth: '18rem',
+                  maxWidth: '18rem',
                 }}
                 onClick={() => handleCardClick(party, 'party')}
               >
@@ -110,19 +108,19 @@ function Search() {
         <Col>
           <CardGroup>
             {usersMatch
-						  .filter(
-						    (match) =>
-						      !user.blockers.includes(match.id)
-									&& !user.blocking.includes(match.id),
+              .filter(
+                (match) =>
+                  !user.blockers.includes(match.id) &&
+                  !user.blocking.includes(match.id)
               )
-						  .slice(0, 5)
-						  .map((userMatch) => (
-  <ModCard
-    obj={userMatch}
-    kind="user"
-    handleCardClick={handleCardClick}
-  />
-						  ))}
+              .slice(0, 5)
+              .map((userMatch) => (
+                <ModCard
+                  obj={userMatch}
+                  kind="user"
+                  handleCardClick={handleCardClick}
+                />
+              ))}
           </CardGroup>
         </Col>
       </ul>

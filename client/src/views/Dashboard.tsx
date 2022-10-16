@@ -22,8 +22,8 @@ function Dashboard() {
         setParties(
           data.data.sort(
             (a, b) =>
-              Number(new Date(a.date_time)) - Number(new Date(b.date_time)),
-          ),
+              Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+          )
         );
       })
       .catch((err) => {
@@ -71,7 +71,7 @@ function Dashboard() {
           <Col sm={3}>
             <ListGroup
               style={{
-							  overflowY: 'scroll',
+                overflowY: 'scroll',
               }}
             >
               <ListGroup.Item action variant="dark">
@@ -79,21 +79,21 @@ function Dashboard() {
                 <Col>
                   <Row>
                     <Col>
-                    <Button
-                    variant="primary"
-                    onClick={() => handleCalendarClick()}
-                  >
-  Calendar
-                  </Button>
-                  </Col>
+                      <Button
+                        variant="primary"
+                        onClick={() => handleCalendarClick()}
+                      >
+                        Calendar
+                      </Button>
+                    </Col>
                     <Col>
-                    <Button
-                    variant="primary"
-                    onClick={() => handleScrollClick()}
-                  >
-  profile
-                  </Button>
-                  </Col>
+                      <Button
+                        variant="primary"
+                        onClick={() => handleScrollClick()}
+                      >
+                        profile
+                      </Button>
+                    </Col>
                   </Row>
                 </Col>
               </ListGroup.Item>
@@ -104,7 +104,7 @@ function Dashboard() {
                   onClick={() => handleCardClick(party)}
                   key={party}
                 >
-                  <Col>{party.date_time.slice(5, 10)}</Col>
+                  <Col>{party.date_time.slice(5, 10)}</Col> 
                   {' '}
                   {party.name}
                 </ListGroup.Item>
@@ -126,7 +126,9 @@ function Dashboard() {
                 </Card.Body>
                 <Card.Footer>
                   <small className="text-muted">
-                    Starting on: {party.date_time.slice(0, 10)}
+                    Starting on: 
+                    {' '}
+                    {party.date_time.slice(0, 10)}
                   </small>
                 </Card.Footer>
               </Card>

@@ -161,7 +161,7 @@ user.get(
       console.error('The err from getting followers:\n', err);
       res.sendStatus(err.status);
     }
-  },
+  }
 );
 
 // create a relation between current user and followed for a follow click

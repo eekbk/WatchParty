@@ -13,9 +13,7 @@ import { StyledForm, StyledButton, StyledVideoCard } from '../../styles';
 import { StyledAccordion } from './styles';
 import { UserContext } from '../../context';
 
-const {
-  Label, Text, Control, Group, Check,
-} = StyledForm;
+const { Label, Text, Control, Group, Check } = StyledForm;
 const { Item, Header, Body } = Accordion;
 
 export function CreateParty() {
@@ -81,7 +79,8 @@ export function CreateParty() {
 
   // Creates the video in the database
   const handleVideoAddition = () => {
-    const regExp =			/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const regExp =
+      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = video.match(regExp);
     const videoId = match[2];
     const videoUrl = video;
@@ -104,7 +103,8 @@ export function CreateParty() {
 
   // Creates all of the videos from the playlist in the database
   const handlePlaylistAddition = () => {
-    const regExp =			/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?list=|\&list=)([^#\&\?]*).*/;
+    const regExp =
+      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?list=|\&list=)([^#\&\?]*).*/;
     const match = youtubePlaylist.match(regExp);
     const altCheck = youtubePlaylist.split('list=')[1].slice(0, 34);
     if (match && match[2].length === 34) {
@@ -169,8 +169,8 @@ export function CreateParty() {
                 value={date.toISOString().slice(0, 10)}
                 min={new Date().toISOString().slice(0, 10)}
                 max={new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
-								  .toISOString()
-								  .slice(0, 10)}
+                  .toISOString()
+                  .slice(0, 10)}
                 type="date"
                 onChange={(e) => setDate(new Date(e.target.value))}
               />
@@ -212,9 +212,9 @@ export function CreateParty() {
                 multiple
                 id="keep-menu-open"
                 onChange={(selected) => {
-								  setInvited(selected);
-								  // Keep the menu open when making multiple selections.
-								  typeaheadRef.current.toggleMenu();
+                  setInvited(selected);
+                  // Keep the menu open when making multiple selections.
+                  typeaheadRef.current.toggleMenu();
                 }}
                 options={user.tempFollowing}
                 placeholder="Enter usernames"
@@ -234,8 +234,8 @@ export function CreateParty() {
                 multiple
                 id="keep-menu-open"
                 onChange={(selected) => {
-								  setAdmins(selected);
-								  typeaheadRef.current.toggleMenu();
+                  setAdmins(selected);
+                  typeaheadRef.current.toggleMenu();
                 }}
                 options={privateR ? invited : user.tempFollowing}
                 placeholder="Enter usernames"
@@ -285,15 +285,15 @@ export function CreateParty() {
                   <Item eventKey={String(i)}>
                     <Header>{pl.name}</Header>
                     <Body>
-                    <Container as="img" src={pl.thumbnail} alt="" />
-                    {pl.description}
-                  </Body>
+                      <Container as="img" src={pl.thumbnail} alt="" />
+                      {pl.description}
+                    </Body>
                     <StyledButton
-                    style={{ marginTop: '5px' }}
-                    onClick={() => setPlaylist(playlist.concat(pl.videos))}
-                  >
-  Import
-                  </StyledButton>
+                      style={{ marginTop: '5px' }}
+                      onClick={() => setPlaylist(playlist.concat(pl.videos))}
+                    >
+                      Import
+                    </StyledButton>
                   </Item>
                 ))}
               </StyledAccordion>
@@ -322,9 +322,9 @@ export function CreateParty() {
           </StyledForm>
           <StyledForm
             style={{
-						  overflowY: 'scroll',
-						  maxHeight: '80vh',
-						  marginTop: '10px',
+              overflowY: 'scroll',
+              maxHeight: '80vh',
+              marginTop: '10px',
             }}
           >
             <Group>
@@ -336,8 +336,8 @@ export function CreateParty() {
                   <StyledVideoCard.Body>
                     <StyledVideoCard.Img src={vd.thumbnail} />
                     <StyledVideoCard.Text>
-                    {vd.description.slice(0, 150)}
-                  </StyledVideoCard.Text>
+                      {vd.description.slice(0, 150)}
+                    </StyledVideoCard.Text>
                   </StyledVideoCard.Body>
                 </StyledVideoCard>
               ))}

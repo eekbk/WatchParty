@@ -19,12 +19,14 @@ function Calendar() {
             .filter((pt) =>
               pt.users.some((ptU) =>
                 user.following.some(
-                  (f) => f === ptU.id && ptU.role === 'CREATOR',
-                )))
+                  (f) => f === ptU.id && ptU.role === 'CREATOR'
+                )
+              )
+            )
             .sort(
               (a, b) =>
-                Number(new Date(a.date_time)) - Number(new Date(b.date_time)),
-            ),
+                Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+            )
         );
       })
       .catch((err) => {

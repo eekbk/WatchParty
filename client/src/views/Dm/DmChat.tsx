@@ -5,9 +5,7 @@ import { StyledButton, StyledScrollableGroup } from '../../styles';
 
 const { default: DmMessage } = require('./DmMessage.tsx');
 
-function DmChat({
-  socket, room, user, messages, setMessages,
-}) {
+function DmChat({ socket, room, user, messages, setMessages }) {
   // other vars
   const scrolly = useRef(null);
   // state vars
@@ -54,10 +52,10 @@ function DmChat({
   return (
     <Container
       style={{
-			  textAlign: 'center',
-			  color: 'white',
-			  backgroundColor: '#332448',
-			  borderRadius: '5px',
+        textAlign: 'center',
+        color: 'white',
+        backgroundColor: '#332448',
+        borderRadius: '5px',
       }}
     >
       DM Be nice!!

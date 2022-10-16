@@ -55,8 +55,8 @@ passport.use(
       } else {
         done(null, user);
       }
-    },
-  ),
+    }
+  )
 );
 
 app.use(
@@ -64,7 +64,7 @@ app.use(
     secret: process.env.GOOGLE_CLIENT_SECRET,
     saveUninitialized: false,
     resave: true,
-  }),
+  })
 );
 
 app.use(passport.initialize());
@@ -96,8 +96,8 @@ app.get(
     { scope: ['profile'] },
     (req: Request, res: Response) => {
       // console.log('not empty now');
-    },
-  ),
+    }
+  )
 );
 
 app.get(
@@ -106,7 +106,7 @@ app.get(
   (req: Request, res: Response) => {
     // Successful authentication, redirect home.
     res.redirect('/');
-  },
+  }
 );
 
 app.get('/', (req, res) => {
@@ -135,7 +135,7 @@ app.get('/*', (req: Request, res: Response) => {
       if (err) {
         res.status(500).send(err);
       }
-    },
+    }
   );
 });
 
@@ -165,13 +165,13 @@ io.on('connection', (socket: any) => {
   socket.on(
     'giveRoom',
     (video: {
-			room: string;
-			video: number;
-			start: number;
-			playing: boolean;
-		}) => {
+      room: string;
+      video: number;
+      start: number;
+      playing: boolean;
+    }) => {
       socket.broadcast.to(video.room).emit('giveRoom', video);
-    },
+    }
   );
 
   // Chat
@@ -198,7 +198,7 @@ io.on('connection', (socket: any) => {
         .catch((err) => {
           console.error(err);
         });
-    },
+    }
   );
 
   // Sends back all of the messages in the db by a roomId
@@ -285,11 +285,12 @@ io.on('connection', (socket: any) => {
               user_name: chat.user.user_name,
               id: chat.user.id,
             },
-          }))
+          })
+        )
         .catch((err) => {
           console.error(err);
         });
-    },
+    }
   );
   // gives all user parties with type "DM"
   socket.on('getDms', (user) => {
@@ -319,7 +320,8 @@ io.on('connection', (socket: any) => {
                     },
                   },
                 },
-              })),
+              })
+            )
           ).then((userInfo) => socket.emit('getDms', { userInfo, parties }));
         });
     }

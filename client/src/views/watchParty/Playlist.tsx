@@ -7,14 +7,13 @@ import { StyledListGroup } from './styles';
 const { Group, Control, Text } = Form;
 const { Item } = ListGroup;
 
-export function Playlist({
-  playlist, setPlaylist, room, status,
-}) {
+export function Playlist({ playlist, setPlaylist, room, status }) {
   const [video, setVideo] = useState('');
   const [clicked, setClicked] = useState(false);
 
   const handleVideoAddition = () => {
-    const regExp =			/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const regExp =
+      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = video.match(regExp);
     const videoId = match[2];
     const videoUrl = video;
@@ -49,15 +48,15 @@ export function Playlist({
       id="dropdown-basic-button"
       title="Playlist"
       style={{
-			  overflowY: 'scroll',
-			  maxHeight: '800px',
+        overflowY: 'scroll',
+        maxHeight: '800px',
       }}
       hidden={!status}
     >
       <Item
         style={{
-				  display: 'flex',
-				  justifyContent: 'space-between',
+          display: 'flex',
+          justifyContent: 'space-between',
         }}
       >
         <h5 style={{ alignSelf: 'center', marginRight: '10px' }}>Playlist</h5>

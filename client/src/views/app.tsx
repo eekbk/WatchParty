@@ -1,7 +1,5 @@
 import { Outlet, Link } from 'react-router-dom';
-import {
-  Nav, Navbar, Container, Button,
-} from 'react-bootstrap';
+import { Nav, Navbar, Container, Button } from 'react-bootstrap';
 import { useContext, useEffect } from 'react';
 import axios from 'axios';
 import { StyledBackgroundContainer } from '../styles';

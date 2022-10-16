@@ -15,7 +15,7 @@ export function SearchContextProvider({ children }) {
       videosMatch,
       setVideosMatch,
     }),
-    [usersMatch, partiesMatch, videosMatch],
+    [usersMatch, partiesMatch, videosMatch]
   );
   return (
     <SearchContext.Provider value={searchVal}>

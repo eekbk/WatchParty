@@ -10,7 +10,8 @@ import { SearchContext } from '../../contexts/searchContext';
 function SearchBar() {
   const [textVal, setTextVal] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { setUsersMatch, setPartiesMatch, setVideosMatch } =		useContext(SearchContext);
+  const { setUsersMatch, setPartiesMatch, setVideosMatch } =
+    useContext(SearchContext);
   const navigate = useNavigate();
 
   const handleChange = (e) => {

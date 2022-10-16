@@ -43,5 +43,5 @@ ReactDOM.createRoot(document.getElementById('app')!).render(
     <SearchContextProvider>
       <RouteHandler />
     </SearchContextProvider>
-  </UserContextProvider>,
+  </UserContextProvider>
 );

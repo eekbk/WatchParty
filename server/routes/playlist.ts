@@ -34,7 +34,7 @@ playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
   let tempPlaylist;
   axios
     .get(
-      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${process.env.YOUTUBE_KEY}`,
+      `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${process.env.YOUTUBE_KEY}`
     )
     .then((playlist: any) => {
       if (playlist === undefined) {
@@ -55,7 +55,7 @@ playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
           while (nextPageToken) {
             try {
               const playlist: any = await axios.get(
-                `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${process.env.YOUTUBE_KEY}&pageToken=${nextPageToken}`,
+                `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${process.env.YOUTUBE_KEY}&pageToken=${nextPageToken}`
               );
               tempPlaylist = playlist.data.items;
               formattedPlaylist = formattedPlaylist.concat(
@@ -65,14 +65,14 @@ playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
                   title: video.snippet.title,
                   description: video.snippet.description,
                   thumbnail: video.snippet.thumbnails.medium.url,
-                })),
+                }))
               );
               nextPageToken = playlist.data.nextPageToken;
             } catch (err) {
               console.error(err);
             }
           }
-        })(),
+        })()
       ).then(() =>
         Promise.all(
           formattedPlaylist.map((video) =>
@@ -82,8 +82,10 @@ playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
               },
               update: {},
               create: video,
-            })),
-        ));
+            })
+          )
+        )
+      );
     })
     .then((r) => {
       if (r === undefined) {

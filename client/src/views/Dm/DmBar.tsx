@@ -20,22 +20,22 @@ function DmBar({ user, socket, changeDm }) {
     <StyledScrollableGroup
       ref={scrolly}
       style={{
-			  textAlign: 'center',
-			  overflowY: 'scroll',
-			  backgroundColor: '#5b044b',
-			  color: 'white',
-			  height: '100%',
+        textAlign: 'center',
+        overflowY: 'scroll',
+        backgroundColor: '#5b044b',
+        color: 'white',
+        height: '100%',
       }}
     >
       {dms.parties
-			  ? dms.parties.map((party, user) => (
-  <Container id={party.party_id} onClick={changeDm}>
-    {dms.userInfo[user].user_name}
-    {' '}
-    {party.party_id[0]}
-  </Container>
-				  ))
-			  : null}
+        ? dms.parties.map((party, user) => (
+          <Container id={party.party_id} onClick={changeDm}>
+            {dms.userInfo[user].user_name} 
+            {' '}
+            {party.party_id[0]}
+          </Container>
+          ))
+        : null}
     </StyledScrollableGroup>
   );
 }

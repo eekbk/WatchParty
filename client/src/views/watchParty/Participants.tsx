@@ -6,15 +6,14 @@ import { StyledListGroup } from './styles';
 
 const { Item } = ListGroup;
 
-export function Participants({
-  participants, setParticipants, room, status,
-}) {
+export function Participants({ participants, setParticipants, room, status }) {
   const [show, setShow] = useState(false);
 
   const changeRole = (i) => {
     const tempParticipants = participants.slice();
     if (room.is_private) {
-      tempParticipants[i].role =				tempParticipants[i].role === 'ADMIN' ? 'NORMIE' : 'ADMIN';
+      tempParticipants[i].role =
+        tempParticipants[i].role === 'ADMIN' ? 'NORMIE' : 'ADMIN';
       setParticipants(tempParticipants);
       axios
         .post('/api/party/role', {
@@ -44,14 +43,14 @@ export function Participants({
       id="dropdown-basic-button"
       title="Participants"
       style={{
-			  overflowY: 'scroll',
+        overflowY: 'scroll',
       }}
       hidden={!status}
     >
       <Item
         style={{
-				  display: 'flex',
-				  justifyContent: 'space-between',
+          display: 'flex',
+          justifyContent: 'space-between',
         }}
       >
         <h5 style={{ alignSelf: 'center' }}>Participants</h5>
@@ -60,24 +59,25 @@ export function Participants({
         </StyledButton>
       </Item>
       {participants.map((pt, i) =>
-			  (pt.role !== 'CREATOR' ? (
-  <Item
-    style={{
-						  display: 'flex',
-						  justifyContent: 'space-between',
-    }}
-    hidden={!show}
-  >
-    {pt.username}
-    :
-    {' '}
-    <StyledButton onClick={() => changeRole(i)}>
-      Change to
-      {' '}
-      {pt.role === 'ADMIN' ? 'NORMIE' : 'ADMIN'}
-    </StyledButton>
-  </Item>
-			  ) : null))}
+        pt.role !== 'CREATOR' ? (
+          <Item
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+            hidden={!show}
+          >
+            {pt.username}
+            :
+            {' '}
+            <StyledButton onClick={() => changeRole(i)}>
+              Change to 
+              {' '}
+              {pt.role === 'ADMIN' ? 'NORMIE' : 'ADMIN'}
+            </StyledButton>
+          </Item>
+        ) : null
+      )}
     </StyledListGroup>
   );
 }
