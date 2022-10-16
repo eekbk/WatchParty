@@ -1,5 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import {
+  Button, Card, Col, Row,
+} from 'react-bootstrap';
 import axios from 'axios';
 import { UserContext } from '../../context';
 import FollowButton from '../../buttons/FollowButton';
@@ -52,30 +54,57 @@ function ModCard({ obj, kind, handleCardClick }) {
   return (
     <Card
       style={{
-			  maxWidth: '18rem',
+			  width: '18rem',
+			  height: '22rem',
       }}
       onClick={() => handleCardClick(obj, kind)}
     >
-      <Card.Img variant="top" src={obj.profile} />
+      <Card.Img
+        style={{
+				  height: '10rem',
+        }}
+        variant="top"
+        src={obj.profile}
+      />
       <Card.Body>
-        <Card.Title>{cardTitle}</Card.Title>
-        <Card.Text>{isFollowing ? 'following ✅' : ''}</Card.Text>
-        <Card.Text>{cardText}</Card.Text>
+        <Col>
+          <Row>
+            <Card.Title>{cardTitle}</Card.Title>
+          </Row>
+          <Row>
+            <Row>
+              <Card.Text>{cardText}</Card.Text>
+            </Row>
+            <Card.Text>{isFollowing ? 'following ✅' : '  '}</Card.Text>
+          </Row>
+        </Col>
       </Card.Body>
       <Card.Footer>
-        <FollowButton
-          otherUserId={obj.id}
-          setFollows={setFollows}
-          follows={follows}
-          isFollowing={isFollowing}
-          setIsFollowing={setIsFollowing}
-        />
-        <BlockButton
-          otherUserId={obj.id}
-          isBlocking={isBlocking}
-          setIsBlocking={setIsBlocking}
-        />
-        <Button>DM</Button>
+        <Row
+          style={{
+					  display: 'flex',
+					  justifyContent: 'center',
+					  alignItems: 'center',
+          }}
+        >
+          <Col>
+            <FollowButton
+              otherUserId={obj.id}
+              setFollows={setFollows}
+              follows={follows}
+              isFollowing={isFollowing}
+              setIsFollowing={setIsFollowing}
+            />
+          </Col>
+          <Col>
+            <BlockButton
+              otherUserId={obj.id}
+              isBlocking={isBlocking}
+              setIsBlocking={setIsBlocking}
+            />
+          </Col>
+          <Col>{/* <Button size="sm">DM</Button> */}</Col>
+        </Row>
       </Card.Footer>
     </Card>
   );
