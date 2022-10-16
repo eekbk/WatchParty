@@ -74,7 +74,7 @@ export function CreateParty() {
           console.error(err);
         });
     } else {
-      console.log(archive);
+      // console.log(archive);
       axios
         .post('/api/party', {
           party: {

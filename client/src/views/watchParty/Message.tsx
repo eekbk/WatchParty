@@ -1,7 +1,7 @@
 import { Container } from 'react-bootstrap';
 
 function Message({ message, user, socket }) {
-  console.log(message);
+  // console.log(message);
   return (
     <Container
       style={{

@@ -119,15 +119,7 @@ function VoiceControl() {
     }
   }, [redirectUrl]);
 
-  useEffect(() => {
-    console.log('location.pathname', location.pathname);
-    if (usersMatch) {
-      console.log('usersMatch:', usersMatch);
-    }
-  }, [location.pathname]);
-
   const sendFunc = () => {
-    // console.log('we in the send');
     if (searchVal) {
       searchRequest(searchVal);
     }
@@ -172,7 +164,6 @@ function VoiceControl() {
   };
 
   const unFollow = async (text) => {
-    console.log('text', text);
     // if you're on the search page,
     // you could filter through the usersmatch for people with the same name
     if (location.pathname === '/search') {
@@ -180,7 +171,6 @@ function VoiceControl() {
         .filter((user) => user.user_name === text)
         .map((userObj) => userObj.id)[0];
       try {
-        console.log('followTargetId:', followTargetId);
         // send an axios request to delete the relationship
         await axios.delete('/api/user/follow', {
           data: { followerId: user.id, followedId: followTargetId },
@@ -195,20 +185,14 @@ function VoiceControl() {
 
   const partyStart = (text) => {
     if (location.pathname === '/search') {
-      console.log('text!:', text);
-      console.log('partiesMatch', partiesMatch);
-      console.log('1st party in partiesMatch', partiesMatch[0]);
       // filter through parties to find the one where the name prop matches the text
-      const party = partiesMatch.filter((p) => {
-        console.log('p.name:', p.name);
-        console.log('the type', typeof p.name);
-        return p.name.toUpperCase() === text.toUpperCase();
-      })[0];
-      console.log('party in voice thing', party);
+      const party = partiesMatch.filter(
+        (p) => p.name.toUpperCase() === text.toUpperCase(),
+      )[0];
+      // go to that party with the found party
       navigate('/watchParty', {
         state: { party },
       });
-      console.log('partiesMatch', partiesMatch);
     }
   };
 

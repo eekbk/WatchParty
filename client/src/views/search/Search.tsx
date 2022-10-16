@@ -24,7 +24,7 @@ function Search() {
   const navigate = useNavigate();
 
   const handleCardClick = (party, kind) => {
-    console.log('party in search:', party);
+    // console.log('party in search:', party);
     if (kind === 'party') {
       navigate('/watchParty', {
         state: { party },
@@ -49,8 +49,7 @@ function Search() {
           console.error('The error from handleCardClick:\n', err);
         });
     } else if (kind === 'user') {
-      console.log('party:\n', party);
-      console.log('user:\n', user);
+      // TODO LATER
       // send an axios request to get the user data
       // navigate over to a profile page sort of page for the person
     }
