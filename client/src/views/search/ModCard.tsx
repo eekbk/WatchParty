@@ -43,6 +43,8 @@ function ModCard({ obj, kind, handleCardClick }) {
   useEffect(() => {
     if (user.following.includes(obj.id)) {
       setIsFollowing(true);
+    } else {
+      setIsFollowing(false);
     }
   }, [user.following]);
 
