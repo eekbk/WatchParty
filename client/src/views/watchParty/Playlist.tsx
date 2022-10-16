@@ -50,6 +50,7 @@ export function Playlist({
       title="Playlist"
       style={{
 			  overflowY: 'scroll',
+			  maxHeight: '800px',
       }}
       hidden={!status}
     >

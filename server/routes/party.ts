@@ -6,7 +6,7 @@ import { prisma } from '../db/index';
 import { YoutubeVideo, RequestWithUser } from '../../interfaces/interfaces';
 
 export const party: Router = express.Router();
-
+// TODO: Give videos an explicit relation to parties with an index field to order them
 // Get all watch parties
 party.get('/', (req: Request, res: Response) => {
   // Retrieve all watch parties from the database
@@ -303,7 +303,6 @@ party.post('/role', (req: RequestWithUser, res: Response) => {
       },
     })
     .then((results) => {
-      console.log('success: ', results);
       res.sendStatus(200);
     })
     .catch(() => {
@@ -331,7 +330,6 @@ party.delete('/role', (req: RequestWithUser, res: Response) => {
       },
     })
     .then((results) => {
-      console.log('success: ', results);
       res.sendStatus(200);
     })
     .catch(() => {

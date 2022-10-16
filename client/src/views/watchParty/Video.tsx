@@ -52,7 +52,6 @@ function Video({
         });
         setVid(video + 1);
         if (!playlist[video + 1] && room.will_archive) {
-          console.log('ARCHIVE ME PLEASE!!', room);
           const data = JSON.stringify(room);
           const config = {
             method: 'post',
@@ -64,7 +63,7 @@ function Video({
           };
 
           axios(config).catch((error) => {
-            console.log(error);
+            console.error(error);
           });
         }
       } else {
@@ -160,7 +159,7 @@ function Video({
       }}
     >
       <Row style={{ position: 'absolute', width: '100%', maxHeight: '85%' }}>
-        <Col md={2}>
+        <Col md={4}>
           <Playlist
             room={room}
             playlist={playlist}
@@ -168,7 +167,7 @@ function Video({
             status={status}
           />
         </Col>
-        <Col md={2}>
+        <Col md={3}>
           <Participants
             room={room}
             status={status}

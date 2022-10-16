@@ -25,7 +25,7 @@ video.get('/playlists/:videoId', (req: Request, res: Response) => {
       res.status(200).send(parties);
     })
     .catch((err) => {
-      console.log('err', err);
+      console.error('err', err);
       res.sendStatus(500);
     });
 });

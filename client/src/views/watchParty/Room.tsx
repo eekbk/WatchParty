@@ -21,7 +21,6 @@ function WatchParty({ socket }) {
   const [participants, setParticipants] = useState(room.users);
 
   useEffect(() => {
-    console.log(user);
     socket.emit('join', { room: room.id, type: 'PARTY' });
     socket.emit('getMessages', room.id || 'test');
     socket.on('getMessages', (messages) => {

@@ -127,7 +127,7 @@ user.get('/', (req: RequestWithUser, res: Response) => {
         res.status(200).json(user);
       })
       .catch((err) => {
-        console.log('AN ERROR WHATS IT MEAN?!?!:\n', err);
+        console.error('AN ERROR WHATS IT MEAN?!?!:\n', err);
         res.sendStatus(err.status);
       });
   }
@@ -147,7 +147,7 @@ user.get(
       });
       res.status(200).json(num);
     } catch (err) {
-      console.log('The err from getting followers:\n', err);
+      console.error('The err from getting followers:\n', err);
       res.sendStatus(err.status);
     }
   },
@@ -191,10 +191,8 @@ user.post('/follow', async (req: RequestWithUser, res: Response) => {
       },
     });
     if (existingFollow) {
-      console.log('Hey you already following, foo!');
       res.sendStatus(200);
     } else {
-      console.log('we got into the else statement');
       await prisma.relation.create({
         data: {
           relator_id: followerId,
@@ -205,7 +203,7 @@ user.post('/follow', async (req: RequestWithUser, res: Response) => {
       res.sendStatus(201);
     }
   } catch (err) {
-    console.log('This is error please fix now:\n', err);
+    console.error('This is error please fix now:\n', err);
     res.sendStatus(500);
   }
 });
@@ -253,7 +251,6 @@ user.post('/block', async (req: RequestWithUser, res: Response) => {
       },
     });
     if (existingBlock) {
-      console.log('Hey you already blocking, foo!');
       res.sendStatus(200);
     } else {
       await prisma.relation.create({
@@ -286,7 +283,7 @@ user.post('/block', async (req: RequestWithUser, res: Response) => {
       res.sendStatus(201);
     }
   } catch (err) {
-    console.log('This is error please fix now:\n', err);
+    console.error('This is error please fix now:\n', err);
     res.sendStatus(500);
   }
 });
