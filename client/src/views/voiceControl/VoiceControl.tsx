@@ -122,6 +122,7 @@ function VoiceControl() {
   const sendFunc = () => {
     if (searchVal) {
       searchRequest(searchVal);
+      resetTranscript();
     }
   };
 
@@ -156,6 +157,7 @@ function VoiceControl() {
         // send a request to update the user
         const newUserData = await axios.get('/api/user');
         await setUser(newUserData.data);
+        resetTranscript();
         // hope and pray that the card is listening
       } catch (err) {
         console.error('The error from verbal follow:', err);
@@ -177,6 +179,7 @@ function VoiceControl() {
         });
         const newUserData = await axios.get('/api/user');
         await setUser(newUserData.data);
+        resetTranscript();
       } catch (err) {
         console.error('The error from verbal unFollow:', err);
       }
@@ -193,6 +196,7 @@ function VoiceControl() {
       navigate('/watchParty', {
         state: { party },
       });
+      resetTranscript();
     }
   };
 
