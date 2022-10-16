@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useContext } from 'react';
 import {
-  Container, Card, CardGroup, Col,
+  Container, Card, Col, Row,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ModCard from './ModCard';
@@ -64,19 +64,17 @@ function Search() {
       )}
       {partiesMatch.length ? <h2>Parties</h2> : []}
       <ul>
-        <Col>
-          <CardGroup>
-            {partiesMatch.slice(0, 5).map((party) => (
+        <Row>
+          {partiesMatch.slice(0, 5).map((party) => (
+            <Col xs={3}>
               <Card
                 style={{
-								  maxWidth: '18rem',
+								  width: '18rem',
+								  padding: '0 auto',
                 }}
                 onClick={() => handleCardClick(party, 'party')}
               >
-                <Card.Img
-                  variant="top"
-                  src="https://i.ytimg.com/vi/CtpdMkKvB6U/mqdefault.jpg"
-                />
+                <Card.Img variant="top" src={party.thumbnail} />
                 <Card.Body>
                   <Card.Title>{party.name}</Card.Title>
                   <Card.Text>{party.description}</Card.Text>
@@ -85,30 +83,30 @@ function Search() {
                   <small className="text-muted">Last updated 3 mins ago</small>
                 </Card.Footer> */}
               </Card>
-            ))}
-          </CardGroup>
-        </Col>
+            </Col>
+          ))}
+        </Row>
       </ul>
       {usersMatch.length ? <h2>Users</h2> : []}
       <ul>
-        <Col>
-          <CardGroup>
-            {usersMatch
-						  .filter(
-						    (match) =>
-						      !user.blockers.includes(match.id)
-									&& !user.blocking.includes(match.id),
-              )
-						  .slice(0, 5)
-						  .map((userMatch) => (
-  <ModCard
-    obj={userMatch}
-    kind="user"
-    handleCardClick={handleCardClick}
-  />
-						  ))}
-          </CardGroup>
-        </Col>
+        <Row>
+          {usersMatch
+					  .filter(
+					    (match) =>
+					      !user.blockers.includes(match.id)
+								&& !user.blocking.includes(match.id),
+            )
+					  .slice(0, 5)
+					  .map((userMatch) => (
+  <Col xs={3}>
+    <ModCard
+      obj={userMatch}
+      kind="user"
+      handleCardClick={handleCardClick}
+    />
+  </Col>
+					  ))}
+        </Row>
       </ul>
       {videosMatch.length ? <h2>Videos</h2> : []}
       <ul>
