@@ -62,7 +62,7 @@ export function CreateParty() {
               type: 'PARTY',
               user_id: user.id,
               thumbnail: playlist[0].thumbnail,
-              videos: playlist.map((vd) => vd.id),
+              videos: playlist.map((vd) => ({ id: vd.id })),
             },
           }))
         .then(() => axios.get('/api/user'))
