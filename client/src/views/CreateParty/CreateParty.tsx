@@ -10,7 +10,7 @@ import { Typeahead, Token } from 'react-bootstrap-typeahead';
 import { useState, useRef, useContext } from 'react';
 import axios from 'axios';
 import { StyledForm, StyledButton, StyledVideoCard } from '../../styles';
-// import { UnStyledForm } from './styles';
+import { StyledAccordion } from './styles';
 import { UserContext } from '../../context';
 
 const {
@@ -276,14 +276,18 @@ export function CreateParty() {
             </Group>
           </StyledForm>
           <StyledForm style={{ marginTop: '10px' }}>
-            <Group>
+            <Group style={{ maxHeight: '35vh' }}>
               <Label>Choose Saved Playlist</Label>
-              <Accordion>
+              <StyledAccordion
+                style={{ maxHeight: '100%', overflowY: 'scroll' }}
+              >
                 {user.playlists.map((pl, i) => (
                   <Item eventKey={String(i)}>
                     <Header>{pl.name}</Header>
+                    <Body>
                     <Container as="img" src={pl.thumbnail} alt="" />
-                    <Body>{pl.description}</Body>
+                    {pl.description}
+                  </Body>
                     <StyledButton
                     style={{ marginTop: '5px' }}
                     onClick={() => setPlaylist(playlist.concat(pl.videos))}
@@ -292,7 +296,7 @@ export function CreateParty() {
                   </StyledButton>
                   </Item>
                 ))}
-              </Accordion>
+              </StyledAccordion>
             </Group>
           </StyledForm>
         </Col>
