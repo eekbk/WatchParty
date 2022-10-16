@@ -17,7 +17,6 @@ function VoiceControl() {
 
   const {
     usersMatch,
-    videosMatch,
     partiesMatch,
     setVideosMatch,
     setUsersMatch,
@@ -48,13 +47,13 @@ function VoiceControl() {
 
   const commands = [
     {
-      command: ['Go to *', 'Open *', 'Go back *', 'take me to *', 'take me *'],
+      command: ['Go to *', 'Go back *', 'take me to *', 'take me *'],
       callback: (redirectPage) => setRedirectUrl(redirectPage),
     },
     {
       command: [
-        'Turn off mic',
-        'Stop listening',
+        'turn off mic',
+        'stop listening',
         'privacy please',
         'turn voice control off',
       ],
@@ -79,6 +78,10 @@ function VoiceControl() {
     {
       command: ['unfollow *'],
       callback: (person) => unFollow(person),
+    },
+    {
+      command: ['open *', 'start the party'],
+      callback: (partyName) => partyStart(partyName),
     },
   ];
 
@@ -145,7 +148,7 @@ function VoiceControl() {
     // if you're on the search page,
     // you could filter through the usersmatch for people with the same name
     if (location.pathname === '/search') {
-      console.log('text:', text);
+      // console.log('text:', text);
       // filter and map thru the usersmatch, finding the id of the otherUser
       const followTargetId = usersMatch
         .filter((user) => user.user_name === text)
@@ -187,6 +190,25 @@ function VoiceControl() {
       } catch (err) {
         console.error('The error from verbal unFollow:', err);
       }
+    }
+  };
+
+  const partyStart = (text) => {
+    if (location.pathname === '/search') {
+      console.log('text!:', text);
+      console.log('partiesMatch', partiesMatch);
+      console.log('1st party in partiesMatch', partiesMatch[0]);
+      // filter through parties to find the one where the name prop matches the text
+      const party = partiesMatch.filter((p) => {
+        console.log('p.name:', p.name);
+        console.log('the type', typeof p.name);
+        return p.name.toUpperCase() === text.toUpperCase();
+      })[0];
+      console.log('party in voice thing', party);
+      navigate('/watchParty', {
+        state: { party },
+      });
+      console.log('partiesMatch', partiesMatch);
     }
   };
 

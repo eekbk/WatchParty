@@ -24,6 +24,7 @@ function Search() {
   const navigate = useNavigate();
 
   const handleCardClick = (party, kind) => {
+    console.log('party in search:', party);
     if (kind === 'party') {
       navigate('/watchParty', {
         state: { party },
