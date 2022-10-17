@@ -10,7 +10,6 @@ import { SearchContextProvider } from './contexts/searchContext';
 import App from './views/app';
 import WatchParty from './views/watchParty/Room';
 import Dashboard from './views/Dashboard';
-import Logout from './views/Logout';
 import Search from './views/search/Search';
 import Dm from './views/Dm/Dm';
 import Archive from './views/Archive/Archive';
