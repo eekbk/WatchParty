@@ -29,7 +29,7 @@ function RouteHandler() {
             <Route path="watchParty" element={<WatchParty socket={socket} />} />
             <Route path="createParty" element={<CreateParty />} />
             <Route path="profile" element={<div>Profile</div>} />
-            <Route path="dm" element={<Dm socket={socket} />} />
+            <Route path="dm" element={<Dm socket={socket} room="" />} />
             <Route path="archive" element={<Archive />} />
           </Route>
         </Routes>
