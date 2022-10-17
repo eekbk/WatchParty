@@ -7,7 +7,6 @@ import { prisma } from './db/index';
 import { party } from './routes/party';
 import { playlist } from './routes/playlist';
 import { search } from './routes/search';
-import { video } from './routes/video';
 
 const app: Express = express();
 
@@ -56,8 +55,8 @@ passport.use(
       } else {
         done(null, user);
       }
-    },
-  ),
+    }
+  )
 );
 
 app.use(
@@ -65,7 +64,7 @@ app.use(
     secret: process.env.GOOGLE_CLIENT_SECRET,
     saveUninitialized: false,
     resave: true,
-  }),
+  })
 );
 
 app.use(passport.initialize());
@@ -84,15 +83,11 @@ passport.deserializeUser(async (id, done) => {
   done(null, user);
 });
 
+// Routes
 app.use('/api/user', user);
 app.use('/api/party', party);
 app.use('/api/playlist', playlist);
 app.use('/api/search', search);
-app.use('/api/video', video);
-
-app.get('/test', (req: any, res: Response) => {
-  res.json(req.user);
-});
 
 app.get(
   '/auth/google',
@@ -101,8 +96,8 @@ app.get(
     { scope: ['profile'] },
     (req: Request, res: Response) => {
       // console.log('not empty now');
-    },
-  ),
+    }
+  )
 );
 
 app.get(
@@ -111,7 +106,7 @@ app.get(
   (req: Request, res: Response) => {
     // Successful authentication, redirect home.
     res.redirect('/');
-  },
+  }
 );
 
 app.get('/', (req, res) => {
@@ -133,86 +128,6 @@ app.post('/logout', (req, res) => {
   }
 });
 
-// // endpoint for search queries
-// app.get('/api/search/:q', async (req: Request, res: Response) => {
-//   // destructure the query from the req.body
-//   // const { q } = req.body;
-//   const { q } = req.params;
-//   const qSearch = q.replace(/&/g, ' | ');
-//   // console.log('qsearch:', qSearch);
-//   // const qSearch = q.replaceAll('&', ' | ');
-//   // query the database for videos with description or title matching q
-//   try {
-//     const videos = await prisma.video.findMany({
-//       where: {
-//         OR: [
-//           {
-//             title: {
-//               search: qSearch,
-//               mode: 'insensitive',
-//             },
-//           },
-//           {
-//             description: {
-//               search: qSearch,
-//               mode: 'insensitive',
-//             },
-//           },
-//         ],
-//       },
-//     });
-//     // query the db for users matching q
-//     const users = await prisma.user.findMany({
-//       where: {
-//         user_name: {
-//           search: qSearch,
-//           mode: 'insensitive',
-//         },
-//       },
-//     });
-//     // query the db for parties with descrip or name matching q
-//     const parties = await prisma.party.findMany({
-//       where: {
-//         OR: [
-//           {
-//             name: {
-//               search: qSearch,
-//               mode: 'insensitive',
-//             },
-//           },
-//           {
-//             description: {
-//               search: qSearch,
-//               mode: 'insensitive',
-//             },
-//           },
-//         ],
-//       },
-//     });
-//     const results = {
-//       videos,
-//       users,
-//       parties,
-//     };
-//     res.status(200).send(results);
-//   } catch (err) {
-//     console.log('Error from search:\n', err);
-//     res.sendStatus(500);
-//   }
-// });
-
-// endpoint for seeding database
-app.post('/api/seed', async (req: Request, res: Response) => {
-  const { table, dataObj } = req.body;
-  try {
-    const createdData = await prisma[table].createMany(dataObj);
-    res.status(201).send(createdData);
-  } catch (err) {
-    console.error('Error from /seed', err);
-    res.sendStatus(500);
-  }
-});
-
 app.get('/*', (req: Request, res: Response) => {
   res.sendFile(
     path.resolve(__dirname, '..', 'client', 'dist', 'index.html'),
@@ -220,7 +135,7 @@ app.get('/*', (req: Request, res: Response) => {
       if (err) {
         res.status(500).send(err);
       }
-    },
+    }
   );
 });
 
@@ -250,13 +165,13 @@ io.on('connection', (socket: any) => {
   socket.on(
     'giveRoom',
     (video: {
-			room: string;
-			video: number;
-			start: number;
-			playing: boolean;
-		}) => {
+      room: string;
+      video: number;
+      start: number;
+      playing: boolean;
+    }) => {
       socket.broadcast.to(video.room).emit('giveRoom', video);
-    },
+    }
   );
 
   // Chat
@@ -283,7 +198,7 @@ io.on('connection', (socket: any) => {
         .catch((err) => {
           console.error(err);
         });
-    },
+    }
   );
 
   // Sends back all of the messages in the db by a roomId
@@ -370,11 +285,12 @@ io.on('connection', (socket: any) => {
               user_name: chat.user.user_name,
               id: chat.user.id,
             },
-          }))
+          })
+        )
         .catch((err) => {
           console.error(err);
         });
-    },
+    }
   );
   // gives all user parties with type "DM"
   socket.on('getDms', (user) => {
@@ -404,7 +320,8 @@ io.on('connection', (socket: any) => {
                     },
                   },
                 },
-              })),
+              })
+            )
           ).then((userInfo) => socket.emit('getDms', { userInfo, parties }));
         });
     }

@@ -44,10 +44,10 @@ function Chat({
   return (
     <Container
       style={{
-			  textAlign: 'center',
-			  color: 'white',
-			  backgroundColor: '#332448',
-			  borderRadius: '5px',
+        textAlign: 'center',
+        color: 'white',
+        backgroundColor: '#332448',
+        borderRadius: '5px',
       }}
     >
       CHAT!!

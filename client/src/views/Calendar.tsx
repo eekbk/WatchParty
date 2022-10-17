@@ -14,12 +14,19 @@ function Calendar() {
     axios
       .get('/api/party')
       .then((data: any) => {
-        console.log(data.data, 'party data....');
         setParties(
-          data.data.sort(
-            (a, b) =>
-              Number(new Date(a.date_time)) - Number(new Date(b.date_time)),
-          ),
+          data.data
+            .filter((pt) =>
+              pt.users.some((ptU) =>
+                user.following.some(
+                  (f) => f === ptU.id && ptU.role === 'CREATOR'
+                )
+              )
+            )
+            .sort(
+              (a, b) =>
+                Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+            )
         );
       })
       .catch((err) => {

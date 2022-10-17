@@ -31,10 +31,10 @@ function Dm({ socket, room }) {
   return (
     <Container
       style={{
-			  width: '100%',
-			  height: '85vh',
-			  marginLeft: '0px',
-			  maxWidth: '100%',
+        width: '100%',
+        height: '85vh',
+        marginLeft: '0px',
+        maxWidth: '100%',
       }}
     >
       <Row>

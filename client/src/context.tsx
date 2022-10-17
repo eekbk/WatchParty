@@ -9,7 +9,7 @@ export function UserContextProvider({ children }) {
       user,
       setUser,
     }),
-    [user, setUser],
+    [user, setUser]
   );
   return (
     <UserContext.Provider value={userVal}>{children}</UserContext.Provider>
