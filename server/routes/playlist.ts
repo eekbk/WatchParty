@@ -57,14 +57,18 @@ playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
               const playlist: any = await axios.get(
                 `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${process.env.YOUTUBE_KEY}&pageToken=${nextPageToken}`
               );
-              tempPlaylist = playlist.data.items;
+              tempPlaylist = playlist.data.items.filter(
+                (i) => i.snippet.title !== 'Private video'
+              );
               formattedPlaylist = formattedPlaylist.concat(
                 tempPlaylist.map((video) => ({
                   id: video.snippet.resourceId.videoId,
                   url: `https://youtu.be/${video.snippet.resourceId.videoId}`,
                   title: video.snippet.title,
                   description: video.snippet.description,
-                  thumbnail: video.snippet.thumbnails.medium.url,
+                  thumbnail: video.snippet.thumbnails.medium
+                    ? video.snippet.thumbnails.medium.url
+                    : video.snippet.thumbnails.default.url,
                 }))
               );
               nextPageToken = playlist.data.nextPageToken;
@@ -73,23 +77,27 @@ playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
             }
           }
         })()
-      ).then(() =>
-        Promise.all(
-          formattedPlaylist.map((video) =>
-            prisma.video.upsert({
-              where: {
-                id: video.id,
-              },
-              update: {},
-              create: video,
-            })
-          )
-        )
       );
     })
     .then((r) => {
       if (r === undefined) {
         return undefined;
+      }
+      return Promise.all(
+        formattedPlaylist.map((video) =>
+          prisma.video.upsert({
+            where: {
+              id: video.id,
+            },
+            update: {},
+            create: video,
+          })
+        )
+      );
+    })
+    .then((r) => {
+      if (r === undefined && formattedPlaylist === undefined) {
+        res.sendStatus(400);
       }
       res.send(formattedPlaylist);
     })
