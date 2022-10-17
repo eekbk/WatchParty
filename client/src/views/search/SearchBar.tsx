@@ -10,7 +10,8 @@ import { SearchContext } from '../../contexts/searchContext';
 function SearchBar() {
   const [textVal, setTextVal] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { setUsersMatch, setPartiesMatch, setVideosMatch } =		useContext(SearchContext);
+  const { setUsersMatch, setPartiesMatch, setVideosMatch } =
+    useContext(SearchContext);
   const navigate = useNavigate();
 
   // what if we put a useEffect to watch for changes in the searchValue
@@ -23,9 +24,9 @@ function SearchBar() {
         setUsersMatch(data.users);
         setPartiesMatch(data.parties);
       })
-    // .then(() => {
-    //   setTextVal('');
-    // })
+      // .then(() => {
+      //   setTextVal('');
+      // })
       .then(() => {
         navigate('/search');
       })

@@ -5,11 +5,13 @@ import { prisma } from '../db/index';
 
 const user: Router = express.Router();
 
+// Gets relevant user data from the database and appends it to the user
 user.get('/', (req: RequestWithUser, res: Response) => {
   const { user } = req;
   if (user === undefined) {
     res.sendStatus(400);
   } else {
+    // Getting all the user's playlists
     prisma.playlist
       .findMany({
         where: {
@@ -32,6 +34,7 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           thumbnail: pl.thumbnail,
           videos: pl.playlist_videos.map((plv) => plv.video),
         }));
+        // Getting all the parties the user is affiliated with
         return prisma.party.findMany({
           where: {
             user_parties: {
@@ -49,6 +52,7 @@ user.get('/', (req: RequestWithUser, res: Response) => {
       })
       .then((parties: any) => {
         user.parties = parties;
+        // Getting the user's roles in their parties
         return prisma.user_Party.findMany({
           where: {
             user_id: user.id,
@@ -60,6 +64,7 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           p.role = UP.filter((up) => up.party_id === p.id)[0].role;
           return p;
         });
+        // Getting the users followers
         return prisma.user.findMany({
           where: {
             relator: {
@@ -75,11 +80,15 @@ user.get('/', (req: RequestWithUser, res: Response) => {
         });
       })
       .then((tempFollowers) => {
+        // Storing the followers and following data in two places until
+        // search component is improved
         user.tempFollowers = tempFollowers.map((f) => ({
           id: f.id,
           username: f.user_name,
         }));
+        // TODO: Convert components that use the id string array to use the full object
         user.followers = user.tempFollowers.map((friend) => friend.id);
+        // Getting the accounts the user follows
         return prisma.user.findMany({
           where: {
             relatee: {
@@ -100,6 +109,7 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           username: f.user_name,
         }));
         user.following = tempFollowing.map((follow) => follow.id);
+        // Getting the accounts that block the user
         return prisma.relation.findMany({
           where: {
             relatee_id: user.id,
@@ -112,6 +122,7 @@ user.get('/', (req: RequestWithUser, res: Response) => {
       })
       .then((blockers) => {
         user.blockers = blockers.map((blocker) => blocker.relator_id);
+        // Getting the accounts blocked by the user
         return prisma.relation.findMany({
           where: {
             relator_id: user.id,
@@ -127,7 +138,7 @@ user.get('/', (req: RequestWithUser, res: Response) => {
         res.status(200).json(user);
       })
       .catch((err) => {
-        console.log('AN ERROR WHATS IT MEAN?!?!:\n', err);
+        console.error(err);
         res.sendStatus(err.status);
       });
   }
@@ -147,33 +158,11 @@ user.get(
       });
       res.status(200).json(num);
     } catch (err) {
-      console.log('The err from getting followers:\n', err);
+      console.error('The err from getting followers:\n', err);
       res.sendStatus(err.status);
     }
-  },
+  }
 );
-
-user.post('/playlist', (req: RequestWithUser, res: Response) => {
-  const { playlist } = req.body;
-  const { videos } = playlist;
-  delete playlist.videos;
-  prisma.playlist
-    .create({
-      data: {
-        ...playlist,
-        playlist_videos: {
-          create: videos.map((id: string) => ({ video: { connect: { id } } })),
-        },
-      },
-    })
-    .then((pl) => {
-      res.status(200).send(pl.id);
-    })
-    .catch((err) => {
-      console.error('ERROR ERROR ERROR', err);
-      res.sendStatus(500);
-    });
-});
 
 // create a relation between current user and followed for a follow click
 user.post('/follow', async (req: RequestWithUser, res: Response) => {
@@ -191,10 +180,8 @@ user.post('/follow', async (req: RequestWithUser, res: Response) => {
       },
     });
     if (existingFollow) {
-      console.log('Hey you already following, foo!');
       res.sendStatus(200);
     } else {
-      console.log('we got into the else statement');
       await prisma.relation.create({
         data: {
           relator_id: followerId,
@@ -205,7 +192,7 @@ user.post('/follow', async (req: RequestWithUser, res: Response) => {
       res.sendStatus(201);
     }
   } catch (err) {
-    console.log('This is error please fix now:\n', err);
+    console.error(err);
     res.sendStatus(500);
   }
 });
@@ -253,7 +240,6 @@ user.post('/block', async (req: RequestWithUser, res: Response) => {
       },
     });
     if (existingBlock) {
-      console.log('Hey you already blocking, foo!');
       res.sendStatus(200);
     } else {
       await prisma.relation.create({
@@ -286,7 +272,7 @@ user.post('/block', async (req: RequestWithUser, res: Response) => {
       res.sendStatus(201);
     }
   } catch (err) {
-    console.log('This is error please fix now:\n', err);
+    console.error(err);
     res.sendStatus(500);
   }
 });
@@ -307,7 +293,6 @@ user.delete('/block', (req: RequestWithUser, res: Response) => {
       },
     })
     .then(() => {
-      // console.log('heres the data after the update:\n', data);
       res.sendStatus(200);
     })
     .catch((err) => {
@@ -316,26 +301,6 @@ user.delete('/block', (req: RequestWithUser, res: Response) => {
     });
 
   // delete the relation between the follower and the followed
-});
-
-user.get('/test', (req: RequestWithUser, res: Response) => {
-  prisma.user_Party
-    .findMany({
-      where: {
-        user_id: '7071f636-db37-43e9-8f43-824c42f7014d',
-      },
-    })
-    .then((results) => console.log(results));
-  // prisma.relation.create({
-  //   data: {
-  //     relator_id: '4fa291b8-f7d8-4044-8980-4a3e76fc2456',
-  //     relatee_id: '7071f636-db37-43e9-8f43-824c42f7014d',
-  //     type: 'FOLLOW',
-  //   }
-  // })
-  // .then(relations=>{
-  //   res.status(200).send(relations);
-  // })
 });
 
 export default user;

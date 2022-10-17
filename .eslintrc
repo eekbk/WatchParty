@@ -1,10 +1,12 @@
 {
   "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "extends": [
     "eslint:recommended",
     "airbnb",
     "airbnb/hooks",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
   "env": {
     "es6": true,
@@ -12,7 +14,7 @@
   },
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 9,
+    "ecmaVersion": "latest",
     "ecmaFeatures": {
       "jsx": true
     }
@@ -115,6 +117,9 @@
       "warn"
     ],
     "react/jsx-one-expression-per-line": [
+      "warn"
+    ],
+    "no-await-in-loop": [
       "warn"
     ]
   }

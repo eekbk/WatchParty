@@ -26,10 +26,10 @@ function Dm({ socket, room }) {
     });
   };
   /**
-	 * CAITY POINTED THIS OUT
-	 *
-	 * I REFUSED TO DELETE IT!!!!!!!
-	 */
+   * CAITY POINTED THIS OUT
+   *
+   * I REFUSED TO DELETE IT!!!!!!!
+   */
   // useEffect(() => {
   //   // emitters
   // }, []);
@@ -37,10 +37,10 @@ function Dm({ socket, room }) {
   return (
     <Container
       style={{
-			  width: '100%',
-			  height: '85vh',
-			  marginLeft: '0px',
-			  maxWidth: '100%',
+        width: '100%',
+        height: '85vh',
+        marginLeft: '0px',
+        maxWidth: '100%',
       }}
     >
       <Row>

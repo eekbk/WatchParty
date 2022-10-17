@@ -1,6 +1,4 @@
-import {
-  Row, Col, Card, Container,
-} from 'react-bootstrap';
+import { Row, Col, Card, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 function ArchiveParties({ parties }) {

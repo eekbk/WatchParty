@@ -1,9 +1,7 @@
 import axios from 'axios';
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
-import {
-  Container, ProgressBar, Form, Row, Col,
-} from 'react-bootstrap';
+import { Container, ProgressBar, Form, Row, Col } from 'react-bootstrap';
 import { LButton } from '../../styles';
 import { Playlist } from './Playlist';
 import { Participants } from './Participants';
@@ -52,11 +50,10 @@ function Video({
         });
         setVid(video + 1);
         if (!playlist[video + 1] && room.will_archive) {
-          console.log('ARCHIVE ME PLEASE!!', room);
           const data = JSON.stringify(room);
           const config = {
             method: 'post',
-            url: 'http://localhost:4040/api/party/archive',
+            url: '/api/party/archive',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -64,7 +61,7 @@ function Video({
           };
 
           axios(config).catch((error) => {
-            console.log(error);
+            console.error(error);
           });
         }
       } else {
@@ -128,18 +125,18 @@ function Video({
     socket.on(
       'giveRoom',
       (video: {
-				room: any;
-				video: number;
-				start: number;
-				playing: boolean;
-			}) => {
+        room: any;
+        video: number;
+        start: number;
+        playing: boolean;
+      }) => {
         setVid(video.video);
         setPause(() => {
           videoPlayer.current.seekTo(video.start, 'seconds');
           return video.playing;
         });
         setSeconds(video.start);
-      },
+      }
     );
 
     return () => {
@@ -154,13 +151,13 @@ function Video({
     <Container
       fluid="md"
       style={{
-			  height: '100%',
-			  float: 'left',
-			  marginLeft: '0px',
+        height: '100%',
+        float: 'left',
+        marginLeft: '0px',
       }}
     >
       <Row style={{ position: 'absolute', width: '100%', maxHeight: '85%' }}>
-        <Col md={2}>
+        <Col md={4}>
           <Playlist
             room={room}
             playlist={playlist}
@@ -168,7 +165,7 @@ function Video({
             status={status}
           />
         </Col>
-        <Col md={2}>
+        <Col md={3}>
           <Participants
             room={room}
             status={status}
@@ -180,15 +177,15 @@ function Video({
       <ReactPlayer
         ref={videoPlayer}
         config={{
-				  youtube: {
-				    playerVars: {
-				      controls: 0,
-				      color: 'white',
-				    },
-				  },
+          youtube: {
+            playerVars: {
+              controls: 0,
+              color: 'white',
+            },
+          },
         }}
         onEnded={() => {
-				  changeVid(true);
+          changeVid(true);
         }}
         onStart={setDuration}
         volume={volume}
@@ -196,14 +193,14 @@ function Video({
         onProgress={updateTime}
         playing={isPlaying}
         url={
-					playlist[video]
-					  ? playlist[video].url
-					  : 'https://www.youtube.com/watch?v=vZa0Yh6e7dw'
-				}
+          playlist[video]
+            ? playlist[video].url
+            : 'https://www.youtube.com/watch?v=vZa0Yh6e7dw'
+        }
         width="100%"
         height="85%"
         style={{
-				  pointerEvents: 'none',
+          pointerEvents: 'none',
         }}
       />
       <ProgressBar variant="info" now={pSeconds} max={duration} min={0} />
@@ -212,8 +209,8 @@ function Video({
       </Container>
       <LButton
         disabled={
-					isArchived ? false : status ? status.role !== 'CREATOR' : true
-				}
+          isArchived ? false : status ? status.role !== 'CREATOR' : true
+        }
         onClick={playVid}
       >
         Play
@@ -221,8 +218,8 @@ function Video({
       {' '}
       <LButton
         disabled={
-					isArchived ? false : status ? status.role !== 'CREATOR' : true
-				}
+          isArchived ? false : status ? status.role !== 'CREATOR' : true
+        }
         onClick={pauseVid}
       >
         Pause
@@ -230,8 +227,8 @@ function Video({
       {' '}
       <LButton
         disabled={
-					isArchived ? false : status ? status.role !== 'CREATOR' : true
-				}
+          isArchived ? false : status ? status.role !== 'CREATOR' : true
+        }
         onClick={() => changeVid(false)}
       >
         Back
@@ -239,8 +236,8 @@ function Video({
       {' '}
       <LButton
         disabled={
-					isArchived ? false : status ? status.role !== 'CREATOR' : true
-				}
+          isArchived ? false : status ? status.role !== 'CREATOR' : true
+        }
         onClick={() => changeVid(true)}
       >
         Next

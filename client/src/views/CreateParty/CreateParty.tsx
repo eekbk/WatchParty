@@ -10,12 +10,10 @@ import { Typeahead, Token } from 'react-bootstrap-typeahead';
 import { useState, useRef, useContext } from 'react';
 import axios from 'axios';
 import { StyledForm, StyledButton, StyledVideoCard } from '../../styles';
-// import { UnStyledForm } from './styles';
+import { StyledAccordion } from './styles';
 import { UserContext } from '../../context';
 
-const {
-  Label, Text, Control, Group, Check,
-} = StyledForm;
+const { Label, Text, Control, Group, Check } = StyledForm;
 const { Item, Header, Body } = Accordion;
 
 export function CreateParty() {
@@ -26,9 +24,9 @@ export function CreateParty() {
   const [savePlaylist, setSavePlaylist] = useState(false);
   const [playlist, setPlaylist] = useState([]);
   const [video, setVideo] = useState('');
+  const [youtubePlaylist, setYoutubePlaylist] = useState('');
   const [invited, setInvited] = useState([]);
   const [admins, setAdmins] = useState([]);
-  const [showPlaylists, setShowPlaylists] = useState(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [playlistName, setPlaylistName] = useState('');
@@ -36,10 +34,12 @@ export function CreateParty() {
   const [created, setCreated] = useState(false);
   const [date, setDate] = useState(new Date(Date.now()));
 
+  // Creates the party in the database
   const handleCreate = () => {
+    // Creates the new playlist in the database
     if (savePlaylist) {
       axios
-        .post('/api/user/playlist', {
+        .post('/api/playlist', {
           playlist: {
             name: playlistName,
             description: playlistDescription,
@@ -48,63 +48,39 @@ export function CreateParty() {
             user_id: user.id,
           },
         })
-        .then(() =>
-          axios.post('/api/party', {
-            party: {
-              name,
-              description,
-              date_time: date,
-              is_private: privateR,
-              will_archive: archive,
-              invitees: invited.map((i) => i.id),
-              status: 'UPCOMING',
-              admins: admins.map((a) => a.id),
-              type: 'PARTY',
-              user_id: user.id,
-              thumbnail: playlist[0].thumbnail,
-              videos: playlist.map((vd) => ({ id: vd.id })),
-            },
-          }))
-        .then(() => axios.get('/api/user'))
-        .then((data) => {
-          setUser(data.data);
-          setCreated(true);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    } else {
-      // console.log(archive);
-      axios
-        .post('/api/party', {
-          party: {
-            name,
-            description,
-            date_time: date,
-            is_private: privateR,
-            will_archive: archive,
-            invitees: invited.map((i) => i.id),
-            status: 'UPCOMING',
-            admins: admins.map((a) => a.id),
-            type: 'PARTY',
-            user_id: user.id,
-            thumbnail: playlist[0].thumbnail,
-            videos: playlist.map((vd) => ({ id: vd.id })),
-          },
-        })
-        .then(() => axios.get('/api/user'))
-        .then((data) => {
-          setUser(data.data);
-          setCreated(true);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+        .catch((err) => console.error(err));
     }
+    axios
+      .post('/api/party', {
+        party: {
+          name,
+          description,
+          date_time: date,
+          is_private: privateR,
+          will_archive: archive,
+          invitees: invited.map((i) => i.id),
+          status: 'UPCOMING',
+          admins: admins.map((a) => a.id),
+          type: 'PARTY',
+          user_id: user.id,
+          thumbnail: playlist[0].thumbnail,
+          videos: playlist.map((vd) => ({ id: vd.id })),
+        },
+      })
+      .then(() => axios.get('/api/user'))
+      .then((data) => {
+        setUser(data.data);
+        setCreated(true);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
+  // Creates the video in the database
   const handleVideoAddition = () => {
-    const regExp =			/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const regExp =
+      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = video.match(regExp);
     const videoId = match[2];
     const videoUrl = video;
@@ -120,11 +96,46 @@ export function CreateParty() {
           setVideo('');
         });
     } else {
-      // Add alert for invalid url
+      // TODO: Add alert for invalid url
       setVideo('');
     }
   };
 
+  // Creates all of the videos from the playlist in the database
+  const handlePlaylistAddition = () => {
+    const regExp =
+      /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?list=|\&list=)([^#\&\?]*).*/;
+    const match = youtubePlaylist.match(regExp);
+    const altCheck = youtubePlaylist.split('list=')[1].slice(0, 34);
+    if (match && match[2].length === 34) {
+      axios
+        .get(`/api/playlist/youtube/${match[2]}`)
+        .then((pl) => {
+          setYoutubePlaylist('');
+          setPlaylist(playlist.concat(pl.data));
+        })
+        .catch((err) => {
+          console.error(err);
+          setYoutubePlaylist('');
+        });
+    } else if (altCheck.length === 34) {
+      axios
+        .get(`/api/playlist/youtube/${altCheck}`)
+        .then((pl) => {
+          setYoutubePlaylist('');
+          setPlaylist(playlist.concat(pl.data));
+        })
+        .catch((err) => {
+          console.error(err);
+          setYoutubePlaylist('');
+        });
+    } else {
+      // TODO: Add alert for invalid url
+      setYoutubePlaylist('');
+    }
+  };
+
+  // Removes a video from the current list of videos
   const handleVideoRemoval = (i) => {
     const pl = playlist.slice();
     pl.splice(i, 1);
@@ -158,8 +169,8 @@ export function CreateParty() {
                 value={date.toISOString().slice(0, 10)}
                 min={new Date().toISOString().slice(0, 10)}
                 max={new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
-								  .toISOString()
-								  .slice(0, 10)}
+                  .toISOString()
+                  .slice(0, 10)}
                 type="date"
                 onChange={(e) => setDate(new Date(e.target.value))}
               />
@@ -178,11 +189,6 @@ export function CreateParty() {
         <Col fluid="md">
           <StyledForm>
             <Group>
-              <Check
-                type="checkbox"
-                label="Import Playlist"
-                onChange={(e) => setShowPlaylists(e.target.checked)}
-              />
               <Check
                 type="checkbox"
                 label="Archive on End"
@@ -206,9 +212,9 @@ export function CreateParty() {
                 multiple
                 id="keep-menu-open"
                 onChange={(selected) => {
-								  setInvited(selected);
-								  // Keep the menu open when making multiple selections.
-								  typeaheadRef.current.toggleMenu();
+                  setInvited(selected);
+                  // Keep the menu open when making multiple selections.
+                  typeaheadRef.current.toggleMenu();
                 }}
                 options={user.tempFollowing}
                 placeholder="Enter usernames"
@@ -228,8 +234,8 @@ export function CreateParty() {
                 multiple
                 id="keep-menu-open"
                 onChange={(selected) => {
-								  setAdmins(selected);
-								  typeaheadRef.current.toggleMenu();
+                  setAdmins(selected);
+                  typeaheadRef.current.toggleMenu();
                 }}
                 options={privateR ? invited : user.tempFollowing}
                 placeholder="Enter usernames"
@@ -253,29 +259,44 @@ export function CreateParty() {
                 onChange={(e) => setVideo(e.target.value)}
                 value={video}
               />
-              <Text>Choose a youtube video to add</Text>
+              <Text>Choose a YouTube video to add</Text>
               <br />
               <StyledButton onClick={handleVideoAddition}>Add</StyledButton>
             </Group>
+            <Group style={{ marginTop: '20px' }}>
+              <Label>Public Youtube Playlist Url</Label>
+              <Control
+                placeholder="Paste Url Here"
+                onChange={(e) => setYoutubePlaylist(e.target.value)}
+                value={youtubePlaylist}
+              />
+              <Text>Choose a YouTube playlist to import videos from</Text>
+              <br />
+              <StyledButton onClick={handlePlaylistAddition}>Add</StyledButton>
+            </Group>
           </StyledForm>
-          <StyledForm style={{ marginTop: '10px' }} hidden={!showPlaylists}>
-            <Group>
+          <StyledForm style={{ marginTop: '10px' }}>
+            <Group style={{ maxHeight: '35vh' }}>
               <Label>Choose Saved Playlist</Label>
-              <Accordion>
+              <StyledAccordion
+                style={{ maxHeight: '100%', overflowY: 'scroll' }}
+              >
                 {user.playlists.map((pl, i) => (
                   <Item eventKey={String(i)}>
                     <Header>{pl.name}</Header>
-                    <Container as="img" src={pl.thumbnail} alt="" />
-                    <Body>{pl.description}</Body>
+                    <Body>
+                      <Container as="img" src={pl.thumbnail} alt="" />
+                      {pl.description}
+                    </Body>
                     <StyledButton
-                    style={{ marginTop: '5px' }}
-                    onClick={() => setPlaylist(playlist.concat(pl.videos))}
-                  >
-  Import
-                  </StyledButton>
+                      style={{ marginTop: '5px' }}
+                      onClick={() => setPlaylist(playlist.concat(pl.videos))}
+                    >
+                      Import
+                    </StyledButton>
                   </Item>
                 ))}
-              </Accordion>
+              </StyledAccordion>
             </Group>
           </StyledForm>
         </Col>
@@ -301,9 +322,9 @@ export function CreateParty() {
           </StyledForm>
           <StyledForm
             style={{
-						  overflowY: 'scroll',
-						  maxHeight: '80vh',
-						  marginTop: '10px',
+              overflowY: 'scroll',
+              maxHeight: '80vh',
+              marginTop: '10px',
             }}
           >
             <Group>
@@ -315,8 +336,8 @@ export function CreateParty() {
                   <StyledVideoCard.Body>
                     <StyledVideoCard.Img src={vd.thumbnail} />
                     <StyledVideoCard.Text>
-                    {vd.description.slice(0, 150)}
-                  </StyledVideoCard.Text>
+                      {vd.description.slice(0, 150)}
+                    </StyledVideoCard.Text>
                   </StyledVideoCard.Body>
                 </StyledVideoCard>
               ))}

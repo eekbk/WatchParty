@@ -2,10 +2,10 @@
 import 'regenerator-runtime/runtime';
 import React /* useContext */ from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route /* redirect */ } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
 import { CreateParty } from './views/CreateParty/CreateParty';
-import { UserContextProvider /* UserContext */ } from './context';
+import { UserContextProvider } from './context';
 import { SearchContextProvider } from './contexts/searchContext';
 import App from './views/app';
 import WatchParty from './views/watchParty/Room';
@@ -44,5 +44,5 @@ ReactDOM.createRoot(document.getElementById('app')!).render(
     <SearchContextProvider>
       <RouteHandler />
     </SearchContextProvider>
-  </UserContextProvider>,
+  </UserContextProvider>
 );
