@@ -14,15 +14,9 @@ function SearchBar() {
     useContext(SearchContext);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    setTextVal(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    setIsLoading(true);
-    e.preventDefault();
-    const q = textVal.replaceAll(' ', '&');
+  // what if we put a useEffect to watch for changes in the searchValue
+  const searchRequest = (text) => {
+    const q = text.replaceAll(' ', '&').replaceAll(' and ', '&');
     axios
       .get(`/api/search/${q}`)
       .then(({ data }) => {
@@ -30,9 +24,9 @@ function SearchBar() {
         setUsersMatch(data.users);
         setPartiesMatch(data.parties);
       })
-      .then(() => {
-        setTextVal('');
-      })
+      // .then(() => {
+      //   setTextVal('');
+      // })
       .then(() => {
         navigate('/search');
       })
@@ -42,6 +36,39 @@ function SearchBar() {
       .catch((err) => {
         console.error('The Error from handleSubmit:', err);
       });
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setTextVal(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    setIsLoading(true);
+    e.preventDefault();
+    searchRequest(textVal);
+    setTextVal('');
+
+    // const q = textVal.replaceAll(' ', '&');
+    // axios
+    //   .get(`/api/search/${q}`)
+    //   .then(({ data }) => {
+    //     setVideosMatch(data.videos);
+    //     setUsersMatch(data.users);
+    //     setPartiesMatch(data.parties);
+    //   })
+    //   .then(() => {
+    //     setTextVal('');
+    //   })
+    //   .then(() => {
+    //     navigate('/search');
+    //   })
+    //   .then(() => {
+    //     setIsLoading(true);
+    //   })
+    //   .catch((err) => {
+    //     console.error('The Error from handleSubmit:', err);
+    //   });
   };
 
   const simulateNetworkRequest = async () => {
@@ -57,20 +84,6 @@ function SearchBar() {
       });
     }
   }, [isLoading]);
-  // useEffect(async () => {
-  //   const keyDownHandler = (event) => {
-  //     console.log('User pressed: ', event.key);
-  //     if (event.key === 'Enter') {
-  //       event.preventDefault();
-  //       await handleSubmit(event);
-  //     }
-  //   };
-  //   document.addEventListener('keydown', keyDownHandler);
-
-  //   return () => {
-  //     document.removeEventListener('keydown', keyDownHandler);
-  //   };
-  // }, []);
 
   return (
     <InputGroup className="mb-2" style={{ maxWidth: '20vw' }}>
