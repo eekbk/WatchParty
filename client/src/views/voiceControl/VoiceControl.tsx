@@ -80,6 +80,14 @@ function VoiceControl() {
       callback: (person) => unFollow(person),
     },
     {
+      command: ['block *'],
+      callback: (person) => block(person),
+    },
+    // {
+    //   command: ['unBlock *'],
+    //   callback: (person) => unBlock(person),
+    // },
+    {
       command: ['open *', 'start the party'],
       callback: (partyName) => partyStart(partyName),
     },
@@ -186,11 +194,39 @@ function VoiceControl() {
     }
   };
 
+  const block = async (text) => {
+    // if you're on the search page,
+    // you could filter through the usersmatch for people with the same name
+    if (location.pathname === '/search') {
+      // console.log('text:', text);
+      // filter and map thru the usersmatch, finding the id of the otherUser
+      const blockTargetId = usersMatch
+        .filter((user) => user.user_name === text)
+        .map((userObj) => userObj.id)[0];
+      // console.log('followTargetId', followTargetId);
+
+      try {
+        // send an axios request to add the relationship
+        await axios.post('/api/user/block', {
+          blockerId: user.id,
+          blockedId: blockTargetId,
+        });
+        // send a request to update the user
+        const newUserData = await axios.get('/api/user');
+        await setUser(newUserData.data);
+        resetTranscript();
+        // hope and pray that the card is listening
+      } catch (err) {
+        console.error('The error from verbal block:', err);
+      }
+    }
+  };
+
   const partyStart = (text) => {
     if (location.pathname === '/search') {
       // filter through parties to find the one where the name prop matches the text
       const party = partiesMatch.filter(
-        (p) => p.name.toUpperCase() === text.toUpperCase(),
+        (p) => p.name.toUpperCase() === text.toUpperCase()
       )[0];
       // go to that party with the found party
       navigate('/watchParty', {
