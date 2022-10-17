@@ -1,7 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import {
-  Button, Card, Col, Row,
-} from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { UserContext } from '../../context';
 import FollowButton from '../../buttons/FollowButton';
@@ -54,14 +52,14 @@ function ModCard({ obj, kind, handleCardClick }) {
   return (
     <Card
       style={{
-			  width: '18rem',
-			  height: '22rem',
+        width: '18rem',
+        height: '22rem',
       }}
       onClick={() => handleCardClick(obj, kind)}
     >
       <Card.Img
         style={{
-				  height: '10rem',
+          height: '10rem',
         }}
         variant="top"
         src={obj.profile}
@@ -82,9 +80,9 @@ function ModCard({ obj, kind, handleCardClick }) {
       <Card.Footer>
         <Row
           style={{
-					  display: 'flex',
-					  justifyContent: 'center',
-					  alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <Col>
