@@ -88,7 +88,7 @@ function VoiceControl() {
     //   callback: (person) => unBlock(person),
     // },
     {
-      command: ['open *', 'start the party'],
+      command: ['open *', 'start the party called *'],
       callback: (partyName) => partyStart(partyName),
     },
   ];
