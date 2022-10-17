@@ -1,19 +1,19 @@
 // File for root element
-import React from 'react';
+import 'regenerator-runtime/runtime';
+import React /* useContext */ from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
 import { CreateParty } from './views/CreateParty/CreateParty';
 import { UserContextProvider } from './context';
 import { SearchContextProvider } from './contexts/searchContext';
-
-const { default: App } = require('./views/app.tsx');
-const { default: WatchParty } = require('./views/watchParty/Room.tsx');
-const { default: Dashboard } = require('./views/Dashboard.tsx');
-const { default: Calendar } = require('./views/Calendar.tsx');
-const { default: Search } = require('./views/search/Search.tsx');
-const { default: Dm } = require('./views/Dm/Dm.tsx');
-const { default: Archive } = require('./views/Archive/Archive.tsx');
+import App from './views/app';
+import WatchParty from './views/watchParty/Room';
+import Dashboard from './views/Dashboard';
+import Search from './views/search/Search';
+import Dm from './views/Dm/Dm';
+import Archive from './views/Archive/Archive';
+import Calendar from './views/Calendar';
 
 const socket = io();
 

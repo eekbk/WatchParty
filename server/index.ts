@@ -34,7 +34,6 @@ passport.use(
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
-      // console.log('theProfile:\n', profile);
       const user = await prisma.user.findUnique({
         where: {
           googleId: profile.id,
@@ -125,6 +124,18 @@ app.post('/logout', (req, res) => {
     });
   } else {
     res.end();
+  }
+});
+
+// endpoint for seeding database
+app.post('/api/seed', async (req: Request, res: Response) => {
+  const { table, dataObj } = req.body;
+  try {
+    const createdData = await prisma[table].createMany(dataObj);
+    res.status(201).send(createdData);
+  } catch (err) {
+    console.error('Error from /seed', err);
+    res.sendStatus(500);
   }
 });
 

@@ -1,6 +1,7 @@
-import { useEffect, useContext, useState } from 'react';
+import { /* useEffect, */ useContext, useState } from 'react';
 // import { useLocation } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
+// import { Socket } from 'socket.io';
 import { UserContext } from '../../context';
 
 const { default: DmBar } = require('./DmBar.tsx');
@@ -24,10 +25,15 @@ function Dm({ socket, room }) {
       setMessages(dmMessages);
     });
   };
+  /**
+   * CAITY POINTED THIS OUT
+   *
+   * I REFUSED TO DELETE IT!!!!!!!
+   */
+  // useEffect(() => {
+  //   // emitters
+  // }, []);
 
-  useEffect(() => {
-    // emitters
-  }, []);
   return (
     <Container
       style={{

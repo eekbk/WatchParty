@@ -11,3 +11,10 @@ pnpm-lock.yaml
 .env
 rootkey.csv
 bundle.js
+Dictaphone.tsx
+VoiceToggle.tsx
+voiceContext.tsx
+helperFuncs
+VoiceControl2.tsx
+SearchBarAdvancedzzz.tsx
+
