@@ -42,9 +42,6 @@ function Dashboard() {
   const handleCalendarClick = () => {
     navigate('/calendar');
   };
-  const handleScrollClick = () => {
-    navigate('/profile');
-  };
 
   return (
     <Container>
@@ -84,14 +81,6 @@ function Dashboard() {
                         onClick={() => handleCalendarClick()}
                       >
                         Calendar
-                      </Button>
-                    </Col>
-                    <Col>
-                      <Button
-                        variant="primary"
-                        onClick={() => handleScrollClick()}
-                      >
-                        profile
                       </Button>
                     </Col>
                   </Row>
