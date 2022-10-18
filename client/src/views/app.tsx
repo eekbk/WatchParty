@@ -47,6 +47,9 @@ function App() {
               <Nav.Link to="/profile" as={Link}>
                 Profile
               </Nav.Link>
+              <Nav.Link to="/calendar" as={Link}>
+                Calendar
+              </Nav.Link>
               <Nav.Link to="/dm" as={Link}>
                 DMs
               </Nav.Link>
