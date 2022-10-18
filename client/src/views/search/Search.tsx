@@ -53,6 +53,25 @@ function Search() {
     }
   };
 
+  const stringAbbreviator = (string, type) => {
+    const dotDotDotConcat = (num) => {
+      const strArr = string.slice(0, num).split(' ');
+      return `${strArr.slice(0, strArr.length - 1).join(' ')}...`;
+    };
+    if (type === 'title') {
+      if (string.length > 53) {
+        return dotDotDotConcat(53);
+      }
+      return string;
+    }
+    if (type === 'description') {
+      if (string.length > 93) {
+        return dotDotDotConcat(93);
+      }
+      return string;
+    }
+  };
+
   return (
     <Container>
       {!partiesMatch.length && !usersMatch.length && !videosMatch.length ? (
@@ -67,7 +86,7 @@ function Search() {
             <Col xs={3}>
               <Card
                 style={{
-                  height: '18rem',
+                  height: '20rem',
                   width: '18rem',
                   padding: '0 auto',
                 }}
@@ -76,11 +95,11 @@ function Search() {
                 <Card.Img variant="top" src={party.thumbnail} />
                 <Card.Body>
                   <Card.Title>
-                    {party.name.length > 44
-                      ? `${party.name.slice(0, 44)}...`
-                      : party.name}
+                    {stringAbbreviator(party.name, 'title')}
                   </Card.Title>
-                  <Card.Text>{party.description}</Card.Text>
+                  <Card.Text>
+                    {stringAbbreviator(party.description, 'description')}
+                  </Card.Text>
                 </Card.Body>
                 {/* <Card.Footer>
                   <small className="text-muted">Last updated 3 mins ago</small>
