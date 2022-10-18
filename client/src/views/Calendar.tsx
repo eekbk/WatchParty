@@ -20,7 +20,8 @@ function Calendar() {
               .filter((pt) =>
                 pt.users.some((ptU) =>
                   user.following.some(
-                    (f) => f === ptU.id && ptU.role === 'CREATOR'
+                    (f) =>
+                      (f === ptU.id && ptU.role === 'CREATOR') || user.parties
                   )
                 )
               )
