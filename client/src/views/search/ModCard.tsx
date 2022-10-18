@@ -38,7 +38,7 @@ function ModCard({ obj, kind, handleCardClick }) {
       // setCardText(follows);
     }
     // run this again when follows changes
-  }, [follows, user.following]); // maybe add user here
+  }, [follows, user.following, obj]); // maybe add user here
 
   useEffect(() => {
     if (user.following.includes(obj.id)) {
@@ -46,7 +46,7 @@ function ModCard({ obj, kind, handleCardClick }) {
     } else {
       setIsFollowing(false);
     }
-  }, [user.following]);
+  }, [user.following, obj]);
 
   // console.log('hello there');
   return (
