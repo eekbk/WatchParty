@@ -4,6 +4,7 @@ import { Container, Form } from 'react-bootstrap';
 import { StyledButton, StyledScrollableGroup } from '../../styles';
 
 const { default: DmMessage } = require('./DmMessage.tsx');
+// const { default: DmOutGoingMessage } = require('./DmOutGoingMessage.tsx');
 
 function DmChat({ socket, room, user, messages, setMessages }) {
   // other vars

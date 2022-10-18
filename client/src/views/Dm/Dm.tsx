@@ -1,7 +1,5 @@
-import { /* useEffect, */ useContext, useState } from 'react';
-// import { useLocation } from 'react-router-dom';
+import { useContext, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-// import { Socket } from 'socket.io';
 import { UserContext } from '../../context';
 
 const { default: DmBar } = require('./DmBar.tsx');
@@ -25,14 +23,6 @@ function Dm({ socket, room }) {
       setMessages(dmMessages);
     });
   };
-  /**
-   * CAITY POINTED THIS OUT
-   *
-   * I REFUSED TO DELETE IT!!!!!!!
-   */
-  // useEffect(() => {
-  //   // emitters
-  // }, []);
 
   return (
     <Container
@@ -44,7 +34,7 @@ function Dm({ socket, room }) {
       }}
     >
       <Row>
-        <Col xs={1} md={1}>
+        <Col xs={2} md={2}>
           <DmBar user={user} socket={socket} changeDm={changeDm} />
         </Col>
         <Col xs={14} md={10}>
