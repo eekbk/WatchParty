@@ -67,6 +67,7 @@ function Search() {
             <Col xs={3}>
               <Card
                 style={{
+                  height: '18rem',
                   width: '18rem',
                   padding: '0 auto',
                 }}
@@ -74,7 +75,11 @@ function Search() {
               >
                 <Card.Img variant="top" src={party.thumbnail} />
                 <Card.Body>
-                  <Card.Title>{party.name}</Card.Title>
+                  <Card.Title>
+                    {party.name.length > 44
+                      ? `${party.name.slice(0, 44)}...`
+                      : party.name}
+                  </Card.Title>
                   <Card.Text>{party.description}</Card.Text>
                 </Card.Body>
                 {/* <Card.Footer>
