@@ -11,28 +11,30 @@ function Calendar() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get('/api/party')
-      .then((data: any) => {
-        setParties(
-          data.data
-            .filter((pt) =>
-              pt.users.some((ptU) =>
-                user.following.some(
-                  (f) => f === ptU.id && ptU.role === 'CREATOR'
+    if (user) {
+      axios
+        .get('/api/party')
+        .then((data: any) => {
+          setParties(
+            data.data
+              .filter((pt) =>
+                pt.users.some((ptU) =>
+                  user.following.some(
+                    (f) => f === ptU.id && ptU.role === 'CREATOR'
+                  )
                 )
               )
-            )
-            .sort(
-              (a, b) =>
-                Number(new Date(a.date_time)) - Number(new Date(b.date_time))
-            )
-        );
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+              .sort(
+                (a, b) =>
+                  Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+              )
+          );
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [user]);
 
   const handleCardClick = (party) => {
     console.log(party);
@@ -55,7 +57,7 @@ function Calendar() {
         </thead>
         <tbody>
           {parties.map((party) => (
-            <tr onClick={() => handleCardClick(party)}>
+            <tr key={party.id} onClick={() => handleCardClick(party)}>
               <td>{party.date_time.slice(0, 10)}</td>
               <td>{party.name}</td>
               <td>
