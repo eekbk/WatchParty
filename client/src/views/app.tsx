@@ -60,8 +60,8 @@ function App() {
                 Logout
               </Nav.Link>
             </Nav>
+            <SearchBar />
           </Navbar.Collapse>
-          <SearchBar />
         </Container>
       </Navbar>
       <Outlet />
