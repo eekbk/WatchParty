@@ -86,24 +86,27 @@ function SearchBar() {
   }, [isLoading]);
 
   return (
-    <InputGroup className="mb-2" style={{ maxWidth: '20vw' }}>
-      <Form.Control
-        type="text"
-        value={textVal}
-        onChange={handleChange}
-        placeholder="Search for Parties, Users, Videos..."
-      />
-      <Button
-        variant="outline-secondary"
-        id="search-submit"
-        value="Submit"
-        disabled={isLoading}
-        onClick={!isLoading ? handleSubmit : null}
-        onKeyDown={!isLoading ? handleSubmit : null}
-      >
-        {isLoading ? <CgSearchLoading /> : <IoSearch />}
-      </Button>
-    </InputGroup>
+    <form onSubmit={!isLoading ? handleSubmit : null}>
+      <InputGroup className="mb-2" style={{ maxWidth: '20vw' }}>
+        <Form.Control
+          type="text"
+          value={textVal}
+          onChange={handleChange}
+          placeholder="Search for Parties, Users, Videos..."
+        />
+        <Button
+          variant="outline-secondary"
+          type="submit"
+          id="search-submit"
+          value="Submit"
+          disabled={isLoading}
+          // onChange={!isLoading ? handleSubmit : null}
+          // onKeyDown={!isLoading ? handleSubmit : null}
+        >
+          {isLoading ? <CgSearchLoading /> : <IoSearch />}
+        </Button>
+      </InputGroup>
+    </form>
   );
 }
 export default SearchBar;
