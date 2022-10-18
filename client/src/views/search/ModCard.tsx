@@ -53,7 +53,7 @@ function ModCard({ obj, kind, handleCardClick }) {
     <Card
       style={{
         width: '18rem',
-        height: '22rem',
+        height: '20rem',
       }}
       onClick={() => handleCardClick(obj, kind)}
     >
