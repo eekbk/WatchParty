@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Card, Col, Row, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { UserContext } from '../../context';
 import FollowButton from '../../buttons/FollowButton';
 import BlockButton from '../../buttons/BlockButton';
 
 // ModCard stands for Modular Card. Hopefully we can reuse it
-function ModCard({ obj, kind, handleCardClick }) {
+function ModCard({ obj, kind, handleCardClick, socket }) {
   // console.log('here are the props...\nobj:', obj, '\nkind:', kind);
   const { user } = useContext(UserContext);
   const [cardTitle, setCardTitle] = useState('');
@@ -14,6 +14,15 @@ function ModCard({ obj, kind, handleCardClick }) {
   const [follows, setFollows] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isBlocking, setIsBlocking] = useState(false);
+
+  // TEMP DM FUNCTION!!!!!!!!
+
+  const dMClick = (otherUserId) => {
+    const users = [otherUserId, user.id];
+    socket.emit('createConnection', users);
+  };
+
+  //! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   useEffect(() => {
     // if the card is a user
@@ -101,7 +110,11 @@ function ModCard({ obj, kind, handleCardClick }) {
               setIsBlocking={setIsBlocking}
             />
           </Col>
-          <Col>{/* <Button size="sm">DM</Button> */}</Col>
+          <Col>
+            <Button size="sm" onClick={() => dMClick(obj.id)}>
+              DM
+            </Button>
+          </Col>
         </Row>
       </Card.Footer>
     </Card>

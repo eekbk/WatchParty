@@ -24,12 +24,12 @@ function RouteHandler() {
         <Routes>
           <Route path="/" element={<App />}>
             <Route path="" element={<Dashboard />} />
-            <Route path="search" element={<Search />} />
+            <Route path="search" element={<Search socket={socket} />} />
             <Route path="calendar" element={<Calendar />} />
             <Route path="watchParty" element={<WatchParty socket={socket} />} />
             <Route path="createParty" element={<CreateParty />} />
             <Route path="profile" element={<div>Profile</div>} />
-            <Route path="dm" element={<Dm socket={socket} />} />
+            <Route path="dm" element={<Dm socket={socket} room="" />} />
             <Route path="archive" element={<Archive />} />
           </Route>
         </Routes>

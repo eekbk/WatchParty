@@ -9,7 +9,7 @@ import { SearchContext } from '../../contexts/searchContext';
 // import { UserContext } from '../../context';
 import { UserContext } from '../../context';
 
-function Search() {
+function Search({ socket }) {
   const {
     usersMatch,
     partiesMatch,
@@ -101,6 +101,7 @@ function Search() {
                   obj={userMatch}
                   kind="user"
                   handleCardClick={handleCardClick}
+                  socket={socket}
                 />
               </Col>
             ))}

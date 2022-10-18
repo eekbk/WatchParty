@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Container, ProgressBar, Form, Row, Col } from 'react-bootstrap';
 import { LButton } from '../../styles';
 import { Playlist } from './Playlist';
-import { Participants } from './Participants';
 
 function Video({
   playlist,
@@ -163,14 +162,6 @@ function Video({
             playlist={playlist}
             setPlaylist={setPlaylist}
             status={status}
-          />
-        </Col>
-        <Col md={3}>
-          <Participants
-            room={room}
-            status={status}
-            participants={participants}
-            setParticipants={setParticipants}
           />
         </Col>
       </Row>
