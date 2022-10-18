@@ -24,9 +24,6 @@ function SearchBar() {
         setUsersMatch(data.users);
         setPartiesMatch(data.parties);
       })
-      // .then(() => {
-      //   setTextVal('');
-      // })
       .then(() => {
         navigate('/search');
       })
@@ -48,27 +45,6 @@ function SearchBar() {
     e.preventDefault();
     searchRequest(textVal);
     setTextVal('');
-
-    // const q = textVal.replaceAll(' ', '&');
-    // axios
-    //   .get(`/api/search/${q}`)
-    //   .then(({ data }) => {
-    //     setVideosMatch(data.videos);
-    //     setUsersMatch(data.users);
-    //     setPartiesMatch(data.parties);
-    //   })
-    //   .then(() => {
-    //     setTextVal('');
-    //   })
-    //   .then(() => {
-    //     navigate('/search');
-    //   })
-    //   .then(() => {
-    //     setIsLoading(true);
-    //   })
-    //   .catch((err) => {
-    //     console.error('The Error from handleSubmit:', err);
-    //   });
   };
 
   const simulateNetworkRequest = async () => {
@@ -100,8 +76,6 @@ function SearchBar() {
           id="search-submit"
           value="Submit"
           disabled={isLoading}
-          // onChange={!isLoading ? handleSubmit : null}
-          // onKeyDown={!isLoading ? handleSubmit : null}
         >
           {isLoading ? <CgSearchLoading /> : <IoSearch />}
         </Button>
