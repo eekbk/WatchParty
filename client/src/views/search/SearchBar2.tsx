@@ -1,9 +1,7 @@
 import axios from 'axios';
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Form, InputGroup } from 'react-bootstrap';
 import { IoSearch } from 'react-icons/io5';
-import { CgSearchLoading } from 'react-icons/cg';
 import { SearchContext } from '../../contexts/searchContext';
 import {
   SearchForm,
@@ -71,26 +69,26 @@ function SearchBar2() {
     <form onSubmit={!isLoading ? handleSubmit : null}>
       <SearchBarContainer>
         <SearchInputContainer>
-          <InputGroup className="mb-2" style={{ maxWidth: '20vw' }}>
-            <SearchForm
-              type="text"
-              value={textVal}
-              onChange={handleChange}
-              placeholder="Search for Parties, Users, Videos..."
-            />
-            <SearchButton
-              variant="outline-secondary"
-              type="submit"
-              id="search-submit"
-              value="Submit"
-              disabled={isLoading}
-            >
-              {/* {isLoading ? <CgSearchLoading /> : <IoSearch />} */}
-              <SearchIcon>
-                <IoSearch />
-              </SearchIcon>
-            </SearchButton>
-          </InputGroup>
+          {/* <InputGroup className="mb-2" style={{ maxWidth: '20vw' }}> */}
+          <SearchForm
+            type="text"
+            value={textVal}
+            onChange={handleChange}
+            placeholder="Parties, Users, Videos..."
+          />
+          <SearchButton
+            // variant="outline-secondary"
+            type="submit"
+            id="search-submit"
+            value="Submit"
+            disabled={isLoading}
+          >
+            {/* {isLoading ? <CgSearchLoading /> : <IoSearch />} */}
+            <SearchIcon>
+              <IoSearch />
+            </SearchIcon>
+          </SearchButton>
+          {/* </InputGroup> */}
         </SearchInputContainer>
       </SearchBarContainer>
     </form>
