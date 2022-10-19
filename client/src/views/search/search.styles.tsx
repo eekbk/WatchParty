@@ -83,7 +83,7 @@ export const SearchButton = styled(Button)`
 `;
 
 export const StyledPartyCard = styled(Card)`
-  height: 20rem;
+  height: 23rem;
   width: 18rem;
   padding: 0 auto;
   cursor: pointer;
