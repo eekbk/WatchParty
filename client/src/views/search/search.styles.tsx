@@ -82,7 +82,7 @@ export const SearchButton = styled(Button)`
   /* vertical-align: middle; */
 `;
 
-export const VideoCard = styled(Card)`
+export const StyledPartyCard = styled(Card)`
   height: 20rem;
   width: 18rem;
   padding: 0 auto;
