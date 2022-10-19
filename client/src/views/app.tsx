@@ -9,7 +9,7 @@ import {
   MainContent,
 } from '../styles';
 import { UserContext } from '../context';
-import SearchBar2 from './search/SearchBar2';
+import SearchBar from './search/SearchBar';
 import VoiceControl from './voiceControl/VoiceControl';
 
 function App() {
@@ -66,7 +66,7 @@ function App() {
                   Logout
                 </Nav.Link>
               </Nav>
-              <SearchBar2 />
+              <SearchBar />
             </Navbar.Collapse>
           </Container>
         </Navbar>
