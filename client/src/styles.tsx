@@ -11,6 +11,32 @@ export const StyledVideoCard = styled(Card)`
   color: #ff30db;
 `;
 
+export const DmUser = styled(Button)`
+  color: #ffff;
+  background-color: transparent;
+  border-color: transparent;
+  &:hover {
+    background-color: transparent;
+    border-color: transparent;
+  }
+  &:active:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+  }
+  &:active {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+  }
+  &:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    border-color: #8a25e2;
+  }
+`;
+
 export const StyledButton = styled(Button)`
   color: #ffed5d;
   background-color: #ff30db;
