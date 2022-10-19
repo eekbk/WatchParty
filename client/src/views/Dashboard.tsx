@@ -70,18 +70,32 @@ function Dashboard() {
     });
   };
 
+  const divStyle = {
+    marginLeft: '10px',
+    // marginRight: '10px',
+    marginTop: '10px',
+    marginBottom: '10px',
+    padding: '10px',
+    height: '400px',
+  };
+
   return (
     <Container>
-      <Row>{user ? user.user_name : 'Not logged in'}</Row>
       <Row />
       {user ? (
         <Row>
-          <Row>My upcoming follows party</Row>
           {parties && parties.length ? (
             <Col>
+              <Row style={{ fontSize: '24px' }} className="text-center">
+                <Col>My Upcoming Parties</Col>
+              </Row>
               <CardGroup>
                 {parties.slice(0, 5).map((party) => (
-                  <Card key={party.id} onClick={() => handleCardClick(party)}>
+                  <Card
+                    key={party.id}
+                    onClick={() => handleCardClick(party)}
+                    style={divStyle}
+                  >
                     <Card.Img variant="top" src={party.thumbnail} />
                     <Card.Body>
                       <Card.Title>{party.name}</Card.Title>
@@ -101,13 +115,19 @@ function Dashboard() {
           ) : null}
         </Row>
       ) : null}
-      <Row> Top parties</Row>
+      <Row style={{ fontSize: '24px' }} className="text-center">
+        <Col> Top parties</Col>
+      </Row>
       {parties && parties.length ? (
         <Row>
           <Col>
             <CardGroup>
               {allParties.slice(0, 5).map((party) => (
-                <Card key={party.id} onClick={() => handleCardClick(party)}>
+                <Card
+                  key={party.id}
+                  onClick={() => handleCardClick(party)}
+                  style={divStyle}
+                >
                   <Card.Img variant="top" src={party.thumbnail} />
                   <Card.Body>
                     <Card.Title>{party.name}</Card.Title>
