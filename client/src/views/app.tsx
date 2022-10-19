@@ -1,5 +1,5 @@
 import { Outlet, Link } from 'react-router-dom';
-import { Nav, Navbar, Container, Button } from 'react-bootstrap';
+import { Nav, Navbar, Container } from 'react-bootstrap';
 import { useContext, useEffect } from 'react';
 import axios from 'axios';
 import {
@@ -53,16 +53,19 @@ function App() {
                 <Nav.Link to="/profile" as={Link}>
                   Profile
                 </Nav.Link>
+                <Nav.Link to="/calendar" as={Link}>
+                  Calendar
+                </Nav.Link>
                 <Nav.Link to="/dm" as={Link}>
                   DMs
                 </Nav.Link>
                 <Nav.Link to="/archive" as={Link}>
                   Archives
                 </Nav.Link>
-                <Nav.Link hidden={user} as={Button} href="/auth/google">
+                <Nav.Link hidden={user} href="/auth/google">
                   Login
                 </Nav.Link>
-                <Nav.Link hidden={!user} as={Button} onClick={handleLogout}>
+                <Nav.Link hidden={!user} onClick={handleLogout}>
                   Logout
                 </Nav.Link>
               </Nav>
