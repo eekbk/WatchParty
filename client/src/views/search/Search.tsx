@@ -3,11 +3,10 @@ import { useContext } from 'react';
 import { Container, Card, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import ModCard from './ModCard';
-// import FollowButton from '../../buttons/FollowButton';
-// import { playlist } from '../../../../server/routes/playlist';
+import UserCard from './UserCard';
 import { SearchContext } from '../../contexts/searchContext';
-// import { UserContext } from '../../context';
 import { UserContext } from '../../context';
+import { StyledPartyCard } from './search.styles';
 
 function Search() {
   const {
@@ -84,7 +83,7 @@ function Search() {
         <Row>
           {partiesMatch.slice(0, 5).map((party) => (
             <Col xs={3}>
-              <Card
+              <StyledPartyCard
                 style={{
                   height: '20rem',
                   width: '18rem',
@@ -104,7 +103,7 @@ function Search() {
                 {/* <Card.Footer>
                   <small className="text-muted">Last updated 3 mins ago</small>
                 </Card.Footer> */}
-              </Card>
+              </StyledPartyCard>
             </Col>
           ))}
         </Row>
@@ -121,7 +120,7 @@ function Search() {
             .slice(0, 5)
             .map((userMatch) => (
               <Col xs={3}>
-                <ModCard
+                <UserCard
                   obj={userMatch}
                   kind="user"
                   handleCardClick={handleCardClick}
