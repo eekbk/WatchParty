@@ -128,3 +128,37 @@ export const LButton = styled(Button)`
     background-color: #8a25e2;
   }
 `;
+
+export const Header = styled(Container)`
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #8a25e2;
+  z-index: 2;
+  margin: 0;
+`;
+
+export const MainContent = styled(Container)`
+  position: relative;
+  z-index: 1;
+  padding-top: 90px;
+  padding-bottom: 30px;
+  width: 100%;
+`;
+
+export const Footer = styled(Container)`
+  position: fixed;
+  bottom: 0;
+  height: 3rem;
+  /* width: fit-content; */
+  min-width: 100vh;
+  z-index: 3;
+  background-color: #8a25e2;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* left: 0;
+  right: 0; */
+  /* flex-flow: flow wrap; */
+`;
