@@ -18,26 +18,31 @@ function Dashboard() {
 
   // all parties
   useEffect(() => {
-    axios
-      .get('/api/party')
-      .then((data: any) => {
-        setAllParties(
-          data.data.sort(
-            (a, b) =>
-              Number(new Date(a.date_time)) - Number(new Date(b.date_time))
-          )
-        );
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+    if (user) {
+      axios
+        .get('/api/party')
+        .then((data: any) => {
+          console.log(allParties, 'allParties...');
+          setAllParties(
+            data.data.sort(
+              (a, b) =>
+                Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+            )
+          );
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [user]);
   // parties of people im following
   useEffect(() => {
     if (user) {
       axios
         .get('/api/party')
         .then((data: any) => {
+          console.log(parties, 'parties...');
+
           setParties(
             data.data
               .filter((pt) =>
