@@ -1,12 +1,10 @@
 import axios from 'axios';
 import { useContext } from 'react';
 import { Container, Card, Col, Row } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import ModCard from './ModCard';
-import UserCard from './UserCard';
+import UserCard from '../../cards/UserCard';
+import PartyCard from '../../cards/PartyCard';
 import { SearchContext } from '../../contexts/searchContext';
 import { UserContext } from '../../context';
-import { StyledPartyCard } from './search.styles';
 
 function Search() {
   const {
@@ -18,57 +16,25 @@ function Search() {
     setVideosMatch,
   } = useContext(SearchContext);
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
 
-  const handleCardClick = (party, kind) => {
-    // console.log('party in search:', party);
-    if (kind === 'party') {
-      navigate('/watchParty', {
-        state: { party },
+  const handleCardClick = (videoId) => {
+    axios
+      .get(`/api/search/party/${videoId}`)
+      .then(({ data }) => {
+        const matchingParties = data.playlists
+          .map((playlist) => playlist.parties)
+          .flat();
+        setPartiesMatch(matchingParties);
+      })
+      .then(() => {
+        setUsersMatch([]);
+      })
+      .then(() => {
+        setVideosMatch([]);
+      })
+      .catch((err) => {
+        console.error('The error from handleCardClick:\n', err);
       });
-    } else if (kind === 'video') {
-      // send an axios request to find all the rooms with a playlist that contains that video
-      axios
-        .get(`/api/search/party/${party}`)
-        .then(({ data }) => {
-          const matchingParties = data.playlists
-            .map((playlist) => playlist.parties)
-            .flat();
-          setPartiesMatch(matchingParties);
-        })
-        .then(() => {
-          setUsersMatch([]);
-        })
-        .then(() => {
-          setVideosMatch([]);
-        })
-        .catch((err) => {
-          console.error('The error from handleCardClick:\n', err);
-        });
-    } else if (kind === 'user') {
-      // TODO LATER
-      // send an axios request to get the user data
-      // navigate over to a profile page sort of page for the person
-    }
-  };
-
-  const stringAbbreviator = (string, type) => {
-    const dotDotDotConcat = (num) => {
-      const strArr = string.slice(0, num).split(' ');
-      return `${strArr.slice(0, strArr.length - 1).join(' ')}...`;
-    };
-    if (type === 'title') {
-      if (string.length > 53) {
-        return dotDotDotConcat(53);
-      }
-      return string;
-    }
-    if (type === 'description') {
-      if (string.length > 93) {
-        return dotDotDotConcat(93);
-      }
-      return string;
-    }
   };
 
   return (
@@ -83,27 +49,7 @@ function Search() {
         <Row>
           {partiesMatch.slice(0, 5).map((party) => (
             <Col xs={3}>
-              <StyledPartyCard
-                style={{
-                  height: '20rem',
-                  width: '18rem',
-                  padding: '0 auto',
-                }}
-                onClick={() => handleCardClick(party, 'party')}
-              >
-                <Card.Img variant="top" src={party.thumbnail} />
-                <Card.Body>
-                  <Card.Title>
-                    {stringAbbreviator(party.name, 'title')}
-                  </Card.Title>
-                  <Card.Text>
-                    {stringAbbreviator(party.description, 'description')}
-                  </Card.Text>
-                </Card.Body>
-                {/* <Card.Footer>
-                  <small className="text-muted">Last updated 3 mins ago</small>
-                </Card.Footer> */}
-              </StyledPartyCard>
+              <PartyCard party={party} />
             </Col>
           ))}
         </Row>
@@ -120,11 +66,7 @@ function Search() {
             .slice(0, 5)
             .map((userMatch) => (
               <Col xs={3}>
-                <UserCard
-                  obj={userMatch}
-                  kind="user"
-                  handleCardClick={handleCardClick}
-                />
+                <UserCard obj={userMatch} />
               </Col>
             ))}
         </Row>
@@ -132,10 +74,7 @@ function Search() {
       {videosMatch.length ? <h2>Videos</h2> : []}
       <ul>
         {videosMatch.map((video) => (
-          <Card
-            key={video.id}
-            onClick={() => handleCardClick(video.id, 'video')}
-          >
+          <Card key={video.id} onClick={() => handleCardClick(video.id)}>
             <h3>{video.title}</h3>
             <p>{`${video.description.slice(0, 200)}...`}</p>
           </Card>
