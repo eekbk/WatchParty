@@ -1,11 +1,15 @@
-// import { CloudFormation } from 'aws-sdk';
 import axios from 'axios';
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Form, InputGroup } from 'react-bootstrap';
 import { IoSearch } from 'react-icons/io5';
-import { CgSearchLoading } from 'react-icons/cg';
 import { SearchContext } from '../../contexts/searchContext';
+import {
+  SearchForm,
+  SearchInputContainer,
+  SearchButton,
+  SearchIcon,
+  SearchBarContainer,
+} from './search.styles';
 
 function SearchBar() {
   const [textVal, setTextVal] = useState('');
@@ -63,23 +67,26 @@ function SearchBar() {
 
   return (
     <form onSubmit={!isLoading ? handleSubmit : null}>
-      <InputGroup className="mb-2" style={{ maxWidth: '20vw' }}>
-        <Form.Control
-          type="text"
-          value={textVal}
-          onChange={handleChange}
-          placeholder="Search for Parties, Users, Videos..."
-        />
-        <Button
-          variant="outline-secondary"
-          type="submit"
-          id="search-submit"
-          value="Submit"
-          disabled={isLoading}
-        >
-          {isLoading ? <CgSearchLoading /> : <IoSearch />}
-        </Button>
-      </InputGroup>
+      <SearchBarContainer>
+        <SearchInputContainer>
+          <SearchForm
+            type="text"
+            value={textVal}
+            onChange={handleChange}
+            placeholder="Parties, Users, Videos..."
+          />
+          <SearchButton
+            type="submit"
+            id="search-submit"
+            value="Submit"
+            disabled={isLoading}
+          >
+            <SearchIcon>
+              <IoSearch />
+            </SearchIcon>
+          </SearchButton>
+        </SearchInputContainer>
+      </SearchBarContainer>
     </form>
   );
 }
