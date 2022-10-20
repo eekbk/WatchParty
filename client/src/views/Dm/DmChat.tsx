@@ -32,6 +32,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
   };
 
   useEffect(() => {
+    scrolly.current.scrollTop = scrolly.current.scrollHeight;
     // emitters
     socket.emit('getMessages', room);
     // listeners
@@ -50,6 +51,9 @@ function DmChat({ socket, room, user, messages, setMessages }) {
       socket.off('getMessages');
     };
   }, []);
+  useEffect(() => {
+    scrolly.current.scrollTop = scrolly.current.scrollHeight;
+  }, [messages]);
   return (
     <Container
       style={{
@@ -61,15 +65,15 @@ function DmChat({ socket, room, user, messages, setMessages }) {
       }}
     >
       DM Be nice!!
-      <StyledScrollableGroup
-        ref={scrolly}
-        style={{ overflowY: 'scroll', minHeight: '70vh', maxHeight: '70vh' }}
-      >
-        {messages.map((message) => (
-          <DmMessage message={message} user={user} />
-        ))}
-      </StyledScrollableGroup>
       <Form>
+        <StyledScrollableGroup
+          ref={scrolly}
+          style={{ overflowY: 'scroll', minHeight: '70vh', maxHeight: '70vh' }}
+        >
+          {messages.map((message) => (
+            <DmMessage message={message} user={user} />
+          ))}
+        </StyledScrollableGroup>
         <InputGroup>
           <Form.Control
             value={chat}

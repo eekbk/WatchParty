@@ -1,6 +1,12 @@
 // File for styling components
 import styled from 'styled-components';
 import { Button, Form, Container, Card } from 'react-bootstrap';
+import {
+  BsPlayCircleFill,
+  BsPauseCircleFill,
+  BsFillArrowRightCircleFill,
+  BsFillArrowLeftCircleFill,
+} from 'react-icons/bs';
 // const { Title, Body, Img, Text } = Card;
 const { Group } = Form;
 // offcanvas responsive for menus that could be cluttered on mobile?
@@ -9,6 +15,24 @@ const { Group } = Form;
 export const StyledVideoCard = styled(Card)`
   background-color: #375915;
   color: #ff30db;
+`;
+
+export const PlayButton = styled(BsPlayCircleFill)`
+  color: #d8d8d8;
+`;
+export const PauseButton = styled(BsPauseCircleFill)`
+  color: #d8d8d8;
+`;
+export const NextButton = styled(BsFillArrowRightCircleFill)`
+  color: #d8d8d8;
+`;
+export const BackButton = styled(BsFillArrowLeftCircleFill)`
+  color: #d8d8d8;
+`;
+export const VolSlider = styled(Form.Range)`
+  &::-webkit-slider-thumb {
+    background: #383838 !important;
+  }
 `;
 
 export const DmUser = styled(Button)`
@@ -129,10 +153,10 @@ export const StyledBackgroundContainer = styled(Container)`
 
 export const LButton = styled(Button)`
   color: white;
-  background-color: #ff30db;
-  border-color: #8a25e2;
+  background-color: transparent;
+  border-color: transparent;
   &:hover {
-    background-color: #8a25e2;
+    background-color: transparent;
     border-color: #8a25e2;
   }
   &:focus {

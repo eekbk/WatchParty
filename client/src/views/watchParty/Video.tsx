@@ -1,8 +1,15 @@
 import axios from 'axios';
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
-import { Container, ProgressBar, Form, Row, Col } from 'react-bootstrap';
-import { LButton } from '../../styles';
+import { Container, ProgressBar, Row, Col } from 'react-bootstrap';
+import {
+  LButton,
+  VolSlider,
+  PlayButton,
+  PauseButton,
+  NextButton,
+  BackButton,
+} from '../../styles';
 import { Playlist } from './Playlist';
 
 function Video({
@@ -153,6 +160,7 @@ function Video({
         height: '100%',
         float: 'left',
         marginLeft: '0px',
+        padding: '0px',
       }}
     >
       <Row style={{ position: 'absolute', width: '100%', maxHeight: '85%' }}>
@@ -189,50 +197,70 @@ function Video({
             : 'https://www.youtube.com/watch?v=vZa0Yh6e7dw'
         }
         width="100%"
-        height="85%"
+        height="95%"
         style={{
           pointerEvents: 'none',
         }}
       />
+      <Row
+        style={{
+          position: 'absolute',
+          bottom: '3rem',
+          width: '5rem',
+          transform: 'rotate(-90deg)',
+        }}
+      >
+        <Col md="auto" lg="auto" sm="auto">
+          <VolSlider
+            value={volume * 100}
+            onChange={setVolume}
+            style={{ height: '1.5rm' }}
+          />
+        </Col>
+      </Row>
+      <Row style={{ position: 'absolute', bottom: '2.5rem', left: '3rem' }}>
+        <Col md="auto" lg="auto" sm="auto">
+          <LButton
+            disabled={
+              isArchived ? false : status ? status.role !== 'CREATOR' : true
+            }
+            onClick={playVid}
+          >
+            <PlayButton size="2em" />
+          </LButton>
+        </Col>
+        <Col md="auto" lg="auto" sm="auto">
+          <LButton
+            disabled={
+              isArchived ? false : status ? status.role !== 'CREATOR' : true
+            }
+            onClick={pauseVid}
+          >
+            <PauseButton size="2em" />
+          </LButton>
+        </Col>
+        <Col md="auto" lg="auto" sm="auto">
+          <LButton
+            disabled={
+              isArchived ? false : status ? status.role !== 'CREATOR' : true
+            }
+            onClick={() => changeVid(true)}
+          >
+            <BackButton size="2em" />
+          </LButton>
+        </Col>
+        <Col md="auto" lg="auto" sm="auto">
+          <LButton
+            disabled={
+              isArchived ? false : status ? status.role !== 'CREATOR' : true
+            }
+            onClick={() => changeVid(false)}
+          >
+            <NextButton size="2em" />
+          </LButton>
+        </Col>
+      </Row>
       <ProgressBar variant="info" now={pSeconds} max={duration} min={0} />
-      <Container fluid="md" style={{ height: '1.5rm', width: '10%' }}>
-        <Form.Range value={volume * 100} onChange={setVolume} />
-      </Container>
-      <LButton
-        disabled={
-          isArchived ? false : status ? status.role !== 'CREATOR' : true
-        }
-        onClick={playVid}
-      >
-        Play
-      </LButton>
-      {' '}
-      <LButton
-        disabled={
-          isArchived ? false : status ? status.role !== 'CREATOR' : true
-        }
-        onClick={pauseVid}
-      >
-        Pause
-      </LButton>
-      {' '}
-      <LButton
-        disabled={
-          isArchived ? false : status ? status.role !== 'CREATOR' : true
-        }
-        onClick={() => changeVid(false)}
-      >
-        Back
-      </LButton>
-      {' '}
-      <LButton
-        disabled={
-          isArchived ? false : status ? status.role !== 'CREATOR' : true
-        }
-        onClick={() => changeVid(true)}
-      >
-        Next
-      </LButton>
     </Container>
   );
 }

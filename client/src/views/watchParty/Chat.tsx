@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Container, Form } from 'react-bootstrap';
+import { Container, Form, InputGroup } from 'react-bootstrap';
 import { StyledButton, StyledScrollableGroup } from '../../styles';
 
 const { default: Message } = require('./Message.tsx');
@@ -47,30 +47,32 @@ function Chat({
         textAlign: 'center',
         color: 'white',
         backgroundColor: '#332448',
-        borderRadius: '5px',
+        borderRadius: '0px 5px 5px 0px',
+        margin: '0px',
+        height: '95%',
       }}
     >
       CHAT!!
       <Form>
         <StyledScrollableGroup
           ref={scrolly}
-          style={{ overflowY: 'scroll', minHeight: '70vh', maxHeight: '70vh' }}
+          style={{ overflowY: 'scroll', minHeight: '75vh', maxHeight: '75vh' }}
         >
           {messages.map((message) => (
             <Message message={message} user={user} socket={socket} />
           ))}
         </StyledScrollableGroup>
-        <Form.Group>
+        <InputGroup>
           <Form.Control
-            disabled={isArchived}
             value={chat}
             onChange={(event) => setChat(event.target.value)}
             placeholder="type here!"
+            disabled={isArchived}
           />
-          <StyledButton type="submit" disabled={isArchived} onClick={submit}>
+          <StyledButton type="submit" onClick={submit} disabled={isArchived}>
             Send!
           </StyledButton>
-        </Form.Group>
+        </InputGroup>
       </Form>
     </Container>
   );

@@ -40,12 +40,13 @@ function WatchParty({ socket }) {
       }}
     >
       <Row>
-        <Col xs={14} md={9}>
+        <Col xs={14} md={9} style={{ padding: '0px' }}>
           <Card
             style={{
               width: '100%',
               height: '90vh',
               borderRadius: '0px 0px 10px 0px',
+              border: '0px',
             }}
             bg="transparent"
             text="white"
@@ -67,7 +68,7 @@ function WatchParty({ socket }) {
             />
           </Card>
         </Col>
-        <Col xs={5} md={3}>
+        <Col xs={5} md={3} style={{ padding: '0px' }}>
           <Chat
             isArchived={isArchived}
             user={user}
