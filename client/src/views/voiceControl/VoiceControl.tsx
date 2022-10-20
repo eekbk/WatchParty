@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Form } from 'react-bootstrap';
+import { Form, Row, Col } from 'react-bootstrap';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from 'react-speech-recognition';
 import { SearchContext } from '../../contexts/searchContext';
 import { UserContext } from '../../context';
+import { StyledVoiceControl, StyledTranscript } from './voiceControl.styles';
 
 function VoiceControl() {
   const navigate = useNavigate();
@@ -237,16 +238,22 @@ function VoiceControl() {
   };
 
   return (
-    <Form>
-      <Form.Check
-        type="switch"
-        id="vc-switch"
-        label={isSwitchOn ? 'Voice Control ON' : 'Voice Control OFF'}
-        onChange={handleVoiceToggle}
-        checked={isSwitchOn}
-      />
-      {isSwitchOn ? <p>{transcript}</p> : []}
-    </Form>
+    <StyledVoiceControl>
+      <Row>
+        <Col sm={3}>
+          <Form.Check
+            type="switch"
+            id="vc-switch"
+            label={isSwitchOn ? 'Voice Control ON' : 'Voice Control OFF'}
+            onChange={handleVoiceToggle}
+            checked={isSwitchOn}
+          />
+        </Col>
+        <StyledTranscript lg={9}>
+          {isSwitchOn ? <p>{transcript}</p> : []}
+        </StyledTranscript>
+      </Row>
+    </StyledVoiceControl>
   );
 }
 export default VoiceControl;

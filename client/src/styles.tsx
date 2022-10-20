@@ -9,6 +9,60 @@ import {
 } from 'react-icons/bs';
 // const { Title, Body, Img, Text } = Card;
 const { Group } = Form;
+
+/*
+since this is wrapping the whole body, we can use it as the basis
+for relative sizes ie fonts
+*/
+export const StyledBackgroundContainer = styled(Container)`
+  background-color: #8a25e2;
+  height: fit-content;
+  min-height: 100vh;
+  flex-flow: flow wrap;
+`;
+
+export const MainContent = styled(Container)`
+  position: relative;
+  z-index: 1;
+  padding-top: 90px;
+  padding-bottom: 35px;
+  width: 100%;
+`;
+
+export const Header = styled(Container)`
+  position: fixed;
+  height: 80px;
+  top: 0;
+  width: 100%;
+  background-color: #8a25e2;
+  z-index: 2;
+  margin: 0px;
+  padding-top: 7px;
+  box-shadow: 0.8px 0.8px 1.6px rgba(0, 0, 0, 0.02),
+    2px 2px 3.8px rgba(0, 0, 0, 0.028), 3.8px 3.8px 7.1px rgba(0, 0, 0, 0.035),
+    6.7px 6.7px 12.7px rgba(0, 0, 0, 0.042),
+    12.5px 12.5px 23.8px rgba(0, 0, 0, 0.05), 30px 30px 57px rgba(0, 0, 0, 0.07);
+  align-items: center;
+`;
+
+export const Footer = styled(Container)`
+  position: fixed;
+  bottom: 0;
+  height: 35px;
+  /* width: fit-content; */
+  min-width: 100vh;
+  z-index: 3;
+  background-color: #8a25e2;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-shadow: 0.8px 0.8px 1.6px rgba(0, 0, 0, 0.02),
+    2px 2px 3.8px rgba(0, 0, 0, 0.028), 3.8px 3.8px 7.1px rgba(0, 0, 0, 0.035),
+    6.7px 6.7px 12.7px rgba(0, 0, 0, 0.042),
+    12.5px 12.5px 23.8px rgba(0, 0, 0, 0.05), 30px 30px 57px rgba(0, 0, 0, 0.07);
+`;
+
 // offcanvas responsive for menus that could be cluttered on mobile?
 // scrolling on navbar for when collapsed?
 // collapse and fade for wrapping conditionally visible components?
@@ -142,13 +196,6 @@ export const StyledScrollableGroup = styled(Group)`
       border-radius: 10px;
     }
   }
-`;
-
-export const StyledBackgroundContainer = styled(Container)`
-  background-color: #8a25e2;
-  height: fit-content;
-  min-height: 100vh;
-  flex-flow: flow wrap;
 `;
 
 export const LButton = styled(Button)`
