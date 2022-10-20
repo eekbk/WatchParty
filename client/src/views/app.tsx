@@ -50,16 +50,16 @@ function App() {
                 <Nav.Link hidden={!user} to="/createParty" as={Link}>
                   Create Party
                 </Nav.Link>
-                <Nav.Link to="/profile" as={Link}>
+                <Nav.Link hidden={!user} to="/profile" as={Link}>
                   Profile
                 </Nav.Link>
-                <Nav.Link to="/calendar" as={Link}>
+                <Nav.Link hidden={!user} to="/calendar" as={Link}>
                   Calendar
                 </Nav.Link>
-                <Nav.Link to="/dm" as={Link}>
+                <Nav.Link hidden={!user} to="/dm" as={Link}>
                   DMs
                 </Nav.Link>
-                <Nav.Link to="/archive" as={Link}>
+                <Nav.Link hidden={!user} to="/archive" as={Link}>
                   Archives
                 </Nav.Link>
                 <Nav.Link hidden={user} href="/auth/google">
