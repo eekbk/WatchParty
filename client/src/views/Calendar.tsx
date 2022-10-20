@@ -37,6 +37,9 @@ function Calendar() {
                 (a, b) =>
                   Number(new Date(a.date_time)) - Number(new Date(b.date_time))
               )
+              .filter(
+                (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+              )
           );
         })
         .then(() => {
@@ -55,10 +58,14 @@ function Calendar() {
         .then((data: any) => {
           console.log(allParties, 'allParties....');
           setAllParties(
-            data.data.sort(
-              (a, b) =>
-                Number(new Date(a.date_time)) - Number(new Date(b.date_time))
-            )
+            data.data
+              .sort(
+                (a, b) =>
+                  Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+              )
+              .filter(
+                (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+              )
           );
         })
         .catch((err) => {
@@ -85,8 +92,8 @@ function Calendar() {
         <Card border="danger" bg="warning">
           <Card.Header style={{ fontSize: '24px' }} className="text-center">
             <Col>
-              {user ? user.user_name : null}
-              &apos;s Calendar
+              {user ? null : null}
+              Calendar
             </Col>
             <Col>
               <Button onClick={() => handleChange()}>Friends Parties</Button>
@@ -135,8 +142,8 @@ function Calendar() {
         <Card border="danger" bg="warning">
           <Card.Header style={{ fontSize: '24px' }} className="text-center">
             <Col>
-              {user ? user.user_name : null}
-              &apos;s Calendar
+              {user ? null : null}
+              Calendar
             </Col>
             <Col>
               <Button onClick={() => handleChange()}>All parties</Button>
