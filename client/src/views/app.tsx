@@ -1,8 +1,13 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { Nav, Navbar, Container, Button } from 'react-bootstrap';
+import { Nav, Navbar, Container } from 'react-bootstrap';
 import { useContext, useEffect } from 'react';
 import axios from 'axios';
-import { StyledBackgroundContainer } from '../styles';
+import {
+  StyledBackgroundContainer,
+  Header,
+  Footer,
+  MainContent,
+} from '../styles';
 import { UserContext } from '../context';
 import SearchBar from './search/SearchBar';
 import VoiceControl from './voiceControl/VoiceControl';
@@ -38,54 +43,81 @@ function App() {
 
   return (
     <StyledBackgroundContainer fluid>
-      <Navbar expand="lg" style={{ height: '10vh' }}>
-        <Container>
-          <Navbar.Brand to="/" as={Link} style={{ color: '#E5F4E3' }}>
-            WatchParty
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link
-                hidden={!user}
-                to="/createParty"
-                as={Link}
-                style={{ color: '#E5F4E3' }}
-              >
-                Create Party
-              </Nav.Link>
-              <Nav.Link to="/profile" as={Link} style={{ color: '#E5F4E3' }}>
-                Profile
-              </Nav.Link>
-              <Nav.Link to="/dm" as={Link} style={{ color: '#E5F4E3' }}>
-                DMs
-              </Nav.Link>
-              <Nav.Link to="/archive" as={Link} style={{ color: '#E5F4E3' }}>
-                Archives
-              </Nav.Link>
-              <Nav.Link
-                hidden={user}
-                as={Button}
-                href="/auth/google"
-                style={{ color: '#E5F4E3' }}
-              >
-                Login
-              </Nav.Link>
-              <Nav.Link
-                hidden={!user}
-                as={Button}
-                onClick={handleLogout}
-                style={{ color: '#E5F4E3' }}
-              >
-                Logout
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-          <SearchBar />
-        </Container>
-      </Navbar>
-      <Outlet />
-      <VoiceControl />
+      <Header fluid>
+        <Navbar expand="lg" style={{ height: '10vh' }}>
+          <Container>
+            <Navbar.Brand to="/" as={Link} style={{ color: '#E5F4E3' }}>
+              WatchParty
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="me-auto">
+                <Nav.Link
+                  hidden={!user}
+                  to="/createParty"
+                  as={Link}
+                  style={{ color: '#E5F4E3' }}
+                >
+                  Create Party
+                </Nav.Link>
+                <Nav.Link
+                  hidden={!user}
+                  to="/profile"
+                  as={Link}
+                  style={{ color: '#E5F4E3' }}
+                >
+                  Profile
+                </Nav.Link>
+                <Nav.Link
+                  hidden={!user}
+                  to="/calendar"
+                  as={Link}
+                  style={{ color: '#E5F4E3' }}
+                >
+                  Calendar
+                </Nav.Link>
+                <Nav.Link
+                  hidden={!user}
+                  to="/dm"
+                  as={Link}
+                  style={{ color: '#E5F4E3' }}
+                >
+                  DMs
+                </Nav.Link>
+                <Nav.Link
+                  hidden={!user}
+                  to="/archive"
+                  as={Link}
+                  style={{ color: '#E5F4E3' }}
+                >
+                  Archives
+                </Nav.Link>
+                <Nav.Link
+                  hidden={user}
+                  href="/auth/google"
+                  style={{ color: '#E5F4E3' }}
+                >
+                  Login
+                </Nav.Link>
+                <Nav.Link
+                  hidden={!user}
+                  onClick={handleLogout}
+                  style={{ color: '#E5F4E3' }}
+                >
+                  Logout
+                </Nav.Link>
+              </Nav>
+              <SearchBar />
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      </Header>
+      <MainContent>
+        <Outlet />
+      </MainContent>
+      <Footer fluid>
+        <VoiceControl />
+      </Footer>
     </StyledBackgroundContainer>
   );
 }

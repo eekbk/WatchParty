@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Card, Button, Col } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -8,31 +8,82 @@ import { UserContext } from '../context';
 function Calendar() {
   const { user } = useContext(UserContext);
   const [parties, setParties] = useState([]);
+  const [allParties, setAllParties] = useState([]);
+  const [changeText, setChangeText] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
-      .get('/api/party')
-      .then((data: any) => {
-        setParties(
-          data.data
-            .filter((pt) =>
-              pt.users.some((ptU) =>
-                user.following.some(
-                  (f) => f === ptU.id && ptU.role === 'CREATOR'
-                )
+    if (user) {
+      axios
+        .get('/api/party')
+        .then((data: any) => {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          setParties(
+            data.data // all parties
+              .filter(
+                (
+                  pt // party
+                ) =>
+                  pt.users.some(
+                    (
+                      ptU // user parties
+                    ) =>
+                      user.following.some(
+                        (f) => f === ptU.id && ptU.role === 'CREATOR'
+                        // userparty id && user party role is the creator or the users party
+                      )
+                  )
               )
-            )
-            .sort(
-              (a, b) =>
-                Number(new Date(a.date_time)) - Number(new Date(b.date_time))
-            )
-        );
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+              .sort(
+                (a, b) =>
+                  Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+              )
+              .filter(
+                // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+                (a) => Number(new Date(a.date_time)) >= Number(today)
+              )
+          );
+        })
+        .then(() => {
+          console.log(parties, 'parties...');
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [user, changeText]);
+
+  useEffect(() => {
+    if (user) {
+      axios
+        .get('/api/party')
+        .then((data: any) => {
+          console.log(allParties, 'allParties....');
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          setAllParties(
+            data.data
+              .sort(
+                (a, b) =>
+                  Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+              )
+              .filter(
+                // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+                (a) => Number(new Date(a.date_time)) >= Number(today)
+              )
+          );
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [user, changeText]);
+
+  const handleChange = () => {
+    console.log(changeText);
+    return setChangeText(!changeText);
+  };
 
   const handleCardClick = (party) => {
     console.log(party);
@@ -43,28 +94,107 @@ function Calendar() {
 
   return (
     <Container>
-      {user ? user.user_name : 'Not logged in'}
-      Calendar text
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Party Name</th>
-            <th>created-by</th>
-          </tr>
-        </thead>
-        <tbody>
-          {parties.map((party) => (
-            <tr onClick={() => handleCardClick(party)}>
-              <td>{party.date_time.slice(0, 10)}</td>
-              <td>{party.name}</td>
-              <td>
-                {party.users.filter((u) => u.role === 'CREATOR')[0].username}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      {changeText ? (
+        <Card border="danger" bg="warning">
+          <Card.Header style={{ fontSize: '24px' }} className="text-center">
+            <Col>
+              {user ? null : null}
+              Calendar
+            </Col>
+            <Col>
+              <Button onClick={() => handleChange()}>Friends Parties</Button>
+            </Col>
+          </Card.Header>
+          <Table striped bordered hover variant="dark" responsive="sm">
+            <thead>
+              <tr>
+                <th>Party Now</th>
+                <th>Date</th>
+                <th>Party Name</th>
+                <th>created-by</th>
+              </tr>
+            </thead>
+            <tbody>
+              {parties.map((party) => (
+                <tr key={party.id} onClick={() => handleCardClick(party)}>
+                  <td>
+                    <Button
+                      variant="secondary"
+                      onClick={() => handleCardClick(party)}
+                      size="sm"
+                    >
+                      Watch
+                    </Button>
+                  </td>
+                  <td>
+                    *
+                    {party.date_time.slice(5, 10)}
+                  </td>
+                  <td>{party.name}</td>
+                  <td>
+                    {
+                      party.users.filter((u) => {
+                        console.log('changed text is true');
+                        return u.role === 'CREATOR';
+                      })[0].username
+                    }
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Card>
+      ) : (
+        <Card border="danger" bg="warning">
+          <Card.Header style={{ fontSize: '24px' }} className="text-center">
+            <Col>
+              {user ? null : null}
+              Calendar
+            </Col>
+            <Col>
+              <Button onClick={() => handleChange()}>All parties</Button>
+            </Col>
+          </Card.Header>
+          <Table striped bordered hover variant="dark" responsive="sm">
+            <thead>
+              <tr>
+                <th>Party Now</th>
+                <th>Date</th>
+                <th>Party Name</th>
+                <th>created-by</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allParties.map((party) => (
+                <tr key={party.id} onClick={() => handleCardClick(party)}>
+                  <td>
+                    <Button
+                      variant="secondary"
+                      onClick={() => handleCardClick(party)}
+                      size="sm"
+                    >
+                      Watch
+                    </Button>
+                  </td>
+                  <td>
+                    *
+                    {party.date_time.slice(5, 10)}
+                  </td>
+                  <td>{party.name}</td>
+                  <td>
+                    {
+                      party.users.filter((u) => {
+                        console.log('changed text is false');
+                        return u.role === 'CREATOR';
+                      })[0].username
+                    }
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Card>
+      )}
     </Container>
   );
 }
