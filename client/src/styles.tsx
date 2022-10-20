@@ -1,6 +1,6 @@
 // File for styling components
 import styled from 'styled-components';
-import { Button, Form, Container, Card } from 'react-bootstrap';
+import { Button, Form, Container, Card, Row } from 'react-bootstrap';
 import {
   BsPlayCircleFill,
   BsPauseCircleFill,
@@ -70,17 +70,41 @@ export const StyledVideoCard = styled(Card)`
   background-color: #375915;
   color: #ff30db;
 `;
-
+export const StRow = styled(Row)`
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.8rem;
+  opacity: 0;
+  width: 100%;
+  &:hover {
+    opacity: 1;
+  }
+`;
+export const PStRow = styled(Row)`
+  position: absolute;
+  max-height: 85%;
+  top: 0.5rem;
+  left: 0.8rem;
+  opacity: 0;
+  width: 100%;
+  &:hover {
+    opacity: 1;
+  }
+`;
 export const PlayButton = styled(BsPlayCircleFill)`
+  opacity: inherit;
   color: #d8d8d8;
 `;
 export const PauseButton = styled(BsPauseCircleFill)`
+  opacity: inherit;
   color: #d8d8d8;
 `;
 export const NextButton = styled(BsFillArrowRightCircleFill)`
+  opacity: inherit;
   color: #d8d8d8;
 `;
 export const BackButton = styled(BsFillArrowLeftCircleFill)`
+  opacity: inherit;
   color: #d8d8d8;
 `;
 export const VolSlider = styled(Form.Range)`

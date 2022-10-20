@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
-import { Container, ProgressBar, Row, Col } from 'react-bootstrap';
+import { Container, ProgressBar, Col } from 'react-bootstrap';
 import {
   LButton,
   VolSlider,
@@ -9,6 +9,8 @@ import {
   PauseButton,
   NextButton,
   BackButton,
+  StRow,
+  PStRow,
 } from '../../styles';
 import { Playlist } from './Playlist';
 
@@ -25,7 +27,7 @@ function Video({
 }) {
   // state vars
   const [isPlaying, setPause] = useState(() => !status);
-  const [pSeconds, setSeconds] = useState(0.0001);
+  const [pSeconds, setSeconds] = useState(() => 0.0001);
   const [duration, setDur] = useState(1);
   const [volume, setVol] = useState(0.5);
   const [video, setVid] = useState(0);
@@ -163,7 +165,7 @@ function Video({
         padding: '0px',
       }}
     >
-      <Row style={{ position: 'absolute', width: '100%', maxHeight: '85%' }}>
+      <PStRow>
         <Col md={4}>
           <Playlist
             room={room}
@@ -172,7 +174,7 @@ function Video({
             status={status}
           />
         </Col>
-      </Row>
+      </PStRow>
       <ReactPlayer
         ref={videoPlayer}
         config={{
@@ -197,30 +199,38 @@ function Video({
             : 'https://www.youtube.com/watch?v=vZa0Yh6e7dw'
         }
         width="100%"
-        height="95%"
+        height="100%"
         style={{
           pointerEvents: 'none',
         }}
       />
-      <Row
-        style={{
-          position: 'absolute',
-          bottom: '3rem',
-          width: '5rem',
-          transform: 'rotate(-90deg)',
-        }}
-      >
-        <Col md="auto" lg="auto" sm="auto">
+      <StRow>
+        <Col
+          md="auto"
+          lg="auto"
+          sm="auto"
+          style={{
+            padding: '0px',
+            width: '4rem',
+          }}
+        >
           <VolSlider
             value={volume * 100}
             onChange={setVolume}
-            style={{ height: '1.5rm' }}
+            style={{ height: '1.5rm', transform: 'rotate(-90deg)' }}
           />
         </Col>
-      </Row>
-      <Row style={{ position: 'absolute', bottom: '2.5rem', left: '3rem' }}>
         <Col md="auto" lg="auto" sm="auto">
           <LButton
+            style={{
+              visibility: isArchived
+                ? 'visible'
+                : status
+                ? status.role !== 'CREATOR'
+                  ? 'visible'
+                  : 'hidden'
+                : 'hidden',
+            }}
             disabled={
               isArchived ? false : status ? status.role !== 'CREATOR' : true
             }
@@ -231,6 +241,15 @@ function Video({
         </Col>
         <Col md="auto" lg="auto" sm="auto">
           <LButton
+            style={{
+              visibility: isArchived
+                ? 'visible'
+                : status
+                ? status.role !== 'CREATOR'
+                  ? 'visible'
+                  : 'hidden'
+                : 'hidden',
+            }}
             disabled={
               isArchived ? false : status ? status.role !== 'CREATOR' : true
             }
@@ -241,6 +260,15 @@ function Video({
         </Col>
         <Col md="auto" lg="auto" sm="auto">
           <LButton
+            style={{
+              visibility: isArchived
+                ? 'visible'
+                : status
+                ? status.role !== 'CREATOR'
+                  ? 'visible'
+                  : 'hidden'
+                : 'hidden',
+            }}
             disabled={
               isArchived ? false : status ? status.role !== 'CREATOR' : true
             }
@@ -251,6 +279,15 @@ function Video({
         </Col>
         <Col md="auto" lg="auto" sm="auto">
           <LButton
+            style={{
+              visibility: isArchived
+                ? 'visible'
+                : status
+                ? status.role !== 'CREATOR'
+                  ? 'visible'
+                  : 'hidden'
+                : 'hidden',
+            }}
             disabled={
               isArchived ? false : status ? status.role !== 'CREATOR' : true
             }
@@ -259,8 +296,14 @@ function Video({
             <NextButton size="2em" />
           </LButton>
         </Col>
-      </Row>
-      <ProgressBar variant="info" now={pSeconds} max={duration} min={0} />
+        <ProgressBar
+          variant="info"
+          now={pSeconds}
+          max={duration}
+          min={0}
+          style={{ padding: '0px' }}
+        />
+      </StRow>
     </Container>
   );
 }

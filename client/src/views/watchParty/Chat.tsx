@@ -49,14 +49,14 @@ function Chat({
         backgroundColor: '#332448',
         borderRadius: '0px 5px 5px 0px',
         margin: '0px',
-        height: '95%',
+        height: '100%',
       }}
     >
       CHAT!!
-      <Form>
+      <Form style={{ height: '94%' }}>
         <StyledScrollableGroup
           ref={scrolly}
-          style={{ overflowY: 'scroll', minHeight: '75vh', maxHeight: '75vh' }}
+          style={{ overflowY: 'scroll', height: 'inherit' }}
         >
           {messages.map((message) => (
             <Message message={message} user={user} socket={socket} />

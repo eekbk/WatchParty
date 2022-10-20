@@ -34,17 +34,17 @@ function WatchParty({ socket }) {
     <Container
       style={{
         width: '100%',
-        height: '90vh',
+        height: '35rem',
         marginLeft: '0px',
         maxWidth: '100%',
       }}
     >
-      <Row>
+      <Row style={{ height: 'inherit' }}>
         <Col xs={14} md={9} style={{ padding: '0px' }}>
           <Card
             style={{
               width: '100%',
-              height: '90vh',
+              height: '100%',
               borderRadius: '0px 0px 10px 0px',
               border: '0px',
             }}
