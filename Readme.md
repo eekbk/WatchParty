@@ -38,23 +38,6 @@ The also is a VOICE CONTROL option, for those with difficulty navigating with a 
 ## API
 1. YouTube API
 2. WebSpeech API
-
-## Installation and Dev Setup
-1. Fork repo from https://github.com/felcoden/WatchParty
-2. Clone down the forked repo to your local system
-3. Run ```$npm install``` in the terminal dependencies
-4. Create a PostgresQL Database (we used Amazon RDS)
-5. Create a Google Oauth key:
-6. Create a YouTube Key 
-7. Create a .env file in your main directory
-8. Add the following to your .env:
-    * Google Client Id (i.e. GOOGLE_CLIENT_ID=467437382608-hm52m2s2vpkd34sfhsm555pt7k9um.apps.googleusercontent.com)
-    * Google Client Secret (i.e GOOGLE_CLIENT_SECRET=DFJFFS-6_f0LvKbZx0yTFSdgfsDFFJKoDcng)
-    * Google Callback URL (i.e GOOGLE_CALLBACK_URL=http://localhost:4040/auth/google/callback)
-    * YouTube Key (i.e YOUTUBE_KEY=AIzawQSERgjggHwY_0BM5GKDeejjVBSQpjknP8)
-9. Run ```$ npm run devbuild``` to compile the files
-10. Run ```$ npm run devstart``` 
-
 ## Changelog
 
 The changelog can be found on the [Releases page](/releases).
@@ -65,10 +48,6 @@ Everyone is welcome to contribute. Please take a moment to review the [contribut
 
 ## Authors and license
 
-[Logan-Ward](<PH URL>) 
-[Eric-Kuehnemann](<PH URL>) 
-[Dahlak Keleta](<PH URL>) 
-[Logan Voisin](<PH URL>) 
-and [contributors](/graphs/contributors).
+[Logan-Ward](<PH URL>) and [contributors](/graphs/contributors).
 
 MIT License, see the included [License.md](License.md) file.
