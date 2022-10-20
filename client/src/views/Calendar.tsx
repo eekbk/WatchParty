@@ -17,6 +17,8 @@ function Calendar() {
       axios
         .get('/api/party')
         .then((data: any) => {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
           setParties(
             data.data // all parties
               .filter(
@@ -38,7 +40,8 @@ function Calendar() {
                   Number(new Date(a.date_time)) - Number(new Date(b.date_time))
               )
               .filter(
-                (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+                // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+                (a) => Number(new Date(a.date_time)) >= Number(today)
               )
           );
         })
@@ -57,6 +60,8 @@ function Calendar() {
         .get('/api/party')
         .then((data: any) => {
           console.log(allParties, 'allParties....');
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
           setAllParties(
             data.data
               .sort(
@@ -64,7 +69,8 @@ function Calendar() {
                   Number(new Date(a.date_time)) - Number(new Date(b.date_time))
               )
               .filter(
-                (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+                // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+                (a) => Number(new Date(a.date_time)) >= Number(today)
               )
           );
         })
