@@ -27,6 +27,7 @@ playlist.post('/', (req: Request, res: Response) => {
     });
 });
 
+// TODO: Minimize API calls, current idea is to store a youtube playlist relation on videos imported from a playlist
 // Adds videos from a youtube playlist to the database
 playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
   const { playlistId } = req.params;
