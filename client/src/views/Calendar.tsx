@@ -17,6 +17,8 @@ function Calendar() {
       axios
         .get('/api/party')
         .then((data: any) => {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
           setParties(
             data.data // all parties
               .filter(
@@ -37,6 +39,10 @@ function Calendar() {
                 (a, b) =>
                   Number(new Date(a.date_time)) - Number(new Date(b.date_time))
               )
+              .filter(
+                // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+                (a) => Number(new Date(a.date_time)) >= Number(today)
+              )
           );
         })
         .then(() => {
@@ -54,11 +60,18 @@ function Calendar() {
         .get('/api/party')
         .then((data: any) => {
           console.log(allParties, 'allParties....');
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
           setAllParties(
-            data.data.sort(
-              (a, b) =>
-                Number(new Date(a.date_time)) - Number(new Date(b.date_time))
-            )
+            data.data
+              .sort(
+                (a, b) =>
+                  Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+              )
+              .filter(
+                // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+                (a) => Number(new Date(a.date_time)) >= Number(today)
+              )
           );
         })
         .catch((err) => {
@@ -85,8 +98,8 @@ function Calendar() {
         <Card border="danger" bg="warning">
           <Card.Header style={{ fontSize: '24px' }} className="text-center">
             <Col>
-              {user ? user.user_name : null}
-              &apos;s Calendar
+              {user ? null : null}
+              Calendar
             </Col>
             <Col>
               <Button onClick={() => handleChange()}>Friends Parties</Button>
@@ -135,8 +148,8 @@ function Calendar() {
         <Card border="danger" bg="warning">
           <Card.Header style={{ fontSize: '24px' }} className="text-center">
             <Col>
-              {user ? user.user_name : null}
-              &apos;s Calendar
+              {user ? null : null}
+              Calendar
             </Col>
             <Col>
               <Button onClick={() => handleChange()}>All parties</Button>
