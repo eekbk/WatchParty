@@ -95,7 +95,7 @@ export const StyledScrollableGroup = styled(Group)`
 `;
 
 export const StyledBackgroundContainer = styled(Container)`
-  background-color: #8a25e2;
+  background: radial-gradient(ellipse at center, #320e3b, black);
   height: fit-content;
   min-height: 100vh;
   flex-flow: flow wrap;
