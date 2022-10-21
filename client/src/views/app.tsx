@@ -38,7 +38,7 @@ function App() {
 
   return (
     <StyledBackgroundContainer fluid>
-      <Header fluid>
+      <Header>
         <Navbar expand="lg" style={{ height: '10vh' }}>
           <Container>
             <Navbar.Brand to="/" as={Link}>
@@ -77,7 +77,7 @@ function App() {
       <MainContent>
         <Outlet />
       </MainContent>
-      <Footer fluid>
+      <Footer>
         <VoiceControl />
       </Footer>
     </StyledBackgroundContainer>
