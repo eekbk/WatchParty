@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 // import { useLocation } from 'react-router-dom';
-import { Container, Form, InputGroup } from 'react-bootstrap';
-import { StyledButton, StyledScrollableGroup } from '../../styles';
+import { Form, InputGroup } from 'react-bootstrap';
+import { StyledButton, ThinScrollBar, DmChatBox } from '../../styles';
 
 const { default: DmMessage } = require('./DmMessage.tsx');
 // const { default: DmOutGoingMessage } = require('./DmOutGoingMessage.tsx');
@@ -55,25 +55,17 @@ function DmChat({ socket, room, user, messages, setMessages }) {
     scrolly.current.scrollTop = scrolly.current.scrollHeight;
   }, [messages]);
   return (
-    <Container
-      style={{
-        textAlign: 'center',
-        color: 'white',
-        backgroundColor: '#332448',
-        borderRadius: '0px 5px 5px 0px',
-        margin: '0px',
-      }}
-    >
+    <DmChatBox>
       DM Be nice!!
       <Form>
-        <StyledScrollableGroup
+        <ThinScrollBar
           ref={scrolly}
           style={{ overflowY: 'scroll', minHeight: '70vh', maxHeight: '70vh' }}
         >
           {messages.map((message) => (
             <DmMessage message={message} user={user} />
           ))}
-        </StyledScrollableGroup>
+        </ThinScrollBar>
         <InputGroup>
           <Form.Control
             value={chat}
@@ -85,7 +77,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
           </StyledButton>
         </InputGroup>
       </Form>
-    </Container>
+    </DmChatBox>
   );
 }
 

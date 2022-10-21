@@ -22,7 +22,7 @@ function DmMessage({ message, user }) {
               ? '#6929a9'
               : '#8e298e'
             : '#6929a9',
-          maxWidth: '75%',
+          maxWidth: '85%',
           borderRadius: '10px',
           width: 'fit-content',
           display: 'inline-block',
