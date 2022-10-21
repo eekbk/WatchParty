@@ -8,7 +8,9 @@ import {
   StyledUserCard,
   StyledUserCardImg,
   StyledCardBody,
-} from '../views/search/search.styles';
+  StyledIsFollowing,
+  StyledPartyTitle,
+} from '../cards/cards.styles';
 
 // ModCard stands for Modular Card. Hopefully we can reuse it
 function UserCard({ obj }) {
@@ -51,26 +53,24 @@ function UserCard({ obj }) {
   return (
     <StyledUserCard>
       <Row>
-        <Col sm={4}>
+        <Col>
           <StyledUserCardImg roundedCircle src={obj.profile} />
         </Col>
-        <Col lg={8}>
+        <Col>
           <StyledCardBody>
             <Row>
-              <Card.Title>{cardTitle}</Card.Title>
+              <StyledPartyTitle>{cardTitle}</StyledPartyTitle>
             </Row>
-            <Row>
-              <Card.Text>{cardText}</Card.Text>
-            </Row>
-            <Row>
-              <Card.Text>{isFollowing ? 'following ✅' : '  '}</Card.Text>
-            </Row>
+            <StyledIsFollowing>
+              <Row>{cardText}</Row>
+              <Row>{isFollowing ? 'following ✅' : '  '}</Row>
+            </StyledIsFollowing>
           </StyledCardBody>
         </Col>
       </Row>
       <Card.Footer>
         <Row>
-          <Col md={4}>
+          <Col>
             <FollowButton
               otherUserId={obj.id}
               setFollows={setFollows}
@@ -79,7 +79,7 @@ function UserCard({ obj }) {
               setIsFollowing={setIsFollowing}
             />
           </Col>
-          <Col md={4}>
+          <Col>
             <BlockButton
               otherUserId={obj.id}
               isBlocking={isBlocking}
