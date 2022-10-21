@@ -1,12 +1,31 @@
 import styled from 'styled-components';
-import {
-  Button,
-  Form,
-  Container,
-  InputGroup,
-  Card,
-  Image,
-} from 'react-bootstrap';
+import { Button, Form, Container, InputGroup, Col, Row } from 'react-bootstrap';
+
+export const SearchPageHeading = styled(Row)`
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 0px;
+  margin-bottom: 0;
+  align-items: baseline;
+`;
+
+export const SeeMoreLink = styled.p`
+  margin-bottom: 4px;
+  /* justify-content: right; */
+  text-align: right;
+  cursor: pointer;
+`;
+
+export const SearchPageCol = styled(Col)`
+  /* align-items: center; */
+  align-content: space-around;
+  justify-content: space-around;
+`;
+
+export const SearchPageRow = styled(Row)`
+  align-content: space-around;
+  justify-content: space-around;
+`;
 
 export const SearchBarContainer = styled(Container)`
   display: flex;
@@ -14,7 +33,7 @@ export const SearchBarContainer = styled(Container)`
   width: 28rem;
   height: 3.8em;
   background-color: transparent;
-  padding-top: 12px;
+  padding-top: 4px;
   overflow: hidden;
 `;
 
@@ -82,28 +101,33 @@ export const SearchButton = styled(Button)`
   /* vertical-align: middle; */
 `;
 
-export const StyledPartyCard = styled(Card)`
-  height: 23rem;
-  width: 18rem;
-  padding: 0 auto;
-  cursor: pointer;
-`;
+// export const StyledPartyCard = styled(Card)`
+//   height: 23rem;
+//   width: 18rem;
+//   padding: 0 auto;
+//   cursor: pointer;
+// `;
 
-export const StyledUserCard = styled(Card)`
-  width: 18rem;
-  height: 10rem;
-`;
+// export const StyledUserCard = styled(Card)`
+//   width: 18rem;
+//   height: 10rem;
+// `;
 
-export const StyledUserCardImg = styled(Image)`
-  width: 100px;
-  height: 100px;
-  margin: 8px;
-`;
+// export const StyledVideoCard = styled(Card)`
+//   width: 18rem;
+//   height: 10rem;
+// `;
 
-export const StyledCardBody = styled(Card.Body)`
-  padding-left: 20px;
-  margin: 0 auto;
-  /* text-align: right; */
-`;
+// export const StyledUserCardImg = styled(Image)`
+//   width: 100px;
+//   height: 100px;
+//   margin: 8px;
+// `;
 
-export const StyledCardButton = styled(Button);
+// export const StyledCardBody = styled(Card.Body)`
+//   padding-left: 20px;
+//   margin: 0 auto;
+//   /* text-align: right; */
+// `;
+
+// export const StyledCardButton = styled(Button);
