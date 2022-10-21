@@ -18,13 +18,13 @@ export const SeeMoreLink = styled.p`
 
 export const SearchPageCol = styled(Col)`
   /* align-items: center; */
-  align-content: space-around;
-  justify-content: space-around;
+  align-content: center;
+  justify-content: center;
 `;
 
 export const SearchPageRow = styled(Row)`
-  align-content: space-around;
-  justify-content: space-around;
+  align-content: center;
+  justify-content: center;
 `;
 
 export const SearchBarContainer = styled(Container)`
