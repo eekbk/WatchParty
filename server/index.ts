@@ -119,7 +119,6 @@ app.post('/logout', (req, res) => {
         res.status(400).send('Unable to log out');
       } else {
         res.redirect('/');
-        res.status(200).send('logged out worked');
       }
     });
   } else {
