@@ -51,7 +51,7 @@ function App() {
         console.error(err);
       });
   };
-
+  // TODO: fix style look, do style goodly
   return (
     <StyledBackgroundContainer fluid>
       <Header fluid>
