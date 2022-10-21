@@ -1,10 +1,31 @@
 import { Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { StyledPartyCard } from '../views/search/search.styles';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../context';
+import {
+  StyledPartyCard,
+  StyledCardFooter,
+  StyledPartyTitle,
+  StyledCardBody,
+  StyledPartyDesc,
+  StyledIsFollowing,
+} from '../cards/cards.styles';
 
 function PartyCard({ party }) {
-  const { description, thumbnail, name, date_time } = party;
+  const { description, thumbnail, name, date_time, users } = party;
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
+  const [isFollowing, setIsFollowing] = useState(false);
+  const creator = users.filter((user) => user.role === 'CREATOR')[0];
+
+  useEffect(() => {
+    if (user.following.includes(creator.id)) {
+      setIsFollowing(true);
+    } else {
+      setIsFollowing(false);
+    }
+  }, [user]);
+
   const handleCardClick = (party) => {
     // console.log('party in search:', party);
     navigate('/watchParty', {
@@ -61,19 +82,25 @@ function PartyCard({ party }) {
       return `${pmHour}${dateTime.slice(13, 16)} pm`;
       // isAm ? `${dateTime.slice(11, 13)  }am` : dateTime.slice()
     };
-    return `${month} ${day}, ${year} at ${time()}`;
+    return `Starts ${time()}, ${month} ${day}, ${year}`;
   };
 
   return (
     <StyledPartyCard onClick={() => handleCardClick(party)}>
       <Card.Img variant="top" src={thumbnail} />
-      <Card.Body>
-        <Card.Title>{stringAbbreviator(name, 'title')}</Card.Title>
-        <Card.Text>{stringAbbreviator(description, 'description')}</Card.Text>
-      </Card.Body>
-      <Card.Footer>
+      <StyledCardBody>
+        <StyledPartyTitle>{stringAbbreviator(name, 'title')}</StyledPartyTitle>
+        <StyledPartyDesc>
+          {stringAbbreviator(description, 'description')}
+        </StyledPartyDesc>
+        <StyledIsFollowing>
+          {`created by: ${creator.username}`}
+          <Card.Text>{isFollowing ? 'following ✅' : '  '}</Card.Text>
+        </StyledIsFollowing>
+      </StyledCardBody>
+      <StyledCardFooter>
         <small className="text-muted">{dateTimeConversion(date_time)}</small>
-      </Card.Footer>
+      </StyledCardFooter>
     </StyledPartyCard>
   );
 }
