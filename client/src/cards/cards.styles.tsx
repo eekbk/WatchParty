@@ -16,6 +16,7 @@ export const StyledPartyCard = styled(Card)`
   padding: 0 auto;
   cursor: pointer;
   box-sizing: content-box;
+  background-color: black;
 `;
 
 export const StyledUserCard = styled(Card)`
@@ -23,6 +24,7 @@ export const StyledUserCard = styled(Card)`
   height: 10rem;
   box-sizing: border-box;
   margin-bottom: 10px;
+  background-color: black;
 `;
 
 export const StyledVideoCard = styled(Card)`
@@ -32,6 +34,7 @@ export const StyledVideoCard = styled(Card)`
   box-sizing: border-box;
   overflow: hidden;
   margin: 4px;
+  background-color: black;
 `;
 
 export const StyledUserCardImg = styled(Image)`
