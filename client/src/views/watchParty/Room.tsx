@@ -32,11 +32,12 @@ function WatchParty({ socket }) {
 
   return (
     <Container
+      fluid
       style={{
+        position: 'relative',
         width: '100%',
-        height: '35rem',
-        marginLeft: '0px',
-        maxWidth: '100%',
+        height: '0',
+        paddingBottom: '56.25%',
       }}
     >
       <Row style={{ height: 'inherit' }}>

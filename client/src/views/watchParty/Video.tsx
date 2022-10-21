@@ -157,24 +157,15 @@ function Video({
   // Positioning of playlist and participants needs work
   return (
     <Container
-      fluid="md"
+      fluid
       style={{
-        height: '100%',
         float: 'left',
-        marginLeft: '0px',
-        padding: '0px',
+        position: 'relative',
+        width: '100%',
+        height: '0',
+        paddingBottom: '56.25%',
       }}
     >
-      <PStRow>
-        <Col md={4}>
-          <Playlist
-            room={room}
-            playlist={playlist}
-            setPlaylist={setPlaylist}
-            status={status}
-          />
-        </Col>
-      </PStRow>
       <ReactPlayer
         ref={videoPlayer}
         config={{
@@ -202,8 +193,21 @@ function Video({
         height="100%"
         style={{
           pointerEvents: 'none',
+          position: 'absolute',
+          left: '0',
+          top: '0',
         }}
       />
+      <PStRow>
+        <Col md={4}>
+          <Playlist
+            room={room}
+            playlist={playlist}
+            setPlaylist={setPlaylist}
+            status={status}
+          />
+        </Col>
+      </PStRow>
       <StRow>
         <Col
           md="auto"

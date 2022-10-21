@@ -50,10 +50,11 @@ function Chat({
         borderRadius: '0px 5px 5px 0px',
         margin: '0px',
         height: '100%',
+        paddingBottom: '56.25%',
       }}
     >
       CHAT!!
-      <Form style={{ height: '94%' }}>
+      <Form>
         <StyledScrollableGroup
           ref={scrolly}
           style={{ overflowY: 'scroll', height: 'inherit' }}

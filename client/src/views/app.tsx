@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Nav, Navbar, Container } from 'react-bootstrap';
 import { useContext, useEffect } from 'react';
 import axios from 'axios';
@@ -13,7 +13,18 @@ import SearchBar from './search/SearchBar';
 import VoiceControl from './voiceControl/VoiceControl';
 
 function App() {
+  const location = useLocation();
   const { user, setUser } = useContext(UserContext);
+  // special AND very important useEffect
+  useEffect(() => {
+    if (location.pathname === '/watchParty') {
+      console.log(location.pathname);
+      document.body.style.overflowY = 'hidden';
+    } else {
+      console.log(location.pathname, ' fail');
+      document.body.style.overflowY = 'auto';
+    }
+  }, [location]);
   useEffect(() => {
     axios
       .get('/api/user')
