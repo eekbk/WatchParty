@@ -14,7 +14,7 @@ function ArchiveParties({ parties }) {
     <Container>
       <Row sm={3} lg={4} md={4}>
         {parties.map((party) => {
-          const {length} = party.description;
+          const { length } = party.description;
           return (
             <Col style={{ padding: '5px' }}>
               <ArchiveGlassCard onClick={() => handleCardClick(party)}>
@@ -29,7 +29,7 @@ function ArchiveParties({ parties }) {
                   <Card.Title>{party.name}</Card.Title>
                   <Card.Text>
                     {length > 35
-                      ? `${party.description.slice(0, 35)}...`
+                      ? `${party.description.slice(0, 67)}...`
                       : party.description}
                   </Card.Text>
                 </Card.Body>
