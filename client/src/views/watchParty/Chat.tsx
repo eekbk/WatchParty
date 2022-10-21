@@ -59,7 +59,7 @@ function Chat({
       style={{
         textAlign: 'center',
         color: 'white',
-        backgroundColor: '#332448',
+        backgroundColor: 'transparent',
         borderRadius: '0px 5px 5px 0px',
         margin: '0px',
         height: vH.current ? vH.current.clientHeight : '100%',
@@ -75,7 +75,7 @@ function Chat({
             <Message message={message} user={user} socket={socket} />
           ))}
         </StyledScrollableGroup>
-        <InputGroup style={{ marginBottom: '0px' }}>
+        <InputGroup style={{ marginTop: '5px' }}>
           <Form.Control
             value={chat}
             onChange={(event) => setChat(event.target.value)}
