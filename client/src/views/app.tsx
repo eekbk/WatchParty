@@ -61,6 +61,7 @@ function App() {
               WatchParty
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            {/* TODO: REMOVE SEARCH FROM COLLAPSE */}
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
                 <Nav.Link

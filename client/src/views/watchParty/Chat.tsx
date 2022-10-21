@@ -11,8 +11,12 @@ function Chat({
   setMessages,
   socket,
   isArchived,
+  vH,
 }): JSX.Element {
   // State vars
+  const [vHeight, setVHight] = useState(
+    vH.current ? vH.current.clientHeight : '100%'
+  );
   const [chat, setChat] = useState('');
   const scrolly = useRef(null);
   // functions
@@ -31,8 +35,17 @@ function Chat({
     e.preventDefault();
   };
 
+  const handleResize = () => {
+    setVHight(vH);
+  };
+  // for style
+  useEffect(() => {
+    vH.onresize = handleResize;
+  }, [vHeight]);
+
   // handle updates
   useEffect(() => {
+    console.log(vH.current ? vH.current.clientHeight : '100%', vH.current);
     scrolly.current.scrollTop = scrolly.current.scrollHeight;
     socket.on('chat', (message) => {
       setMessages((messages) => [...messages, message]);
@@ -49,21 +62,20 @@ function Chat({
         backgroundColor: '#332448',
         borderRadius: '0px 5px 5px 0px',
         margin: '0px',
-        height: '100%',
-        paddingBottom: '56.25%',
+        height: vH.current ? vH.current.clientHeight : '100%',
+        maxHeight: vH.current ? vH.current.clientHeight : '100%',
       }}
     >
-      CHAT!!
-      <Form>
+      <Form style={{ height: '100%' }}>
         <StyledScrollableGroup
           ref={scrolly}
-          style={{ overflowY: 'scroll', height: 'inherit' }}
+          style={{ overflowY: 'scroll', height: '100%' }}
         >
           {messages.map((message) => (
             <Message message={message} user={user} socket={socket} />
           ))}
         </StyledScrollableGroup>
-        <InputGroup>
+        <InputGroup style={{ marginBottom: '0px' }}>
           <Form.Control
             value={chat}
             onChange={(event) => setChat(event.target.value)}

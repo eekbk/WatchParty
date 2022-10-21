@@ -24,6 +24,7 @@ function Video({
   user,
   socket,
   isArchived,
+  vH,
 }) {
   // state vars
   const [isPlaying, setPause] = useState(() => !status);
@@ -157,6 +158,7 @@ function Video({
   // Positioning of playlist and participants needs work
   return (
     <Container
+      ref={vH}
       fluid
       style={{
         float: 'left',

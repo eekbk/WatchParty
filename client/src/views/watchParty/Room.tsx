@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Card, Container, Row, Col } from 'react-bootstrap';
 // import io from 'socket.io-client';
@@ -9,6 +9,8 @@ const { default: Chat } = require('./Chat.tsx');
 
 // function WatchParty({ videos, user, room }: any) {
 function WatchParty({ socket }) {
+  // styling
+  const vH = useRef(null);
   // state vars
   const [dbMessages, setMessages] = useState([]);
   const user = useContext(UserContext);
@@ -37,6 +39,7 @@ function WatchParty({ socket }) {
         position: 'relative',
         width: '100%',
         height: '0',
+        maxHeight: '56vh',
         paddingBottom: '56.25%',
       }}
     >
@@ -53,6 +56,7 @@ function WatchParty({ socket }) {
             text="white"
           >
             <Video
+              vH={vH}
               isArchived={isArchived}
               user={user}
               playlist={playlist}
@@ -71,6 +75,7 @@ function WatchParty({ socket }) {
         </Col>
         <Col xs={5} md={3} style={{ padding: '0px' }}>
           <Chat
+            vH={vH}
             isArchived={isArchived}
             user={user}
             room={room.id || 'test'}
