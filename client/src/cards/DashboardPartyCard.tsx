@@ -1,8 +1,8 @@
 import { Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { StyledPartyCard } from '../views/search/search.styles';
+import { StyledDashPartyCard } from '../views/search/search.styles';
 
-function PartyCard({ party }) {
+function DashboardPartyCard({ party }) {
   const { description, thumbnail, name, date_time } = party;
   const navigate = useNavigate();
   const handleCardClick = (party) => {
@@ -65,7 +65,10 @@ function PartyCard({ party }) {
   };
 
   return (
-    <StyledPartyCard onClick={() => handleCardClick(party)}>
+    <StyledDashPartyCard
+      style={{ marginBottom: '2rem', width: '12rm' }}
+      onClick={() => handleCardClick(party)}
+    >
       <Card.Img variant="top" src={thumbnail} />
       <Card.Body>
         <Card.Title>{stringAbbreviator(name, 'title')}</Card.Title>
@@ -74,8 +77,8 @@ function PartyCard({ party }) {
       <Card.Footer>
         <small className="text-muted">{dateTimeConversion(date_time)}</small>
       </Card.Footer>
-    </StyledPartyCard>
+    </StyledDashPartyCard>
   );
 }
 
-export default PartyCard;
+export default DashboardPartyCard;
