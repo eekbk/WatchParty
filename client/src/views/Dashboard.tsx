@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // import Button from 'react-bootstrap/Button';
 // import Card from 'react-bootstrap/Card';
-import CardGroup from 'react-bootstrap/CardGroup';
+// import CardGroup from 'react-bootstrap/CardGroup';
 import PartyCard from '../cards/PartyCard';
 // import { useNavigate } from 'react-router-dom';
 // import ListGroup from 'react-bootstrap/ListGroup';
@@ -23,7 +23,7 @@ function Dashboard() {
       axios
         .get('/api/party')
         .then((data: any) => {
-          console.log(allParties, 'allParties...');
+          console.log(data.data, 'allParties...');
           setAllParties(
             data.data.sort(
               (a, b) =>
@@ -42,7 +42,7 @@ function Dashboard() {
       axios
         .get('/api/party')
         .then((data: any) => {
-          console.log(parties, 'parties...');
+          console.log(data.data, 'parties...');
 
           setParties(
             data.data
@@ -73,7 +73,7 @@ function Dashboard() {
 
   // const divStyle = {
   //   marginLeft: '10px',
-  //   // marginRight: '10px',
+  //   marginRight: '10px',
   //   marginTop: '10px',
   //   marginBottom: '10px',
   //   padding: '10px',
@@ -87,66 +87,52 @@ function Dashboard() {
         <Row>
           {parties && parties.length ? (
             <Col>
-              <Row style={{ fontSize: '24px' }} className="text-center">
+              <Row
+                style={{ fontSize: '24px', padding: '10px' }}
+                className="text-center"
+              >
                 <Col>My Upcoming Parties</Col>
               </Row>
-              <CardGroup>
-                {parties.slice(0, 5).map((party) => (
-                  <PartyCard party={party} key={party.id} />
-                  //   key={party.id}
-                  //   onClick={() => handleCardClick(party)}
-                  //   style={divStyle}
-                  // >
-                  //   <Card.Img variant="top" src={party.thumbnail} />
-                  //   <Card.Body>
-                  //     <Card.Title>{party.name}</Card.Title>
-                  //     <Card.Text>{party.description}</Card.Text>
-                  //   </Card.Body>
-                  //   <Card.Footer>
-                  //     <small className="text-muted">
-                  //       Starting on:
-                  //       {' '}
-                  //       {party.date_time.slice(0, 10)}
-                  //     </small>
-                  //   </Card.Footer>
-                  // </Card>
+              <Row
+                style={{
+                  marginBottom: '4rem',
+                  marginTop: '4rem',
+                  padding: '10px',
+                  // marginLeft: '10px',
+                  // marginRight: '10px',
+                  // marginTop: '10px',
+                  // marginBottom: '10px',
+                }}
+              >
+                {parties.slice(0, 4).map((party) => (
+                  <Col>
+                    <PartyCard party={party} key={party.id} />
+                  </Col>
                 ))}
-              </CardGroup>
+              </Row>
             </Col>
           ) : null}
         </Row>
       ) : null}
-      <Row style={{ fontSize: '24px' }} className="text-center">
+      <Row
+        style={{ fontSize: '24px', padding: '10px' }}
+        className="text-center"
+      >
         <Col> Top parties</Col>
       </Row>
-      {parties && parties.length ? (
-        <Row>
+      <Row>
+        {parties && parties.length ? (
           <Col>
-            <CardGroup>
-              {allParties.slice(0, 5).map((party) => (
-                <PartyCard party={party} key={party.id} />
-                //   key={party.id}
-                //   onClick={() => handleCardClick(party)}
-                //   style={divStyle}
-                // >
-                //   <Card.Img variant="top" src={party.thumbnail} />
-                //   <Card.Body>
-                //     <Card.Title>{party.name}</Card.Title>
-                //     <Card.Text>{party.description}</Card.Text>
-                //   </Card.Body>
-                //   <Card.Footer>
-                //     <small className="text-muted">
-                //       Starting on:
-                //       {' '}
-                //       {party.date_time.slice(0, 10)}
-                //     </small>
-                //   </Card.Footer>
-                // </Card>
+            <Row>
+              {allParties.slice(0, 4).map((party) => (
+                <Col>
+                  <PartyCard party={party} key={party.id} />
+                </Col>
               ))}
-            </CardGroup>
+            </Row>
           </Col>
-        </Row>
-      ) : null}
+        ) : null}
+      </Row>
     </Container>
   );
 }

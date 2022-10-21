@@ -65,7 +65,10 @@ function PartyCard({ party }) {
   };
 
   return (
-    <StyledPartyCard onClick={() => handleCardClick(party)}>
+    <StyledPartyCard
+      style={{ marginBottom: '2rem' }}
+      onClick={() => handleCardClick(party)}
+    >
       <Card.Img variant="top" src={thumbnail} />
       <Card.Body>
         <Card.Title>{stringAbbreviator(name, 'title')}</Card.Title>
