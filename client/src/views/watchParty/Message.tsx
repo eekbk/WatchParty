@@ -5,9 +5,13 @@ function Message({ message, user, socket }) {
     <Container
       style={{
         wordWrap: 'break-word',
-        maxWidth: '20vw',
+        maxWidth: '80%',
+        width: 'fit-content',
         marginTop: '5px',
         marginBottom: '5px',
+        padding: '8px',
+        margin: '0',
+        textAlign: 'left',
       }}
     >
       {message.user.user_name}
@@ -19,9 +23,11 @@ function Message({ message, user, socket }) {
               ? '#6929a9'
               : '#8e298e'
             : '#6929a9',
-          maxWidth: '10vw',
+          maxWidth: '65%',
           borderRadius: '10px',
+          width: 'fit-content',
           display: 'inline-block',
+          padding: '4px',
         }}
       >
         {message.message}
