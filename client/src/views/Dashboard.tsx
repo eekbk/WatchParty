@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 // import Button from 'react-bootstrap/Button';
 // import Card from 'react-bootstrap/Card';
 // import CardGroup from 'react-bootstrap/CardGroup';
-import PartyCard from '../cards/PartyCard';
+import DashboardPartyCard from '../cards/DashboardPartyCard';
 // import { useNavigate } from 'react-router-dom';
 // import ListGroup from 'react-bootstrap/ListGroup';
 import { UserContext } from '../context';
@@ -23,12 +23,20 @@ function Dashboard() {
       axios
         .get('/api/party')
         .then((data: any) => {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
           console.log(data.data, 'allParties...');
           setAllParties(
-            data.data.sort(
-              (a, b) =>
-                Number(new Date(a.date_time)) - Number(new Date(b.date_time))
-            )
+            data.data
+              .sort(
+                (a, b) =>
+                  Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+              )
+              .filter(
+                // to get only the today and upcoming parties
+                // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+                (a) => Number(new Date(a.date_time)) >= Number(today)
+              )
           );
         })
         .catch((err) => {
@@ -42,8 +50,9 @@ function Dashboard() {
       axios
         .get('/api/party')
         .then((data: any) => {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
           console.log(data.data, 'parties...');
-
           setParties(
             data.data
               .filter((pt) =>
@@ -56,6 +65,11 @@ function Dashboard() {
               .sort(
                 (a, b) =>
                   Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+              )
+              .filter(
+                // to get only the today and upcoming parties
+                // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+                (a) => Number(new Date(a.date_time)) >= Number(today)
               )
           );
         })
@@ -93,20 +107,10 @@ function Dashboard() {
               >
                 <Col>My Upcoming Parties</Col>
               </Row>
-              <Row
-                style={{
-                  marginBottom: '4rem',
-                  marginTop: '4rem',
-                  padding: '10px',
-                  // marginLeft: '10px',
-                  // marginRight: '10px',
-                  // marginTop: '10px',
-                  // marginBottom: '10px',
-                }}
-              >
+              <Row >
                 {parties.slice(0, 4).map((party) => (
                   <Col>
-                    <PartyCard party={party} key={party.id} />
+                    <DashboardPartyCard party={party} key={party.id} />
                   </Col>
                 ))}
               </Row>
@@ -126,7 +130,7 @@ function Dashboard() {
             <Row>
               {allParties.slice(0, 4).map((party) => (
                 <Col>
-                  <PartyCard party={party} key={party.id} />
+                  <DashboardPartyCard party={party} key={party.id} />
                 </Col>
               ))}
             </Row>

@@ -88,6 +88,12 @@ export const StyledPartyCard = styled(Card)`
   padding: 0 auto;
   cursor: pointer;
 `;
+export const StyledDashPartyCard = styled(Card)`
+  height: 23rem;
+  width: 18rem;
+  padding: 0 auto;
+  cursor: pointer;
+`;
 
 export const StyledUserCard = styled(Card)`
   width: 18rem;
