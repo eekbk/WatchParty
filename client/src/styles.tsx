@@ -4,23 +4,14 @@ import { Button, Form, Container, Card } from 'react-bootstrap';
 // const { Title, Body, Img, Text } = Card;
 const { Group } = Form;
 
-/*
-since this is wrapping the whole body, we can use it as the basis
-for relative sizes ie fonts
-*/
-// export const StyledBackgroundContainer = styled(Container)`
-//   background-color: #8a25e2;
-//   height: fit-content;
-//   min-height: 100vh;
-//   flex-flow: flow wrap;
-//   box-sizing: border-box;
-// `;
-// export const StyledBackgroundContainer = styled(Container)`
-//   background-color: #8a25e2;
-//   height: fit-content;
-//   min-height: 100vh;
-//   flex-flow: flow wrap;
-// `;
+export const StyledBackgroundContainer = styled(Container)`
+  background: radial-gradient(ellipse at center, #320e3b, black);
+  height: fit-content;
+  min-height: 100vh;
+  flex-flow: flow wrap;
+  box-sizing: border-box;
+  color: white;
+`;
 
 export const MainContent = styled(Container)`
   position: relative;
@@ -37,34 +28,40 @@ export const Header = styled.header`
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #8a25e2;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.31);
   z-index: 2;
   margin: 0px;
-  box-shadow: 0.8px 0.8px 1.6px rgba(0, 0, 0, 0.02),
-    2px 2px 3.8px rgba(0, 0, 0, 0.028), 3.8px 3.8px 7.1px rgba(0, 0, 0, 0.035),
-    6.7px 6.7px 12.7px rgba(0, 0, 0, 0.042),
-    12.5px 12.5px 23.8px rgba(0, 0, 0, 0.05), 30px 30px 57px rgba(0, 0, 0, 0.07);
-  align-items: center;
   justify-content: center;
 `;
 
 export const Footer = styled.footer`
   position: fixed;
+  color: white;
   bottom: 0;
   height: 35px;
   width: 100%;
   /* min-width: 100vh; */
   z-index: 3;
-  background-color: #8a25e2;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.31);
   margin: 0;
   padding: 0;
   display: flex;
   /* flex-direction: row; */
   align-items: center;
-  box-shadow: 0.8px 0.8px 1.6px rgba(0, 0, 0, 0.02),
+  /* box-shadow: 0.8px 0.8px 1.6px rgba(0, 0, 0, 0.02),
     2px 2px 3.8px rgba(0, 0, 0, 0.028), 3.8px 3.8px 7.1px rgba(0, 0, 0, 0.035),
     6.7px 6.7px 12.7px rgba(0, 0, 0, 0.042),
-    12.5px 12.5px 23.8px rgba(0, 0, 0, 0.05), 30px 30px 57px rgba(0, 0, 0, 0.07);
+    12.5px 12.5px 23.8px rgba(0, 0, 0, 0.05), 30px 30px 57px rgba(0, 0, 0, 0.07); */
 `;
 
 // offcanvas responsive for menus that could be cluttered on mobile?
@@ -156,13 +153,6 @@ export const StyledScrollableGroup = styled(Group)`
       border-radius: 10px;
     }
   }
-`;
-
-export const StyledBackgroundContainer = styled(Container)`
-  background: radial-gradient(ellipse at center, #320e3b, black);
-  height: fit-content;
-  min-height: 100vh;
-  flex-flow: flow wrap;
 `;
 
 export const LButton = styled(Button)`
