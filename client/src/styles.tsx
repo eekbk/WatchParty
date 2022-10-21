@@ -8,12 +8,12 @@ const { Group } = Form;
 since this is wrapping the whole body, we can use it as the basis
 for relative sizes ie fonts
 */
-export const StyledBackgroundContainer = styled(Container)`
-  background-color: #8a25e2;
-  height: fit-content;
-  min-height: 100vh;
-  flex-flow: flow wrap;
-`;
+// export const StyledBackgroundContainer = styled(Container)`
+//   background-color: #8a25e2;
+//   height: fit-content;
+//   min-height: 100vh;
+//   flex-flow: flow wrap;
+// `;
 
 export const MainContent = styled(Container)`
   position: relative;
@@ -146,6 +146,13 @@ export const StyledScrollableGroup = styled(Group)`
       border-radius: 10px;
     }
   }
+`;
+
+export const StyledBackgroundContainer = styled(Container)`
+  background: radial-gradient(ellipse at center, #320e3b, black);
+  height: fit-content;
+  min-height: 100vh;
+  flex-flow: flow wrap;
 `;
 
 export const LButton = styled(Button)`

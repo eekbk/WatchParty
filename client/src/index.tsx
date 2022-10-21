@@ -1,6 +1,6 @@
 // File for root element
 import 'regenerator-runtime/runtime';
-import React /* useContext */ from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';

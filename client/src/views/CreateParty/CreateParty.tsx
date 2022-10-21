@@ -1,20 +1,29 @@
-import {
-  Container,
-  Row,
-  Col,
-  Accordion,
-  CloseButton,
-  Alert,
-} from 'react-bootstrap';
-import { Typeahead, Token } from 'react-bootstrap-typeahead';
-import { useState, useRef, useContext } from 'react';
 import axios from 'axios';
-import { StyledForm, StyledButton, StyledVideoCard } from '../../styles';
-import { StyledAccordion } from './styles';
+import { useState, useRef, useContext } from 'react';
 import { UserContext } from '../../context';
-
-const { Label, Text, Control, Group, Check } = StyledForm;
-const { Item, Header, Body } = Accordion;
+import {
+  StyledAccordion,
+  StyledAccordionBody,
+  StyledAccordionHeader,
+  StyledAccordionItem,
+  StyledAlert,
+  StyledCloseButton,
+  StyledCol,
+  StyledRow,
+  StyledToken,
+  StyledTypeahead,
+  StyledForm,
+  StyledButton,
+  StyledVideoCard,
+  StyledContainer,
+  StyledImageContainer,
+  StyledFormCheck,
+  StyledFormGroup,
+  StyledFormControl,
+  StyledFormText,
+  StyledFormLabel,
+  StyledFormTextarea,
+} from './styles';
 
 export function CreateParty() {
   const { user, setUser } = useContext(UserContext);
@@ -143,28 +152,30 @@ export function CreateParty() {
   };
 
   return user && !created ? (
-    <Container fluid="md">
-      <Row>
-        <Col fluid="md">
-          <StyledForm>
-            <Group>
-              <Label>Room Name</Label>
-              <Control
+    <StyledContainer fluid="lg">
+      <StyledRow xs={1} sm={1} md={2} xl={4}>
+        <StyledCol sm={10}>
+          <StyledForm style={{ marginBottom: '10px' }}>
+            <StyledFormGroup>
+              <StyledFormLabel>Room Name</StyledFormLabel>
+              <StyledFormControl
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter Room Name Here"
               />
-            </Group>
-            <Group>
-              <Label>Description</Label>
-              <Control
+            </StyledFormGroup>
+            <StyledFormGroup>
+              <StyledFormLabel>Description</StyledFormLabel>
+              <br />
+              <StyledFormTextarea
                 onChange={(e) => setDescription(e.target.value)}
                 as="textarea"
                 placeholder="Describe Room Here"
               />
-            </Group>
-            <Group>
-              <Label>Start Date</Label>
-              <Control
+            </StyledFormGroup>
+            <StyledFormGroup>
+              <StyledFormLabel>Start Date</StyledFormLabel>
+              <br />
+              <StyledFormControl
                 as="input"
                 value={date.toISOString().slice(0, 10)}
                 min={new Date().toISOString().slice(0, 10)}
@@ -174,8 +185,8 @@ export function CreateParty() {
                 type="date"
                 onChange={(e) => setDate(new Date(e.target.value))}
               />
-            </Group>
-            <Group>
+            </StyledFormGroup>
+            <StyledFormGroup>
               <StyledButton
                 disabled={!playlist.length || !name}
                 onClick={handleCreate}
@@ -183,31 +194,33 @@ export function CreateParty() {
               >
                 Create
               </StyledButton>
-            </Group>
+            </StyledFormGroup>
           </StyledForm>
-        </Col>
-        <Col fluid="md">
+        </StyledCol>
+        <StyledCol sm={10}>
           <StyledForm>
-            <Group>
-              <Check
+            <StyledFormGroup>
+              <StyledFormCheck
                 type="checkbox"
                 label="Archive on End"
                 onChange={(e) => setArchive(e.target.checked)}
               />
-              <Check
+              <StyledFormCheck
                 type="checkbox"
                 label="Save Videos as New Playlist"
                 onChange={(e) => setSavePlaylist(e.target.checked)}
               />
-              <Check
+              <StyledFormCheck
                 type="checkbox"
                 label="Invite Only"
                 onChange={(e) => setPrivateR(e.target.checked)}
               />
-            </Group>
-            <Group hidden={!privateR}>
-              <Label>Invite people to your watch party</Label>
-              <Typeahead
+            </StyledFormGroup>
+            <StyledFormGroup hidden={!privateR}>
+              <StyledFormLabel>
+                Invite people to your watch party
+              </StyledFormLabel>
+              <StyledTypeahead
                 labelKey={(option: any) => option.username}
                 multiple
                 id="keep-menu-open"
@@ -221,15 +234,15 @@ export function CreateParty() {
                 ref={typeaheadRef}
                 selected={invited}
                 renderToken={(option: any, { onRemove }, index) => (
-                  <Token key={index} onRemove={onRemove} option={option}>
+                  <StyledToken key={index} onRemove={onRemove} option={option}>
                     {`@${option.username}`}
-                  </Token>
+                  </StyledToken>
                 )}
               />
-            </Group>
-            <Group>
-              <Label>Assign Admins</Label>
-              <Typeahead
+            </StyledFormGroup>
+            <StyledFormGroup>
+              <StyledFormLabel>Assign Admins</StyledFormLabel>
+              <StyledTypeahead
                 labelKey={(option: any) => option.username}
                 multiple
                 id="keep-menu-open"
@@ -242,83 +255,90 @@ export function CreateParty() {
                 ref={typeaheadRef}
                 selected={admins}
                 renderToken={(option: any, { onRemove }, index) => (
-                  <Token key={index} onRemove={onRemove} option={option}>
+                  <StyledToken key={index} onRemove={onRemove} option={option}>
                     {`@${option.username}`}
-                  </Token>
+                  </StyledToken>
                 )}
               />
-            </Group>
+            </StyledFormGroup>
           </StyledForm>
-        </Col>
-        <Col fluid="md">
+        </StyledCol>
+        <StyledCol sm={10}>
           <StyledForm>
-            <Group>
-              <Label>Youtube Video Url</Label>
-              <Control
+            <StyledFormGroup>
+              <StyledFormLabel>Youtube Video Url</StyledFormLabel>
+              <StyledFormControl
                 placeholder="Paste Url Here"
                 onChange={(e) => setVideo(e.target.value)}
                 value={video}
               />
-              <Text>Choose a YouTube video to add</Text>
+              <StyledFormText>Choose a YouTube video to add</StyledFormText>
               <br />
               <StyledButton onClick={handleVideoAddition}>Add</StyledButton>
-            </Group>
-            <Group style={{ marginTop: '20px' }}>
-              <Label>Public Youtube Playlist Url</Label>
-              <Control
+            </StyledFormGroup>
+            <StyledFormGroup style={{ marginTop: '20px' }}>
+              <StyledFormLabel>Public Youtube Playlist Url</StyledFormLabel>
+              <StyledFormControl
                 placeholder="Paste Url Here"
                 onChange={(e) => setYoutubePlaylist(e.target.value)}
                 value={youtubePlaylist}
               />
-              <Text>Choose a YouTube playlist to import videos from</Text>
+              <StyledFormText>
+                Choose a YouTube playlist to import videos from
+              </StyledFormText>
               <br />
               <StyledButton onClick={handlePlaylistAddition}>Add</StyledButton>
-            </Group>
+            </StyledFormGroup>
           </StyledForm>
           <StyledForm style={{ marginTop: '10px' }}>
-            <Group style={{ maxHeight: '35vh' }}>
-              <Label>Choose Saved Playlist</Label>
+            <StyledFormGroup style={{ maxHeight: '35vh' }}>
+              <StyledFormLabel>Choose Saved Playlist</StyledFormLabel>
               <StyledAccordion
                 style={{ maxHeight: '100%', overflowY: 'scroll' }}
               >
                 {user.playlists.map((pl, i) => (
-                  <Item eventKey={String(i)}>
-                    <Header>{pl.name}</Header>
-                    <Body>
-                      <Container as="img" src={pl.thumbnail} alt="" />
+                  <StyledAccordionItem eventKey={String(i)}>
+                    <StyledAccordionHeader>{pl.name}</StyledAccordionHeader>
+                    <StyledAccordionBody>
+                      <StyledImageContainer
+                        as="img"
+                        src={pl.thumbnail}
+                        alt=""
+                      />
                       {pl.description}
-                    </Body>
+                    </StyledAccordionBody>
                     <StyledButton
                       style={{ marginTop: '5px' }}
                       onClick={() => setPlaylist(playlist.concat(pl.videos))}
                     >
                       Import
                     </StyledButton>
-                  </Item>
+                  </StyledAccordionItem>
                 ))}
               </StyledAccordion>
-            </Group>
+            </StyledFormGroup>
           </StyledForm>
-        </Col>
-        <Col fluid="md">
+        </StyledCol>
+        <StyledCol sm={10}>
           <StyledForm>
-            <Group>
-              <Label>Playlist Title</Label>
-              <Control
+            <StyledFormGroup>
+              <StyledFormLabel>Playlist Title</StyledFormLabel>
+              <StyledFormControl
                 onChange={(e) => setPlaylistName(e.target.value)}
                 placeholder="Enter Playlist Title"
                 disabled={!savePlaylist}
               />
-            </Group>
-            <Group>
-              <Label>Description</Label>
-              <Control
+            </StyledFormGroup>
+            <StyledFormGroup>
+              <StyledFormLabel>Description</StyledFormLabel>
+              <br />
+              <StyledFormTextarea
                 onChange={(e) => setPlaylistDescription(e.target.value)}
                 as="textarea"
                 placeholder="Describe Playlist"
                 disabled={!savePlaylist}
               />
-            </Group>
+            </StyledFormGroup>
           </StyledForm>
           <StyledForm
             style={{
@@ -327,11 +347,11 @@ export function CreateParty() {
               marginTop: '10px',
             }}
           >
-            <Group>
-              <Label>Video List</Label>
+            <StyledFormGroup>
+              <StyledFormLabel>Video List</StyledFormLabel>
               {playlist.map((vd, i) => (
                 <StyledVideoCard>
-                  <CloseButton onClick={() => handleVideoRemoval(i)} />
+                  <StyledCloseButton onClick={() => handleVideoRemoval(i)} />
                   <StyledVideoCard.Title>{vd.title}</StyledVideoCard.Title>
                   <StyledVideoCard.Body>
                     <StyledVideoCard.Img src={vd.thumbnail} />
@@ -341,18 +361,18 @@ export function CreateParty() {
                   </StyledVideoCard.Body>
                 </StyledVideoCard>
               ))}
-            </Group>
+            </StyledFormGroup>
           </StyledForm>
-        </Col>
-      </Row>
-    </Container>
+        </StyledCol>
+      </StyledRow>
+    </StyledContainer>
   ) : created ? (
-    <Alert key="success" variant="success">
+    <StyledAlert key="success" variant="success">
       Watch Party Created!
-    </Alert>
+    </StyledAlert>
   ) : (
-    <Alert key="warning" variant="warning">
+    <StyledAlert key="warning" variant="warning">
       Please log in to create Watch Parties
-    </Alert>
+    </StyledAlert>
   );
 }
