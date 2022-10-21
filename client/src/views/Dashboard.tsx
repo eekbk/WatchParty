@@ -15,6 +15,7 @@ function Dashboard() {
   const { user } = useContext(UserContext);
   const [parties, setParties] = useState([]);
   const [allParties, setAllParties] = useState([]);
+  // const [userParties, setUserParties] = useState([]);
   // const navigate = useNavigate();
 
   // all parties
@@ -26,6 +27,7 @@ function Dashboard() {
           const today = new Date();
           today.setHours(0, 0, 0, 0);
           console.log(data.data, 'allParties...');
+          console.log(user, 'user....');
           setAllParties(
             data.data
               .sort(
@@ -85,15 +87,6 @@ function Dashboard() {
   //   });
   // };
 
-  // const divStyle = {
-  //   marginLeft: '10px',
-  //   marginRight: '10px',
-  //   marginTop: '10px',
-  //   marginBottom: '10px',
-  //   padding: '10px',
-  //   height: '400px',
-  // };
-
   return (
     <Container>
       <Row />
@@ -102,24 +95,39 @@ function Dashboard() {
           {parties && parties.length ? (
             <Col>
               <Row
-                style={{ fontSize: '24px', padding: '10px' }}
+                style={{ fontSize: '24px', padding: '10px', color: 'white' }}
                 className="text-center"
               >
                 <Col>My Upcoming Parties</Col>
               </Row>
-              <Row >
-                {parties.slice(0, 4).map((party) => (
-                  <Col>
-                    <DashboardPartyCard party={party} key={party.id} />
-                  </Col>
-                ))}
+              <Row style={{ justifyContent: 'center' }}>
+                {user.parties
+                  .slice(0, 4)
+                  .sort(
+                    (a, b) =>
+                      Number(new Date(a.date_time)) -
+                      Number(new Date(b.date_time))
+                  )
+                  .filter(
+                    // to get only the today and upcoming parties
+                    (a) => {
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      return Number(new Date(a.date_time)) >= Number(today);
+                    }
+                  )
+                  .map((party) => (
+                    <Col style={{ borderRadius: '1px' }}>
+                      <DashboardPartyCard party={party} key={party.id} />
+                    </Col>
+                  ))}
               </Row>
             </Col>
           ) : null}
         </Row>
       ) : null}
       <Row
-        style={{ fontSize: '24px', padding: '10px' }}
+        style={{ fontSize: '24px', padding: '10px', color: 'white' }}
         className="text-center"
       >
         <Col> Top parties</Col>

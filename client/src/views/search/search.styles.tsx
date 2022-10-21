@@ -93,6 +93,21 @@ export const StyledDashPartyCard = styled(Card)`
   width: 18rem;
   padding: 0 auto;
   cursor: pointer;
+  border-radius: 2px;
+  left: 2px;
+  /* backdrop-filter: blur(13px) saturate(89%);
+  -webkit-backdrop-filter: blur(13px) saturate(89%);
+  background-color: rgba(164, 73, 73, 0.23);
+  //border-radius: 12px;
+  border-radius: 12rem;
+  border: 1px solid rgba(209, 213, 219, 0.3); */
+  //background: rgba(215, 36, 36, 0);
+  //border-radius: 16px;
+  /* border-radius: 16rm;
+  box-shadow: 0 4px 30px rgba(147, 67, 67, 0.1);
+  backdrop-filter: blur(4.9px);
+  -webkit-backdrop-filter: blur(4.9px);
+  border: 1px solid rgba(105, 41, 41, 0.66); */
 `;
 
 export const StyledUserCard = styled(Card)`
