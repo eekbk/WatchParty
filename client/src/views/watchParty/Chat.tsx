@@ -36,11 +36,11 @@ function Chat({
   };
 
   const handleResize = () => {
-    setVHight(vH);
+    setVHight(vH.current ? vH.current.clientHeight : '100%');
   };
   // for style
   useEffect(() => {
-    vH.onresize = handleResize;
+    window.addEventListener('resize', handleResize);
   }, [vHeight]);
 
   // handle updates
