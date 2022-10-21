@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
-import { Container } from 'react-bootstrap';
-import { StyledScrollableGroup } from '../../styles';
+// import { Container } from 'react-bootstrap';
+import { StyledScrollableGroup, DmUser } from '../../styles';
 
 function DmBar({ user, socket, changeDm }) {
   const scrolly = useRef(null);
@@ -29,11 +29,15 @@ function DmBar({ user, socket, changeDm }) {
     >
       {dms.parties
         ? dms.parties.map((party, user) => (
-          <Container id={party.party_id} onClick={changeDm}>
-            {dms.userInfo[user].user_name} 
-            {' '}
-            {party.party_id[0]}
-          </Container>
+          <DmUser
+            id={party.party_id}
+            onClick={changeDm}
+            style={{
+                padding: '5px',
+              }}
+          >
+            {dms.userInfo[user].user_name}
+          </DmUser>
           ))
         : null}
     </StyledScrollableGroup>

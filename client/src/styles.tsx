@@ -1,6 +1,12 @@
 // File for styling components
 import styled from 'styled-components';
-import { Button, Form, Container, Card } from 'react-bootstrap';
+import { Button, Form, Container, Card, Row } from 'react-bootstrap';
+import {
+  BsPlayCircleFill,
+  BsPauseCircleFill,
+  BsFillArrowRightCircleFill,
+  BsFillArrowLeftCircleFill,
+} from 'react-icons/bs';
 // const { Title, Body, Img, Text } = Card;
 const { Group } = Form;
 
@@ -8,12 +14,12 @@ const { Group } = Form;
 since this is wrapping the whole body, we can use it as the basis
 for relative sizes ie fonts
 */
-export const StyledBackgroundContainer = styled(Container)`
-  background-color: #8a25e2;
-  height: fit-content;
-  min-height: 100vh;
-  flex-flow: flow wrap;
-`;
+// export const StyledBackgroundContainer = styled(Container)`
+//   background-color: #8a25e2;
+//   height: fit-content;
+//   min-height: 100vh;
+//   flex-flow: flow wrap;
+// `;
 
 export const MainContent = styled(Container)`
   position: relative;
@@ -63,6 +69,74 @@ export const Footer = styled(Container)`
 export const StyledVideoCard = styled(Card)`
   background-color: #375915;
   color: #ff30db;
+`;
+export const StRow = styled(Row)`
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.8rem;
+  opacity: 0;
+  width: 100%;
+  &:hover {
+    opacity: 1;
+  }
+`;
+export const PStRow = styled(Row)`
+  position: absolute;
+  max-height: 85%;
+  top: 0.5rem;
+  left: 0.8rem;
+  opacity: 0;
+  width: 100%;
+  &:hover {
+    opacity: 1;
+  }
+`;
+export const PlayButton = styled(BsPlayCircleFill)`
+  opacity: inherit;
+  color: #d8d8d8;
+`;
+export const PauseButton = styled(BsPauseCircleFill)`
+  opacity: inherit;
+  color: #d8d8d8;
+`;
+export const NextButton = styled(BsFillArrowRightCircleFill)`
+  opacity: inherit;
+  color: #d8d8d8;
+`;
+export const BackButton = styled(BsFillArrowLeftCircleFill)`
+  opacity: inherit;
+  color: #d8d8d8;
+`;
+export const VolSlider = styled(Form.Range)`
+  &::-webkit-slider-thumb {
+    background: #383838 !important;
+  }
+`;
+
+export const DmUser = styled(Button)`
+  color: #ffff;
+  background-color: transparent;
+  border-color: transparent;
+  &:hover {
+    background-color: transparent;
+    border-color: transparent;
+  }
+  &:active:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+  }
+  &:active {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+  }
+  &:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    border-color: #8a25e2;
+  }
 `;
 
 export const StyledButton = styled(Button)`
@@ -148,12 +222,19 @@ export const StyledScrollableGroup = styled(Group)`
   }
 `;
 
+export const StyledBackgroundContainer = styled(Container)`
+  background: radial-gradient(ellipse at center, #320e3b, black);
+  height: fit-content;
+  min-height: 100vh;
+  flex-flow: flow wrap;
+`;
+
 export const LButton = styled(Button)`
   color: white;
-  background-color: #ff30db;
-  border-color: #8a25e2;
+  background-color: transparent;
+  border-color: transparent;
   &:hover {
-    background-color: #8a25e2;
+    background-color: transparent;
     border-color: #8a25e2;
   }
   &:focus {

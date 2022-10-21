@@ -6,7 +6,7 @@ import PartyCard from '../../cards/PartyCard';
 import { SearchContext } from '../../contexts/searchContext';
 import { UserContext } from '../../context';
 
-function Search() {
+function Search({ socket }) {
   const {
     usersMatch,
     partiesMatch,

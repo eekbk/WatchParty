@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Container, Form } from 'react-bootstrap';
+import { Container, Form, InputGroup } from 'react-bootstrap';
 import { StyledButton, StyledScrollableGroup } from '../../styles';
 
 const { default: Message } = require('./Message.tsx');
@@ -11,8 +11,12 @@ function Chat({
   setMessages,
   socket,
   isArchived,
+  vH,
 }): JSX.Element {
   // State vars
+  const [vHeight, setVHight] = useState(
+    vH.current ? vH.current.clientHeight : '100%'
+  );
   const [chat, setChat] = useState('');
   const scrolly = useRef(null);
   // functions
@@ -31,8 +35,17 @@ function Chat({
     e.preventDefault();
   };
 
+  const handleResize = () => {
+    setVHight(vH.current ? vH.current.clientHeight : '100%');
+  };
+  // for style
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+  }, [vHeight]);
+
   // handle updates
   useEffect(() => {
+    console.log(vH.current ? vH.current.clientHeight : '100%', vH.current);
     scrolly.current.scrollTop = scrolly.current.scrollHeight;
     socket.on('chat', (message) => {
       setMessages((messages) => [...messages, message]);
@@ -46,31 +59,33 @@ function Chat({
       style={{
         textAlign: 'center',
         color: 'white',
-        backgroundColor: '#332448',
-        borderRadius: '5px',
+        backgroundColor: 'transparent',
+        borderRadius: '0px 5px 5px 0px',
+        margin: '0px',
+        height: vH.current ? vH.current.clientHeight : '100%',
+        maxHeight: vH.current ? vH.current.clientHeight : '100%',
       }}
     >
-      CHAT!!
-      <Form>
+      <Form style={{ height: '100%' }}>
         <StyledScrollableGroup
           ref={scrolly}
-          style={{ overflowY: 'scroll', minHeight: '70vh', maxHeight: '70vh' }}
+          style={{ overflowY: 'scroll', height: '100%' }}
         >
           {messages.map((message) => (
             <Message message={message} user={user} socket={socket} />
           ))}
         </StyledScrollableGroup>
-        <Form.Group>
+        <InputGroup style={{ marginTop: '5px' }}>
           <Form.Control
-            disabled={isArchived}
             value={chat}
             onChange={(event) => setChat(event.target.value)}
             placeholder="type here!"
+            disabled={isArchived}
           />
-          <StyledButton type="submit" disabled={isArchived} onClick={submit}>
+          <StyledButton type="submit" onClick={submit} disabled={isArchived}>
             Send!
           </StyledButton>
-        </Form.Group>
+        </InputGroup>
       </Form>
     </Container>
   );

@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 // import { useLocation } from 'react-router-dom';
-import { Container, Form } from 'react-bootstrap';
+import { Container, Form, InputGroup } from 'react-bootstrap';
 import { StyledButton, StyledScrollableGroup } from '../../styles';
 
 const { default: DmMessage } = require('./DmMessage.tsx');
+// const { default: DmOutGoingMessage } = require('./DmOutGoingMessage.tsx');
 
 function DmChat({ socket, room, user, messages, setMessages }) {
   // other vars
@@ -31,6 +32,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
   };
 
   useEffect(() => {
+    scrolly.current.scrollTop = scrolly.current.scrollHeight;
     // emitters
     socket.emit('getMessages', room);
     // listeners
@@ -49,13 +51,17 @@ function DmChat({ socket, room, user, messages, setMessages }) {
       socket.off('getMessages');
     };
   }, []);
+  useEffect(() => {
+    scrolly.current.scrollTop = scrolly.current.scrollHeight;
+  }, [messages]);
   return (
     <Container
       style={{
         textAlign: 'center',
         color: 'white',
         backgroundColor: '#332448',
-        borderRadius: '5px',
+        borderRadius: '0px 5px 5px 0px',
+        margin: '0px',
       }}
     >
       DM Be nice!!
@@ -68,7 +74,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
             <DmMessage message={message} user={user} />
           ))}
         </StyledScrollableGroup>
-        <Form.Group>
+        <InputGroup>
           <Form.Control
             value={chat}
             onChange={(event) => setChat(event.target.value)}
@@ -77,7 +83,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
           <StyledButton type="submit" onClick={submit}>
             Send!
           </StyledButton>
-        </Form.Group>
+        </InputGroup>
       </Form>
     </Container>
   );
