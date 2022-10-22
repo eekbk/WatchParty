@@ -27,6 +27,9 @@ search.get('/:q', async (req: Request, res: Response) => {
           },
         ],
       },
+      include: {
+        parties: true,
+      },
     });
     // query the db for users matching q
     const users = await prisma.user.findMany({
@@ -54,6 +57,14 @@ search.get('/:q', async (req: Request, res: Response) => {
             },
           },
         ],
+        AND: {
+          date_time: {
+            gte: new Date(),
+          },
+        },
+      },
+      orderBy: {
+        date_time: 'asc',
       },
       include: {
         videos: true,

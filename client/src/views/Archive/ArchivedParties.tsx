@@ -18,7 +18,7 @@ function ArchiveParties({ parties }) {
               <Card.Img variant="top" src={party.thumbnail} />
               <Card.Body>
                 <Card.Title>{party.name}</Card.Title>
-                <Card.Text>{party.description}</Card.Text>
+                <Card.Text>{party.description.slice(0, 100)}</Card.Text>
               </Card.Body>
             </Card>
           </Col>
