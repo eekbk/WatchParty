@@ -15,7 +15,7 @@ let secondary;
 let tertiary;
 let accent;
 let text;
-const disabledForm = '#e9ecef';
+// const disabledForm = '#e9ecef';
 
 // Preferred
 primary = '#320E3B';

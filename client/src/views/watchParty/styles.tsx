@@ -1,20 +1,20 @@
 import styled from 'styled-components';
-import { ListGroup, Card } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 
 const { Item } = ListGroup;
 
-let primary;
+// let primary;
 let secondary;
-let tertiary;
-let accent;
+// let tertiary;
+// let accent;
 let text;
-const disabledForm = '#e9ecef';
+// const disabledForm = '#e9ecef';
 
 // Preferred
-primary = '#320E3B';
+// primary = '#320E3B';
 secondary = '#A663CC';
-tertiary = '#48AcF0';
-accent = '#15616D';
+// tertiary = '#48AcF0';
+// accent = '#15616D';
 text = '#E5F4E3';
 
 export const StyledListGroup = styled(ListGroup)`
