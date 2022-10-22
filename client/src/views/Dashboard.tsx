@@ -51,6 +51,7 @@ function Dashboard() {
         .then((data: any) => {
           const today = new Date();
           today.setHours(0, 0, 0, 0);
+          console.log(user, 'user...');
           setParties(
             data.data
               .filter((pt) =>
