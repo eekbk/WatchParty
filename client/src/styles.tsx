@@ -182,3 +182,12 @@ export const LButton = styled(Button)`
     background-color: #8a25e2;
   }
 `;
+
+/* https://css.glass
+background: rgba(94, 48, 121, 0.25);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(94, 48, 121, 0.3);
+*/
