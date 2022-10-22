@@ -27,6 +27,7 @@ function DmBar({ user, socket, changeDm }) {
       {dms.parties
         ? dms.parties.map((party, user) => (
           <DmUserContainer id={party.party_id} onClick={changeDm}>
+            {dms.userInfo[user].user_name}
             <DmUser
               id={party.party_id}
               roundedCircle
@@ -35,7 +36,6 @@ function DmBar({ user, socket, changeDm }) {
                   padding: '5px',
                 }}
             />
-            {dms.userInfo[user].user_name}
           </DmUserContainer>
           ))
         : null}
