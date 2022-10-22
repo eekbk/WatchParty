@@ -2,6 +2,7 @@ import axios from 'axios';
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
 import { Container, ProgressBar, Col } from 'react-bootstrap';
+import { Participants } from './Participants';
 import {
   LButton,
   VolSlider,
@@ -209,6 +210,16 @@ function Video({
             status={status}
           />
         </Col>
+        <Col md={4} hidden={!participants}>
+          {participants ? (
+            <Participants
+              room={room}
+              status={status}
+              participants={participants || []}
+              setParticipants={setParticipants}
+            />
+          ) : null}
+        </Col>
       </PStRow>
       <StRow>
         <Col
@@ -232,7 +243,7 @@ function Video({
               visibility: isArchived
                 ? 'visible'
                 : status
-                ? status.role !== 'CREATOR'
+                ? status.role === 'CREATOR'
                   ? 'visible'
                   : 'hidden'
                 : 'hidden',
@@ -251,7 +262,7 @@ function Video({
               visibility: isArchived
                 ? 'visible'
                 : status
-                ? status.role !== 'CREATOR'
+                ? status.role === 'CREATOR'
                   ? 'visible'
                   : 'hidden'
                 : 'hidden',
@@ -270,7 +281,7 @@ function Video({
               visibility: isArchived
                 ? 'visible'
                 : status
-                ? status.role !== 'CREATOR'
+                ? status.role === 'CREATOR'
                   ? 'visible'
                   : 'hidden'
                 : 'hidden',
@@ -289,7 +300,7 @@ function Video({
               visibility: isArchived
                 ? 'visible'
                 : status
-                ? status.role !== 'CREATOR'
+                ? status.role === 'CREATOR'
                   ? 'visible'
                   : 'hidden'
                 : 'hidden',

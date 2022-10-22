@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Container, Form, InputGroup } from 'react-bootstrap';
-import { StyledButton, StyledScrollableGroup } from '../../styles';
+import { StyledButton, ThinScrollBar } from '../../styles';
 
 const { default: Message } = require('./Message.tsx');
 
@@ -27,7 +27,7 @@ function Chat({
       socket.emit('chat', {
         room,
         message: chat,
-        user: user.user.id,
+        user: user.id,
         type: 'COMMENT',
       });
       setChat('');
@@ -67,14 +67,14 @@ function Chat({
       }}
     >
       <Form style={{ height: '100%' }}>
-        <StyledScrollableGroup
+        <ThinScrollBar
           ref={scrolly}
           style={{ overflowY: 'scroll', height: '100%' }}
         >
           {messages.map((message) => (
             <Message message={message} user={user} socket={socket} />
           ))}
-        </StyledScrollableGroup>
+        </ThinScrollBar>
         <InputGroup style={{ marginTop: '5px' }}>
           <Form.Control
             value={chat}
