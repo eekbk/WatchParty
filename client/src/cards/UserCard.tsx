@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { UserContext } from '../context';
 import FollowButton from '../buttons/FollowButton';
@@ -10,6 +10,8 @@ import {
   StyledCardBody,
   StyledIsFollowing,
   StyledPartyTitle,
+  StyledUserCardFooter,
+  StyledUserCardFooterCol,
 } from '../cards/cards.styles';
 
 // ModCard stands for Modular Card. Hopefully we can reuse it
@@ -68,26 +70,26 @@ function UserCard({ obj }) {
           </StyledCardBody>
         </Col>
       </Row>
-      <Card.Footer>
-        <Row>
-          <Col>
-            <FollowButton
-              otherUserId={obj.id}
-              setFollows={setFollows}
-              follows={follows}
-              isFollowing={isFollowing}
-              setIsFollowing={setIsFollowing}
-            />
-          </Col>
-          <Col>
-            <BlockButton
-              otherUserId={obj.id}
-              isBlocking={isBlocking}
-              setIsBlocking={setIsBlocking}
-            />
-          </Col>
-        </Row>
-      </Card.Footer>
+      {/* <Card.Footer> */}
+      <StyledUserCardFooter>
+        <StyledUserCardFooterCol sm={3}>
+          <FollowButton
+            otherUserId={obj.id}
+            setFollows={setFollows}
+            follows={follows}
+            isFollowing={isFollowing}
+            setIsFollowing={setIsFollowing}
+          />
+        </StyledUserCardFooterCol>
+        <StyledUserCardFooterCol sm={3}>
+          <BlockButton
+            otherUserId={obj.id}
+            isBlocking={isBlocking}
+            setIsBlocking={setIsBlocking}
+          />
+        </StyledUserCardFooterCol>
+      </StyledUserCardFooter>
+      {/* </Card.Footer> */}
     </StyledUserCard>
   );
 }
