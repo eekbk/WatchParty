@@ -72,7 +72,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
             onChange={(event) => setChat(event.target.value)}
             placeholder="type here!"
           />
-          <StyledButton type="submit" onClick={submit}>
+          <StyledButton type="submit" onClick={submit} variant="outline-dark">
             Send!
           </StyledButton>
         </InputGroup>

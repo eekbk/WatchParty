@@ -210,7 +210,7 @@ function Video({
             status={status}
           />
         </Col>
-        <Col md={3} hidden={!participants}>
+        <Col md={4} hidden={!participants}>
           {participants ? (
             <Participants
               room={room}
