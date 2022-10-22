@@ -232,7 +232,7 @@ function Video({
               visibility: isArchived
                 ? 'visible'
                 : status
-                ? status.role !== 'CREATOR'
+                ? status.role === 'CREATOR'
                   ? 'visible'
                   : 'hidden'
                 : 'hidden',
@@ -251,7 +251,7 @@ function Video({
               visibility: isArchived
                 ? 'visible'
                 : status
-                ? status.role !== 'CREATOR'
+                ? status.role === 'CREATOR'
                   ? 'visible'
                   : 'hidden'
                 : 'hidden',
@@ -270,7 +270,7 @@ function Video({
               visibility: isArchived
                 ? 'visible'
                 : status
-                ? status.role !== 'CREATOR'
+                ? status.role === 'CREATOR'
                   ? 'visible'
                   : 'hidden'
                 : 'hidden',
@@ -289,7 +289,7 @@ function Video({
               visibility: isArchived
                 ? 'visible'
                 : status
-                ? status.role !== 'CREATOR'
+                ? status.role === 'CREATOR'
                   ? 'visible'
                   : 'hidden'
                 : 'hidden',

@@ -19,10 +19,8 @@ function App() {
   // special AND very important useEffect
   useEffect(() => {
     if (location.pathname === '/watchParty') {
-      console.log(location.pathname);
       document.body.style.overflowY = 'hidden';
     } else {
-      console.log(location.pathname, ' fail');
       document.body.style.overflowY = 'auto';
     }
   }, [location]);
@@ -119,8 +117,8 @@ function App() {
                   Logout
                 </Nav.Link>
               </Nav>
-              <SearchBar />
             </Navbar.Collapse>
+            <SearchBar />
           </Container>
         </Navbar>
       </Header>

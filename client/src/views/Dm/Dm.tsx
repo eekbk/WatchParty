@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { UserContext } from '../../context';
 
@@ -6,7 +6,7 @@ const { default: DmBar } = require('./DmBar.tsx');
 const { default: DmChat } = require('./DmChat.tsx');
 
 function Dm({ socket, room }) {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [dmRoom, setRoom] = useState(() => room);
   const [messages, setMessages] = useState(() => []);
 
@@ -23,6 +23,10 @@ function Dm({ socket, room }) {
       setMessages(dmMessages);
     });
   };
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   return (
     <Container

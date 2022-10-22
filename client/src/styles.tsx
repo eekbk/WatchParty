@@ -1,6 +1,6 @@
 // File for styling components
 import styled from 'styled-components';
-import { Button, Form, Container, Card, Row } from 'react-bootstrap';
+import { Button, Form, Container, Card, Row, Image } from 'react-bootstrap';
 import {
   BsPlayCircleFill,
   BsPauseCircleFill,
@@ -83,6 +83,16 @@ export const StyledVideoCard = styled(Card)`
   background-color: #375915;
   color: #ff30db;
 `;
+export const ArchiveGlassCard = styled(Card)`
+  color: white;
+  height: 18rem;
+  width: 18rem;
+  backdrop-filter: blur(10px) saturate(50%);
+  -webkit-backdrop-filter: blur(10px) saturate(50%);
+  background-color: rgba(17, 25, 40, 0);
+  border-radius: 12px;
+  border: 1px solid #6a1d7d;
+`;
 export const StRow = styled(Row)`
   position: absolute;
   bottom: 0.5rem;
@@ -102,6 +112,73 @@ export const PStRow = styled(Row)`
   width: 100%;
   &:hover {
     opacity: 1;
+  }
+`;
+export const DmChatBox = styled(Container)`
+  backdrop-filter: blur(25px) saturate(200%);
+  -webkit-backdrop-filter: blur(25px) saturate(200%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border-radius: 0px 8px 8px 0px;
+  text-align: center;
+  color: white;
+  margin: 0px;
+`;
+export const ThinScrollBar = styled(Group)`
+  &::-webkit-scrollbar-thumb {
+    width: 10px;
+    opacity: 0;
+    box-shadow: inset 0px 0px 5px black;
+  }
+  &::-webkit-scrollbar {
+    width: 10px;
+    opacity: 0;
+  }
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background: #7d7d7d;
+      opacity: 1;
+      border-radius: 10px;
+      &:active {
+        border: 1px solid white;
+      }
+    }
+    &::-webkit-scrollbar {
+      background: #3f3f3f;
+      opacity: 1;
+      border-radius: 10px;
+    }
+  }
+`;
+export const DmSideBar = styled(Group)`
+  color: white;
+  backdrop-filter: blur(25px) saturate(200%);
+  -webkit-backdrop-filter: blur(25px) saturate(200%);
+  background-color: rgba(17, 25, 40, 0.75);
+  border-radius: 8px 0px 0px 8px;
+  text-align: center;
+  &::-webkit-scrollbar-thumb {
+    width: 10px;
+    opacity: 0;
+    box-shadow: inset 0px 0px 5px black;
+  }
+  &::-webkit-scrollbar {
+    width: 10px;
+    opacity: 0;
+  }
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      background: #7d7d7d;
+      opacity: 1;
+      border-radius: 10px;
+      &:active {
+        border: 1px solid white;
+      }
+    }
+    &::-webkit-scrollbar {
+      background: #3f3f3f;
+      opacity: 1;
+      border-radius: 10px;
+    }
   }
 `;
 export const PlayButton = styled(BsPlayCircleFill)`
@@ -126,13 +203,43 @@ export const VolSlider = styled(Form.Range)`
   }
 `;
 
-export const DmUser = styled(Button)`
-  color: #ffff;
-  background-color: transparent;
-  border-color: transparent;
+export const DmUser = styled(Image)`
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border: 'solid 2px';
+  border-color: white;
   &:hover {
     background-color: transparent;
     border-color: transparent;
+  }
+  &:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    border-color: #8a25e2;
+  }
+`;
+export const DmUserContainer = styled(Button)`
+  border: solid 1px;
+  background: rgba(94, 48, 121, 0.25);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(94, 48, 121, 0.3);
+  margin-bottom: 4px;
+  &:hover {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    border-color: #8a25e2;
+  }
+  &:focus {
+    outline: none;
+    box-shadow: none;
+    background-color: transparent;
+    border-color: #8a25e2;
   }
   &:active:focus {
     outline: none;
@@ -143,12 +250,6 @@ export const DmUser = styled(Button)`
     outline: none;
     box-shadow: none;
     background-color: transparent;
-  }
-  &:focus {
-    outline: none;
-    box-shadow: none;
-    background-color: transparent;
-    border-color: #8a25e2;
   }
 `;
 
