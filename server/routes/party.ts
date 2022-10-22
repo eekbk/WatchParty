@@ -317,3 +317,20 @@ party.delete('/role', (req: RequestWithUser, res: Response) => {
       res.sendStatus(500);
     });
 });
+
+// attend a party as a normie!
+party.post('/attend', async (req: RequestWithUser, res: Response) => {
+  const { party_id, user_id } = req.body;
+  try {
+    await prisma.user_Party.create({
+      data: {
+        party_id,
+        user_id,
+        role: 'NORMIE',
+      },
+    });
+    res.sendStatus(200);
+  } catch (err) {
+    res.sendStatus(500);
+  }
+});

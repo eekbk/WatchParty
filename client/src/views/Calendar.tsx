@@ -47,7 +47,7 @@ function Calendar() {
           );
         })
         .then(() => {
-          console.log(parties, 'parties...');
+          // console.log(parties, 'parties...');
         })
         .catch((err) => {
           console.error(err);
@@ -60,7 +60,7 @@ function Calendar() {
       axios
         .get('/api/party')
         .then((data: any) => {
-          console.log(allParties, 'allParties....');
+          // console.log(allParties, 'allParties....');
           const today = new Date();
           today.setHours(0, 0, 0, 0);
           setAllParties(
@@ -82,13 +82,11 @@ function Calendar() {
     }
   }, [user, changeText]);
 
-  const handleChange = () => {
-    console.log(changeText);
-    return setChangeText(!changeText);
-  };
-
+  const handleChange = () =>
+    // console.log(changeText);
+    setChangeText(!changeText);
   const handleCardClick = (party) => {
-    console.log(party);
+    // console.log(party);
     navigate('/watchParty', {
       state: { party, videos: party.videos },
     });
@@ -135,10 +133,11 @@ function Calendar() {
                   <td>{party.name}</td>
                   <td>
                     {
-                      party.users.filter((u) => {
-                        console.log('changed text is true');
-                        return u.role === 'CREATOR';
-                      })[0].username
+                      party.users.filter(
+                        (u) =>
+                          // console.log('changed text is true');
+                          u.role === 'CREATOR'
+                      )[0].username
                     }
                   </td>
                 </tr>
@@ -187,10 +186,11 @@ function Calendar() {
                   <td>{party.name}</td>
                   <td>
                     {
-                      party.users.filter((u) => {
-                        console.log('changed text is false');
-                        return u.role === 'CREATOR';
-                      })[0].username
+                      party.users.filter(
+                        (u) =>
+                          // console.log('changed text is false');
+                          u.role === 'CREATOR'
+                      )[0].username
                     }
                   </td>
                 </tr>

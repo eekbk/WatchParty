@@ -20,23 +20,26 @@ function SearchBar() {
 
   // what if we put a useEffect to watch for changes in the searchValue
   const searchRequest = (text) => {
-    const q = text.replaceAll(' ', '&').replaceAll(' and ', '&');
-    axios
-      .get(`/api/search/${q}`)
-      .then(({ data }) => {
-        setVideosMatch(data.videos);
-        setUsersMatch(data.users);
-        setPartiesMatch(data.parties);
-      })
-      .then(() => {
-        navigate('/search');
-      })
-      .then(() => {
-        setIsLoading(true);
-      })
-      .catch((err) => {
-        console.error('The Error from handleSubmit:', err);
-      });
+    // make sure there is text
+    if (text.length) {
+      const q = text.trim().replaceAll(' ', '&').replaceAll(' and ', '&');
+      axios
+        .get(`/api/search/${q}`)
+        .then(({ data }) => {
+          setVideosMatch(data.videos);
+          setUsersMatch(data.users);
+          setPartiesMatch(data.parties);
+        })
+        .then(() => {
+          navigate('/search');
+        })
+        .then(() => {
+          setIsLoading(true);
+        })
+        .catch((err) => {
+          console.error('The Error from handleSubmit:', err);
+        });
+    }
   };
 
   const handleChange = (e) => {

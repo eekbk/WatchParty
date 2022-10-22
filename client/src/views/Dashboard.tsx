@@ -24,10 +24,7 @@ function Dashboard() {
       axios
         .get('/api/party')
         .then((data: any) => {
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
-          console.log(data.data, 'allParties...');
-          console.log(user, 'user....');
+          // console.log(data.data, 'allParties...');
           setAllParties(
             data.data
               .sort(

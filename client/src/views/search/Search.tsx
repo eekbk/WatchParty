@@ -1,85 +1,109 @@
-import axios from 'axios';
 import { useContext } from 'react';
-import { Container, Card, Col, Row } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 import UserCard from '../../cards/UserCard';
 import PartyCard from '../../cards/PartyCard';
+import VideoCard from '../../cards/VideoCard';
 import { SearchContext } from '../../contexts/searchContext';
 import { UserContext } from '../../context';
+import { CategoryTitle } from '../../styles';
+import {
+  SearchPageCol,
+  SearchPageRow,
+  SearchPageHeading,
+  SeeMoreLink,
+} from './search.styles';
+// import VideoCard from '../../cards/VideoCard';
 
 function Search({ socket }) {
   const {
     usersMatch,
     partiesMatch,
     videosMatch,
-    setPartiesMatch,
-    setUsersMatch,
-    setVideosMatch,
+    // setPartiesMatch,
+    // setUsersMatch,
+    // setVideosMatch,
   } = useContext(SearchContext);
   const { user } = useContext(UserContext);
 
-  const handleCardClick = (videoId) => {
-    axios
-      .get(`/api/search/party/${videoId}`)
-      .then(({ data }) => {
-        const matchingParties = data.playlists
-          .map((playlist) => playlist.parties)
-          .flat();
-        setPartiesMatch(matchingParties);
-      })
-      .then(() => {
-        setUsersMatch([]);
-      })
-      .then(() => {
-        setVideosMatch([]);
-      })
-      .catch((err) => {
-        console.error('The error from handleCardClick:\n', err);
-      });
-  };
-
   return (
     <Container>
-      {!partiesMatch.length && !usersMatch.length && !videosMatch.length ? (
-        <h2>No Matches Found</h2>
-      ) : (
-        []
-      )}
-      {partiesMatch.length ? <h2>Parties</h2> : []}
-      <ul>
-        <Row>
-          {partiesMatch.slice(0, 5).map((party) => (
-            <Col xs={3}>
-              <PartyCard party={party} />
-            </Col>
-          ))}
-        </Row>
-      </ul>
-      {usersMatch.length ? <h2>Users</h2> : []}
-      <ul>
-        <Row>
-          {usersMatch
-            .filter(
-              (match) =>
-                !user.blockers.includes(match.id) &&
-                !user.blocking.includes(match.id)
-            )
-            .slice(0, 5)
-            .map((userMatch) => (
-              <Col xs={3}>
-                <UserCard obj={userMatch} />
-              </Col>
-            ))}
-        </Row>
-      </ul>
-      {videosMatch.length ? <h2>Videos</h2> : []}
-      <ul>
-        {videosMatch.map((video) => (
-          <Card key={video.id} onClick={() => handleCardClick(video.id)}>
-            <h3>{video.title}</h3>
-            <p>{`${video.description.slice(0, 200)}...`}</p>
-          </Card>
+      <SearchPageHeading>
+        {!partiesMatch.length && !usersMatch.length && !videosMatch.length ? (
+          <CategoryTitle>No Matches Found</CategoryTitle>
+        ) : (
+          []
+        )}
+        <Col>
+          {partiesMatch.length ? <CategoryTitle>Parties</CategoryTitle> : []}
+        </Col>
+        <Col>
+          <SeeMoreLink>
+            {partiesMatch.length > 4 ? 'see more...' : []}
+          </SeeMoreLink>
+        </Col>
+      </SearchPageHeading>
+      {/* <ul> */}
+      <SearchPageRow>
+        {partiesMatch.slice(0, 4).map((party) => (
+          <Col xs={3}>
+            <PartyCard party={party} />
+          </Col>
         ))}
-      </ul>
+      </SearchPageRow>
+      {/* </ul> */}
+      <SearchPageRow>
+        <SearchPageCol md={6}>
+          <SearchPageHeading>
+            {/* <Row> */}
+            <Col>
+              {videosMatch.length ? <CategoryTitle>Videos</CategoryTitle> : []}
+            </Col>
+            <Col>
+              <SeeMoreLink>
+                {videosMatch.length > 4 ? 'see more...' : []}
+              </SeeMoreLink>
+            </Col>
+            {/* </Row> */}
+          </SearchPageHeading>
+          <ul>
+            <Col>
+              {videosMatch.slice(0, 4).map((video) => (
+                <Row xs={3}>
+                  <VideoCard video={video} key={video.id} />
+                </Row>
+              ))}
+            </Col>
+          </ul>
+        </SearchPageCol>
+        <SearchPageCol md={6}>
+          <SearchPageHeading>
+            <Col>
+              {usersMatch.length ? <CategoryTitle>Users</CategoryTitle> : []}
+            </Col>
+            <Col>
+              <SeeMoreLink>
+                {usersMatch.length > 4 ? 'see more...' : []}
+              </SeeMoreLink>
+            </Col>
+          </SearchPageHeading>
+          <ul>
+            <Row>
+              {usersMatch
+                .filter(
+                  (match) =>
+                    !user.blockers.includes(match.id) &&
+                    !user.blocking.includes(match.id)
+                )
+                .slice(0, 4)
+                .map((userMatch) => (
+                  <Col md={6}>
+                    <UserCard obj={userMatch} />
+                  </Col>
+                ))}
+            </Row>
+          </ul>
+        </SearchPageCol>
+      </SearchPageRow>
     </Container>
   );
 }
