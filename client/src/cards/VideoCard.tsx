@@ -1,29 +1,29 @@
 import { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { UserContext } from '../context';
 import { SearchContext } from '../contexts/searchContext';
+// import { UserContext } from '../context';
 import {
   StyledVideoCard,
-  StyledCardBody,
   StyledVideoCardImg,
-  StyledVideoPartyCount,
   StyledVideoTitle,
   StyledCardRow,
   StyledCardCol,
+  // StyledCardBody,
+  // StyledVideoPartyCount,
 } from './cards.styles';
 
 // ModCard stands for Modular Card. Hopefully we can reuse it
 function VideoCard({ video }) {
-  const { user } = useContext(UserContext);
-  const { thumbnail, parties, title } = video;
+  // const { user } = useContext(UserContext);
+  const { thumbnail, title /* , parties */ } = video;
   // console.log('here are the props...\nobj:', obj, '\nkind:', kind);
   const { setPartiesMatch, setUsersMatch, setVideosMatch } =
     useContext(SearchContext);
 
-  const footerText =
-    parties.length === 1
-      ? `feat. in ${parties.length} party!`
-      : `feat. in ${parties.length} parties!`;
+  // const footerText =
+  //   parties.length === 1
+  //     ? `feat. in ${parties.length} party!`
+  //     : `feat. in ${parties.length} parties!`;
 
   // const [cardTitle, setCardTitle] = useState('');
   // const [cardText, setCardText] = useState('');
