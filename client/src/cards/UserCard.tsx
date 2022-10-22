@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { UserContext } from '../context';
 import FollowButton from '../buttons/FollowButton';
@@ -8,7 +8,11 @@ import {
   StyledUserCard,
   StyledUserCardImg,
   StyledCardBody,
-} from '../views/search/search.styles';
+  StyledIsFollowing,
+  StyledPartyTitle,
+  StyledUserCardFooter,
+  StyledUserCardFooterCol,
+} from '../cards/cards.styles';
 
 // ModCard stands for Modular Card. Hopefully we can reuse it
 function UserCard({ obj }) {
@@ -51,43 +55,41 @@ function UserCard({ obj }) {
   return (
     <StyledUserCard>
       <Row>
-        <Col sm={4}>
+        <Col>
           <StyledUserCardImg roundedCircle src={obj.profile} />
         </Col>
-        <Col lg={8}>
+        <Col>
           <StyledCardBody>
             <Row>
-              <Card.Title>{cardTitle}</Card.Title>
+              <StyledPartyTitle>{cardTitle}</StyledPartyTitle>
             </Row>
-            <Row>
-              <Card.Text>{cardText}</Card.Text>
-            </Row>
-            <Row>
-              <Card.Text>{isFollowing ? 'following ✅' : '  '}</Card.Text>
-            </Row>
+            <StyledIsFollowing>
+              <Row>{cardText}</Row>
+              <Row>{isFollowing ? 'following ✅' : '  '}</Row>
+            </StyledIsFollowing>
           </StyledCardBody>
         </Col>
       </Row>
-      <Card.Footer>
-        <Row>
-          <Col md={4}>
-            <FollowButton
-              otherUserId={obj.id}
-              setFollows={setFollows}
-              follows={follows}
-              isFollowing={isFollowing}
-              setIsFollowing={setIsFollowing}
-            />
-          </Col>
-          <Col md={4}>
-            <BlockButton
-              otherUserId={obj.id}
-              isBlocking={isBlocking}
-              setIsBlocking={setIsBlocking}
-            />
-          </Col>
-        </Row>
-      </Card.Footer>
+      {/* <Card.Footer> */}
+      <StyledUserCardFooter>
+        <StyledUserCardFooterCol sm={3}>
+          <FollowButton
+            otherUserId={obj.id}
+            setFollows={setFollows}
+            follows={follows}
+            isFollowing={isFollowing}
+            setIsFollowing={setIsFollowing}
+          />
+        </StyledUserCardFooterCol>
+        <StyledUserCardFooterCol sm={3}>
+          <BlockButton
+            otherUserId={obj.id}
+            isBlocking={isBlocking}
+            setIsBlocking={setIsBlocking}
+          />
+        </StyledUserCardFooterCol>
+      </StyledUserCardFooter>
+      {/* </Card.Footer> */}
     </StyledUserCard>
   );
 }

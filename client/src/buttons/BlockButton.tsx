@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useContext, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { StyledGlassButton } from './buttons.styles';
 import { UserContext } from '../context';
 
 function BlockButton({ otherUserId, isBlocking, setIsBlocking }: any) {
@@ -41,9 +41,9 @@ function BlockButton({ otherUserId, isBlocking, setIsBlocking }: any) {
   };
 
   return (
-    <Button size="sm" onClick={handleClick}>
+    <StyledGlassButton size="sm" onClick={handleClick}>
       {isBlocking ? 'unblock' : ' block '}
-    </Button>
+    </StyledGlassButton>
   );
 }
 

@@ -1,31 +1,80 @@
-import { Card } from 'react-bootstrap';
+import { Card, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { StyledPartyCard } from '../views/search/search.styles';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../context';
+import AttendButton from '../buttons/AttendButton';
+import {
+  StyledPartyCard,
+  StyledPartyTitle,
+  StyledCardBody,
+  StyledPartyDesc,
+  StyledIsFollowing,
+  StyledPartyCardFooterCol,
+  StyledPartyCardFooter,
+  // StyledCardFooter,
+} from '../cards/cards.styles';
 
 function PartyCard({ party }) {
-  const { description, thumbnail, name, date_time } = party;
+  const { id, description, thumbnail, name, date_time, users } = party;
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
+  const [isAttending, setIsAttending] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isCreator, setIsCreator] = useState(false);
+  const creator = users.filter((user) => user.role === 'CREATOR')[0];
+  const creatorText =
+    creator.id === user.id
+      ? 'YOU are hosting!'
+      : `hosted by ${creator.username}`;
+  // const [isFollowing, setIsFollowing] = useState(false);
+
+  // create a function to check if the user is involved in the party
+  const checkRole = () => {
+    for (let i = 0; i < user.parties.length; i += 1) {
+      if (user.parties[i].id === id) {
+        return user.parties[i].role;
+      }
+    }
+    return null;
+  };
+
+  useEffect(() => {
+    if (user) {
+      if (checkRole() === 'CREATOR') {
+        setIsCreator(true);
+      } else if (checkRole() === 'ADMIN') {
+        setIsAdmin(true);
+      } else if (checkRole() === 'NORMIE') {
+        setIsAttending(true);
+      }
+      /* USER THIS IF WANT TO INCLUDE WHETHER OR NOT YOU
+       ARE FOLLOWING CREATOR */
+      // if (user.following.includes(creator.id)) {
+      //   setIsFollowing(true);
+      // } else {
+      //   setIsFollowing(false);
+      // }
+    }
+  }, [user]);
+
   const handleCardClick = (party) => {
-    // console.log('party in search:', party);
     navigate('/watchParty', {
       state: { party },
     });
   };
 
   const stringAbbreviator = (string, type) => {
-    const dotDotDotConcat = (num) => {
-      const strArr = string.slice(0, num).split(' ');
-      return `${strArr.slice(0, strArr.length - 1).join(' ')}...`;
-    };
     if (type === 'title') {
-      if (string.length > 53) {
-        return dotDotDotConcat(53);
+      if (string.length > 45) {
+        // return dotDotDotConcat(53);
+        return `${string.slice(0, 45)}...`;
       }
       return string;
     }
     if (type === 'description') {
-      if (string.length > 93) {
-        return dotDotDotConcat(93);
+      if (string.length > 70) {
+        // return dotDotDotConcat(65);
+        return `${string.slice(0, 70)}...`;
       }
       return string;
     }
@@ -61,22 +110,43 @@ function PartyCard({ party }) {
       return `${pmHour}${dateTime.slice(13, 16)} pm`;
       // isAm ? `${dateTime.slice(11, 13)  }am` : dateTime.slice()
     };
-    return `${month} ${day}, ${year} at ${time()}`;
+    return `Starts ${time()}, ${month} ${day}, ${year}`;
   };
 
   return (
-    <StyledPartyCard
-      style={{ marginBottom: '2rem' }}
-      onClick={() => handleCardClick(party)}
-    >
+    <StyledPartyCard>
       <Card.Img variant="top" src={thumbnail} />
-      <Card.Body>
-        <Card.Title>{stringAbbreviator(name, 'title')}</Card.Title>
-        <Card.Text>{stringAbbreviator(description, 'description')}</Card.Text>
-      </Card.Body>
-      <Card.Footer>
-        <small className="text-muted">{dateTimeConversion(date_time)}</small>
-      </Card.Footer>
+      <StyledCardBody>
+        <StyledPartyTitle onClick={() => handleCardClick(party)}>
+          {stringAbbreviator(name, 'title')}
+        </StyledPartyTitle>
+        <StyledPartyDesc>
+          {stringAbbreviator(description, 'description')}
+        </StyledPartyDesc>
+        <StyledIsFollowing>
+          {/* <Row> */}
+
+          {creatorText}
+          {/* <Card.Text>{isFollowing ? <i>following</i>: '  '}</Card.Text> */}
+          {/* </Row> */}
+        </StyledIsFollowing>
+        <Row>
+          <small>{dateTimeConversion(date_time)}</small>
+        </Row>
+      </StyledCardBody>
+      <StyledPartyCardFooter>
+        <StyledPartyCardFooterCol sm={2}>
+          {!isCreator && !isAdmin ? (
+            <AttendButton
+              partyId={id}
+              isAttending={isAttending}
+              setIsAttending={setIsAttending}
+            />
+          ) : (
+            []
+          )}
+        </StyledPartyCardFooterCol>
+      </StyledPartyCardFooter>
     </StyledPartyCard>
   );
 }
