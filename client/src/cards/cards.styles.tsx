@@ -10,6 +10,13 @@ export const StyledCardCol = styled(Col)`
   padding-left: 0;
 `;
 
+export const StyledCardBody = styled(Card.Body)`
+  padding: 8px;
+  margin: 0;
+  align-content: space-between;
+  /* text-align: right; */
+`;
+
 export const StyledPartyCard = styled(Card)`
   height: 22rem;
   width: 18rem;
@@ -17,6 +24,9 @@ export const StyledPartyCard = styled(Card)`
   cursor: pointer;
   box-sizing: content-box;
   background-color: black;
+  /* outline: #320e3b; */
+  border-color: #6a1d7d;
+  border-width: 1px;
 `;
 
 export const StyledUserCard = styled(Card)`
@@ -24,17 +34,22 @@ export const StyledUserCard = styled(Card)`
   height: 10rem;
   box-sizing: border-box;
   margin-bottom: 10px;
+  margin-right: 4px;
   background-color: black;
+  border-color: #6a1d7d;
+  border-width: 1px;
 `;
 
 export const StyledVideoCard = styled(Card)`
-  width: 30rem;
-  height: 4rem;
+  width: 90%;
+  height: 100%;
   cursor: pointer;
   box-sizing: border-box;
   overflow: hidden;
   margin: 4px;
   background-color: black;
+  border-color: #6a1d7d;
+  border-width: 1px;
 `;
 
 export const StyledUserCardImg = styled(Image)`
@@ -55,12 +70,6 @@ export const StyledVideoCardImg = styled(Card.Img)`
   overflow: hidden;
 `;
 
-export const StyledCardBody = styled(Card.Body)`
-  padding: 8px;
-  margin: 0;
-  /* text-align: right; */
-`;
-
 export const StyledVideoPartyCount = styled(Row)`
   align-items: center;
   justify-content: center;
@@ -71,6 +80,22 @@ export const StyledVideoPartyCount = styled(Row)`
 export const StyledCardFooter = styled(Card.Footer)`
   height: 45px;
 `;
+
+export const StyledUserCardFooter = styled(Row)`
+  width: 100%;
+  align-items: baseline;
+  justify-content: end;
+  /* margin-right: 15px; */
+`;
+
+export const StyledUserCardFooterCol = styled(Col)`
+  /* align-items: end; */
+  align-content: end;
+  justify-content: end;
+  margin-right: 4px;
+  margin-left: 8px;
+`;
+
 export const StyledPartyTitle = styled(Card.Title)`
   font-size: larger;
   padding: 0;
@@ -86,6 +111,22 @@ export const StyledIsFollowing = styled(Card.Text)`
   font-size: smaller;
   color: gray;
   margin: 0px 6px;
+`;
+
+export const StyledPartyCardFooter = styled(Row)`
+  width: 100%;
+  align-items: baseline;
+  justify-content: end;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  /* margin-right: 15px; */
+`;
+
+export const StyledPartyCardFooterCol = styled(Col)`
+  /* align-items: end; */
+  align-content: end;
+  justify-content: end;
+  margin-right: 15px;
 `;
 
 export const StyledVideoTitle = styled(Card.Title)`
