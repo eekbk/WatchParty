@@ -307,7 +307,7 @@ export function CreateParty() {
               <StyledFormLabel>Choose Saved Playlist</StyledFormLabel>
               {user.playlists.map((pl, i) => (
                 <StyledVideoCard style={{ marginTop: '5px' }}>
-                  <StyledVideoCard.Title>{pl.title}</StyledVideoCard.Title>
+                  <StyledVideoCard.Title>{pl.name}</StyledVideoCard.Title>
                   <StyledVideoCard.Body>
                     <StyledVideoCard.Img src={pl.thumbnail} />
                     <StyledVideoCard.Text>

@@ -147,8 +147,8 @@ export const StyledButton = styled(Button)`
   position: relative;
   /* display: inline-block; */
   /* padding: 15px 25px; */
-  margin-right: 5px;
-  background-color: purple; /*for compatibility with older browsers*/
+  //margin-right: 5px;
+  //background-color: purple; /*for compatibility with older browsers*/
   background-image: linear-gradient(#320e3b, #6a1d7d);
   text-shadow: 0px -1px #333;
   border-color: transparent;

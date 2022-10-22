@@ -10,6 +10,20 @@ import {
 // const { Title, Body, Img, Text } = Card;
 const { Group } = Form;
 
+let primary;
+let secondary;
+let tertiary;
+let accent;
+let text;
+const disabledForm = '#e9ecef';
+
+// Preferred
+primary = '#320E3B';
+secondary = '#A663CC';
+tertiary = '#48AcF0';
+accent = '#15616D';
+text = '#E5F4E3';
+
 export const StyledBackgroundContainer = styled(Container)`
   background: radial-gradient(ellipse at center, #320e3b, black);
   height: fit-content;
@@ -80,9 +94,15 @@ export const Footer = styled.footer`
 // scrolling on navbar for when collapsed?
 // collapse and fade for wrapping conditionally visible components?
 export const StyledVideoCard = styled(Card)`
-  background-color: #375915;
-  color: #ff30db;
+  background: rgba(94, 48, 121, 0.25);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(94, 48, 121, 0.3);
+  color: ${text};
 `;
+
 export const ArchiveGlassCard = styled(Card)`
   color: white;
   height: 18rem;
@@ -254,12 +274,34 @@ export const DmUserContainer = styled(Button)`
 `;
 
 export const StyledButton = styled(Button)`
-  color: #ffed5d;
-  background-color: #ff30db;
-  border-color: #8a25e2;
+  position: relative;
+  /* display: inline-block; */
+  /* padding: 15px 25px; */
+  //margin-right: 5px;
+  //background-color: purple; /*for compatibility with older browsers*/
+  background-image: linear-gradient(#320e3b, #6a1d7d);
+  text-shadow: 0px -1px #333;
+  border-color: transparent;
+  /* border-radius: 30px;
+  border-collapse: separate; */
+  color: ${text};
+  background-color: ${tertiary};
+  border-color: ${accent};
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(100% - 4px);
+    height: 50%;
+    background: linear-gradient(
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0.2)
+    );
+  }
   &:hover {
-    background-color: #8a25e2;
-    border-color: #8a25e2;
+    background: linear-gradient(${primary}, ${secondary});
   }
   &:active:focus {
     outline: none;
@@ -270,6 +312,9 @@ export const StyledButton = styled(Button)`
     outline: none;
     box-shadow: none;
     background-color: #8a25e2;
+  }
+  &:focus {
+    outline: black solid 2px;
   }
 `;
 
