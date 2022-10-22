@@ -23,7 +23,7 @@ function Dashboard() {
       axios
         .get('/api/party')
         .then((data: any) => {
-          console.log(data.data, 'allParties...');
+          // console.log(data.data, 'allParties...');
           setAllParties(
             data.data.sort(
               (a, b) =>
@@ -42,7 +42,7 @@ function Dashboard() {
       axios
         .get('/api/party')
         .then((data: any) => {
-          console.log(data.data, 'parties...');
+          // console.log(data.data, 'parties...');
 
           setParties(
             data.data

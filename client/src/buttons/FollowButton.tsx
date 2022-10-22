@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useContext, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { UserContext } from '../context';
+import { StyledGlassButton } from './buttons.styles';
 
 function FollowButton({
   otherUserId,
@@ -55,9 +55,9 @@ function FollowButton({
   };
 
   return (
-    <Button size="sm" onClick={handleClick}>
+    <StyledGlassButton size="sm" onClick={handleClick}>
       {isFollowing ? 'unfollow' : 'follow'}
-    </Button>
+    </StyledGlassButton>
   );
 }
 
