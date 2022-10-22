@@ -1,10 +1,10 @@
-import { ListGroup } from 'react-bootstrap';
 import { useState } from 'react';
 import axios from 'axios';
+import { Form } from 'react-bootstrap';
 import { StyledButton } from '../../styles';
-import { StyledListGroup } from './styles';
+import { StyledListGroup, StyledListItem } from './styles';
 
-const { Item } = ListGroup;
+const { Check } = Form;
 
 export function Participants({ participants, setParticipants, room, status }) {
   const [show, setShow] = useState(false);
@@ -47,20 +47,24 @@ export function Participants({ participants, setParticipants, room, status }) {
       }}
       hidden={!status}
     >
-      <Item
+      <StyledListItem
         style={{
           display: 'flex',
           justifyContent: 'space-between',
         }}
       >
         <h5 style={{ alignSelf: 'center' }}>Participants</h5>
-        <StyledButton onClick={() => setShow(!show)}>
+        <StyledButton
+          onClick={() => setShow(!show)}
+          style={{ marginLeft: '10px', marginRight: '10px' }}
+          variant="outline-dark"
+        >
           {show ? 'Close' : 'Open'}
         </StyledButton>
-      </Item>
+      </StyledListItem>
       {participants.map((pt, i) =>
         pt.role !== 'CREATOR' ? (
-          <Item
+          <StyledListItem
             style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -70,12 +74,13 @@ export function Participants({ participants, setParticipants, room, status }) {
             {pt.username}
             :
             {' '}
-            <StyledButton onClick={() => changeRole(i)}>
-              Change to 
-              {' '}
-              {pt.role === 'ADMIN' ? 'NORMIE' : 'ADMIN'}
-            </StyledButton>
-          </Item>
+            <Check
+              type="switch"
+              label="Admin"
+              onChange={() => changeRole(i)}
+              checked={pt.role === 'ADMIN'}
+            />
+          </StyledListItem>
         ) : null
       )}
     </StyledListGroup>

@@ -1,11 +1,10 @@
-import { ListGroup, CloseButton, Form } from 'react-bootstrap';
+import { CloseButton, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import axios from 'axios';
 import { StyledVideoCard, StyledButton } from '../../styles';
-import { StyledListGroup } from './styles';
+import { StyledListGroup, StyledListItem } from './styles';
 
 const { Group, Control, Text } = Form;
-const { Item } = ListGroup;
 
 export function Playlist({ playlist, setPlaylist, room, status }) {
   const [video, setVideo] = useState('');
@@ -53,19 +52,22 @@ export function Playlist({ playlist, setPlaylist, room, status }) {
       }}
       hidden={!status}
     >
-      <Item
+      <StyledListItem
         style={{
           display: 'flex',
           justifyContent: 'space-between',
         }}
       >
         <h5 style={{ alignSelf: 'center', marginRight: '10px' }}>Playlist</h5>
-        <StyledButton onClick={() => setClicked(!clicked)}>
+        <StyledButton
+          onClick={() => setClicked(!clicked)}
+          variant="outline-dark"
+        >
           {clicked ? 'Close' : 'Open'}
         </StyledButton>
-      </Item>
+      </StyledListItem>
       {playlist.map((video, i) => (
-        <Item hidden={!clicked}>
+        <StyledListItem hidden={!clicked}>
           <StyledVideoCard>
             <CloseButton onClick={() => handleVideoRemoval(i)} />
             <StyledVideoCard.Title>{video.title}</StyledVideoCard.Title>
@@ -76,9 +78,9 @@ export function Playlist({ playlist, setPlaylist, room, status }) {
               </StyledVideoCard.Text>
             </StyledVideoCard.Body>
           </StyledVideoCard>
-        </Item>
+        </StyledListItem>
       ))}
-      <Item hidden={!clicked}>
+      <StyledListItem hidden={!clicked}>
         <Form>
           <Group>
             <Control
@@ -91,13 +93,14 @@ export function Playlist({ playlist, setPlaylist, room, status }) {
               <StyledButton
                 style={{ marginLeft: '5px' }}
                 onClick={handleVideoAddition}
+                variant="outline-dark"
               >
                 Add
               </StyledButton>
             </Group>
           </Group>
         </Form>
-      </Item>
+      </StyledListItem>
     </StyledListGroup>
   );
 }
