@@ -1,6 +1,6 @@
 import { Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { StyledDashPartyCard } from '../views/search/search.styles';
+import { StyledDashPartyCard } from './cards.styles';
 
 function DashboardPartyCard({ party }) {
   const { description, thumbnail, name, date_time } = party;

@@ -20,29 +20,29 @@ function Dashboard() {
 
   // all parties
   useEffect(() => {
-    if (user) {
-      axios
-        .get('/api/party')
-        .then((data: any) => {
-          // console.log(data.data, 'allParties...');
-          setAllParties(
-            data.data
-              .sort(
-                (a, b) =>
-                  Number(new Date(a.date_time)) - Number(new Date(b.date_time))
-              )
-              .filter(
-                // to get only the today and upcoming parties
-                // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
-                (a) => Number(new Date(a.date_time)) >= Number(today)
-              )
-          );
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
-  }, [user]);
+    axios
+      .get('/api/party')
+      .then((data: any) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        // console.log(data.data, 'allParties...');
+        setAllParties(
+          data.data
+            .sort(
+              (a, b) =>
+                Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+            )
+            .filter(
+              // to get only the today and upcoming parties
+              // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
+              (a) => Number(new Date(a.date_time)) >= Number(today)
+            )
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
   // parties of people im following
   useEffect(() => {
     if (user) {

@@ -28,6 +28,12 @@ export const StyledPartyCard = styled(Card)`
   border-color: #6a1d7d;
   border-width: 1px;
 `;
+export const StyledDashPartyCard = styled(Card)`
+  height: 23rem;
+  width: 18rem;
+  padding: 0 auto;
+  cursor: pointer;
+`;
 
 export const StyledUserCard = styled(Card)`
   width: 17rem;

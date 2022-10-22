@@ -95,7 +95,7 @@ function Calendar() {
   return (
     <Container>
       {changeText ? (
-        <Card border="danger" bg="warning">
+        <Card>
           <Card.Header style={{ fontSize: '24px' }} className="text-center">
             <Col>
               {user ? null : null}
