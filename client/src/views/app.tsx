@@ -44,9 +44,9 @@ function App() {
   return (
     <StyledBackgroundContainer fluid>
       <Header>
-        <Navbar expand="lg" style={{ height: '10vh' }}>
+        <Navbar expand="lg">
           <Container>
-            <Navbar.Brand to="/" as={Link} style={{ color: '#E5F4E3' }}>
+            <Navbar.Brand to="/" as={Link} style={{ color: 'white' }}>
               WatchParty
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -56,7 +56,7 @@ function App() {
                   hidden={!user}
                   to="/createParty"
                   as={Link}
-                  style={{ color: '#E5F4E3' }}
+                  style={{ color: 'white' }}
                 >
                   Create Party
                 </Nav.Link>
@@ -64,7 +64,7 @@ function App() {
                   hidden={!user}
                   to="/profile"
                   as={Link}
-                  style={{ color: '#E5F4E3' }}
+                  style={{ color: 'white' }}
                 >
                   Profile
                 </Nav.Link>
@@ -72,7 +72,7 @@ function App() {
                   hidden={!user}
                   to="/calendar"
                   as={Link}
-                  style={{ color: '#E5F4E3' }}
+                  style={{ color: 'white' }}
                 >
                   Calendar
                 </Nav.Link>
@@ -80,7 +80,7 @@ function App() {
                   hidden={!user}
                   to="/dm"
                   as={Link}
-                  style={{ color: '#E5F4E3' }}
+                  style={{ color: 'white' }}
                 >
                   DMs
                 </Nav.Link>
@@ -88,21 +88,21 @@ function App() {
                   hidden={!user}
                   to="/archive"
                   as={Link}
-                  style={{ color: '#E5F4E3' }}
+                  style={{ color: 'white' }}
                 >
                   Archives
                 </Nav.Link>
                 <Nav.Link
                   hidden={user}
                   href="/auth/google"
-                  style={{ color: '#E5F4E3' }}
+                  style={{ color: 'white' }}
                 >
                   Login
                 </Nav.Link>
                 <Nav.Link
                   hidden={!user}
                   onClick={handleLogout}
-                  style={{ color: '#E5F4E3' }}
+                  style={{ color: 'white' }}
                 >
                   Logout
                 </Nav.Link>
