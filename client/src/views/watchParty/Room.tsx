@@ -13,7 +13,7 @@ function WatchParty({ socket }) {
   const vH = useRef(null);
   // state vars
   const [dbMessages, setMessages] = useState([]);
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { state } = useLocation();
   const room = state.party;
   const isArchived = state.isArchived || false;
@@ -64,8 +64,8 @@ function WatchParty({ socket }) {
               participants={participants}
               setParticipants={setParticipants}
               status={
-                user.user
-                  ? user.user.parties.filter((party) => party.id === room.id)[0]
+                user
+                  ? user.parties.filter((party) => party.id === room.id)[0]
                   : null
               }
               room={room}

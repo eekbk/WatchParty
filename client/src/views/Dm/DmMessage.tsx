@@ -14,15 +14,15 @@ function DmMessage({ message, user }) {
         textAlign: 'left',
       }}
     >
-      {`${message.user.user_name} `}
+      {`${message.user_name} `}
       <Container
         style={{
-          backgroundColor: user.user
-            ? user.user.id !== message.user.id
+          backgroundColor: user
+            ? user.id !== message.user.id
               ? '#6929a9'
               : '#8e298e'
             : '#6929a9',
-          maxWidth: '75%',
+          maxWidth: '85%',
           borderRadius: '10px',
           width: 'fit-content',
           display: 'inline-block',

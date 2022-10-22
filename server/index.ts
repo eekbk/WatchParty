@@ -10,8 +10,8 @@ import { search } from './routes/search';
 
 const app: Express = express();
 
-const https = require('https').Server(app);
-const io = require('socket.io')(https);
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 const passport = require('passport');
 // const session = require('express-session');
@@ -304,11 +304,11 @@ io.on('connection', (socket: any) => {
   );
   // gives all user parties with type "DM"
   socket.on('getDms', (user) => {
-    if (user.user) {
+    if (user) {
       prisma.user_Party
         .findMany({
           where: {
-            user_id: user.user.id,
+            user_id: user.id,
             party: {
               type: 'DM',
             },
@@ -324,7 +324,7 @@ io.on('connection', (socket: any) => {
                       party_id: party.party_id,
                       NOT: [
                         {
-                          user_id: user.user.id,
+                          user_id: user.id,
                         },
                       ],
                     },
@@ -338,6 +338,6 @@ io.on('connection', (socket: any) => {
   });
 });
 
-https.listen(PORT, () => {
-  console.log(`listening at https://localhost:${PORT}`);
+http.listen(PORT, () => {
+  console.log(`listening at http://localhost:${PORT}`);
 });
