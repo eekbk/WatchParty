@@ -6,7 +6,8 @@ import Col from 'react-bootstrap/Col';
 // import Button from 'react-bootstrap/Button';
 // import Card from 'react-bootstrap/Card';
 // import CardGroup from 'react-bootstrap/CardGroup';
-import DashboardPartyCard from '../cards/DashboardPartyCard';
+// import DashboardPartyCard from '../cards/DashboardPartyCard';
+import PartyCard from '../cards/PartyCard';
 // import { useNavigate } from 'react-router-dom';
 // import ListGroup from 'react-bootstrap/ListGroup';
 import { UserContext } from '../context';
@@ -25,7 +26,6 @@ function Dashboard() {
       .then((data: any) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        // console.log(data.data, 'allParties...');
         setAllParties(
           data.data
             .sort(
@@ -51,7 +51,6 @@ function Dashboard() {
         .then((data: any) => {
           const today = new Date();
           today.setHours(0, 0, 0, 0);
-          console.log(data.data, 'parties...');
           setParties(
             data.data
               .filter((pt) =>
@@ -77,12 +76,6 @@ function Dashboard() {
         });
     }
   }, [user]);
-
-  // const handleCardClick = (party) => {
-  //   navigate('/watchParty', {
-  //     state: { party, videos: party.videos },
-  //   });
-  // };
 
   return (
     <Container>
@@ -115,7 +108,7 @@ function Dashboard() {
                   )
                   .map((party) => (
                     <Col style={{ borderRadius: '1px' }}>
-                      <DashboardPartyCard party={party} key={party.id} />
+                      <PartyCard party={party} key={party.id} />
                     </Col>
                   ))}
               </Row>
@@ -135,7 +128,7 @@ function Dashboard() {
             <Row>
               {allParties.slice(0, 4).map((party) => (
                 <Col>
-                  <DashboardPartyCard party={party} key={party.id} />
+                  <PartyCard party={party} key={party.id} />
                 </Col>
               ))}
             </Row>

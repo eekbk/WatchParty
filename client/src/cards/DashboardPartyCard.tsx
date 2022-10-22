@@ -13,19 +13,17 @@ function DashboardPartyCard({ party }) {
   };
 
   const stringAbbreviator = (string, type) => {
-    const dotDotDotConcat = (num) => {
-      const strArr = string.slice(0, num).split(' ');
-      return `${strArr.slice(0, strArr.length - 1).join(' ')}...`;
-    };
     if (type === 'title') {
-      if (string.length > 53) {
-        return dotDotDotConcat(53);
+      if (string.length > 45) {
+        // return dotDotDotConcat(53);
+        return `${string.slice(0, 45)}...`;
       }
       return string;
     }
     if (type === 'description') {
-      if (string.length > 93) {
-        return dotDotDotConcat(93);
+      if (string.length > 70) {
+        // return dotDotDotConcat(65);
+        return `${string.slice(0, 70)}...`;
       }
       return string;
     }
