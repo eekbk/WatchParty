@@ -33,7 +33,8 @@ The also is a VOICE CONTROL option, for those with difficulty navigating with a 
 18. Jest
 19. Google OAuth
 20. React Speech Component
-21. Miro
+21. Socket io
+22. Miro
 
 ## API
 1. YouTube API
@@ -48,6 +49,12 @@ Everyone is welcome to contribute. Please take a moment to review the [contribut
 
 ## Authors and license
 
-[Logan-Ward](<PH URL>) and [contributors](/graphs/contributors).
+[Dahlak-Keleta](<PH URL>)
+
+[Eric-Kuehnemann](<PH URL>)
+
+[Logan-Voisin](<PH URL>)
+
+[Logan-Ward](<PH URL>)
 
 MIT License, see the included [License.md](License.md) file.
