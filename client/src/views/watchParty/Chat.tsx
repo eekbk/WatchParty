@@ -27,7 +27,7 @@ function Chat({
       socket.emit('chat', {
         room,
         message: chat,
-        user: user.user.id,
+        user: user.id,
         type: 'COMMENT',
       });
       setChat('');

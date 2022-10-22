@@ -14,11 +14,11 @@ function Message({ message, user, socket }) {
         textAlign: 'left',
       }}
     >
-      {`${message.user.user_name} `}
+      {`${message.user_name} `}
       <Container
         style={{
-          backgroundColor: user.user
-            ? user.user.id !== message.user.id
+          backgroundColor: user
+            ? user.id !== message.user.id
               ? '#6929a9'
               : '#8e298e'
             : '#6929a9',

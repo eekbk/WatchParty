@@ -18,13 +18,13 @@ function DmChat({ socket, room, user, messages, setMessages }) {
       dmId: room,
       type: 'DM',
       message: chat,
-      user: user.user,
+      user,
     });
     setMessages([
       ...messages,
       {
         message: chat,
-        user: { user_name: user.user.user_name, id: user.user.id },
+        user: { user_name: user.user_name, id: user.id },
       },
     ]);
     setChat('');

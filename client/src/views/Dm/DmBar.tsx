@@ -13,7 +13,7 @@ function DmBar({ user, socket, changeDm }) {
     return () => {
       socket.off('getDms');
     };
-  }, []);
+  }, [user]);
 
   return (
     <DmSideBar

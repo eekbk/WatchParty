@@ -222,8 +222,13 @@ export const DmUser = styled(Image)`
 `;
 export const DmUserContainer = styled(Button)`
   border: solid 1px;
-  background-color: transparent;
-  border-color: transparent;
+  background: rgba(94, 48, 121, 0.25);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(94, 48, 121, 0.3);
+  margin-bottom: 4px;
   &:hover {
     outline: none;
     box-shadow: none;
