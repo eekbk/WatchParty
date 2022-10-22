@@ -10,8 +10,8 @@ import { search } from './routes/search';
 
 const app: Express = express();
 
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const https = require('https').Server(app);
+const io = require('socket.io')(https);
 
 const passport = require('passport');
 // const session = require('express-session');
@@ -338,6 +338,6 @@ io.on('connection', (socket: any) => {
   });
 });
 
-http.listen(PORT, () => {
-  console.log(`listening at http://localhost:${PORT}`);
+https.listen(PORT, () => {
+  console.log(`listening at https://localhost:${PORT}`);
 });
