@@ -14,6 +14,7 @@ export const StyledCardBody = styled(Card.Body)`
   padding: 8px;
   margin: 0;
   align-content: space-between;
+  cursor: pointer;
   /* text-align: right; */
 `;
 
@@ -21,10 +22,9 @@ export const StyledPartyCard = styled(Card)`
   height: 22rem;
   width: 18rem;
   padding: 0 auto;
-  cursor: pointer;
   box-sizing: content-box;
   background-color: black;
-  /* outline: #320e3b; */
+
   border-color: #6a1d7d;
   border-width: 1px;
 `;

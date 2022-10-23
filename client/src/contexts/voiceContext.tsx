@@ -1,4 +1,4 @@
-import { createContext, useState, useMemo, useEffect } from 'react';
+import { createContext, useState, useMemo } from 'react';
 // import { useNavigate, useLocation } from 'react-router-dom';
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -63,32 +63,6 @@ export function VoiceContextProvider({ children }) {
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition({ commands });
-
-  // const pages = [
-  //   'home',
-  //   'login',
-  //   'profile',
-  //   'logout',
-  //   'create party',
-  // ];
-  // const urls = {
-  //   home: '/',
-  //   login: '/auth/google',
-  //   logout: '/logout',
-  //   profile: '/profile',
-  //   'mic check': '/miccheck',
-  //   'create party': '/createParty',
-  // };
-
-  // useEffect(() => {
-  //   if (redirectUrl) {
-  //     if (pages.includes(redirectUrl)) {
-  //       navigate(urls[redirectUrl]);
-  //     } else {
-  //       alert('Page not recognized');
-  //     }
-  //   }
-  // }, [redirectUrl]);
 
   const handleVoiceToggle = async () => {
     console.log('VoiceToggle');
