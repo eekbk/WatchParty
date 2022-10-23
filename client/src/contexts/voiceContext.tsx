@@ -13,12 +13,13 @@ export function VoiceContextProvider({ children }) {
   const [isSent, setIsSent] = useState(false);
   const [followName, setFollowName] = useState('');
   const [dmName, setDmName] = useState('');
+  const [partyName, setPartyName] = useState('');
 
   // const navigate = useNavigate();
 
   const commands = [
     {
-      command: ['Go to *', 'Open *', 'Take me (to) *'],
+      command: ['Go to *', 'Take me (to) *'],
       callback: (redirectPage) => setRedirectUrl(redirectPage),
     },
     {
@@ -54,6 +55,10 @@ export function VoiceContextProvider({ children }) {
     {
       command: ['DM *', 'message *'],
       callback: (name) => setDmName(name),
+    },
+    {
+      command: ['open *', 'start the party called *'],
+      callback: (party) => setPartyName(party),
     },
   ];
 
@@ -97,6 +102,7 @@ export function VoiceContextProvider({ children }) {
       setFollowName,
       dmName,
       setDmName,
+      partyName,
     }),
     [
       SpeechRecognition,
