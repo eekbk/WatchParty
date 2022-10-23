@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 // import { useLocation } from 'react-router-dom';
-import { Container, Form } from 'react-bootstrap';
-import { StyledButton, StyledScrollableGroup } from '../../styles';
+import { Form, InputGroup } from 'react-bootstrap';
+import { StyledButton, ThinScrollBar, DmChatBox } from '../../styles';
 
 const { default: DmMessage } = require('./DmMessage.tsx');
+// const { default: DmOutGoingMessage } = require('./DmOutGoingMessage.tsx');
 
 function DmChat({ socket, room, user, messages, setMessages }) {
   // other vars
@@ -17,13 +18,13 @@ function DmChat({ socket, room, user, messages, setMessages }) {
       dmId: room,
       type: 'DM',
       message: chat,
-      user: user.user,
+      user,
     });
     setMessages([
       ...messages,
       {
         message: chat,
-        user: { user_name: user.user.user_name, id: user.user.id },
+        user: { user_name: user.user_name, id: user.id },
       },
     ]);
     setChat('');
@@ -31,6 +32,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
   };
 
   useEffect(() => {
+    scrolly.current.scrollTop = scrolly.current.scrollHeight;
     // emitters
     socket.emit('getMessages', room);
     // listeners
@@ -49,37 +51,33 @@ function DmChat({ socket, room, user, messages, setMessages }) {
       socket.off('getMessages');
     };
   }, []);
+  useEffect(() => {
+    scrolly.current.scrollTop = scrolly.current.scrollHeight;
+  }, [messages]);
   return (
-    <Container
-      style={{
-        textAlign: 'center',
-        color: 'white',
-        backgroundColor: '#332448',
-        borderRadius: '5px',
-      }}
-    >
+    <DmChatBox>
       DM Be nice!!
       <Form>
-        <StyledScrollableGroup
+        <ThinScrollBar
           ref={scrolly}
           style={{ overflowY: 'scroll', minHeight: '70vh', maxHeight: '70vh' }}
         >
           {messages.map((message) => (
             <DmMessage message={message} user={user} />
           ))}
-        </StyledScrollableGroup>
-        <Form.Group>
+        </ThinScrollBar>
+        <InputGroup>
           <Form.Control
             value={chat}
             onChange={(event) => setChat(event.target.value)}
             placeholder="type here!"
           />
-          <StyledButton type="submit" onClick={submit}>
+          <StyledButton type="submit" onClick={submit} variant="outline-dark">
             Send!
           </StyledButton>
-        </Form.Group>
+        </InputGroup>
       </Form>
-    </Container>
+    </DmChatBox>
   );
 }
 

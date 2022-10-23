@@ -1,14 +1,12 @@
-import { /* useEffect, */ useContext, useState } from 'react';
-// import { useLocation } from 'react-router-dom';
+import { useContext, useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-// import { Socket } from 'socket.io';
 import { UserContext } from '../../context';
 
 const { default: DmBar } = require('./DmBar.tsx');
 const { default: DmChat } = require('./DmChat.tsx');
 
 function Dm({ socket, room }) {
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [dmRoom, setRoom] = useState(() => room);
   const [messages, setMessages] = useState(() => []);
 
@@ -25,29 +23,41 @@ function Dm({ socket, room }) {
       setMessages(dmMessages);
     });
   };
-  /**
-   * CAITY POINTED THIS OUT
-   *
-   * I REFUSED TO DELETE IT!!!!!!!
-   */
-  // useEffect(() => {
-  //   // emitters
-  // }, []);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   return (
     <Container
       style={{
         width: '100%',
         height: '85vh',
-        marginLeft: '0px',
+        margin: '0px',
         maxWidth: '100%',
       }}
     >
       <Row>
-        <Col xs={1} md={1}>
+        <Col
+          xs={2}
+          sm={2}
+          md={1}
+          lg={1}
+          xl={1}
+          xxl={1}
+          style={{ padding: '0px' }}
+        >
           <DmBar user={user} socket={socket} changeDm={changeDm} />
         </Col>
-        <Col xs={14} md={10}>
+        <Col
+          xs={10}
+          sm={10}
+          md={10}
+          lg={10}
+          xl={10}
+          xxl={10}
+          style={{ margin: '0px', padding: '0px' }}
+        >
           <DmChat
             user={user}
             socket={socket}

@@ -80,11 +80,9 @@ function Calendar() {
     }
   }, [user, changeText]);
 
-  const handleChange = () => 
+  const handleChange = () =>
     // console.log(changeText);
-     setChangeText(!changeText)
-  ;
-
+    setChangeText(!changeText);
   const handleCardClick = (party) => {
     // console.log(party);
     navigate('/watchParty', {
@@ -133,9 +131,10 @@ function Calendar() {
                   <td>{party.name}</td>
                   <td>
                     {
-                      party.users.filter((u) => 
-                        // console.log('changed text is true');
-                         u.role === 'CREATOR'
+                      party.users.filter(
+                        (u) =>
+                          // console.log('changed text is true');
+                          u.role === 'CREATOR'
                       )[0].username
                     }
                   </td>
@@ -183,9 +182,10 @@ function Calendar() {
                   <td>{party.name}</td>
                   <td>
                     {
-                      party.users.filter((u) => 
-                        // console.log('changed text is false');
-                         u.role === 'CREATOR'
+                      party.users.filter(
+                        (u) =>
+                          // console.log('changed text is false');
+                          u.role === 'CREATOR'
                       )[0].username
                     }
                   </td>

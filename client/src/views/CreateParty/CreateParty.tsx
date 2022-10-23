@@ -2,10 +2,6 @@ import axios from 'axios';
 import { useState, useRef, useContext } from 'react';
 import { UserContext } from '../../context';
 import {
-  StyledAccordion,
-  StyledAccordionBody,
-  StyledAccordionHeader,
-  StyledAccordionItem,
   StyledAlert,
   StyledCloseButton,
   StyledCol,
@@ -16,7 +12,6 @@ import {
   StyledButton,
   StyledVideoCard,
   StyledContainer,
-  StyledImageContainer,
   StyledFormCheck,
   StyledFormGroup,
   StyledFormControl,
@@ -191,6 +186,7 @@ export function CreateParty() {
                 disabled={!playlist.length || !name}
                 onClick={handleCreate}
                 style={{ marginTop: '5px' }}
+                variant="outline-dark"
               >
                 Create
               </StyledButton>
@@ -274,7 +270,12 @@ export function CreateParty() {
               />
               <StyledFormText>Choose a YouTube video to add</StyledFormText>
               <br />
-              <StyledButton onClick={handleVideoAddition}>Add</StyledButton>
+              <StyledButton
+                onClick={handleVideoAddition}
+                variant="outline-dark"
+              >
+                Add
+              </StyledButton>
             </StyledFormGroup>
             <StyledFormGroup style={{ marginTop: '20px' }}>
               <StyledFormLabel>Public Youtube Playlist Url</StyledFormLabel>
@@ -287,35 +288,41 @@ export function CreateParty() {
                 Choose a YouTube playlist to import videos from
               </StyledFormText>
               <br />
-              <StyledButton onClick={handlePlaylistAddition}>Add</StyledButton>
+              <StyledButton
+                onClick={handlePlaylistAddition}
+                variant="outline-dark"
+              >
+                Add
+              </StyledButton>
             </StyledFormGroup>
           </StyledForm>
-          <StyledForm style={{ marginTop: '10px' }}>
-            <StyledFormGroup style={{ maxHeight: '35vh' }}>
+          <StyledForm
+            style={{
+              overflowY: 'scroll',
+              maxHeight: '70vh',
+              marginTop: '10px',
+            }}
+          >
+            <StyledFormGroup>
               <StyledFormLabel>Choose Saved Playlist</StyledFormLabel>
-              <StyledAccordion
-                style={{ maxHeight: '100%', overflowY: 'scroll' }}
-              >
-                {user.playlists.map((pl, i) => (
-                  <StyledAccordionItem eventKey={String(i)}>
-                    <StyledAccordionHeader>{pl.name}</StyledAccordionHeader>
-                    <StyledAccordionBody>
-                      <StyledImageContainer
-                        as="img"
-                        src={pl.thumbnail}
-                        alt=""
-                      />
-                      {pl.description}
-                    </StyledAccordionBody>
+              {user.playlists.map((pl, i) => (
+                <StyledVideoCard style={{ marginTop: '5px' }}>
+                  <StyledVideoCard.Title>{pl.name}</StyledVideoCard.Title>
+                  <StyledVideoCard.Body>
+                    <StyledVideoCard.Img src={pl.thumbnail} />
+                    <StyledVideoCard.Text>
+                      {pl.description.slice(0, 150)}
+                    </StyledVideoCard.Text>
                     <StyledButton
                       style={{ marginTop: '5px' }}
                       onClick={() => setPlaylist(playlist.concat(pl.videos))}
+                      variant="outline-dark"
                     >
                       Import
                     </StyledButton>
-                  </StyledAccordionItem>
-                ))}
-              </StyledAccordion>
+                  </StyledVideoCard.Body>
+                </StyledVideoCard>
+              ))}
             </StyledFormGroup>
           </StyledForm>
         </StyledCol>
@@ -350,7 +357,7 @@ export function CreateParty() {
             <StyledFormGroup>
               <StyledFormLabel>Video List</StyledFormLabel>
               {playlist.map((vd, i) => (
-                <StyledVideoCard>
+                <StyledVideoCard style={{ margin: '0px' }}>
                   <StyledCloseButton onClick={() => handleVideoRemoval(i)} />
                   <StyledVideoCard.Title>{vd.title}</StyledVideoCard.Title>
                   <StyledVideoCard.Body>

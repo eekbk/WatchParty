@@ -1,4 +1,4 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { Nav, Navbar, Container } from 'react-bootstrap';
 import { useContext, useEffect } from 'react';
 import axios from 'axios';
@@ -14,8 +14,17 @@ import SearchBar from './search/SearchBar';
 import VoiceButton from '../buttons/VoiceButton';
 
 function App() {
-  const { user, setUser } = useContext(UserContext);
+  const location = useLocation();
   const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
+  // special AND very important useEffect
+  useEffect(() => {
+    if (location.pathname === '/watchParty') {
+      document.body.style.overflowY = 'hidden';
+    } else {
+      document.body.style.overflowY = 'auto';
+    }
+  }, [location]);
   useEffect(() => {
     if (!user) {
       axios
@@ -41,7 +50,7 @@ function App() {
         console.error(err);
       });
   };
-
+  // TODO: fix style look, do style goodly
   return (
     <StyledBackgroundContainer fluid>
       <Header>
@@ -51,6 +60,7 @@ function App() {
               WatchParty
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            {/* TODO: REMOVE SEARCH FROM COLLAPSE */}
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
                 <Nav.Link
@@ -108,8 +118,8 @@ function App() {
                   Logout
                 </Nav.Link>
               </Nav>
-              <SearchBar />
             </Navbar.Collapse>
+            <SearchBar />
           </Container>
         </Navbar>
       </Header>

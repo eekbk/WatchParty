@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Card, Container, Row, Col } from 'react-bootstrap';
 // import io from 'socket.io-client';
@@ -9,9 +9,11 @@ const { default: Chat } = require('./Chat.tsx');
 
 // function WatchParty({ videos, user, room }: any) {
 function WatchParty({ socket }) {
+  // styling
+  const vH = useRef(null);
   // state vars
   const [dbMessages, setMessages] = useState([]);
-  const user = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { state } = useLocation();
   const room = state.party;
   const isArchived = state.isArchived || false;
@@ -32,25 +34,29 @@ function WatchParty({ socket }) {
 
   return (
     <Container
+      fluid
       style={{
+        position: 'relative',
         width: '100%',
-        height: '90vh',
-        marginLeft: '0px',
-        maxWidth: '100%',
+        height: '0',
+        maxHeight: '56vh',
+        paddingBottom: '56.25%',
       }}
     >
-      <Row>
-        <Col xs={14} md={9}>
+      <Row style={{ height: 'inherit' }}>
+        <Col xs={14} md={9} style={{ padding: '0px' }}>
           <Card
             style={{
               width: '100%',
-              height: '90vh',
+              height: '100%',
               borderRadius: '0px 0px 10px 0px',
+              border: '0px',
             }}
             bg="transparent"
             text="white"
           >
             <Video
+              vH={vH}
               isArchived={isArchived}
               user={user}
               playlist={playlist}
@@ -58,8 +64,8 @@ function WatchParty({ socket }) {
               participants={participants}
               setParticipants={setParticipants}
               status={
-                user.user
-                  ? user.user.parties.filter((party) => party.id === room.id)[0]
+                user
+                  ? user.parties.filter((party) => party.id === room.id)[0]
                   : null
               }
               room={room}
@@ -67,8 +73,9 @@ function WatchParty({ socket }) {
             />
           </Card>
         </Col>
-        <Col xs={5} md={3}>
+        <Col xs={5} md={3} style={{ padding: '0px' }}>
           <Chat
+            vH={vH}
             isArchived={isArchived}
             user={user}
             room={room.id || 'test'}

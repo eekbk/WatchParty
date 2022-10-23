@@ -1,10 +1,19 @@
 import axios from 'axios';
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
-import { Container, ProgressBar, Form, Row, Col } from 'react-bootstrap';
-import { LButton } from '../../styles';
-import { Playlist } from './Playlist';
+import { Container, ProgressBar, Col } from 'react-bootstrap';
 import { Participants } from './Participants';
+import {
+  LButton,
+  VolSlider,
+  PlayButton,
+  PauseButton,
+  NextButton,
+  BackButton,
+  StRow,
+  PStRow,
+} from '../../styles';
+import { Playlist } from './Playlist';
 
 function Video({
   playlist,
@@ -16,10 +25,11 @@ function Video({
   user,
   socket,
   isArchived,
+  vH,
 }) {
   // state vars
   const [isPlaying, setPause] = useState(() => !status);
-  const [pSeconds, setSeconds] = useState(0.0001);
+  const [pSeconds, setSeconds] = useState(() => 0.0001);
   const [duration, setDur] = useState(1);
   const [volume, setVol] = useState(0.5);
   const [video, setVid] = useState(0);
@@ -149,31 +159,16 @@ function Video({
   // Positioning of playlist and participants needs work
   return (
     <Container
-      fluid="md"
+      ref={vH}
+      fluid
       style={{
-        height: '100%',
         float: 'left',
-        marginLeft: '0px',
+        position: 'relative',
+        width: '100%',
+        height: '0',
+        paddingBottom: '56.25%',
       }}
     >
-      <Row style={{ position: 'absolute', width: '100%', maxHeight: '85%' }}>
-        <Col md={4}>
-          <Playlist
-            room={room}
-            playlist={playlist}
-            setPlaylist={setPlaylist}
-            status={status}
-          />
-        </Col>
-        <Col md={3}>
-          <Participants
-            room={room}
-            status={status}
-            participants={participants}
-            setParticipants={setParticipants}
-          />
-        </Col>
-      </Row>
       <ReactPlayer
         ref={videoPlayer}
         config={{
@@ -198,50 +193,134 @@ function Video({
             : 'https://www.youtube.com/watch?v=vZa0Yh6e7dw'
         }
         width="100%"
-        height="85%"
+        height="100%"
         style={{
           pointerEvents: 'none',
+          position: 'absolute',
+          left: '0',
+          top: '0',
         }}
       />
-      <ProgressBar variant="info" now={pSeconds} max={duration} min={0} />
-      <Container fluid="md" style={{ height: '1.5rm', width: '10%' }}>
-        <Form.Range value={volume * 100} onChange={setVolume} />
-      </Container>
-      <LButton
-        disabled={
-          isArchived ? false : status ? status.role !== 'CREATOR' : true
-        }
-        onClick={playVid}
-      >
-        Play
-      </LButton>
-      {' '}
-      <LButton
-        disabled={
-          isArchived ? false : status ? status.role !== 'CREATOR' : true
-        }
-        onClick={pauseVid}
-      >
-        Pause
-      </LButton>
-      {' '}
-      <LButton
-        disabled={
-          isArchived ? false : status ? status.role !== 'CREATOR' : true
-        }
-        onClick={() => changeVid(false)}
-      >
-        Back
-      </LButton>
-      {' '}
-      <LButton
-        disabled={
-          isArchived ? false : status ? status.role !== 'CREATOR' : true
-        }
-        onClick={() => changeVid(true)}
-      >
-        Next
-      </LButton>
+      <PStRow>
+        <Col md={4}>
+          <Playlist
+            room={room}
+            playlist={playlist}
+            setPlaylist={setPlaylist}
+            status={status}
+          />
+        </Col>
+        <Col md={4} hidden={!participants}>
+          {participants ? (
+            <Participants
+              room={room}
+              status={status}
+              participants={participants || []}
+              setParticipants={setParticipants}
+            />
+          ) : null}
+        </Col>
+      </PStRow>
+      <StRow>
+        <Col
+          md="auto"
+          lg="auto"
+          sm="auto"
+          style={{
+            padding: '0px',
+            width: '4rem',
+          }}
+        >
+          <VolSlider
+            value={volume * 100}
+            onChange={setVolume}
+            style={{ height: '1.5rm', transform: 'rotate(-90deg)' }}
+          />
+        </Col>
+        <Col md="auto" lg="auto" sm="auto">
+          <LButton
+            style={{
+              visibility: isArchived
+                ? 'visible'
+                : status
+                ? status.role === 'CREATOR'
+                  ? 'visible'
+                  : 'hidden'
+                : 'hidden',
+            }}
+            disabled={
+              isArchived ? false : status ? status.role !== 'CREATOR' : true
+            }
+            onClick={playVid}
+          >
+            <PlayButton size="2em" />
+          </LButton>
+        </Col>
+        <Col md="auto" lg="auto" sm="auto">
+          <LButton
+            style={{
+              visibility: isArchived
+                ? 'visible'
+                : status
+                ? status.role === 'CREATOR'
+                  ? 'visible'
+                  : 'hidden'
+                : 'hidden',
+            }}
+            disabled={
+              isArchived ? false : status ? status.role !== 'CREATOR' : true
+            }
+            onClick={pauseVid}
+          >
+            <PauseButton size="2em" />
+          </LButton>
+        </Col>
+        <Col md="auto" lg="auto" sm="auto">
+          <LButton
+            style={{
+              visibility: isArchived
+                ? 'visible'
+                : status
+                ? status.role === 'CREATOR'
+                  ? 'visible'
+                  : 'hidden'
+                : 'hidden',
+            }}
+            disabled={
+              isArchived ? false : status ? status.role !== 'CREATOR' : true
+            }
+            onClick={() => changeVid(true)}
+          >
+            <BackButton size="2em" />
+          </LButton>
+        </Col>
+        <Col md="auto" lg="auto" sm="auto">
+          <LButton
+            style={{
+              visibility: isArchived
+                ? 'visible'
+                : status
+                ? status.role === 'CREATOR'
+                  ? 'visible'
+                  : 'hidden'
+                : 'hidden',
+            }}
+            disabled={
+              isArchived ? false : status ? status.role !== 'CREATOR' : true
+            }
+            onClick={() => changeVid(false)}
+          >
+            <NextButton size="2em" />
+          </LButton>
+        </Col>
+        <ProgressBar
+          variant="info"
+          now={pSeconds}
+          max={duration}
+          min={0}
+          style={{ padding: '0px' }}
+        />
+      </StRow>
     </Container>
   );
 }
