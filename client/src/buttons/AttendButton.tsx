@@ -37,7 +37,7 @@ function AttendButton({ partyId, isAttending, setIsAttending }: any) {
   };
 
   return (
-    <StyledGlassButton onClick={handleClick} size="sm">
+    <StyledGlassButton onClick={handleClick} size="sm" disabled={!user}>
       {isAttending ? 'decline' : 'attend'}
     </StyledGlassButton>
   );

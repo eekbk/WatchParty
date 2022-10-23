@@ -47,10 +47,29 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           },
           include: {
             videos: true,
+            user_parties: {
+              select: {
+                role: true,
+                user: {
+                  select: {
+                    user_name: true,
+                    id: true,
+                  },
+                },
+              },
+            },
           },
         });
       })
       .then((parties: any) => {
+        parties.forEach((pt) => {
+          pt.users = pt.user_parties.map((usr) => ({
+            id: usr.user.id,
+            username: usr.user.user_name,
+            role: usr.role,
+          }));
+          delete pt.user_parties;
+        });
         user.parties = parties;
         // Getting the user's roles in their parties
         return prisma.user_Party.findMany({

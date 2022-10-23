@@ -108,11 +108,6 @@ export const SearchButton = styled(Button)`
 //   cursor: pointer;
 // `;
 
-// export const StyledUserCard = styled(Card)`
-//   width: 18rem;
-//   height: 10rem;
-// `;
-
 // export const StyledVideoCard = styled(Card)`
 //   width: 18rem;
 //   height: 10rem;

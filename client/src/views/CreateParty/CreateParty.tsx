@@ -196,6 +196,42 @@ export function CreateParty() {
         <StyledCol sm={10}>
           <StyledForm>
             <StyledFormGroup>
+              <StyledFormLabel>Youtube Video Url</StyledFormLabel>
+              <StyledFormControl
+                placeholder="Paste Url Here"
+                onChange={(e) => setVideo(e.target.value)}
+                value={video}
+              />
+              <StyledFormText>Choose a YouTube video to add</StyledFormText>
+              <br />
+              <StyledButton
+                onClick={handleVideoAddition}
+                variant="outline-dark"
+              >
+                Add
+              </StyledButton>
+            </StyledFormGroup>
+            <StyledFormGroup style={{ marginTop: '20px' }}>
+              <StyledFormLabel>Public Youtube Playlist Url</StyledFormLabel>
+              <StyledFormControl
+                placeholder="Paste Url Here"
+                onChange={(e) => setYoutubePlaylist(e.target.value)}
+                value={youtubePlaylist}
+              />
+              <StyledFormText>
+                Choose a YouTube playlist to import videos from
+              </StyledFormText>
+              <br />
+              <StyledButton
+                onClick={handlePlaylistAddition}
+                variant="outline-dark"
+              >
+                Add
+              </StyledButton>
+            </StyledFormGroup>
+          </StyledForm>
+          <StyledForm style={{ marginTop: '10px' }}>
+            <StyledFormGroup>
               <StyledFormCheck
                 type="checkbox"
                 label="Archive on End"
@@ -260,47 +296,10 @@ export function CreateParty() {
           </StyledForm>
         </StyledCol>
         <StyledCol sm={10}>
-          <StyledForm>
-            <StyledFormGroup>
-              <StyledFormLabel>Youtube Video Url</StyledFormLabel>
-              <StyledFormControl
-                placeholder="Paste Url Here"
-                onChange={(e) => setVideo(e.target.value)}
-                value={video}
-              />
-              <StyledFormText>Choose a YouTube video to add</StyledFormText>
-              <br />
-              <StyledButton
-                onClick={handleVideoAddition}
-                variant="outline-dark"
-              >
-                Add
-              </StyledButton>
-            </StyledFormGroup>
-            <StyledFormGroup style={{ marginTop: '20px' }}>
-              <StyledFormLabel>Public Youtube Playlist Url</StyledFormLabel>
-              <StyledFormControl
-                placeholder="Paste Url Here"
-                onChange={(e) => setYoutubePlaylist(e.target.value)}
-                value={youtubePlaylist}
-              />
-              <StyledFormText>
-                Choose a YouTube playlist to import videos from
-              </StyledFormText>
-              <br />
-              <StyledButton
-                onClick={handlePlaylistAddition}
-                variant="outline-dark"
-              >
-                Add
-              </StyledButton>
-            </StyledFormGroup>
-          </StyledForm>
           <StyledForm
             style={{
               overflowY: 'scroll',
-              maxHeight: '70vh',
-              marginTop: '10px',
+              maxHeight: '80vh',
             }}
           >
             <StyledFormGroup>
