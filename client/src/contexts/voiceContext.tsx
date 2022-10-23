@@ -1,0 +1,143 @@
+import { createContext, useState, useMemo, useEffect } from 'react';
+// import { useNavigate, useLocation } from 'react-router-dom';
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from 'react-speech-recognition';
+
+export const VoiceContext = createContext(null);
+export function VoiceContextProvider({ children }) {
+  const [redirectUrl, setRedirectUrl] = useState('');
+  const [searchBarVal, setSearchBarVal] = useState('');
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
+  const [messageText, setMessageText] = useState('');
+  const [isSent, setIsSent] = useState(false);
+  const [followName, setFollowName] = useState('');
+  const [dmName, setDmName] = useState('');
+
+  // const navigate = useNavigate();
+
+  const commands = [
+    {
+      command: ['Go to *', 'Open *', 'Take me (to) *'],
+      callback: (redirectPage) => setRedirectUrl(redirectPage),
+    },
+    {
+      command: [
+        'Turn off mic',
+        'Stop listening',
+        'privacy please',
+        'turn voice control off',
+        'turn off voice control',
+      ],
+      callback: () => handleVoiceToggle(),
+    },
+    {
+      command: ['clear', 'reset'],
+      callback: ({ resetTranscript }) => resetTranscript(),
+    },
+    {
+      command: ['search for *', 'look for *', 'show me *', 'look up *'],
+      callback: (verbalSearch) => setSearchBarVal(verbalSearch),
+    },
+    {
+      command: ['enter', 'send', 'make it so'],
+      callback: () => setIsSent(!isSent),
+    },
+    {
+      command: ['compose message *', 'write *', 'right *'],
+      callback: (message) => setMessageText(message),
+    },
+    {
+      command: ['follow *', 'unfollow *', 'stop following *'],
+      callback: (name) => setFollowName(name),
+    },
+    {
+      command: ['DM *', 'message *'],
+      callback: (name) => setDmName(name),
+    },
+  ];
+
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition({ commands });
+
+  // const pages = [
+  //   'home',
+  //   'login',
+  //   'profile',
+  //   'logout',
+  //   'create party',
+  // ];
+  // const urls = {
+  //   home: '/',
+  //   login: '/auth/google',
+  //   logout: '/logout',
+  //   profile: '/profile',
+  //   'mic check': '/miccheck',
+  //   'create party': '/createParty',
+  // };
+
+  // useEffect(() => {
+  //   if (redirectUrl) {
+  //     if (pages.includes(redirectUrl)) {
+  //       navigate(urls[redirectUrl]);
+  //     } else {
+  //       alert('Page not recognized');
+  //     }
+  //   }
+  // }, [redirectUrl]);
+
+  const handleVoiceToggle = async () => {
+    console.log('VoiceToggle');
+    if (!listening) {
+      await SpeechRecognition.startListening({ continuous: true });
+      console.log('listening');
+      setIsSwitchOn(true);
+    } else {
+      await SpeechRecognition.abortListening();
+      setIsSwitchOn(false);
+      console.log('not listening');
+      resetTranscript();
+    }
+  };
+
+  const voiceVal = useMemo(
+    () => ({
+      transcript,
+      commands,
+      listening,
+      browserSupportsSpeechRecognition,
+      SpeechRecognition,
+      redirectUrl,
+      searchBarVal,
+      setSearchBarVal,
+      resetTranscript,
+      isSwitchOn,
+      setIsSwitchOn,
+      isSent,
+      messageText,
+      setMessageText,
+      handleVoiceToggle,
+      followName,
+      setFollowName,
+      dmName,
+      setDmName,
+    }),
+    [
+      SpeechRecognition,
+      transcript,
+      listening,
+      redirectUrl,
+      isSwitchOn,
+      isSent,
+      messageText,
+    ]
+  );
+
+  return (
+    <VoiceContext.Provider value={voiceVal}>{children}</VoiceContext.Provider>
+  );
+}
