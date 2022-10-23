@@ -3,6 +3,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoSearch } from 'react-icons/io5';
 import { SearchContext } from '../../contexts/searchContext';
+import { VoiceContext } from '../../contexts/voiceContext';
 import {
   SearchForm,
   SearchInputContainer,
@@ -16,6 +17,8 @@ function SearchBar() {
   const [isLoading, setIsLoading] = useState(false);
   const { setUsersMatch, setPartiesMatch, setVideosMatch } =
     useContext(SearchContext);
+  const { resetTranscript, searchBarVal, setSearchBarVal, isSent } =
+    useContext(VoiceContext);
   const navigate = useNavigate();
 
   // what if we put a useEffect to watch for changes in the searchValue
@@ -67,6 +70,20 @@ function SearchBar() {
       });
     }
   }, [isLoading]);
+
+  // set a useEffect to listen for search-specific commands
+  useEffect(() => {
+    setTextVal(searchBarVal);
+  }, [searchBarVal]);
+
+  useEffect(() => {
+    if (searchBarVal) {
+      searchRequest(searchBarVal);
+    }
+    setTextVal('');
+    resetTranscript();
+    setSearchBarVal('');
+  }, [isSent]);
 
   return (
     <form onSubmit={!isLoading ? handleSubmit : null}>

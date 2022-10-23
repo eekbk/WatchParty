@@ -4,6 +4,7 @@ import axios from 'axios';
 import { UserContext } from '../context';
 import FollowButton from '../buttons/FollowButton';
 import BlockButton from '../buttons/BlockButton';
+import DmButton from '../buttons/DmButton';
 import {
   StyledUserCard,
   StyledUserCardImg,
@@ -15,7 +16,8 @@ import {
 } from '../cards/cards.styles';
 
 // ModCard stands for Modular Card. Hopefully we can reuse it
-function UserCard({ obj }) {
+function UserCard({ obj, socket }) {
+  console.log('the otheruser:', obj);
   // console.log('here are the props...\nobj:', obj, '\nkind:', kind);
   const { user } = useContext(UserContext);
   const [cardTitle, setCardTitle] = useState('');
@@ -70,26 +72,39 @@ function UserCard({ obj }) {
           </StyledCardBody>
         </Col>
       </Row>
-      {/* <Card.Footer> */}
       <StyledUserCardFooter>
-        <StyledUserCardFooterCol sm={3}>
+        <StyledUserCardFooterCol
+          sm={2}
+          style={{
+            marginRight: '23px',
+          }}
+        >
           <FollowButton
             otherUserId={obj.id}
             setFollows={setFollows}
             follows={follows}
             isFollowing={isFollowing}
             setIsFollowing={setIsFollowing}
+            otherUserName={obj.user_name}
           />
         </StyledUserCardFooterCol>
-        <StyledUserCardFooterCol sm={3}>
+        <StyledUserCardFooterCol sm={2}>
           <BlockButton
             otherUserId={obj.id}
             isBlocking={isBlocking}
             setIsBlocking={setIsBlocking}
+            otherUserName={obj.user_name}
+          />
+        </StyledUserCardFooterCol>
+        <StyledUserCardFooterCol sm={2}>
+          <DmButton
+            otherUserId={obj.id}
+            otherUserName={obj.user_name}
+            currentUserId={user.id}
+            socket={socket}
           />
         </StyledUserCardFooterCol>
       </StyledUserCardFooter>
-      {/* </Card.Footer> */}
     </StyledUserCard>
   );
 }

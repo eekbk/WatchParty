@@ -14,6 +14,7 @@ export const StyledCardBody = styled(Card.Body)`
   padding: 8px;
   margin: 0;
   align-content: space-between;
+  cursor: pointer;
   /* text-align: right; */
 `;
 
@@ -21,10 +22,9 @@ export const StyledPartyCard = styled(Card)`
   height: 22rem;
   width: 18rem;
   padding: 0 auto;
-  cursor: pointer;
   box-sizing: content-box;
   background-color: black;
-  /* outline: #320e3b; */
+
   border-color: #6a1d7d;
   border-width: 1px;
 `;
@@ -106,7 +106,7 @@ export const StyledUserCardFooter = styled(Row)`
 export const StyledUserCardFooterCol = styled(Col)`
   /* align-items: end; */
   align-content: end;
-  justify-content: end;
+  justify-content: center;
   margin-right: 4px;
   margin-left: 8px;
 `;
@@ -118,6 +118,11 @@ export const StyledPartyTitle = styled(Card.Title)`
 `;
 
 export const StyledPartyDesc = styled(Card.Text)`
+  font-size: 0.85em;
+  margin: 8px 6px;
+`;
+
+export const StyledPartyTime = styled(Card.Text)`
   font-size: 0.85em;
   margin: 8px 6px;
 `;

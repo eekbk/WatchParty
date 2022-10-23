@@ -1,7 +1,8 @@
-import { Card, Row } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../context';
+import { VoiceContext } from '../contexts/voiceContext';
 import AttendButton from '../buttons/AttendButton';
 import {
   StyledPartyCard,
@@ -11,12 +12,19 @@ import {
   StyledIsFollowing,
   StyledPartyCardFooterCol,
   StyledPartyCardFooter,
+  StyledPartyTime,
   // StyledCardFooter,
 } from '../cards/cards.styles';
 
 function PartyCard({ party }) {
   const { id, description, thumbnail, name, date_time, users } = party;
   const { user } = useContext(UserContext);
+  const {
+    partyName,
+    resetTranscript,
+    // setPartyName,
+    isSent,
+  } = useContext(VoiceContext);
   const navigate = useNavigate();
   const [isAttending, setIsAttending] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -57,10 +65,21 @@ function PartyCard({ party }) {
     }
   }, [user]);
 
-  const handleCardClick = (party) => {
+  // for voiceControl
+  useEffect(() => {
+    if (partyName.toUpperCase() === party.name.toUpperCase()) {
+      resetTranscript();
+      goToParty();
+    }
+  }, [isSent]);
+
+  const goToParty = () => {
     navigate('/watchParty', {
       state: { party },
     });
+  };
+  const handleCardClick = () => {
+    goToParty();
   };
 
   const stringAbbreviator = (string, type) => {
@@ -117,7 +136,7 @@ function PartyCard({ party }) {
     <StyledPartyCard>
       <Card.Img variant="top" src={thumbnail} />
       <StyledCardBody>
-        <StyledPartyTitle onClick={() => handleCardClick(party)}>
+        <StyledPartyTitle onClick={handleCardClick}>
           {stringAbbreviator(name, 'title')}
         </StyledPartyTitle>
         <StyledPartyDesc>
@@ -130,9 +149,9 @@ function PartyCard({ party }) {
           {/* <Card.Text>{isFollowing ? <i>following</i>: '  '}</Card.Text> */}
           {/* </Row> */}
         </StyledIsFollowing>
-        <Row>
+        <StyledPartyTime>
           <small>{dateTimeConversion(date_time)}</small>
-        </Row>
+        </StyledPartyTime>
       </StyledCardBody>
       <StyledPartyCardFooter>
         <StyledPartyCardFooterCol sm={2}>
