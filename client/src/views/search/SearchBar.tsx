@@ -17,8 +17,14 @@ function SearchBar() {
   const [isLoading, setIsLoading] = useState(false);
   const { setUsersMatch, setPartiesMatch, setVideosMatch } =
     useContext(SearchContext);
-  const { transcript, listening, resetTranscript, searchBarVal, isSent } =
-    useContext(VoiceContext);
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    searchBarVal,
+    setSearchBarVal,
+    isSent,
+  } = useContext(VoiceContext);
   const navigate = useNavigate();
 
   // what if we put a useEffect to watch for changes in the searchValue
@@ -82,6 +88,7 @@ function SearchBar() {
     }
     setTextVal('');
     resetTranscript();
+    setSearchBarVal('');
   }, [isSent]);
 
   return (
