@@ -11,6 +11,7 @@ import { VoiceContextProvider } from './contexts/voiceContext';
 import App from './views/app';
 import WatchParty from './views/watchParty/Room';
 import Dashboard from './views/Dashboard';
+// import Profile from './views/Profile';
 import Search from './views/search/Search';
 import Dm from './views/Dm/Dm';
 import Archive from './views/Archive/Archive';
@@ -29,7 +30,7 @@ function RouteHandler() {
             <Route path="calendar" element={<Calendar />} />
             <Route path="watchParty" element={<WatchParty socket={socket} />} />
             <Route path="createParty" element={<CreateParty />} />
-            <Route path="profile" element={<div>Profile</div>} />
+            {/* <Route path="profile" element={<Profile />} /> */}
             <Route path="dm" element={<Dm socket={socket} room="" />} />
             <Route path="archive" element={<Archive />} />
           </Route>

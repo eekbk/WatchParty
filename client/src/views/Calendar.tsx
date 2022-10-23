@@ -31,7 +31,7 @@ function Calendar() {
                     ) =>
                       user.following.some(
                         (f) => f === ptU.id && ptU.role === 'CREATOR'
-                        // userparty id && user party role is the creator or the users party
+                        // userParty id && user party role is the creator or the users party
                       )
                   )
               )
@@ -40,6 +40,7 @@ function Calendar() {
                   Number(new Date(a.date_time)) - Number(new Date(b.date_time))
               )
               .filter(
+                // to get only the today and upcoming parties
                 // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
                 (a) => Number(new Date(a.date_time)) >= Number(today)
               )
@@ -69,6 +70,7 @@ function Calendar() {
                   Number(new Date(a.date_time)) - Number(new Date(b.date_time))
               )
               .filter(
+                // to get only the today and upcoming parties
                 // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
                 (a) => Number(new Date(a.date_time)) >= Number(today)
               )
@@ -93,14 +95,14 @@ function Calendar() {
   return (
     <Container>
       {changeText ? (
-        <Card border="danger" bg="warning">
+        <Card>
           <Card.Header style={{ fontSize: '24px' }} className="text-center">
             <Col>
               {user ? null : null}
               Calendar
             </Col>
             <Col>
-              <Button onClick={() => handleChange()}>Friends Parties</Button>
+              <Button onClick={() => handleChange()}>See All Parties</Button>
             </Col>
           </Card.Header>
           <Table striped bordered hover variant="dark" responsive="sm">
@@ -151,7 +153,9 @@ function Calendar() {
               Calendar
             </Col>
             <Col>
-              <Button onClick={() => handleChange()}>All parties</Button>
+              <Button onClick={() => handleChange()}>
+                See Friends Parties
+              </Button>
             </Col>
           </Card.Header>
           <Table striped bordered hover variant="dark" responsive="sm">
