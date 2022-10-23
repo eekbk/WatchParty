@@ -65,15 +65,13 @@ export function VoiceContextProvider({ children }) {
   } = useSpeechRecognition({ commands });
 
   const handleVoiceToggle = async () => {
-    console.log('VoiceToggle');
     if (!listening) {
       await SpeechRecognition.startListening({ continuous: true });
-      console.log('listening');
       setIsSwitchOn(true);
     } else {
       await SpeechRecognition.abortListening();
       setIsSwitchOn(false);
-      console.log('not listening');
+
       resetTranscript();
     }
   };

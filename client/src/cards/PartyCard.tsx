@@ -1,4 +1,4 @@
-import { Card, Row } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../context';
@@ -11,6 +11,7 @@ import {
   StyledIsFollowing,
   StyledPartyCardFooterCol,
   StyledPartyCardFooter,
+  StyledPartyTime,
   // StyledCardFooter,
 } from '../cards/cards.styles';
 
@@ -130,9 +131,9 @@ function PartyCard({ party }) {
           {/* <Card.Text>{isFollowing ? <i>following</i>: '  '}</Card.Text> */}
           {/* </Row> */}
         </StyledIsFollowing>
-        <Row>
+        <StyledPartyTime>
           <small>{dateTimeConversion(date_time)}</small>
-        </Row>
+        </StyledPartyTime>
       </StyledCardBody>
       <StyledPartyCardFooter>
         <StyledPartyCardFooterCol sm={2}>

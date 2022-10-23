@@ -122,6 +122,11 @@ export const StyledPartyDesc = styled(Card.Text)`
   margin: 8px 6px;
 `;
 
+export const StyledPartyTime = styled(Card.Text)`
+  font-size: 0.85em;
+  margin: 8px 6px;
+`;
+
 export const StyledIsFollowing = styled(Card.Text)`
   font-size: smaller;
   color: gray;

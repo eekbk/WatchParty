@@ -5,7 +5,7 @@ import { StyledGlassButton } from './buttons.styles';
 
 function DmButton({ socket, otherUserId, otherUserName, currentUserId }) {
   const navigate = useNavigate();
-  const { dmName, setDmName } = useContext(VoiceContext);
+  const { dmName } = useContext(VoiceContext);
 
   const openDm = () => {
     socket.emit('createConnection', [otherUserId, currentUserId]);

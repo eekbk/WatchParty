@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SpeechRecognition from 'react-speech-recognition';
 import { Form } from 'react-bootstrap';
 import { VoiceContext } from '../contexts/voiceContext';
 
@@ -9,8 +8,6 @@ function VoiceButton() {
   const {
     transcript,
     isSwitchOn,
-    setIsSwitchOn,
-    listening,
     resetTranscript,
     redirectUrl,
     handleVoiceToggle,
