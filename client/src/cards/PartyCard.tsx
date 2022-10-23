@@ -23,7 +23,7 @@ function PartyCard({ party }) {
   const [isCreator, setIsCreator] = useState(false);
   const creator = users.filter((user) => user.role === 'CREATOR')[0];
   const creatorText =
-    creator.id === user.id
+    user && creator.id === user.id
       ? 'YOU are hosting!'
       : `hosted by ${creator.username}`;
   // const [isFollowing, setIsFollowing] = useState(false);
