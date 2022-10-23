@@ -14,7 +14,7 @@ import {
 } from './search.styles';
 // import VideoCard from '../../cards/VideoCard';
 
-function Search() {
+function Search({ socket }) {
   const {
     usersMatch,
     partiesMatch,
@@ -97,7 +97,7 @@ function Search() {
                 .slice(0, 4)
                 .map((userMatch) => (
                   <Col md={6}>
-                    <UserCard obj={userMatch} />
+                    <UserCard obj={userMatch} socket={socket} />
                   </Col>
                 ))}
             </Row>

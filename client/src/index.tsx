@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 import { CreateParty } from './views/CreateParty/CreateParty';
 import { UserContextProvider } from './context';
 import { SearchContextProvider } from './contexts/searchContext';
+import { VoiceContextProvider } from './contexts/voiceContext';
 import App from './views/app';
 import WatchParty from './views/watchParty/Room';
 import Dashboard from './views/Dashboard';
@@ -24,7 +25,7 @@ function RouteHandler() {
         <Routes>
           <Route path="/" element={<App />}>
             <Route path="" element={<Dashboard />} />
-            <Route path="search" element={<Search />} />
+            <Route path="search" element={<Search socket={socket} />} />
             <Route path="calendar" element={<Calendar />} />
             <Route path="watchParty" element={<WatchParty socket={socket} />} />
             <Route path="createParty" element={<CreateParty />} />
@@ -40,8 +41,10 @@ function RouteHandler() {
 
 ReactDOM.createRoot(document.getElementById('app')!).render(
   <UserContextProvider>
-    <SearchContextProvider>
-      <RouteHandler />
-    </SearchContextProvider>
+    <VoiceContextProvider>
+      <SearchContextProvider>
+        <RouteHandler />
+      </SearchContextProvider>
+    </VoiceContextProvider>
   </UserContextProvider>
 );

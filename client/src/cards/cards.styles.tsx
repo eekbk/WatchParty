@@ -91,7 +91,7 @@ export const StyledUserCardFooter = styled(Row)`
 export const StyledUserCardFooterCol = styled(Col)`
   /* align-items: end; */
   align-content: end;
-  justify-content: end;
+  justify-content: center;
   margin-right: 4px;
   margin-left: 8px;
 `;

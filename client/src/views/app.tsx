@@ -10,7 +10,8 @@ import {
 } from '../styles';
 import { UserContext } from '../context';
 import SearchBar from './search/SearchBar';
-import VoiceControl from './voiceControl/VoiceControl';
+// import VoiceControl from './voiceControl/VoiceControl';
+import VoiceButton from '../buttons/VoiceButton';
 
 function App() {
   const { user, setUser } = useContext(UserContext);
@@ -116,7 +117,8 @@ function App() {
         <Outlet />
       </MainContent>
       <Footer>
-        <VoiceControl />
+        {/* <VoiceControl /> */}
+        <VoiceButton />
       </Footer>
     </StyledBackgroundContainer>
   );
