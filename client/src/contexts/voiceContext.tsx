@@ -12,6 +12,7 @@ export function VoiceContextProvider({ children }) {
   const [messageText, setMessageText] = useState('');
   const [isSent, setIsSent] = useState(false);
   const [followName, setFollowName] = useState('');
+  const [blockName, setBlockName] = useState('');
   const [dmName, setDmName] = useState('');
   const [partyName, setPartyName] = useState('');
 
@@ -51,6 +52,10 @@ export function VoiceContextProvider({ children }) {
     {
       command: ['follow *', 'unfollow *', 'stop following *'],
       callback: (name) => setFollowName(name),
+    },
+    {
+      command: ['block *', 'unblock *', 'I never want to see :name again'],
+      callback: (name) => setBlockName(name),
     },
     {
       command: ['DM *', 'message *'],
@@ -100,6 +105,7 @@ export function VoiceContextProvider({ children }) {
       handleVoiceToggle,
       followName,
       setFollowName,
+      blockName,
       dmName,
       setDmName,
       partyName,

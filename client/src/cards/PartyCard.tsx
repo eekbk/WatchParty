@@ -19,7 +19,12 @@ import {
 function PartyCard({ party }) {
   const { id, description, thumbnail, name, date_time, users } = party;
   const { user } = useContext(UserContext);
-  const { partyName, isSent } = useContext(VoiceContext);
+  const {
+    partyName,
+    resetTranscript,
+    // setPartyName,
+    isSent,
+  } = useContext(VoiceContext);
   const navigate = useNavigate();
   const [isAttending, setIsAttending] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -63,6 +68,7 @@ function PartyCard({ party }) {
   // for voiceControl
   useEffect(() => {
     if (partyName.toUpperCase() === party.name.toUpperCase()) {
+      resetTranscript();
       goToParty();
     }
   }, [isSent]);

@@ -100,7 +100,7 @@ function FollowButton({
 
   useEffect(() => {
     // console.log(`Are you listening?? ${otherUserName} or are you ${followName}`)
-    if (followName === otherUserName) {
+    if (followName.toUpperCase() === otherUserName.toUpperCase()) {
       updateFollowStatus();
       resetTranscript();
     }
