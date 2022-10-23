@@ -127,7 +127,6 @@ function App() {
         <Outlet />
       </MainContent>
       <Footer>
-        {/* <VoiceControl /> */}
         <VoiceButton />
       </Footer>
     </StyledBackgroundContainer>
