@@ -70,14 +70,14 @@ function App() {
                 >
                   Create Party
                 </Nav.Link>
-                <Nav.Link
+                {/* <Nav.Link
                   hidden={!user}
                   to="/profile"
                   as={Link}
                   style={{ color: 'white' }}
                 >
                   Profile
-                </Nav.Link>
+                </Nav.Link> */}
                 <Nav.Link
                   hidden={!user}
                   to="/calendar"

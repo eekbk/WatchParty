@@ -26,6 +26,7 @@ function Dashboard() {
       .then((data: any) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
+        console.log(data.data, 'data.data...');
         setAllParties(
           data.data
             .sort(
@@ -80,7 +81,6 @@ function Dashboard() {
 
   return (
     <Container>
-      <Row />
       {user ? (
         <Row>
           {parties && parties.length ? (
@@ -108,8 +108,8 @@ function Dashboard() {
                     }
                   )
                   .map((party) => (
-                    <Col style={{ borderRadius: '1px' }}>
-                      <PartyCard party={party} key={party.id} />
+                    <Col style={{ borderRadius: '1px' }} key={party.id}>
+                      <PartyCard party={party} />
                     </Col>
                   ))}
               </Row>
@@ -124,12 +124,12 @@ function Dashboard() {
         <Col> Top parties</Col>
       </Row>
       <Row>
-        {parties && parties.length ? (
+        {allParties && allParties.length ? (
           <Col>
             <Row>
               {allParties.slice(0, 4).map((party) => (
-                <Col>
-                  <PartyCard party={party} key={party.id} />
+                <Col key={party.id}>
+                  <PartyCard party={party} />
                 </Col>
               ))}
             </Row>
