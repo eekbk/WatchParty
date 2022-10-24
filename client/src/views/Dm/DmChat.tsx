@@ -88,7 +88,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
       <Form>
         <ThinScrollBar
           ref={scrolly}
-          style={{ overflowY: 'scroll', minHeight: '70vh', maxHeight: '70vh' }}
+          style={{ overflowY: 'auto', minHeight: '70vh', maxHeight: '70vh' }}
         >
           {messages.map((message) => (
             <DmMessage message={message} user={user} />

@@ -43,7 +43,7 @@ export function Participants({ participants, setParticipants, room, status }) {
       id="dropdown-basic-button"
       title="Participants"
       style={{
-        overflowY: 'scroll',
+        overflowY: 'auto',
       }}
       hidden={!status}
     >

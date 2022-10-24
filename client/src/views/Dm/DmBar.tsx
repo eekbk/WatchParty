@@ -20,7 +20,7 @@ function DmBar({ user, socket, changeDm }) {
       ref={scrolly}
       style={{
         textAlign: 'center',
-        overflowY: 'scroll',
+        overflowY: 'auto',
         height: '100%',
       }}
     >

@@ -61,7 +61,6 @@ function Chat({
 
   // handle updates
   useEffect(() => {
-    console.log(vH.current ? vH.current.clientHeight : '100%', vH.current);
     scrolly.current.scrollTop = scrolly.current.scrollHeight;
     socket.on('chat', (message) => {
       setMessages((messages) => [...messages, message]);
@@ -98,7 +97,7 @@ function Chat({
       <Form style={{ height: '100%' }}>
         <ThinScrollBar
           ref={scrolly}
-          style={{ overflowY: 'scroll', height: '100%' }}
+          style={{ overflowY: 'auto', height: '100%' }}
         >
           {messages.map((message) => (
             <Message message={message} user={user} socket={socket} />
