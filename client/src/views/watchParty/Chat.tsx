@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { Container, Form, InputGroup } from 'react-bootstrap';
+import { VoiceContext } from '../../contexts/voiceContext';
 import { StyledButton, ThinScrollBar } from '../../styles';
 
 const { default: Message } = require('./Message.tsx');
@@ -19,10 +20,11 @@ function Chat({
   );
   const [chat, setChat] = useState('');
   const scrolly = useRef(null);
+  const { messageText, setMessageText, resetTranscript, isSent } =
+    useContext(VoiceContext);
   // functions
-
-  // handles chat submit
-  const submit = (e) => {
+  // handle chat submit
+  const submitChat = () => {
     if (chat.length >= 1) {
       socket.emit('chat', {
         room,
@@ -32,12 +34,26 @@ function Chat({
       });
       setChat('');
     }
+  };
+
+  // handles click
+  const handleSubmit = (e) => {
+    submitChat();
     e.preventDefault();
   };
 
   const handleResize = () => {
     setVHight(vH.current ? vH.current.clientHeight : '100%');
   };
+
+  // func for async voiceSubmit
+  const voiceChatSubmit = async () => {
+    await submitChat();
+    setMessageText('');
+    setChat('');
+    resetTranscript();
+  };
+
   // for style
   useEffect(() => {
     window.addEventListener('resize', handleResize);
@@ -45,7 +61,6 @@ function Chat({
 
   // handle updates
   useEffect(() => {
-    console.log(vH.current ? vH.current.clientHeight : '100%', vH.current);
     scrolly.current.scrollTop = scrolly.current.scrollHeight;
     socket.on('chat', (message) => {
       setMessages((messages) => [...messages, message]);
@@ -54,6 +69,19 @@ function Chat({
       socket.off('chat');
     };
   }, [messages]);
+
+  // voiceControl populate the form
+  useEffect(() => {
+    setChat(messageText);
+  }, [messageText]);
+
+  // voiceControl send the message
+  useEffect(() => {
+    if (messageText) {
+      voiceChatSubmit();
+    }
+  }, [isSent]);
+
   return (
     <Container
       style={{
@@ -69,7 +97,7 @@ function Chat({
       <Form style={{ height: '100%' }}>
         <ThinScrollBar
           ref={scrolly}
-          style={{ overflowY: 'scroll', height: '100%' }}
+          style={{ overflowY: 'auto', height: '100%' }}
         >
           {messages.map((message) => (
             <Message message={message} user={user} socket={socket} />
@@ -82,7 +110,11 @@ function Chat({
             placeholder="type here!"
             disabled={isArchived}
           />
-          <StyledButton type="submit" onClick={submit} disabled={isArchived}>
+          <StyledButton
+            type="submit"
+            onClick={handleSubmit}
+            disabled={isArchived}
+          >
             Send!
           </StyledButton>
         </InputGroup>

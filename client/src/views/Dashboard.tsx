@@ -26,7 +26,7 @@ function Dashboard() {
       .then((data: any) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        console.log(data.data, 'data.data...');
+        // console.log(data.data, 'data.data...');
         setAllParties(
           data.data
             .sort(
@@ -52,7 +52,7 @@ function Dashboard() {
         .then((data: any) => {
           const today = new Date();
           today.setHours(0, 0, 0, 0);
-          console.log(user, 'user...');
+          // console.log(user, 'user...');
           setParties(
             data.data
               .filter((pt) =>

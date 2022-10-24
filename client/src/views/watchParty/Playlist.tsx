@@ -47,7 +47,7 @@ export function Playlist({ playlist, setPlaylist, room, status }) {
       id="dropdown-basic-button"
       title="Playlist"
       style={{
-        overflowY: 'scroll',
+        overflowY: 'auto',
         maxHeight: '800px',
       }}
       hidden={!status}

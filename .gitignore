@@ -13,8 +13,9 @@ rootkey.csv
 bundle.js
 Dictaphone.tsx
 VoiceToggle.tsx
-voiceContext.tsx
-helperFuncs
+VoiceControl.tsx
 VoiceControl2.tsx
+helperFuncs
 SearchBarAdvancedzzz.tsx
+ModCard.tsx
 

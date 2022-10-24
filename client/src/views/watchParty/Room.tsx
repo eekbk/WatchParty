@@ -44,7 +44,7 @@ function WatchParty({ socket }) {
       }}
     >
       <Row style={{ height: 'inherit' }}>
-        <Col xs={14} md={9} style={{ padding: '0px' }}>
+        <Col xs={14} xl={9} style={{ padding: '0px' }}>
           <Card
             style={{
               width: '100%',
@@ -73,7 +73,7 @@ function WatchParty({ socket }) {
             />
           </Card>
         </Col>
-        <Col xs={5} md={3} style={{ padding: '0px' }}>
+        <Col xs={12} xl={3} style={{ padding: '0px' }}>
           <Chat
             vH={vH}
             isArchived={isArchived}

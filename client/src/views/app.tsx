@@ -10,7 +10,8 @@ import {
 } from '../styles';
 import { UserContext } from '../context';
 import SearchBar from './search/SearchBar';
-import VoiceControl from './voiceControl/VoiceControl';
+// import VoiceControl from './voiceControl/VoiceControl';
+import VoiceButton from '../buttons/VoiceButton';
 
 function App() {
   const location = useLocation();
@@ -24,6 +25,7 @@ function App() {
       document.body.style.overflowY = 'auto';
     }
   }, [location]);
+
   useEffect(() => {
     if (!user) {
       axios
@@ -49,18 +51,21 @@ function App() {
         console.error(err);
       });
   };
+
   // TODO: fix style look, do style goodly
   return (
     <StyledBackgroundContainer fluid>
       <Header>
-        <Navbar expand="lg">
+        <Navbar variant="dark" expand="lg">
           <Container>
-            <Navbar.Brand to="/" as={Link} style={{ color: 'white' }}>
-              WatchParty
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            {/* TODO: REMOVE SEARCH FROM COLLAPSE */}
+            <Navbar.Toggle
+              aria-controls="basic-navbar-nav"
+              style={{ marginBottom: '15px', marginTop: '15px' }}
+            />
             <Navbar.Collapse id="basic-navbar-nav">
+              <Navbar.Brand to="/" as={Link} style={{ color: 'white' }}>
+                WatchParty
+              </Navbar.Brand>
               <Nav className="me-auto">
                 <Nav.Link
                   hidden={!user}
@@ -117,8 +122,8 @@ function App() {
                   Logout
                 </Nav.Link>
               </Nav>
+              <SearchBar />
             </Navbar.Collapse>
-            <SearchBar />
           </Container>
         </Navbar>
       </Header>
@@ -126,7 +131,7 @@ function App() {
         <Outlet />
       </MainContent>
       <Footer>
-        <VoiceControl />
+        <VoiceButton />
       </Footer>
     </StyledBackgroundContainer>
   );

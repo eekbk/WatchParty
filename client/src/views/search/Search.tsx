@@ -97,7 +97,7 @@ function Search({ socket }) {
                 .slice(0, 4)
                 .map((userMatch) => (
                   <Col md={6}>
-                    <UserCard obj={userMatch} />
+                    <UserCard obj={userMatch} socket={socket} />
                   </Col>
                 ))}
             </Row>

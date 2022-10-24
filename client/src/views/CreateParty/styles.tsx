@@ -186,12 +186,18 @@ export const StyledButton = styled(Button)`
   &:focus {
     outline: black solid 2px;
   }
+  &:disabled {
+    color: white;
+    border: none;
+  }
 `;
 
 export const StyledForm = styled(Form)`
-  background-color: ${secondary};
+  //background-color: ${secondary};
   color: ${text};
-  padding: 3%;
+  //box-shadow: inset 0px 0px 5px black;
+  padding: 10px;
+  border-radius: 16px;
   &::-webkit-scrollbar-thumb {
     width: 20px;
     opacity: 0;
@@ -234,6 +240,11 @@ export const StyledFormGroup = styled(Group)`
 
 export const StyledFormCheck = styled(Check)`
   color: ${text};
+  .form-check-input {
+    &:checked {
+      background-color: #44087b;
+    }
+  }
 `;
 
 export const StyledFormTextarea = styled(Control)`
@@ -255,10 +266,10 @@ export const StyledFormTextarea = styled(Control)`
 // https://levelup.gitconnected.com/build-on-hover-custom-scrollbar-in-react-d846194a7ea4
 
 export const StyledScrollableGroup = styled(Group)`
+  overflow-y: auto;
   &::-webkit-scrollbar-thumb {
     width: 20px;
     opacity: 0;
-    box-shadow: inset 0px 0px 5px black;
   }
   &::-webkit-scrollbar {
     width: 20px;
@@ -266,6 +277,7 @@ export const StyledScrollableGroup = styled(Group)`
   }
   &:hover {
     &::-webkit-scrollbar-thumb {
+      box-shadow: inset 0px 0px 5px black;
       background: #7d7d7d;
       opacity: 1;
       border-radius: 10px;
@@ -279,11 +291,4 @@ export const StyledScrollableGroup = styled(Group)`
       border-radius: 10px;
     }
   }
-`;
-
-export const StyledBackgroundContainer = styled(Container)`
-  background-color: ${primary};
-  height: fit-content;
-  min-height: 100vh;
-  flex-flow: flow wrap;
 `;

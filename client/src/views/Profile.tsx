@@ -42,7 +42,6 @@ function Profile() {
               (a) => Number(new Date(a.date_time)) >= Number(today)
             )
         );
-        console.log(parties, 'profile test...');
       })
       .catch((err) => {
         console.error(err);

@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-// import { useLocation } from 'react-router-dom';
+import { useEffect, useContext, useRef, useState } from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
+import { VoiceContext } from '../../contexts/voiceContext';
+// import { useLocation } from 'react-router-dom';
 import { StyledButton, ThinScrollBar, DmChatBox } from '../../styles';
 
 const { default: DmMessage } = require('./DmMessage.tsx');
@@ -11,9 +12,11 @@ function DmChat({ socket, room, user, messages, setMessages }) {
   const scrolly = useRef(null);
   // state vars
   const [chat, setChat] = useState('');
+  const { messageText, setMessageText, resetTranscript, isSent } =
+    useContext(VoiceContext);
 
   // Functions
-  const submit = (e) => {
+  const submitChat = () => {
     socket.emit('DmChat', {
       dmId: room,
       type: 'DM',
@@ -28,6 +31,10 @@ function DmChat({ socket, room, user, messages, setMessages }) {
       },
     ]);
     setChat('');
+  };
+
+  const handleSubmit = (e) => {
+    submitChat();
     e.preventDefault();
   };
 
@@ -51,6 +58,27 @@ function DmChat({ socket, room, user, messages, setMessages }) {
       socket.off('getMessages');
     };
   }, []);
+
+  // function for async voiceSubmit
+  const voiceChatSubmit = async () => {
+    await submitChat();
+    setMessageText('');
+    setChat('');
+    resetTranscript();
+  };
+
+  // voiceControl populate the form
+  useEffect(() => {
+    setChat(messageText);
+  }, [messageText]);
+
+  // voiceControl send the message
+  useEffect(() => {
+    if (messageText) {
+      voiceChatSubmit();
+    }
+  }, [isSent]);
+
   useEffect(() => {
     scrolly.current.scrollTop = scrolly.current.scrollHeight;
   }, [messages]);
@@ -60,7 +88,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
       <Form>
         <ThinScrollBar
           ref={scrolly}
-          style={{ overflowY: 'scroll', minHeight: '70vh', maxHeight: '70vh' }}
+          style={{ overflowY: 'auto', minHeight: '70vh', maxHeight: '70vh' }}
         >
           {messages.map((message) => (
             <DmMessage message={message} user={user} />
@@ -72,7 +100,11 @@ function DmChat({ socket, room, user, messages, setMessages }) {
             onChange={(event) => setChat(event.target.value)}
             placeholder="type here!"
           />
-          <StyledButton type="submit" onClick={submit} variant="outline-dark">
+          <StyledButton
+            type="submit"
+            onClick={handleSubmit}
+            variant="outline-dark"
+          >
             Send!
           </StyledButton>
         </InputGroup>
