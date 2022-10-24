@@ -1,6 +1,15 @@
 // File for styling components
 import styled from 'styled-components';
-import { Button, Form, Container, Card, Row, Image } from 'react-bootstrap';
+import {
+  Button,
+  Form,
+  Container,
+  Card,
+  Row,
+  Image,
+  Navbar,
+  Nav,
+} from 'react-bootstrap';
 import {
   BsPlayCircleFill,
   BsPauseCircleFill,
@@ -9,6 +18,8 @@ import {
 } from 'react-icons/bs';
 // const { Title, Body, Img, Text } = Card;
 const { Group } = Form;
+const { Collapse, Brand, Toggle } = Navbar;
+const { Link } = Nav;
 
 let primary;
 let secondary;
@@ -31,6 +42,17 @@ export const StyledBackgroundContainer = styled(Container)`
   flex-flow: flow wrap;
   box-sizing: border-box;
   color: white;
+  .navbar-toggler {
+    border: 1px solid white;
+  }
+  .navbar-dark {
+    background: rgba(28, 7, 47, 0.75);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(17.9px);
+    -webkit-backdrop-filter: blur(17.9px);
+    border: 1px solid rgba(49, 12, 84, 0.19);
+  }
 `;
 
 export const MainContent = styled(Container)`
@@ -91,7 +113,6 @@ export const Footer = styled.footer`
 `;
 
 // offcanvas responsive for menus that could be cluttered on mobile?
-// scrolling on navbar for when collapsed?
 // collapse and fade for wrapping conditionally visible components?
 export const StyledVideoCard = styled(Card)`
   background: rgba(94, 48, 121, 0.25);
@@ -123,6 +144,7 @@ export const StRow = styled(Row)`
     opacity: 1;
   }
 `;
+
 export const PStRow = styled(Row)`
   position: absolute;
   max-height: 85%;
@@ -134,6 +156,7 @@ export const PStRow = styled(Row)`
     opacity: 1;
   }
 `;
+
 export const DmChatBox = styled(Container)`
   backdrop-filter: blur(25px) saturate(200%);
   -webkit-backdrop-filter: blur(25px) saturate(200%);
@@ -143,11 +166,11 @@ export const DmChatBox = styled(Container)`
   color: white;
   margin: 0px;
 `;
+
 export const ThinScrollBar = styled(Group)`
   &::-webkit-scrollbar-thumb {
     width: 10px;
     opacity: 0;
-    box-shadow: inset 0px 0px 5px black;
   }
   &::-webkit-scrollbar {
     width: 10px;
@@ -155,6 +178,7 @@ export const ThinScrollBar = styled(Group)`
   }
   &:hover {
     &::-webkit-scrollbar-thumb {
+      box-shadow: inset 0px 0px 5px black;
       background: #7d7d7d;
       opacity: 1;
       border-radius: 10px;
@@ -169,6 +193,7 @@ export const ThinScrollBar = styled(Group)`
     }
   }
 `;
+
 export const DmSideBar = styled(Group)`
   color: white;
   backdrop-filter: blur(25px) saturate(200%);
@@ -424,3 +449,15 @@ export const CategoryTitle = styled.h1`
   /* text-align: center; */
   justify-content: left;
 `;
+
+export const StyledNavbar = styled(Navbar)``;
+
+export const StyledNav = styled(Nav)``;
+
+export const StyledCollapse = styled(Collapse)``;
+
+export const StyledBrand = styled(Brand)``;
+
+export const StyledToggle = styled(Toggle)``;
+
+export const StyledLink = styled(Link)``;

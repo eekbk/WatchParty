@@ -17,7 +17,6 @@ import {
 
 // ModCard stands for Modular Card. Hopefully we can reuse it
 function UserCard({ obj, socket }) {
-  console.log('the otheruser:', obj);
   // console.log('here are the props...\nobj:', obj, '\nkind:', kind);
   const { user } = useContext(UserContext);
   const [cardTitle, setCardTitle] = useState('');

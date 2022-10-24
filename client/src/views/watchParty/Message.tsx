@@ -14,7 +14,7 @@ function Message({ message, user, socket }) {
         textAlign: 'left',
       }}
     >
-      {`${message.user_name} `}
+      {`${message.user.user_name} `}
       <Container
         style={{
           backgroundColor: user
