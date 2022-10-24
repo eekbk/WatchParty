@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form } from 'react-bootstrap';
-import { VoiceContext } from '../contexts/voiceContext';
+import { VoiceContext } from '../../contexts/voiceContext';
 
 function VoiceButton() {
   const navigate = useNavigate();

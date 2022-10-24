@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { SearchContext } from '../contexts/searchContext';
+import { SearchContext } from '../../contexts/searchContext';
 // import { UserContext } from '../context';
 import {
   StyledVideoCard,

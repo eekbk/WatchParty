@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
-import { VoiceContext } from '../contexts/voiceContext';
+import { VoiceContext } from '../../contexts/voiceContext';
 import { StyledGlassButton } from './buttons.styles';
 
 function DmButton({ socket, otherUserId, otherUserName, currentUserId }) {

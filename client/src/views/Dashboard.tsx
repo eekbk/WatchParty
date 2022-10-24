@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 // import Card from 'react-bootstrap/Card';
 // import CardGroup from 'react-bootstrap/CardGroup';
 // import DashboardPartyCard from '../cards/DashboardPartyCard';
-import PartyCard from '../cards/PartyCard';
+import PartyCard from '../components/cards/PartyCard';
 // import { useNavigate } from 'react-router-dom';
 // import ListGroup from 'react-bootstrap/ListGroup';
 import { UserContext } from '../context';
