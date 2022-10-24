@@ -93,7 +93,6 @@ function Dashboard() {
               </Row>
               <Row style={{ justifyContent: 'center' }}>
                 {user.parties
-                  .slice(0, 4)
                   .sort(
                     (a, b) =>
                       Number(new Date(a.date_time)) -
@@ -107,6 +106,7 @@ function Dashboard() {
                       return Number(new Date(a.date_time)) >= Number(today);
                     }
                   )
+                  .slice(0, 4)
                   .map((party) => (
                     <Col style={{ borderRadius: '1px' }} key={party.id}>
                       <PartyCard party={party} />
