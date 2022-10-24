@@ -21,7 +21,6 @@ export const StyledListGroup = styled(ListGroup)`
   &::-webkit-scrollbar-thumb {
     width: 20px;
     opacity: 0;
-    box-shadow: inset 0px 0px 5px black;
   }
   &::-webkit-scrollbar {
     width: 20px;
@@ -29,6 +28,7 @@ export const StyledListGroup = styled(ListGroup)`
   }
   &:hover {
     &::-webkit-scrollbar-thumb {
+      box-shadow: inset 0px 0px 5px black;
       background: #7d7d7d;
       opacity: 1;
       border-radius: 10px;
