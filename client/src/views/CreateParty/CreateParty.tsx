@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { useState, useRef, useContext } from 'react';
+import { Spinner } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context';
 import {
   StyledAlert,
@@ -18,11 +20,14 @@ import {
   StyledFormText,
   StyledFormLabel,
   StyledFormTextarea,
+  StyledScrollableGroup,
 } from './styles';
 
 export function CreateParty() {
   const { user, setUser } = useContext(UserContext);
-  const typeaheadRef = useRef(null);
+  const navigate = useNavigate();
+  const typeaheadRef1 = useRef(null);
+  const typeaheadRef2 = useRef(null);
   const [privateR, setPrivateR] = useState(false);
   const [archive, setArchive] = useState(false);
   const [savePlaylist, setSavePlaylist] = useState(false);
@@ -36,10 +41,12 @@ export function CreateParty() {
   const [playlistName, setPlaylistName] = useState('');
   const [playlistDescription, setPlaylistDescription] = useState('');
   const [created, setCreated] = useState(false);
+  const [creating, setCreating] = useState(false);
   const [date, setDate] = useState(new Date(Date.now()));
 
   // Creates the party in the database
   const handleCreate = () => {
+    setCreating(true);
     // Creates the new playlist in the database
     if (savePlaylist) {
       axios
@@ -75,6 +82,7 @@ export function CreateParty() {
       .then((data) => {
         setUser(data.data);
         setCreated(true);
+        setTimeout(() => navigate('/'), 3000);
       })
       .catch((err) => {
         console.error(err);
@@ -146,17 +154,35 @@ export function CreateParty() {
     setPlaylist(pl);
   };
 
-  return user && !created ? (
+  return user && !created && !creating ? (
     <StyledContainer fluid="lg">
-      <StyledRow xs={1} sm={1} md={2} xl={4}>
-        <StyledCol sm={10}>
-          <StyledForm style={{ marginBottom: '10px' }}>
+      <StyledRow>
+        <StyledCol style={{ 'text-align': 'center' }}>
+          <h1>Create Watch Party</h1>
+          <br />
+        </StyledCol>
+      </StyledRow>
+      <StyledRow xs={1} sm={1} lg={3}>
+        <StyledCol
+          sm={10}
+          lg={4}
+          style={{
+            backgroundColor: '#A663CC',
+            borderRadius: '16px',
+            paddingBottom: '10px',
+            boxShadow: 'inset 0px 0px 5px black',
+            marginRight: '5px',
+            marginBottom: '5px',
+          }}
+        >
+          <StyledForm style={{ marginTop: '10px' }}>
             <StyledFormGroup>
               <StyledFormLabel>Room Name</StyledFormLabel>
               <StyledFormControl
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter Room Name Here"
               />
+              <br />
             </StyledFormGroup>
             <StyledFormGroup>
               <StyledFormLabel>Description</StyledFormLabel>
@@ -167,6 +193,7 @@ export function CreateParty() {
                 placeholder="Describe Room Here"
               />
             </StyledFormGroup>
+            <br />
             <StyledFormGroup>
               <StyledFormLabel>Start Date</StyledFormLabel>
               <br />
@@ -181,20 +208,87 @@ export function CreateParty() {
                 onChange={(e) => setDate(new Date(e.target.value))}
               />
             </StyledFormGroup>
+          </StyledForm>
+          <StyledForm style={{ marginTop: '10px' }}>
             <StyledFormGroup>
-              <StyledButton
-                disabled={!playlist.length || !name}
-                onClick={handleCreate}
-                style={{ marginTop: '5px' }}
-                variant="outline-dark"
-              >
-                Create
-              </StyledButton>
+              <StyledFormLabel>Room Options</StyledFormLabel>
+              <StyledFormCheck
+                type="checkbox"
+                label="Archive on End"
+                onChange={(e) => setArchive(e.target.checked)}
+              />
+              <StyledFormCheck
+                type="checkbox"
+                label="Save Videos as New Playlist"
+                onChange={(e) => setSavePlaylist(e.target.checked)}
+              />
+              <StyledFormCheck
+                type="checkbox"
+                label="Invite Only"
+                onChange={(e) => setPrivateR(e.target.checked)}
+              />
+            </StyledFormGroup>
+            <StyledFormGroup>
+              <br />
+              <StyledFormLabel>Assign Admins</StyledFormLabel>
+              <StyledTypeahead
+                labelKey={(option: any) => option.username}
+                multiple
+                id="keep-menu-open"
+                onChange={(selected: any[]) => {
+                  setAdmins(selected);
+                  setInvited(
+                    invited.concat(
+                      selected.filter(
+                        (ad) => !invited.some((inv) => inv.id === ad.id)
+                      )
+                    )
+                  );
+                  typeaheadRef1.current.toggleMenu();
+                }}
+                options={privateR ? invited : user.tempFollowing}
+                placeholder="Enter usernames"
+                ref={typeaheadRef1}
+                selected={admins}
+                renderToken={(option: any, { onRemove }, index) => (
+                  <StyledToken key={index} onRemove={onRemove} option={option}>
+                    {`@${option.username}`}
+                  </StyledToken>
+                )}
+              />
+            </StyledFormGroup>
+            <StyledFormGroup hidden={!privateR}>
+              <br />
+              <StyledFormLabel>
+                Invite people to your watch party
+              </StyledFormLabel>
+              <StyledTypeahead
+                labelKey={(option: any) => option.username}
+                multiple
+                id="keep-menu-open"
+                onChange={(selected: any[]) => {
+                  setInvited(selected);
+                  setAdmins(
+                    admins.filter((adm) =>
+                      selected.some((sel) => adm.id === sel.id)
+                    )
+                  );
+                  // Keep the menu open when making multiple selections.
+                  typeaheadRef2.current.toggleMenu();
+                }}
+                options={user.tempFollowing}
+                placeholder="Enter usernames"
+                ref={typeaheadRef2}
+                selected={invited}
+                renderToken={(option: any, { onRemove }, index) => (
+                  <StyledToken key={index} onRemove={onRemove} option={option}>
+                    {`@${option.username}`}
+                  </StyledToken>
+                )}
+              />
             </StyledFormGroup>
           </StyledForm>
-        </StyledCol>
-        <StyledCol sm={10}>
-          <StyledForm>
+          <StyledForm style={{ marginTop: '10px' }}>
             <StyledFormGroup>
               <StyledFormLabel>Youtube Video Url</StyledFormLabel>
               <StyledFormControl
@@ -230,83 +324,35 @@ export function CreateParty() {
               </StyledButton>
             </StyledFormGroup>
           </StyledForm>
-          <StyledForm style={{ marginTop: '10px' }}>
-            <StyledFormGroup>
-              <StyledFormCheck
-                type="checkbox"
-                label="Archive on End"
-                onChange={(e) => setArchive(e.target.checked)}
-              />
-              <StyledFormCheck
-                type="checkbox"
-                label="Save Videos as New Playlist"
-                onChange={(e) => setSavePlaylist(e.target.checked)}
-              />
-              <StyledFormCheck
-                type="checkbox"
-                label="Invite Only"
-                onChange={(e) => setPrivateR(e.target.checked)}
-              />
-            </StyledFormGroup>
-            <StyledFormGroup hidden={!privateR}>
-              <StyledFormLabel>
-                Invite people to your watch party
-              </StyledFormLabel>
-              <StyledTypeahead
-                labelKey={(option: any) => option.username}
-                multiple
-                id="keep-menu-open"
-                onChange={(selected) => {
-                  setInvited(selected);
-                  // Keep the menu open when making multiple selections.
-                  typeaheadRef.current.toggleMenu();
-                }}
-                options={user.tempFollowing}
-                placeholder="Enter usernames"
-                ref={typeaheadRef}
-                selected={invited}
-                renderToken={(option: any, { onRemove }, index) => (
-                  <StyledToken key={index} onRemove={onRemove} option={option}>
-                    {`@${option.username}`}
-                  </StyledToken>
-                )}
-              />
-            </StyledFormGroup>
-            <StyledFormGroup>
-              <StyledFormLabel>Assign Admins</StyledFormLabel>
-              <StyledTypeahead
-                labelKey={(option: any) => option.username}
-                multiple
-                id="keep-menu-open"
-                onChange={(selected) => {
-                  setAdmins(selected);
-                  typeaheadRef.current.toggleMenu();
-                }}
-                options={privateR ? invited : user.tempFollowing}
-                placeholder="Enter usernames"
-                ref={typeaheadRef}
-                selected={admins}
-                renderToken={(option: any, { onRemove }, index) => (
-                  <StyledToken key={index} onRemove={onRemove} option={option}>
-                    {`@${option.username}`}
-                  </StyledToken>
-                )}
-              />
-            </StyledFormGroup>
-          </StyledForm>
         </StyledCol>
-        <StyledCol sm={10}>
-          <StyledForm
-            style={{
-              overflowY: 'scroll',
-              maxHeight: '80vh',
-            }}
-          >
-            <StyledFormGroup>
-              <StyledFormLabel>Choose Saved Playlist</StyledFormLabel>
+        <StyledCol
+          sm={10}
+          lg={4}
+          style={{
+            backgroundColor: '#A663CC',
+            borderRadius: '16px',
+            paddingBottom: '10px',
+            boxShadow: 'inset 0px 0px 5px black',
+            marginRight: '5px',
+            marginBottom: '5px',
+          }}
+        >
+          <StyledForm style={{ marginTop: '10px' }}>
+            <StyledFormLabel style={{ width: '100%', 'text-align': 'center' }}>
+              Choose Saved Playlist
+            </StyledFormLabel>
+            <StyledScrollableGroup style={{ maxHeight: '54vh' }}>
               {user.playlists.map((pl, i) => (
                 <StyledVideoCard style={{ marginTop: '5px' }}>
-                  <StyledVideoCard.Title>{pl.name}</StyledVideoCard.Title>
+                  <StyledVideoCard.Title
+                    style={{
+                      paddingLeft: '1rem',
+                      paddingRight: '1rem',
+                      paddingTop: '1rem',
+                    }}
+                  >
+                    {pl.name}
+                  </StyledVideoCard.Title>
                   <StyledVideoCard.Body>
                     <StyledVideoCard.Img src={pl.thumbnail} />
                     <StyledVideoCard.Text>
@@ -322,11 +368,20 @@ export function CreateParty() {
                   </StyledVideoCard.Body>
                 </StyledVideoCard>
               ))}
-            </StyledFormGroup>
+            </StyledScrollableGroup>
           </StyledForm>
         </StyledCol>
-        <StyledCol sm={10}>
-          <StyledForm>
+        <StyledCol
+          sm={10}
+          lg={3}
+          style={{
+            backgroundColor: '#A663CC',
+            borderRadius: '16px',
+            paddingBottom: '10px',
+            boxShadow: 'inset 0px 0px 5px black',
+          }}
+        >
+          <StyledForm style={{ marginTop: '10px' }} hidden={!savePlaylist}>
             <StyledFormGroup>
               <StyledFormLabel>Playlist Title</StyledFormLabel>
               <StyledFormControl
@@ -334,6 +389,7 @@ export function CreateParty() {
                 placeholder="Enter Playlist Title"
                 disabled={!savePlaylist}
               />
+              <br />
             </StyledFormGroup>
             <StyledFormGroup>
               <StyledFormLabel>Description</StyledFormLabel>
@@ -346,19 +402,22 @@ export function CreateParty() {
               />
             </StyledFormGroup>
           </StyledForm>
-          <StyledForm
-            style={{
-              overflowY: 'scroll',
-              maxHeight: '80vh',
-              marginTop: '10px',
-            }}
-          >
-            <StyledFormGroup>
-              <StyledFormLabel>Video List</StyledFormLabel>
+          <StyledForm style={{ marginTop: '10px' }}>
+            <StyledFormLabel style={{ width: '100%', 'text-align': 'center' }}>
+              Video List
+            </StyledFormLabel>
+            <StyledScrollableGroup style={{ maxHeight: '40vh' }}>
               {playlist.map((vd, i) => (
-                <StyledVideoCard style={{ margin: '0px' }}>
-                  <StyledCloseButton onClick={() => handleVideoRemoval(i)} />
-                  <StyledVideoCard.Title>{vd.title}</StyledVideoCard.Title>
+                <StyledVideoCard style={{ marginTop: '10px' }}>
+                  <StyledCloseButton
+                    onClick={() => handleVideoRemoval(i)}
+                    style={{ marginTop: '5px', marginLeft: '5px' }}
+                  />
+                  <StyledVideoCard.Title
+                    style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
+                  >
+                    {vd.title}
+                  </StyledVideoCard.Title>
                   <StyledVideoCard.Body>
                     <StyledVideoCard.Img src={vd.thumbnail} />
                     <StyledVideoCard.Text>
@@ -367,18 +426,34 @@ export function CreateParty() {
                   </StyledVideoCard.Body>
                 </StyledVideoCard>
               ))}
-            </StyledFormGroup>
+            </StyledScrollableGroup>
+            <StyledButton
+              disabled={!playlist.length || !name}
+              onClick={handleCreate}
+              variant="outline-dark"
+              style={{ marginTop: '10px' }}
+            >
+              Create
+            </StyledButton>
           </StyledForm>
         </StyledCol>
       </StyledRow>
     </StyledContainer>
   ) : created ? (
-    <StyledAlert key="success" variant="success">
+    <StyledAlert
+      key="success"
+      variant="success"
+      style={{ maxWidth: '20rem', margin: '40%', textAlign: 'center' }}
+    >
       Watch Party Created!
     </StyledAlert>
   ) : (
-    <StyledAlert key="warning" variant="warning">
-      Please log in to create Watch Parties
-    </StyledAlert>
+    <Spinner
+      animation="border"
+      role="status"
+      style={{ margin: '45%', color: '#A663CC' }}
+    >
+      <span className="visually-hidden">Loading...</span>
+    </Spinner>
   );
 }
