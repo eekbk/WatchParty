@@ -7,6 +7,7 @@ import { prisma } from './db/index';
 import { party } from './routes/party';
 import { playlist } from './routes/playlist';
 import { search } from './routes/search';
+import { video } from './routes/video';
 
 const app: Express = express();
 
@@ -87,6 +88,7 @@ app.use('/api/user', user);
 app.use('/api/party', party);
 app.use('/api/playlist', playlist);
 app.use('/api/search', search);
+app.use('/api/video', video);
 
 app.get(
   '/auth/google',
