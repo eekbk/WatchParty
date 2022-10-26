@@ -54,7 +54,11 @@ export function VoiceContextProvider({ children }) {
       callback: (name) => setFollowName(name),
     },
     {
-      command: ['block *', 'unblock *', 'I never want to see :name again'],
+      command: [
+        'block *',
+        'unblock *',
+        'I never want to see :name (on this site) again',
+      ],
       callback: (name) => setBlockName(name),
     },
     {
