@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import axios from 'axios';
 import { Col, Row } from 'react-bootstrap';
 import { SearchContext } from '../contexts/searchContext';
 // import { UserContext } from '../context';
@@ -36,11 +37,18 @@ function VideoCard({ video }) {
   //   axios.get(`/api/search/party/${video.id}`)
   // }, []);
 
-  const handleCardClick = async () => {
-    // console.log(video.parties);
-    await setPartiesMatch(video.parties);
-    await setUsersMatch([]);
-    await setVideosMatch([]);
+  const handleCardClick = () => {
+    // send axios request to video endpoint with partyIds
+    axios
+      .get(`/api/video/parties/${video.id}`)
+      .then(({ data }) => {
+        setPartiesMatch(data);
+        setUsersMatch([]);
+        setVideosMatch([]);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const cardTitle = title.length > 100 ? `${title.slice(0, 100)}...` : title;
