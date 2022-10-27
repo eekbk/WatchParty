@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { StyledGlassButton } from './buttons.styles';
-import { UserContext } from '../context';
-import { VoiceContext } from '../contexts/voiceContext';
+import { UserContext } from '../../context';
+import { VoiceContext } from '../../contexts/voiceContext';
 
 function BlockButton({
   otherUserId,

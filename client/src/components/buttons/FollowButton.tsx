@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../context';
-import { VoiceContext } from '../contexts/voiceContext';
+import { UserContext } from '../../context';
+import { VoiceContext } from '../../contexts/voiceContext';
 import { StyledGlassButton } from './buttons.styles';
 
 function FollowButton({

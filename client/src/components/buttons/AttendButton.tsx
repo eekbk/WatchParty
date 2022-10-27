@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useContext } from 'react';
 import { StyledGlassButton } from './buttons.styles';
-import { UserContext } from '../context';
+import { UserContext } from '../../context';
 
 function AttendButton({ partyId, isAttending, setIsAttending }: any) {
   const { user, setUser } = useContext(UserContext);

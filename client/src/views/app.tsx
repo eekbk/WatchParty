@@ -11,7 +11,7 @@ import {
 import { UserContext } from '../context';
 import SearchBar from './search/SearchBar';
 // import VoiceControl from './voiceControl/VoiceControl';
-import VoiceButton from '../buttons/VoiceButton';
+import VoiceButton from '../components/buttons/VoiceButton';
 
 function App() {
   const location = useLocation();

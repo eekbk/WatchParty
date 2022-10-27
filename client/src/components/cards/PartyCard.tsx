@@ -1,8 +1,8 @@
 import { Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../context';
-import { VoiceContext } from '../contexts/voiceContext';
+import { UserContext } from '../../context';
+import { VoiceContext } from '../../contexts/voiceContext';
 import AttendButton from '../buttons/AttendButton';
 import {
   StyledPartyCard,
@@ -14,7 +14,7 @@ import {
   StyledPartyCardFooter,
   StyledPartyTime,
   // StyledCardFooter,
-} from '../cards/cards.styles';
+} from './cards.styles';
 
 function PartyCard({ party }) {
   const { id, description, thumbnail, name, date_time, users } = party;
