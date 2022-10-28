@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
 import { UserContext } from '../../context';
 
 const { default: DmBar } = require('./DmBar.tsx');
@@ -12,15 +13,19 @@ function Dm({ socket, room }) {
 
   // Functions
   const changeDm = (e) => {
+    setMessages([]);
+
+    axios
+      .post('/api/party/dmMessages', {
+        room: (e.target as HTMLInputElement).id,
+      })
+      .then((dmMessages) => setMessages(dmMessages.data))
+      .catch((error) => console.log(error));
+
     setRoom((e.target as HTMLInputElement).id);
     socket.emit('join', {
       room: (e.target as HTMLInputElement).id,
       type: 'DM',
-    });
-    setMessages([]);
-    socket.emit('getMessages', (e.target as HTMLInputElement).id);
-    socket.on('getMessages', (dmMessages) => {
-      setMessages(dmMessages);
     });
   };
 
