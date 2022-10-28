@@ -15,6 +15,7 @@ party.get('/', (req: Request, res: Response) => {
         type: 'PARTY',
         NOT: {
           status: 'ARCHIVED',
+          type: 'DM',
         },
       },
       include: {

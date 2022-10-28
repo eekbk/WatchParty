@@ -67,7 +67,7 @@ function PartyCard({ party }) {
 
   // for voiceControl
   useEffect(() => {
-    if (partyName.toUpperCase() === party.name.toUpperCase()) {
+    if (partyName && partyName.toUpperCase() === party.name.toUpperCase()) {
       resetTranscript();
       goToParty();
     }
@@ -84,14 +84,14 @@ function PartyCard({ party }) {
 
   const stringAbbreviator = (string, type) => {
     if (type === 'title') {
-      if (string.length > 45) {
+      if (string && string.length > 45) {
         // return dotDotDotConcat(53);
         return `${string.slice(0, 45)}...`;
       }
       return string;
     }
     if (type === 'description') {
-      if (string.length > 70) {
+      if (string && string.length > 70) {
         // return dotDotDotConcat(65);
         return `${string.slice(0, 70)}...`;
       }
