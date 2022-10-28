@@ -334,3 +334,23 @@ party.post('/attend', async (req: RequestWithUser, res: Response) => {
     res.sendStatus(500);
   }
 });
+
+party.post('/dmMessages', (req: RequestWithUser, res: Response) => {
+  const { room } = req.body;
+  if (room) {
+    prisma.message
+      .findMany({
+        where: {
+          party_id: room,
+        },
+        select: {
+          user: true,
+          message: true,
+        },
+      })
+      .then((messages) => {
+        res.status(200).send(messages);
+      })
+      .catch((err) => res.status(404).send(JSON.stringify(err)));
+  }
+});

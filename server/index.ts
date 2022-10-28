@@ -248,32 +248,6 @@ io.on('connection', (socket: any) => {
 
   // Direct Messages
 
-  // Use this endpoint to create connections between users!
-  // Users is an array of userIds not the googleIds.
-  // Supports group messaging
-  socket.on('createConnection', (users) => {
-    // how we create the two users for now
-    const dm: any = users.map((user) => ({
-      role: 'CREATOR',
-      user: {
-        connect: {
-          id: user,
-        },
-      },
-    }));
-    // creates the dm joining two users
-    prisma.party
-      .create({
-        data: {
-          type: 'DM',
-          user_parties: {
-            create: dm,
-          },
-        },
-      })
-      .catch((err) => console.error(err));
-  });
-
   // Sends out chat to dm-d user
   socket.on(
     'DmChat',
