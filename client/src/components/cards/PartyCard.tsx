@@ -67,7 +67,7 @@ function PartyCard({ party }) {
 
   // for voiceControl
   useEffect(() => {
-    if (partyName.toUpperCase() === party.name.toUpperCase()) {
+    if (partyName && partyName.toUpperCase() === party.name.toUpperCase()) {
       resetTranscript();
       goToParty();
     }

@@ -103,7 +103,10 @@ function Dashboard() {
                     (a) => {
                       const today = new Date();
                       today.setHours(0, 0, 0, 0);
-                      return Number(new Date(a.date_time)) >= Number(today);
+                      return (
+                        Number(new Date(a.date_time)) >= Number(today) &&
+                        a.type === 'PARTY'
+                      );
                     }
                   )
                   .slice(0, 4)
