@@ -95,6 +95,7 @@ function Chat({
       }}
     >
       <Form style={{ height: '100%' }}>
+        {isArchived ? 'Archived' : null}
         <ThinScrollBar
           ref={scrolly}
           style={{ overflowY: 'auto', height: '100%' }}
@@ -103,21 +104,23 @@ function Chat({
             <Message message={message} user={user} socket={socket} />
           ))}
         </ThinScrollBar>
-        <InputGroup style={{ marginTop: '5px' }}>
-          <Form.Control
-            value={chat}
-            onChange={(event) => setChat(event.target.value)}
-            placeholder="type here!"
-            disabled={isArchived}
-          />
-          <StyledButton
-            type="submit"
-            onClick={handleSubmit}
-            disabled={isArchived}
-          >
-            Send!
-          </StyledButton>
-        </InputGroup>
+        {isArchived ? null : (
+          <InputGroup style={{ marginTop: '5px' }}>
+            <Form.Control
+              value={chat}
+              onChange={(event) => setChat(event.target.value)}
+              placeholder="type here!"
+              disabled={isArchived}
+            />
+            <StyledButton
+              type="submit"
+              onClick={handleSubmit}
+              disabled={isArchived}
+            >
+              Send!
+            </StyledButton>
+          </InputGroup>
+        )}
       </Form>
     </Container>
   );
