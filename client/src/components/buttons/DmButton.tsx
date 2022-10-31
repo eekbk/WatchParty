@@ -8,24 +8,16 @@ function DmButton({ socket, otherUserId, otherUserName, currentUserId }) {
   // const navigate = useNavigate();
   const { dmName } = useContext(VoiceContext);
 
-  const openDm = () => {
-    const config = {
-      method: 'post',
-      url: 'http://localhost:4040/api/user/dm',
-      headers: {},
-      data: {
+  const openDm = async () => {
+    try {
+      const { data } = await axios.post('/api/user/dm', {
         currentUserId,
         otherUserId,
-      },
-    };
-
-    axios(config)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
       });
+      console.log(data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const clickHandler = () => {
