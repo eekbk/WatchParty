@@ -1,11 +1,11 @@
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import axios from 'axios';
 import { VoiceContext } from '../../contexts/voiceContext';
 import { StyledGlassButton } from './buttons.styles';
 
 function DmButton({ socket, otherUserId, otherUserName, currentUserId }) {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { dmName } = useContext(VoiceContext);
 
   const openDm = async () => {
@@ -15,6 +15,7 @@ function DmButton({ socket, otherUserId, otherUserName, currentUserId }) {
         otherUserId,
       });
       console.log(data);
+      navigate('/dm');
     } catch (err) {
       console.error(err);
     }
