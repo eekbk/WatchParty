@@ -153,6 +153,8 @@ export const StContainer = styled(Container)`
   width: 100%;
   height: 0;
   padding-bottom: 56.25%;
+  top: 0;
+  left: 0;
   &:hover {
     opacity: 1;
   }
