@@ -5,7 +5,7 @@ function Message({ message, user, socket }) {
     <Container
       style={{
         wordWrap: 'break-word',
-        maxWidth: '80%',
+        maxWidth: '100%',
         width: 'fit-content',
         marginTop: '5px',
         marginBottom: '5px',
@@ -15,6 +15,7 @@ function Message({ message, user, socket }) {
       }}
     >
       {`${message.user.user_name} `}
+      <br />
       <Container
         style={{
           backgroundColor: user
@@ -22,7 +23,7 @@ function Message({ message, user, socket }) {
               ? '#6929a9'
               : '#8e298e'
             : '#6929a9',
-          maxWidth: '65%',
+          maxWidth: '100%',
           borderRadius: '10px',
           width: 'fit-content',
           display: 'inline-block',
