@@ -74,7 +74,7 @@ function WatchParty({ socket }) {
           </Card>
         </Col>
         <Col xs={12} xl={3} style={{ padding: '0px', textAlign: 'center' }}>
-          <h4>chat</h4>
+          <h4>Chat</h4>
           <Chat
             vH={vH}
             isArchived={isArchived}
