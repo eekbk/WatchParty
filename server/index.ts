@@ -140,17 +140,6 @@ app.post('/api/seed', async (req: Request, res: Response) => {
   }
 });
 
-app.get('/*', (req: Request, res: Response) => {
-  res.sendFile(
-    path.resolve(__dirname, '..', 'client', 'dist', 'index.html'),
-    (_data: object, err: string) => {
-      if (err) {
-        res.status(500).send(err);
-      }
-    }
-  );
-});
-
 // Socket.io events and listeners
 io.on('connection', (socket: any) => {
   // Joining a watch party
@@ -338,6 +327,17 @@ io.on('connection', (socket: any) => {
         });
     }
   });
+});
+
+app.get('/*', (req: Request, res: Response) => {
+  res.sendFile(
+    path.resolve(__dirname, '..', 'client', 'dist', 'index.html'),
+    (_data: object, err: string) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+    }
+  );
 });
 
 http.listen(PORT, () => {
