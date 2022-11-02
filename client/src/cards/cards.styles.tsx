@@ -18,16 +18,6 @@ export const StyledCardBody = styled(Card.Body)`
   /* text-align: right; */
 `;
 
-export const StyledPartyCard = styled(Card)`
-  height: 22rem;
-  width: 18rem;
-  padding: 0 auto;
-  box-sizing: content-box;
-  background-color: black;
-
-  border-color: #6a1d7d;
-  border-width: 1px;
-`;
 export const StyledDashPartyCard = styled(Card)`
   /* height: 23rem;
   width: 18rem;
@@ -42,6 +32,18 @@ export const StyledDashPartyCard = styled(Card)`
   /* outline: #320e3b; */
   border-color: #6a1d7d;
   border-width: 1px;
+`;
+
+export const StyledPartyCard = styled(Card)`
+  height: 20rem;
+  width: 18rem;
+  padding: 0 auto;
+  box-sizing: content-box;
+  background-color: black;
+  /* align-items: end; */
+  border-color: #6a1d7d;
+  border-width: 1px;
+  overflow: hidden;
 `;
 
 export const StyledUserCard = styled(Card)`
@@ -85,6 +87,27 @@ export const StyledVideoCardImg = styled(Card.Img)`
   overflow: hidden;
 `;
 
+export const StyledPartyCardImg = styled(Card.Img)``;
+
+export const StyledPartyCardImgOverlay = styled(Card.ImgOverlay)`
+  padding: 0;
+  pointer-events: none;
+  /* justify-self: right; */
+
+  /* width: 30%; */
+`;
+
+export const StyledPartyCardImgOverlayText = styled(Row)`
+  background-color: black;
+  border-color: #6a1d7d;
+  border-width: 1px;
+  width: 35%;
+  justify-content: space-around;
+  padding-right: 6px;
+  padding-left: 5px;
+  margin: 0px;
+`;
+
 export const StyledVideoPartyCount = styled(Row)`
   align-items: center;
   justify-content: center;
@@ -115,6 +138,7 @@ export const StyledPartyTitle = styled(Card.Title)`
   font-size: larger;
   padding: 0;
   margin: 4px;
+  color: green;
 `;
 
 export const StyledPartyDesc = styled(Card.Text)`
@@ -151,4 +175,11 @@ export const StyledPartyCardFooterCol = styled(Col)`
 
 export const StyledVideoTitle = styled(Card.Title)`
   font-size: medium;
+`;
+
+export const PartyCardStatus = styled(Col)`
+  padding: 0px;
+  justify-content: center;
+  /* align-items: center; */
+  margin: 0px 0px 0px 10px;
 `;
