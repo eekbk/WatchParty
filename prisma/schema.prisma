@@ -25,11 +25,6 @@ model User {
   upvotes      Upvote[]
   playlists    Playlist[]
   profile      String
-  // TODO: Can I delete the below fields?
-  followed_by  User[]       @relation("UserFollows")
-  following    User[]       @relation("UserFollows")
-  blocking     User[]       @relation("UserBlocks")
-  blocked_by   User[]       @relation("UserBlocks")
 }
 
 model Relation {
@@ -67,7 +62,6 @@ model Party {
   messages     Message[]
   is_private   Boolean       @default(false)
   will_archive Boolean       @default(false)
-  // TODO: Can I rename date_time field to start_date?
   date_time    DateTime      @default(now()) @db.Timestamptz
   likes_count  Int           @default(0)
   type         Party_Type
@@ -75,7 +69,6 @@ model Party {
   user_parties User_Party[]
   likes        Like[]
   party_videos Party_Video[]
-  videos       Video[]
   thumbnail    String?
 }
 
@@ -101,7 +94,6 @@ model Video {
   thumbnail       String
   playlist_videos Playlist_Video[]
   party_videos    Party_Video[]
-  parties         Party[]
 }
 
 model Like {
@@ -116,6 +108,8 @@ model Like {
 
 model Upvote {
   id         String  @id @default(uuid())
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
   user_id    String
   user       User    @relation(fields: [user_id], references: [id])
   message_id String

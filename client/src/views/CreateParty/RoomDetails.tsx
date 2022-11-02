@@ -37,20 +37,20 @@ export function RoomDetails({ setName, setDescription, setDate, date, name }) {
           value={`${date.getFullYear()}-${
             String(date.getMonth() + 1).length >= 2
               ? date.getMonth() + 1
-              : `0${  date.getMonth() + 1}`
+              : `0${date.getMonth() + 1}`
           }-${
             String(date.getDate()).length >= 2
               ? date.getDate()
-              : `0${  date.getDate()}`
+              : `0${date.getDate()}`
           }`}
           min={`${new Date().getFullYear()}-${
             String(new Date().getMonth() + 1).length >= 2
               ? new Date().getMonth() + 1
-              : `0${  new Date().getMonth() + 1}`
+              : `0${new Date().getMonth() + 1}`
           }-${
             String(new Date().getDate()).length >= 2
               ? new Date().getDate()
-              : `0${  new Date().getDate()}`
+              : `0${new Date().getDate()}`
           }`}
           max={`${new Date(
             Date.now() + 365 * 24 * 60 * 60 * 1000
@@ -59,28 +59,18 @@ export function RoomDetails({ setName, setDescription, setDate, date, name }) {
               new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).getMonth() + 1
             ).length >= 2
               ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).getMonth() + 1
-              : `0${ 
-                new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).getMonth() +
-                  1}`
+              : `0${
+                  new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).getMonth() +
+                  1
+                }`
           }-${
             String(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).getDate())
               .length >= 2
               ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).getDate()
-              : `0${  new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).getDate()}`
+              : `0${new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).getDate()}`
           }`}
           type="date"
           onChange={(e) => {
-            console.log(
-              `${date.getFullYear()}-${
-                String(date.getMonth() + 1).length >= 2
-                  ? date.getMonth() + 1
-                  : `0${  date.getMonth() + 1}`
-              }-${
-                String(date.getDate()).length >= 2
-                  ? date.getDate()
-                  : `0${  date.getDate()}`
-              }`
-            );
             const tempTime = date.toString().slice(16, 21);
             let tempDate = new Date(e.target.value);
             tempDate = new Date(

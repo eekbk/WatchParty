@@ -52,13 +52,15 @@ export function CreateParty() {
             name: playlistName,
             description: playlistDescription,
             thumbnail: playlist[0].thumbnail,
-            videos: playlist.map((vd) => vd.id),
+            videos: playlist.map((vd, index) => ({
+              index,
+              video: { connect: { id: vd.id } },
+            })),
             user_id: user.id,
           },
         })
         .catch((err) => console.error(err));
     }
-    console.log(date);
     axios
       .post('/api/party', {
         party: {
