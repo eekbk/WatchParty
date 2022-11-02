@@ -14,6 +14,7 @@ function DmButton({ socket, otherUserId, otherUserName, currentUserId }) {
         currentUserId,
         otherUserId,
       });
+      // TODO: Remove me
       console.log(data);
       navigate('/dm');
     } catch (err) {
