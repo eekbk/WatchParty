@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { useContext } from 'react';
-import { StyledGlassButton } from './buttons.styles';
+import { IoAdd } from 'react-icons/io5';
+import { CiUndo, CiCircleRemove } from 'react-icons/ci';
+import { StyledPlusIcon, StyledGoBackIcon } from './buttons.styles';
 import { UserContext } from '../context';
 
 function AttendButton({ partyId, isAttending, setIsAttending }: any) {
@@ -36,10 +38,14 @@ function AttendButton({ partyId, isAttending, setIsAttending }: any) {
       });
   };
 
-  return (
-    <StyledGlassButton onClick={handleClick} size="sm" disabled={!user}>
-      {isAttending ? 'decline' : 'attend'}
-    </StyledGlassButton>
+  return isAttending ? (
+    <StyledGoBackIcon>
+      <CiUndo onClick={handleClick} />
+    </StyledGoBackIcon>
+  ) : (
+    <StyledPlusIcon>
+      <IoAdd onClick={handleClick} />
+    </StyledPlusIcon>
   );
 }
 
