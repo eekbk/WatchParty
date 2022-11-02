@@ -70,6 +70,7 @@ function Calendar() {
               )
           );
         })
+        .then(() => console.log(user, 'user.....', allParties, 'allParties'))
         .catch((err) => {
           console.error(err);
         });
@@ -88,7 +89,8 @@ function Calendar() {
       {changeText ? (
         <Card
           style={{
-            background: 'rgba(164, 73, 73, 0.23)',
+            // background: 'rgba(164, 73, 73, 0.23)',
+            background: 'transparent',
             WebkitBackdropFilter: 'blur(13px) saturate(89%)',
             backdropFilter: 'blur(13px) saturate(89%)',
             borderRadius: '12px',
@@ -144,7 +146,8 @@ function Calendar() {
       ) : (
         <Card
           style={{
-            background: 'rgba(164, 73, 73, 0.23)',
+            // background: 'rgba(164, 73, 73, 0.23)',
+            background: 'transparent',
             WebkitBackdropFilter: 'blur(13px) saturate(89%)',
             backdropFilter: 'blur(13px) saturate(89%)',
             borderRadius: '12px',
@@ -180,8 +183,31 @@ function Calendar() {
                       onClick={() => handleCardClick(party)}
                       size="sm"
                     >
-                      Watch
+                      {party.users.username === user.user_name &&
+                      party.users.role === 'CREATOR'
+                        ? 'start'
+                        : 'joinss'}
                     </Button>
+                    {/* {party.users.map((u) => 
+                     u.username === user.user_name && u.role === 'CREATOR'
+                     ? 
+                    <Button
+                      variant="secondary"
+                      onClick={() => handleCardClick(party)}
+                      size="sm"
+                    >
+                      Start
+                    </Button>
+                    : 
+                    <Button
+                    variant="secondary"
+                    onClick={() => handleCardClick(party)}
+                    size="sm"
+                  >
+                    Join
+                  </Button>
+                    ) 
+                  } */}
                   </td>
                   <td>{party.date_time.slice(2, 10)}</td>
                   <td>{party.name}</td>
