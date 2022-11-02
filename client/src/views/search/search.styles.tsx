@@ -9,7 +9,7 @@ export const SearchPageHeading = styled(Row)`
   align-items: baseline;
 `;
 
-export const SeeMoreLink = styled.p`
+export const SeeMoreLink = styled.div`
   margin-bottom: 4px;
   /* justify-content: right; */
   text-align: right;
