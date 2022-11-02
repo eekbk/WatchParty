@@ -5,7 +5,6 @@ import { prisma } from '../db/index';
 import { YoutubeVideo, RequestWithUser } from '../../interfaces/interfaces';
 
 export const party: Router = express.Router();
-// TODO: Give videos an explicit relation to parties with an index field to order them
 // Get all watch parties
 party.get('/', (req: Request, res: Response) => {
   // Retrieve all watch parties from the database
@@ -15,7 +14,6 @@ party.get('/', (req: Request, res: Response) => {
         type: 'PARTY',
         NOT: {
           status: 'ARCHIVED',
-          type: 'DM',
         },
       },
       include: {
@@ -40,6 +38,7 @@ party.get('/', (req: Request, res: Response) => {
           username: usr.user.user_name,
           role: usr.role,
         }));
+        pt.videos.sort((a, b) => a.index - b.index);
         delete pt.user_parties;
       });
       res.status(200).send(JSON.stringify(parties));
@@ -101,15 +100,21 @@ party.post('/', (req: RequestWithUser, res: Response) => {
         is_private,
         will_archive,
         thumbnail,
+        // TODO: Uncomment me after updating the database
+        // party_videos: {
+        //   create: videos,
+        // },
+        // TODO: Delete below after updating the database
         videos: {
-          connect: videos,
+          connect: videos.map((vd) => vd.video.connect),
         },
         user_parties: {
           create: participants,
         },
       },
     })
-    .then(() => {
+    .then((resu) => {
+      console.log(resu);
       res.sendStatus(200);
     })
     .catch((err) => {
@@ -283,10 +288,11 @@ party.post('/role', (req: RequestWithUser, res: Response) => {
         role,
       },
     })
-    .then((results) => {
+    .then(() => {
       res.sendStatus(200);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error(err);
       res.sendStatus(500);
     });
 });
@@ -311,10 +317,11 @@ party.delete('/role', (req: RequestWithUser, res: Response) => {
         ],
       },
     })
-    .then((results) => {
+    .then(() => {
       res.sendStatus(200);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error(err);
       res.sendStatus(500);
     });
 });

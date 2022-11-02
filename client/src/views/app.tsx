@@ -31,6 +31,7 @@ function App() {
       axios
         .get('/api/user')
         .then((data) => {
+          console.log(data.data.playlists);
           setUser(data.data);
         })
         .catch((err) => {
@@ -52,7 +53,6 @@ function App() {
       });
   };
 
-  // TODO: fix style look, do style goodly
   return (
     <StyledBackgroundContainer fluid>
       <Header>
