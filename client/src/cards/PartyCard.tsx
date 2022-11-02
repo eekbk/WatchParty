@@ -1,9 +1,14 @@
-import { Card } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
+import { IoAdd } from 'react-icons/io5';
+import { HiPlusSm, HiMinusSm } from 'react-icons/hi';
+import { RiArrowGoBackLine } from 'react-icons/ri';
+import { HiArrowUturnLeft } from 'react-icons/hi2';
 import { UserContext } from '../context';
 import { VoiceContext } from '../contexts/voiceContext';
 import AttendButton from '../buttons/AttendButton';
+// import JoinButton from '../buttons/JoinButton';
 import {
   StyledPartyCard,
   StyledPartyTitle,
@@ -13,6 +18,11 @@ import {
   StyledPartyCardFooterCol,
   StyledPartyCardFooter,
   StyledPartyTime,
+  StyledPartyCardImgOverlay,
+  StyledPartyCardImgOverlayText,
+  // DontGoButton,
+  // JoinButton,
+  PartyCardStatus,
   // StyledCardFooter,
 } from '../cards/cards.styles';
 
@@ -79,6 +89,7 @@ function PartyCard({ party }) {
     });
   };
   const handleCardClick = () => {
+    console.log('clicked');
     goToParty();
   };
 
@@ -135,6 +146,30 @@ function PartyCard({ party }) {
   return (
     <StyledPartyCard>
       <Card.Img variant="top" src={thumbnail} />
+      <StyledPartyCardImgOverlay>
+        {/* <Row  > */}
+        <StyledPartyCardImgOverlayText>
+          {isAdmin ? (
+            'ADMIN'
+          ) : isCreator ? (
+            'HOST'
+          ) : (
+            <>
+              <PartyCardStatus sm={8}>
+                {isAttending ? 'GOING' : 'JOIN'}
+              </PartyCardStatus>
+              <AttendButton
+                partyId={id}
+                isAttending={isAttending}
+                setIsAttending={setIsAttending}
+              />
+            </>
+          )}
+          {/* JOIN
+          <HiPlusSm /> */}
+        </StyledPartyCardImgOverlayText>
+        {/* </Row> */}
+      </StyledPartyCardImgOverlay>
       <StyledCardBody>
         <StyledPartyTitle onClick={handleCardClick}>
           {stringAbbreviator(name, 'title')}
@@ -153,7 +188,7 @@ function PartyCard({ party }) {
           <small>{dateTimeConversion(date_time)}</small>
         </StyledPartyTime>
       </StyledCardBody>
-      <StyledPartyCardFooter>
+      {/* <StyledPartyCardFooter>
         <StyledPartyCardFooterCol sm={2}>
           {!isCreator && !isAdmin ? (
             <AttendButton
@@ -165,7 +200,7 @@ function PartyCard({ party }) {
             []
           )}
         </StyledPartyCardFooterCol>
-      </StyledPartyCardFooter>
+      </StyledPartyCardFooter> */}
     </StyledPartyCard>
   );
 }
