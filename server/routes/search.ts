@@ -28,8 +28,19 @@ search.get('/:q', async (req: Request, res: Response) => {
         ],
       },
       include: {
-        parties: true,
+        party_videos: {
+          select: {
+            party: true,
+          },
+        },
       },
+    });
+    videos.map((vd: any) => {
+      vd.parties = vd.party_videos.map((pt) => ({
+        ...pt.party,
+      }));
+      delete vd.party_videos;
+      return vd;
     });
     // query the db for users matching q
     const users = await prisma.user.findMany({
@@ -67,7 +78,12 @@ search.get('/:q', async (req: Request, res: Response) => {
         date_time: 'asc',
       },
       include: {
-        videos: true,
+        party_videos: {
+          select: {
+            video: true,
+            index: true,
+          },
+        },
         user_parties: {
           select: {
             role: true,
@@ -105,14 +121,20 @@ search.get('/party/:videoId', async (req: Request, res: Response) => {
   const { videoId } = req.params;
   try {
     // find all the parties with a playlist that contains the video
-    const parties = await prisma.video.findUnique({
+    let parties: any = await prisma.video.findUnique({
       where: {
         id: videoId,
       },
       include: {
-        parties: true,
+        party_videos: {
+          select: {
+            party: true,
+          },
+        },
       },
     });
+    parties = parties.party_videos.map((vd: any) => vd.party);
+    delete parties.party_videos;
     res.status(200).send(parties);
   } catch (err) {
     console.error('The error from :videoId endpoint:\n', err);

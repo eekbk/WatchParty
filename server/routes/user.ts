@@ -46,7 +46,12 @@ user.get('/', (req: RequestWithUser, res: Response) => {
             },
           },
           include: {
-            videos: true,
+            party_videos: {
+              select: {
+                video: true,
+                index: true,
+              },
+            },
             user_parties: {
               select: {
                 role: true,
@@ -320,6 +325,65 @@ user.delete('/block', (req: RequestWithUser, res: Response) => {
     });
 
   // delete the relation between the follower and the followed
+});
+
+user.post('/dm', (req: RequestWithUser, res: Response) => {
+  const { currentUserId, otherUserId } = req.body;
+  const users = [currentUserId, otherUserId];
+
+  prisma.party
+    .findMany({
+      where: {
+        type: 'DM',
+        user_parties: {
+          some: {
+            user_id: currentUserId,
+          },
+        },
+      },
+      include: {
+        user_parties: {
+          select: {
+            user_id: true,
+          },
+        },
+      },
+    })
+    .then((uParties) => {
+      let bool = false;
+      uParties.forEach((u) => {
+        u.user_parties.forEach((id) => {
+          if (id.user_id === otherUserId) {
+            bool = true;
+          }
+        });
+      });
+      if (bool) {
+        res.status(404).send('connection already exist');
+      } else {
+        const dm: any = users.map((user) => ({
+          role: 'CREATOR',
+          user: {
+            connect: {
+              id: user,
+            },
+          },
+        }));
+        // creates the dm joining two users
+        prisma.party
+          .create({
+            data: {
+              type: 'DM',
+              user_parties: {
+                create: dm,
+              },
+            },
+          })
+          .then(() => res.status(201).send('created connection'))
+          .catch((err) => console.error(err));
+      }
+    })
+    .catch((err) => console.log(err));
 });
 
 export default user;

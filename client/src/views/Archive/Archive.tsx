@@ -24,7 +24,8 @@ function Archive() {
       });
   }, []);
   return (
-    <Container>
+    <Container style={{ textAlign: 'center' }}>
+      <h1>Personal Archives</h1>
       <ArchivedParties parties={parties} />
     </Container>
   );

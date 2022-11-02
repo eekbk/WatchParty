@@ -38,7 +38,13 @@ export function Playlist({ playlist, setPlaylist, room, status }) {
   const handleVideoRemoval = (i) => {
     const videos = playlist.slice();
     videos.splice(i, 1);
-    axios.put(`/api/party/removeVideo/${room.id}`, { video: playlist[i].id });
+    axios
+      .put(`/api/party/removeVideo/${room.id}`, { video: playlist[i].id })
+      .then(() => {
+        // TODO: Somehow get all the places that can render this to update their
+        // parties from the database to reflect the role changes
+      })
+      .catch((err) => console.error(err));
     setPlaylist(videos);
   };
 
@@ -47,10 +53,10 @@ export function Playlist({ playlist, setPlaylist, room, status }) {
       id="dropdown-basic-button"
       title="Playlist"
       style={{
-        overflowY: 'scroll',
+        overflowY: 'auto',
         maxHeight: '800px',
       }}
-      hidden={!status}
+      hidden={!status || status.role === 'NORMIE'}
     >
       <StyledListItem
         style={{

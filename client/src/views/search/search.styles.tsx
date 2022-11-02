@@ -31,10 +31,14 @@ export const SearchBarContainer = styled(Container)`
   display: flex;
   flex-direction: column;
   width: 28rem;
+  max-width: 80vw;
   height: 3.8em;
   background-color: transparent;
   padding-top: 4px;
   overflow: hidden;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin: 0px;
 `;
 
 export const SearchInputContainer = styled(InputGroup)`
@@ -44,6 +48,8 @@ export const SearchInputContainer = styled(InputGroup)`
   align-items: center;
   position: relative;
   padding: 2px 15px;
+  padding-left: 0px;
+  padding-right: 0px;
 `;
 
 export const SearchForm = styled(Form.Control)`
@@ -77,7 +83,7 @@ export const SearchForm = styled(Form.Control)`
 export const SearchIcon = styled.span`
   color: #bebebe;
   font-size: 15px;
-  background-color: white;
+  background-color: transparent;
   /* margin-right: 10px;
   margin-top: 6px; */
   vertical-align: 10%;
@@ -99,6 +105,12 @@ export const SearchButton = styled(Button)`
   /* box-shadow: 0px 2px 12px 3px rgba(0, 0, 0, 0.14); */
 
   /* vertical-align: middle; */
+  &:hover {
+    background-color: #a663cc;
+  }
+  &:focus {
+    background-color: #a663cc;
+  }
 `;
 
 // export const StyledPartyCard = styled(Card)`

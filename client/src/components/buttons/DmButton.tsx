@@ -1,15 +1,25 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
-import { VoiceContext } from '../contexts/voiceContext';
+import axios from 'axios';
+import { VoiceContext } from '../../contexts/voiceContext';
 import { StyledGlassButton } from './buttons.styles';
 
 function DmButton({ socket, otherUserId, otherUserName, currentUserId }) {
   const navigate = useNavigate();
   const { dmName } = useContext(VoiceContext);
 
-  const openDm = () => {
-    socket.emit('createConnection', [otherUserId, currentUserId]);
-    navigate('/dm');
+  const openDm = async () => {
+    try {
+      const { data } = await axios.post('/api/user/dm', {
+        currentUserId,
+        otherUserId,
+      });
+      // TODO: Remove me
+      console.log(data);
+      navigate('/dm');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const clickHandler = () => {

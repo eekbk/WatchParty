@@ -2,8 +2,9 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { IoAdd } from 'react-icons/io5';
 import { CiUndo, CiCircleRemove } from 'react-icons/ci';
-import { StyledPlusIcon, StyledGoBackIcon } from './buttons.styles';
+import { StyledGlassButton , StyledPlusIcon, StyledGoBackIcon } from './buttons.styles';
 import { UserContext } from '../context';
+import { UserContext } from '../../context';
 
 function AttendButton({ partyId, isAttending, setIsAttending }: any) {
   const { user, setUser } = useContext(UserContext);

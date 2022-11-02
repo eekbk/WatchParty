@@ -5,8 +5,8 @@ import { IoAdd } from 'react-icons/io5';
 import { HiPlusSm, HiMinusSm } from 'react-icons/hi';
 import { RiArrowGoBackLine } from 'react-icons/ri';
 import { HiArrowUturnLeft } from 'react-icons/hi2';
-import { UserContext } from '../context';
-import { VoiceContext } from '../contexts/voiceContext';
+import { UserContext } from '../../context';
+import { VoiceContext } from '../../contexts/voiceContext';
 import AttendButton from '../buttons/AttendButton';
 // import JoinButton from '../buttons/JoinButton';
 import {
@@ -24,7 +24,7 @@ import {
   // JoinButton,
   PartyCardStatus,
   // StyledCardFooter,
-} from '../cards/cards.styles';
+} from './cards.styles';
 
 function PartyCard({ party }) {
   const { id, description, thumbnail, name, date_time, users } = party;
@@ -77,7 +77,7 @@ function PartyCard({ party }) {
 
   // for voiceControl
   useEffect(() => {
-    if (partyName.toUpperCase() === party.name.toUpperCase()) {
+    if (partyName && partyName.toUpperCase() === party.name.toUpperCase()) {
       resetTranscript();
       goToParty();
     }
@@ -95,14 +95,14 @@ function PartyCard({ party }) {
 
   const stringAbbreviator = (string, type) => {
     if (type === 'title') {
-      if (string.length > 45) {
+      if (string && string.length > 45) {
         // return dotDotDotConcat(53);
         return `${string.slice(0, 45)}...`;
       }
       return string;
     }
     if (type === 'description') {
-      if (string.length > 70) {
+      if (string && string.length > 70) {
         // return dotDotDotConcat(65);
         return `${string.slice(0, 70)}...`;
       }

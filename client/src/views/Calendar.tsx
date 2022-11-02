@@ -41,13 +41,9 @@ function Calendar() {
               )
               .filter(
                 // to get only the today and upcoming parties
-                // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
                 (a) => Number(new Date(a.date_time)) >= Number(today)
               )
           );
-        })
-        .then(() => {
-          // console.log(parties, 'parties...');
         })
         .catch((err) => {
           console.error(err);
@@ -60,7 +56,6 @@ function Calendar() {
       axios
         .get('/api/party')
         .then((data: any) => {
-          // console.log(allParties, 'allParties....');
           const today = new Date();
           today.setHours(0, 0, 0, 0);
           setAllParties(
@@ -71,7 +66,6 @@ function Calendar() {
               )
               .filter(
                 // to get only the today and upcoming parties
-                // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
                 (a) => Number(new Date(a.date_time)) >= Number(today)
               )
           );
@@ -82,11 +76,8 @@ function Calendar() {
     }
   }, [user, changeText]);
 
-  const handleChange = () =>
-    // console.log(changeText);
-    setChangeText(!changeText);
+  const handleChange = () => setChangeText(!changeText);
   const handleCardClick = (party) => {
-    // console.log(party);
     navigate('/watchParty', {
       state: { party, videos: party.videos },
     });
@@ -95,7 +86,15 @@ function Calendar() {
   return (
     <Container>
       {changeText ? (
-        <Card>
+        <Card
+          style={{
+            background: 'rgba(164, 73, 73, 0.23)',
+            WebkitBackdropFilter: 'blur(13px) saturate(89%)',
+            backdropFilter: 'blur(13px) saturate(89%)',
+            borderRadius: '12px',
+            border: '1px solid rgba(209, 213, 219, 0.3)',
+          }}
+        >
           <Card.Header style={{ fontSize: '24px' }} className="text-center">
             <Col>
               {user ? null : null}
@@ -126,10 +125,7 @@ function Calendar() {
                       Watch
                     </Button>
                   </td>
-                  <td>
-                    *
-                    {party.date_time.slice(5, 10)}
-                  </td>
+                  <td>{party.date_time.slice(2, 10)}</td>
                   <td>{party.name}</td>
                   <td>
                     {
@@ -146,7 +142,15 @@ function Calendar() {
           </Table>
         </Card>
       ) : (
-        <Card border="danger" bg="warning">
+        <Card
+          style={{
+            background: 'rgba(164, 73, 73, 0.23)',
+            WebkitBackdropFilter: 'blur(13px) saturate(89%)',
+            backdropFilter: 'blur(13px) saturate(89%)',
+            borderRadius: '12px',
+            border: '1px solid rgba(209, 213, 219, 0.3)',
+          }}
+        >
           <Card.Header style={{ fontSize: '24px' }} className="text-center">
             <Col>
               {user ? null : null}
@@ -179,10 +183,7 @@ function Calendar() {
                       Watch
                     </Button>
                   </td>
-                  <td>
-                    *
-                    {party.date_time.slice(5, 10)}
-                  </td>
+                  <td>{party.date_time.slice(2, 10)}</td>
                   <td>{party.name}</td>
                   <td>
                     {

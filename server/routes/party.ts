@@ -5,7 +5,11 @@ import { prisma } from '../db/index';
 import { YoutubeVideo, RequestWithUser } from '../../interfaces/interfaces';
 
 export const party: Router = express.Router();
-// TODO: Give videos an explicit relation to parties with an index field to order them
+
+party.get('/test', (req: Request, res: Response) => {
+  prisma.video.findMany().then((results) => res.send(results));
+});
+
 // Get all watch parties
 party.get('/', (req: Request, res: Response) => {
   // Retrieve all watch parties from the database
@@ -18,7 +22,12 @@ party.get('/', (req: Request, res: Response) => {
         },
       },
       include: {
-        videos: true,
+        party_videos: {
+          select: {
+            video: true,
+            index: true,
+          },
+        },
         user_parties: {
           select: {
             role: true,
@@ -39,7 +48,13 @@ party.get('/', (req: Request, res: Response) => {
           username: usr.user.user_name,
           role: usr.role,
         }));
+        pt.videos = pt.party_videos.map((vd) => ({
+          ...vd.video,
+          index: vd.index,
+        }));
+        pt.videos.sort((a, b) => a.index - b.index);
         delete pt.user_parties;
+        delete pt.party_videos;
       });
       res.status(200).send(JSON.stringify(parties));
     })
@@ -100,8 +115,8 @@ party.post('/', (req: RequestWithUser, res: Response) => {
         is_private,
         will_archive,
         thumbnail,
-        videos: {
-          connect: videos,
+        party_videos: {
+          create: videos,
         },
         user_parties: {
           create: participants,
@@ -129,6 +144,7 @@ party.post('/video', (req: Request, res: Response) => {
     })
     .then((results) => {
       if (results) {
+        console.log('video exists?');
         res.status(200).send(results);
       } else {
         return Promise.resolve(
@@ -140,6 +156,7 @@ party.post('/video', (req: Request, res: Response) => {
     })
     .then((video: YoutubeVideo) => {
       if (video === undefined) {
+        console.log('link bad?');
         return undefined;
       }
       const tempVideo = video.data;
@@ -160,8 +177,10 @@ party.post('/video', (req: Request, res: Response) => {
     })
     .then((r) => {
       if (r === undefined) {
+        console.log('something bad happened?');
         return undefined;
       }
+      console.log('video created/updated?');
       res.send(formattedVideo);
     })
     .catch((err) => {
@@ -184,10 +203,26 @@ party.get('/archive', (req: RequestWithUser, res: Response) => {
         },
       },
       include: {
-        videos: true,
+        party_videos: {
+          select: {
+            video: true,
+            index: true,
+          },
+        },
       },
     })
-    .then((archives) => res.status(200).send(JSON.stringify(archives)))
+    .then((archives: any) => {
+      archives.map((pt) => {
+        pt.videos = pt.party_videos.map((vd) => ({
+          ...vd.video,
+          index: vd.index,
+        }));
+        delete pt.party_videos;
+        pt.videos.sort((a, b) => a.index - b.index);
+        return pt;
+      });
+      res.status(200).send(JSON.stringify(archives));
+    })
     .catch((err) => res.status(404).send(JSON.stringify(err)));
 });
 
@@ -208,6 +243,7 @@ party.post('/archive', (req: RequestWithUser, res: Response) => {
 });
 
 // Adds a video to an existing watch party
+// TODO: Give the new video an index
 party.put('/addVideo/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   const { video } = req.body;
@@ -217,7 +253,8 @@ party.put('/addVideo/:id', (req: Request, res: Response) => {
         id,
       },
       data: {
-        videos: {
+        // TODO: Verify this
+        party_videos: {
           connect: {
             id: video,
           },
@@ -243,7 +280,8 @@ party.put('/removeVideo/:id', (req: Request, res: Response) => {
         id,
       },
       data: {
-        videos: {
+        // TODO: verify this
+        party_videos: {
           disconnect: {
             id: video,
           },
@@ -282,10 +320,12 @@ party.post('/role', (req: RequestWithUser, res: Response) => {
         role,
       },
     })
-    .then((results) => {
+    .then((resu) => {
+      console.log(resu);
       res.sendStatus(200);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error(err);
       res.sendStatus(500);
     });
 });
@@ -310,10 +350,11 @@ party.delete('/role', (req: RequestWithUser, res: Response) => {
         ],
       },
     })
-    .then((results) => {
+    .then(() => {
       res.sendStatus(200);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error(err);
       res.sendStatus(500);
     });
 });
@@ -332,5 +373,25 @@ party.post('/attend', async (req: RequestWithUser, res: Response) => {
     res.sendStatus(200);
   } catch (err) {
     res.sendStatus(500);
+  }
+});
+
+party.post('/dmMessages', (req: RequestWithUser, res: Response) => {
+  const { room } = req.body;
+  if (room) {
+    prisma.message
+      .findMany({
+        where: {
+          party_id: room,
+        },
+        select: {
+          user: true,
+          message: true,
+        },
+      })
+      .then((messages) => {
+        res.status(200).send(messages);
+      })
+      .catch((err) => res.status(404).send(JSON.stringify(err)));
   }
 });

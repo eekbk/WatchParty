@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 // import Card from 'react-bootstrap/Card';
 // import CardGroup from 'react-bootstrap/CardGroup';
 // import DashboardPartyCard from '../cards/DashboardPartyCard';
-import PartyCard from '../cards/PartyCard';
+import PartyCard from '../components/cards/PartyCard';
 // import { useNavigate } from 'react-router-dom';
 // import ListGroup from 'react-bootstrap/ListGroup';
 import { UserContext } from '../context';
@@ -93,20 +93,23 @@ function Dashboard() {
               </Row>
               <Row style={{ justifyContent: 'center' }}>
                 {user.parties
-                  .slice(0, 4)
-                  .sort(
-                    (a, b) =>
-                      Number(new Date(a.date_time)) -
-                      Number(new Date(b.date_time))
-                  )
                   .filter(
                     // to get only the today and upcoming parties
                     (a) => {
                       const today = new Date();
                       today.setHours(0, 0, 0, 0);
-                      return Number(new Date(a.date_time)) >= Number(today);
+                      return (
+                        Number(new Date(a.date_time)) >= Number(today) &&
+                        a.type === 'PARTY'
+                      );
                     }
                   )
+                  .sort(
+                    (a, b) =>
+                      Number(new Date(a.date_time)) -
+                      Number(new Date(b.date_time))
+                  )
+                  .slice(0, 4)
                   .map((party) => (
                     <Col style={{ borderRadius: '1px' }} key={party.id}>
                       <PartyCard party={party} />

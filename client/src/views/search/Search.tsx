@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import UserCard from '../../cards/UserCard';
 import PartyCard from '../../cards/PartyCard';
 import VideoCard from '../../cards/VideoCard';
-// import { SearchContext } from '../../contexts/searchContext';
+import { SearchContext } from '../../contexts/searchContext';
 import { UserContext } from '../../context';
 import { CategoryTitle } from '../../styles';
 import {

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import axios from 'axios';
-import { UserContext } from '../context';
+import { UserContext } from '../../context';
 import FollowButton from '../buttons/FollowButton';
 import BlockButton from '../buttons/BlockButton';
 import DmButton from '../buttons/DmButton';
@@ -13,10 +13,11 @@ import {
   StyledPartyTitle,
   StyledUserCardFooter,
   StyledUserCardFooterCol,
-} from '../cards/cards.styles';
+} from './cards.styles';
 
 // ModCard stands for Modular Card. Hopefully we can reuse it
 function UserCard({ obj, socket }) {
+  // console.log('here are the props...\nobj:', obj, '\nkind:', kind);
   const { user } = useContext(UserContext);
   const [cardTitle, setCardTitle] = useState('');
   const [cardText, setCardText] = useState('');

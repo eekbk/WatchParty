@@ -1,6 +1,15 @@
 // File for styling components
 import styled from 'styled-components';
-import { Button, Form, Container, Card, Row, Image } from 'react-bootstrap';
+import {
+  Button,
+  Form,
+  Container,
+  Card,
+  Row,
+  Image,
+  Navbar,
+  Nav,
+} from 'react-bootstrap';
 import {
   BsPlayCircleFill,
   BsPauseCircleFill,
@@ -9,7 +18,11 @@ import {
 } from 'react-icons/bs';
 // const { Title, Body, Img, Text } = Card;
 const { Group } = Form;
+const { Collapse, Brand, Toggle } = Navbar;
+const { Link } = Nav;
 
+// Style the background color to black
+// justifyItems center for grids?
 let primary;
 let secondary;
 let tertiary;
@@ -31,6 +44,17 @@ export const StyledBackgroundContainer = styled(Container)`
   flex-flow: flow wrap;
   box-sizing: border-box;
   color: white;
+  .navbar-toggler {
+    border: 1px solid white;
+  }
+  .navbar-dark {
+    background: rgba(28, 7, 47, 0.75);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(17.9px);
+    -webkit-backdrop-filter: blur(17.9px);
+    border: 1px solid rgba(49, 12, 84, 0.19);
+  }
 `;
 
 export const MainContent = styled(Container)`
@@ -42,6 +66,9 @@ export const MainContent = styled(Container)`
   margin: 0 auto;
 `;
 
+// Make navbar more opaque
+// Add conditional border radius to only show when in small size
+// Look up pesudo-selector, two-tone blur
 export const Header = styled.header`
   color: white;
   position: fixed;
@@ -86,12 +113,10 @@ export const Footer = styled.footer`
   background-color: purple; 
 	background-image: linear-gradient(#320e3b,#6a1d7d);
   text-shadow: 0px -1px #333; 
-  
   */
 `;
 
 // offcanvas responsive for menus that could be cluttered on mobile?
-// scrolling on navbar for when collapsed?
 // collapse and fade for wrapping conditionally visible components?
 export const StyledVideoCard = styled(Card)`
   background: rgba(94, 48, 121, 0.25);
@@ -113,16 +138,33 @@ export const ArchiveGlassCard = styled(Card)`
   border-radius: 12px;
   border: 1px solid #6a1d7d;
 `;
+
 export const StRow = styled(Row)`
   position: absolute;
   bottom: 0.5rem;
   left: 0.8rem;
   opacity: 0;
   width: 100%;
+  opacity: inherit;
+  backdrop-filter: blur(10px) saturate(50%);
+  -webkit-backdrop-filter: blur(10px) saturate(50%);
+  background-color: rgba(17, 25, 40, 0);
+`;
+
+export const StContainer = styled(Container)`
+  opacity: 0;
+  float: left;
+  position: absolute;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  top: 0;
+  left: 0;
   &:hover {
     opacity: 1;
   }
 `;
+
 export const PStRow = styled(Row)`
   position: absolute;
   max-height: 85%;
@@ -130,10 +172,12 @@ export const PStRow = styled(Row)`
   left: 0.8rem;
   opacity: 0;
   width: 100%;
-  &:hover {
-    opacity: 1;
-  }
+  opacity: inherit;
+  backdrop-filter: blur(10px) saturate(50%);
+  -webkit-backdrop-filter: blur(10px) saturate(50%);
+  background-color: rgba(17, 25, 40, 0);
 `;
+
 export const DmChatBox = styled(Container)`
   backdrop-filter: blur(25px) saturate(200%);
   -webkit-backdrop-filter: blur(25px) saturate(200%);
@@ -143,11 +187,11 @@ export const DmChatBox = styled(Container)`
   color: white;
   margin: 0px;
 `;
+
 export const ThinScrollBar = styled(Group)`
   &::-webkit-scrollbar-thumb {
     width: 10px;
     opacity: 0;
-    box-shadow: inset 0px 0px 5px black;
   }
   &::-webkit-scrollbar {
     width: 10px;
@@ -155,6 +199,7 @@ export const ThinScrollBar = styled(Group)`
   }
   &:hover {
     &::-webkit-scrollbar-thumb {
+      box-shadow: inset 0px 0px 5px black;
       background: #7d7d7d;
       opacity: 1;
       border-radius: 10px;
@@ -169,6 +214,7 @@ export const ThinScrollBar = styled(Group)`
     }
   }
 `;
+
 export const DmSideBar = styled(Group)`
   color: white;
   backdrop-filter: blur(25px) saturate(200%);
@@ -201,22 +247,27 @@ export const DmSideBar = styled(Group)`
     }
   }
 `;
+
 export const PlayButton = styled(BsPlayCircleFill)`
   opacity: inherit;
   color: #d8d8d8;
 `;
+
 export const PauseButton = styled(BsPauseCircleFill)`
   opacity: inherit;
   color: #d8d8d8;
 `;
+
 export const NextButton = styled(BsFillArrowRightCircleFill)`
   opacity: inherit;
   color: #d8d8d8;
 `;
+
 export const BackButton = styled(BsFillArrowLeftCircleFill)`
   opacity: inherit;
   color: #d8d8d8;
 `;
+
 export const VolSlider = styled(Form.Range)`
   &::-webkit-slider-thumb {
     background: #383838 !important;
@@ -240,6 +291,7 @@ export const DmUser = styled(Image)`
     border-color: #8a25e2;
   }
 `;
+
 export const DmUserContainer = styled(Button)`
   border: solid 1px;
   background: rgba(94, 48, 121, 0.25);
@@ -287,7 +339,6 @@ export const StyledButton = styled(Button)`
   color: ${text};
   background-color: ${tertiary};
   border-color: ${accent};
-
   &:after {
     content: '';
     position: absolute;
@@ -346,6 +397,7 @@ export const StyledForm = styled(Form)`
     }
   }
 `;
+
 // This is how you turn off the scrollbar in case you want to make your own:
 // &::-webkit-scrollbar {
 // 	display: none;
@@ -424,3 +476,15 @@ export const CategoryTitle = styled.h1`
   /* text-align: center; */
   justify-content: left;
 `;
+
+export const StyledNavbar = styled(Navbar)``;
+
+export const StyledNav = styled(Nav)``;
+
+export const StyledCollapse = styled(Collapse)``;
+
+export const StyledBrand = styled(Brand)``;
+
+export const StyledToggle = styled(Toggle)``;
+
+export const StyledLink = styled(Link)``;

@@ -1,28 +1,30 @@
 import axios from 'axios';
 import { useState, useRef, useContext } from 'react';
+import { Spinner } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../context';
 import {
   StyledAlert,
-  StyledCloseButton,
   StyledCol,
   StyledRow,
-  StyledToken,
-  StyledTypeahead,
-  StyledForm,
+  CreatePartyContainer,
+  HeaderRow,
+  HeaderColumn,
+  StyledTabs,
+  StyledTab,
   StyledButton,
-  StyledVideoCard,
-  StyledContainer,
-  StyledFormCheck,
-  StyledFormGroup,
-  StyledFormControl,
-  StyledFormText,
-  StyledFormLabel,
-  StyledFormTextarea,
 } from './styles';
+import { RoomDetails } from './RoomDetails';
+import { RoomOptions } from './RoomOptions';
+import { VideoImports } from './VideoImports';
+import { VideoList } from './VideoList';
+import { UserPlaylists } from './UserPlaylists';
 
 export function CreateParty() {
   const { user, setUser } = useContext(UserContext);
-  const typeaheadRef = useRef(null);
+  const navigate = useNavigate();
+  const typeaheadRef1 = useRef(null);
+  const typeaheadRef2 = useRef(null);
   const [privateR, setPrivateR] = useState(false);
   const [archive, setArchive] = useState(false);
   const [savePlaylist, setSavePlaylist] = useState(false);
@@ -36,10 +38,12 @@ export function CreateParty() {
   const [playlistName, setPlaylistName] = useState('');
   const [playlistDescription, setPlaylistDescription] = useState('');
   const [created, setCreated] = useState(false);
+  const [creating, setCreating] = useState(false);
   const [date, setDate] = useState(new Date(Date.now()));
 
   // Creates the party in the database
   const handleCreate = () => {
+    setCreating(true);
     // Creates the new playlist in the database
     if (savePlaylist) {
       axios
@@ -48,7 +52,10 @@ export function CreateParty() {
             name: playlistName,
             description: playlistDescription,
             thumbnail: playlist[0].thumbnail,
-            videos: playlist.map((vd) => vd.id),
+            videos: playlist.map((vd, index) => ({
+              index,
+              video: { connect: { id: vd.id } },
+            })),
             user_id: user.id,
           },
         })
@@ -68,13 +75,17 @@ export function CreateParty() {
           type: 'PARTY',
           user_id: user.id,
           thumbnail: playlist[0].thumbnail,
-          videos: playlist.map((vd) => ({ id: vd.id })),
+          videos: playlist.map((vd, index) => ({
+            index,
+            video: { connect: { id: vd.id } },
+          })),
         },
       })
       .then(() => axios.get('/api/user'))
       .then((data) => {
         setUser(data.data);
         setCreated(true);
+        setTimeout(() => navigate('/'), 3000);
       })
       .catch((err) => {
         console.error(err);
@@ -146,239 +157,115 @@ export function CreateParty() {
     setPlaylist(pl);
   };
 
-  return user && !created ? (
-    <StyledContainer fluid="lg">
-      <StyledRow xs={1} sm={1} md={2} xl={4}>
-        <StyledCol sm={10}>
-          <StyledForm style={{ marginBottom: '10px' }}>
-            <StyledFormGroup>
-              <StyledFormLabel>Room Name</StyledFormLabel>
-              <StyledFormControl
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter Room Name Here"
+  return (
+    <CreatePartyContainer>
+      <HeaderRow>
+        <HeaderColumn style={{ textAlign: 'center' }}>
+          <h1>Create Watch Party</h1>
+          <br />
+        </HeaderColumn>
+      </HeaderRow>
+      {user && !created && !creating ? (
+        <StyledRow>
+          <StyledTabs defaultActiveKey="party">
+            <StyledTab
+              eventKey="party"
+              title={name.length ? 'Party' : 'Party*'}
+            >
+              <RoomDetails
+                setName={setName}
+                setDescription={setDescription}
+                setDate={setDate}
+                date={date}
+                name={name}
               />
-            </StyledFormGroup>
-            <StyledFormGroup>
-              <StyledFormLabel>Description</StyledFormLabel>
-              <br />
-              <StyledFormTextarea
-                onChange={(e) => setDescription(e.target.value)}
-                as="textarea"
-                placeholder="Describe Room Here"
+            </StyledTab>
+            <StyledTab
+              eventKey="playlist"
+              title={playlist.length ? 'Playlist' : 'Playlist*'}
+            >
+              <StyledRow>
+                <StyledCol>
+                  <VideoImports
+                    handlePlaylistAddition={handlePlaylistAddition}
+                    youtubePlaylist={youtubePlaylist}
+                    setYoutubePlaylist={setYoutubePlaylist}
+                    handleVideoAddition={handleVideoAddition}
+                    video={video}
+                    setVideo={setVideo}
+                  />
+                </StyledCol>
+                <StyledCol>
+                  <UserPlaylists
+                    playlist={playlist}
+                    setPlaylist={setPlaylist}
+                    user={user}
+                  />
+                </StyledCol>
+                <StyledCol>
+                  <VideoList
+                    handleVideoRemoval={handleVideoRemoval}
+                    playlist={playlist}
+                  />
+                </StyledCol>
+              </StyledRow>
+            </StyledTab>
+            <StyledTab eventKey="options" title="Options">
+              <RoomOptions
+                typeaheadRef2={typeaheadRef2}
+                admins={admins}
+                setAdmins={setAdmins}
+                setInvited={setInvited}
+                privateR={privateR}
+                typeaheadRef1={typeaheadRef1}
+                user={user}
+                invited={invited}
+                setPrivateR={setPrivateR}
+                setSavePlaylist={setSavePlaylist}
+                setArchive={setArchive}
+                setPlaylistDescription={setPlaylistDescription}
+                setPlaylistName={setPlaylistName}
+                savePlaylist={savePlaylist}
               />
-            </StyledFormGroup>
-            <StyledFormGroup>
-              <StyledFormLabel>Start Date</StyledFormLabel>
-              <br />
-              <StyledFormControl
-                as="input"
-                value={date.toISOString().slice(0, 10)}
-                min={new Date().toISOString().slice(0, 10)}
-                max={new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)
-                  .toISOString()
-                  .slice(0, 10)}
-                type="date"
-                onChange={(e) => setDate(new Date(e.target.value))}
-              />
-            </StyledFormGroup>
-            <StyledFormGroup>
-              <StyledButton
-                disabled={!playlist.length || !name}
-                onClick={handleCreate}
-                style={{ marginTop: '5px' }}
-                variant="outline-dark"
-              >
-                Create
-              </StyledButton>
-            </StyledFormGroup>
-          </StyledForm>
-        </StyledCol>
-        <StyledCol sm={10}>
-          <StyledForm>
-            <StyledFormGroup>
-              <StyledFormLabel>Youtube Video Url</StyledFormLabel>
-              <StyledFormControl
-                placeholder="Paste Url Here"
-                onChange={(e) => setVideo(e.target.value)}
-                value={video}
-              />
-              <StyledFormText>Choose a YouTube video to add</StyledFormText>
-              <br />
-              <StyledButton
-                onClick={handleVideoAddition}
-                variant="outline-dark"
-              >
-                Add
-              </StyledButton>
-            </StyledFormGroup>
-            <StyledFormGroup style={{ marginTop: '20px' }}>
-              <StyledFormLabel>Public Youtube Playlist Url</StyledFormLabel>
-              <StyledFormControl
-                placeholder="Paste Url Here"
-                onChange={(e) => setYoutubePlaylist(e.target.value)}
-                value={youtubePlaylist}
-              />
-              <StyledFormText>
-                Choose a YouTube playlist to import videos from
-              </StyledFormText>
-              <br />
-              <StyledButton
-                onClick={handlePlaylistAddition}
-                variant="outline-dark"
-              >
-                Add
-              </StyledButton>
-            </StyledFormGroup>
-          </StyledForm>
-          <StyledForm style={{ marginTop: '10px' }}>
-            <StyledFormGroup>
-              <StyledFormCheck
-                type="checkbox"
-                label="Archive on End"
-                onChange={(e) => setArchive(e.target.checked)}
-              />
-              <StyledFormCheck
-                type="checkbox"
-                label="Save Videos as New Playlist"
-                onChange={(e) => setSavePlaylist(e.target.checked)}
-              />
-              <StyledFormCheck
-                type="checkbox"
-                label="Invite Only"
-                onChange={(e) => setPrivateR(e.target.checked)}
-              />
-            </StyledFormGroup>
-            <StyledFormGroup hidden={!privateR}>
-              <StyledFormLabel>
-                Invite people to your watch party
-              </StyledFormLabel>
-              <StyledTypeahead
-                labelKey={(option: any) => option.username}
-                multiple
-                id="keep-menu-open"
-                onChange={(selected) => {
-                  setInvited(selected);
-                  // Keep the menu open when making multiple selections.
-                  typeaheadRef.current.toggleMenu();
-                }}
-                options={user.tempFollowing}
-                placeholder="Enter usernames"
-                ref={typeaheadRef}
-                selected={invited}
-                renderToken={(option: any, { onRemove }, index) => (
-                  <StyledToken key={index} onRemove={onRemove} option={option}>
-                    {`@${option.username}`}
-                  </StyledToken>
-                )}
-              />
-            </StyledFormGroup>
-            <StyledFormGroup>
-              <StyledFormLabel>Assign Admins</StyledFormLabel>
-              <StyledTypeahead
-                labelKey={(option: any) => option.username}
-                multiple
-                id="keep-menu-open"
-                onChange={(selected) => {
-                  setAdmins(selected);
-                  typeaheadRef.current.toggleMenu();
-                }}
-                options={privateR ? invited : user.tempFollowing}
-                placeholder="Enter usernames"
-                ref={typeaheadRef}
-                selected={admins}
-                renderToken={(option: any, { onRemove }, index) => (
-                  <StyledToken key={index} onRemove={onRemove} option={option}>
-                    {`@${option.username}`}
-                  </StyledToken>
-                )}
-              />
-            </StyledFormGroup>
-          </StyledForm>
-        </StyledCol>
-        <StyledCol sm={10}>
-          <StyledForm
+            </StyledTab>
+          </StyledTabs>
+          <br />
+          <StyledButton
+            disabled={!playlist.length || !name}
+            onClick={handleCreate}
+            variant="outline-dark"
             style={{
-              overflowY: 'scroll',
-              maxHeight: '80vh',
-            }}
-          >
-            <StyledFormGroup>
-              <StyledFormLabel>Choose Saved Playlist</StyledFormLabel>
-              {user.playlists.map((pl, i) => (
-                <StyledVideoCard style={{ marginTop: '5px' }}>
-                  <StyledVideoCard.Title>{pl.name}</StyledVideoCard.Title>
-                  <StyledVideoCard.Body>
-                    <StyledVideoCard.Img src={pl.thumbnail} />
-                    <StyledVideoCard.Text>
-                      {pl.description.slice(0, 150)}
-                    </StyledVideoCard.Text>
-                    <StyledButton
-                      style={{ marginTop: '5px' }}
-                      onClick={() => setPlaylist(playlist.concat(pl.videos))}
-                      variant="outline-dark"
-                    >
-                      Import
-                    </StyledButton>
-                  </StyledVideoCard.Body>
-                </StyledVideoCard>
-              ))}
-            </StyledFormGroup>
-          </StyledForm>
-        </StyledCol>
-        <StyledCol sm={10}>
-          <StyledForm>
-            <StyledFormGroup>
-              <StyledFormLabel>Playlist Title</StyledFormLabel>
-              <StyledFormControl
-                onChange={(e) => setPlaylistName(e.target.value)}
-                placeholder="Enter Playlist Title"
-                disabled={!savePlaylist}
-              />
-            </StyledFormGroup>
-            <StyledFormGroup>
-              <StyledFormLabel>Description</StyledFormLabel>
-              <br />
-              <StyledFormTextarea
-                onChange={(e) => setPlaylistDescription(e.target.value)}
-                as="textarea"
-                placeholder="Describe Playlist"
-                disabled={!savePlaylist}
-              />
-            </StyledFormGroup>
-          </StyledForm>
-          <StyledForm
-            style={{
-              overflowY: 'scroll',
-              maxHeight: '80vh',
               marginTop: '10px',
+              width: 'max-content',
+              marginLeft: '22px',
+              marginRight: 'auto',
             }}
           >
-            <StyledFormGroup>
-              <StyledFormLabel>Video List</StyledFormLabel>
-              {playlist.map((vd, i) => (
-                <StyledVideoCard style={{ margin: '0px' }}>
-                  <StyledCloseButton onClick={() => handleVideoRemoval(i)} />
-                  <StyledVideoCard.Title>{vd.title}</StyledVideoCard.Title>
-                  <StyledVideoCard.Body>
-                    <StyledVideoCard.Img src={vd.thumbnail} />
-                    <StyledVideoCard.Text>
-                      {vd.description.slice(0, 150)}
-                    </StyledVideoCard.Text>
-                  </StyledVideoCard.Body>
-                </StyledVideoCard>
-              ))}
-            </StyledFormGroup>
-          </StyledForm>
-        </StyledCol>
-      </StyledRow>
-    </StyledContainer>
-  ) : created ? (
-    <StyledAlert key="success" variant="success">
-      Watch Party Created!
-    </StyledAlert>
-  ) : (
-    <StyledAlert key="warning" variant="warning">
-      Please log in to create Watch Parties
-    </StyledAlert>
+            Create
+          </StyledButton>
+        </StyledRow>
+      ) : created ? (
+        <StyledAlert
+          key="success"
+          variant="success"
+          style={{ maxWidth: '20rem', margin: '40%', textAlign: 'center' }}
+        >
+          Watch Party Created!
+        </StyledAlert>
+      ) : (
+        <Spinner
+          animation="border"
+          role="status"
+          style={{
+            color: '#A663CC',
+            position: 'absolute',
+            left: '50%',
+            top: '50vh',
+          }}
+        >
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      )}
+    </CreatePartyContainer>
   );
 }
