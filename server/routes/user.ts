@@ -46,7 +46,12 @@ user.get('/', (req: RequestWithUser, res: Response) => {
             },
           },
           include: {
-            videos: true,
+            party_videos: {
+              select: {
+                video: true,
+                index: true,
+              },
+            },
             user_parties: {
               select: {
                 role: true,

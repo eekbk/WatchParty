@@ -21,6 +21,8 @@ const { Group } = Form;
 const { Collapse, Brand, Toggle } = Navbar;
 const { Link } = Nav;
 
+// Style the background color to black
+// justifyItems center for grids?
 let primary;
 let secondary;
 let tertiary;
@@ -64,6 +66,9 @@ export const MainContent = styled(Container)`
   margin: 0 auto;
 `;
 
+// Make navbar more opaque
+// Add conditional border radius to only show when in small size
+// Look up pesudo-selector, two-tone blur
 export const Header = styled.header`
   color: white;
   position: fixed;
@@ -108,7 +113,6 @@ export const Footer = styled.footer`
   background-color: purple; 
 	background-image: linear-gradient(#320e3b,#6a1d7d);
   text-shadow: 0px -1px #333; 
-  
   */
 `;
 
@@ -134,6 +138,7 @@ export const ArchiveGlassCard = styled(Card)`
   border-radius: 12px;
   border: 1px solid #6a1d7d;
 `;
+
 export const StRow = styled(Row)`
   position: absolute;
   bottom: 0.5rem;
@@ -242,22 +247,27 @@ export const DmSideBar = styled(Group)`
     }
   }
 `;
+
 export const PlayButton = styled(BsPlayCircleFill)`
   opacity: inherit;
   color: #d8d8d8;
 `;
+
 export const PauseButton = styled(BsPauseCircleFill)`
   opacity: inherit;
   color: #d8d8d8;
 `;
+
 export const NextButton = styled(BsFillArrowRightCircleFill)`
   opacity: inherit;
   color: #d8d8d8;
 `;
+
 export const BackButton = styled(BsFillArrowLeftCircleFill)`
   opacity: inherit;
   color: #d8d8d8;
 `;
+
 export const VolSlider = styled(Form.Range)`
   &::-webkit-slider-thumb {
     background: #383838 !important;
@@ -281,6 +291,7 @@ export const DmUser = styled(Image)`
     border-color: #8a25e2;
   }
 `;
+
 export const DmUserContainer = styled(Button)`
   border: solid 1px;
   background: rgba(94, 48, 121, 0.25);
@@ -328,7 +339,6 @@ export const StyledButton = styled(Button)`
   color: ${text};
   background-color: ${tertiary};
   border-color: ${accent};
-
   &:after {
     content: '';
     position: absolute;
@@ -387,6 +397,7 @@ export const StyledForm = styled(Form)`
     }
   }
 `;
+
 // This is how you turn off the scrollbar in case you want to make your own:
 // &::-webkit-scrollbar {
 // 	display: none;

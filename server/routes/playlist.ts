@@ -14,7 +14,7 @@ playlist.post('/', (req: Request, res: Response) => {
       data: {
         ...playlist,
         playlist_videos: {
-          create: videos.map((id: string) => ({ video: { connect: { id } } })),
+          create: videos,
         },
       },
     })

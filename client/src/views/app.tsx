@@ -52,7 +52,6 @@ function App() {
       });
   };
 
-  // TODO: fix style look, do style goodly
   return (
     <StyledBackgroundContainer fluid>
       <Header>
