@@ -16,7 +16,7 @@ function Chat({
 }): JSX.Element {
   // State vars
   const [vHeight, setVHight] = useState(
-    vH.current ? vH.current.clientHeight : '100%'
+    vH.current ? vH.current.clientHeight - 65 : '80%'
   );
   const [chat, setChat] = useState('');
   const scrolly = useRef(null);
@@ -43,7 +43,7 @@ function Chat({
   };
 
   const handleResize = () => {
-    setVHight(vH.current ? vH.current.clientHeight : '100%');
+    setVHight(vH.current ? vH.current.clientHeight - 65 : '80%');
   };
 
   // func for async voiceSubmit
@@ -57,6 +57,7 @@ function Chat({
   // for style
   useEffect(() => {
     window.addEventListener('resize', handleResize);
+    console.log(vH, vHeight);
   }, [vHeight]);
 
   // handle updates
@@ -90,11 +91,12 @@ function Chat({
         backgroundColor: 'transparent',
         borderRadius: '0px 5px 5px 0px',
         margin: '0px',
-        height: vH.current ? vH.current.clientHeight : '100%',
-        maxHeight: vH.current ? vH.current.clientHeight : '100%',
+        height: vH.current ? vH.current.clientHeight - 65 : '80%%',
+        maxHeight: vH.current ? vH.current.clientHeight - 65 : '80%%',
       }}
     >
       <Form style={{ height: '100%' }}>
+        {isArchived ? 'Archived' : null}
         <ThinScrollBar
           ref={scrolly}
           style={{ overflowY: 'auto', height: '100%' }}
@@ -103,21 +105,23 @@ function Chat({
             <Message message={message} user={user} socket={socket} />
           ))}
         </ThinScrollBar>
-        <InputGroup style={{ marginTop: '5px' }}>
-          <Form.Control
-            value={chat}
-            onChange={(event) => setChat(event.target.value)}
-            placeholder="type here!"
-            disabled={isArchived}
-          />
-          <StyledButton
-            type="submit"
-            onClick={handleSubmit}
-            disabled={isArchived}
-          >
-            Send!
-          </StyledButton>
-        </InputGroup>
+        {isArchived ? null : (
+          <InputGroup style={{ marginTop: '5px' }}>
+            <Form.Control
+              value={chat}
+              onChange={(event) => setChat(event.target.value)}
+              placeholder="type here!"
+              disabled={isArchived}
+            />
+            <StyledButton
+              type="submit"
+              onClick={handleSubmit}
+              disabled={isArchived}
+            >
+              Send!
+            </StyledButton>
+          </InputGroup>
+        )}
       </Form>
     </Container>
   );

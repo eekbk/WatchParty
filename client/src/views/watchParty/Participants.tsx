@@ -11,31 +11,22 @@ export function Participants({ participants, setParticipants, room, status }) {
 
   const changeRole = (i) => {
     const tempParticipants = participants.slice();
-    if (room.is_private) {
-      tempParticipants[i].role =
-        tempParticipants[i].role === 'ADMIN' ? 'NORMIE' : 'ADMIN';
-      setParticipants(tempParticipants);
-      axios
-        .post('/api/party/role', {
-          user_id: participants[i].id,
-          party_id: room.id,
-          role: tempParticipants[i].role,
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    } else {
-      axios
-        .delete('/api/party/role', {
-          data: {
-            user_id: participants[i].id,
-            party_id: room.id,
-          },
-        })
-        .catch((err) => console.error(err));
-      tempParticipants.splice(i, 1);
-      setParticipants(tempParticipants);
-    }
+    tempParticipants[i].role =
+      tempParticipants[i].role === 'ADMIN' ? 'NORMIE' : 'ADMIN';
+    setParticipants(tempParticipants);
+    axios
+      .post('/api/party/role', {
+        user_id: participants[i].id,
+        party_id: room.id,
+        role: tempParticipants[i].role,
+      })
+      .then(() => {
+        // TODO: Somehow get all the places that can render this to update their
+        // parties from the database to reflect the role changes
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   return (
@@ -45,7 +36,7 @@ export function Participants({ participants, setParticipants, room, status }) {
       style={{
         overflowY: 'auto',
       }}
-      hidden={!status}
+      hidden={!(status && status.role === 'CREATOR')}
     >
       <StyledListItem
         style={{

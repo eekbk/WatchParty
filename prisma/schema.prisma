@@ -13,6 +13,8 @@ datasource db {
 
 model User {
   id           String       @id @default(uuid())
+  createdAt    DateTime     @default(now()) @db.Timestamptz
+  updatedAt    DateTime     @updatedAt @db.Timestamptz
   user_name    String
   googleId     String       @unique
   messages     Message[]
@@ -23,14 +25,12 @@ model User {
   upvotes      Upvote[]
   playlists    Playlist[]
   profile      String
-  followed_by  User[]       @relation("UserFollows")
-  following    User[]       @relation("UserFollows")
-  blocking     User[]       @relation("UserBlocks")
-  blocked_by   User[]       @relation("UserBlocks")
 }
 
 model Relation {
   id         String        @id @default(uuid())
+  createdAt  DateTime      @default(now()) @db.Timestamptz
+  updatedAt  DateTime      @updatedAt @db.Timestamptz
   relator    User          @relation("relator", fields: [relator_id], references: [id])
   relator_id String
   relatee    User          @relation("relatee", fields: [relatee_id], references: [id])
@@ -40,8 +40,9 @@ model Relation {
 
 model Message {
   id             String       @id @default(uuid())
-  createdAt      DateTime     @default(now())
-  room_timestamp String?       
+  createdAt      DateTime     @default(now()) @db.Timestamptz
+  updatedAt      DateTime     @updatedAt @db.Timestamptz
+  room_timestamp String?
   message        String
   user           User         @relation(fields: [user_id], references: [id])
   user_id        String
@@ -53,24 +54,28 @@ model Message {
 }
 
 model Party {
-  id           String       @id @default(uuid())
+  id           String        @id @default(uuid())
+  createdAt    DateTime      @default(now()) @db.Timestamptz
+  updatedAt    DateTime      @updatedAt @db.Timestamptz
   name         String?
   description  String?
   messages     Message[]
-  is_private   Boolean      @default(false)
-  will_archive Boolean      @default(false)
-  date_time    DateTime     @default(now())
-  likes_count  Int          @default(0)
+  is_private   Boolean       @default(false)
+  will_archive Boolean       @default(false)
+  date_time    DateTime      @default(now()) @db.Timestamptz
+  likes_count  Int           @default(0)
   type         Party_Type
-  status       Status       @default(UPCOMING)
+  status       Status        @default(UPCOMING)
   user_parties User_Party[]
   likes        Like[]
-  videos       Video[]      
+  party_videos Party_Video[]
   thumbnail    String?
 }
 
 model Playlist {
   id              String           @id @default(uuid())
+  createdAt       DateTime         @default(now()) @db.Timestamptz
+  updatedAt       DateTime         @updatedAt @db.Timestamptz
   name            String
   description     String
   thumbnail       String
@@ -79,22 +84,36 @@ model Playlist {
   user_id         String?
 }
 
-model Playlist_Video {
-  id          String   @id @default(uuid())
-  playlist    Playlist @relation(fields: [playlist_id], references: [id])
-  playlist_id String
-  video       Video    @relation(fields: [video_id], references: [id])
-  video_id    String
-}
-
 model Video {
   id              String           @id @default(uuid())
+  createdAt       DateTime         @default(now()) @db.Timestamptz
+  updatedAt       DateTime         @updatedAt @db.Timestamptz
   url             String
   title           String
   description     String
   thumbnail       String
   playlist_videos Playlist_Video[]
-  parties         Party[]
+  party_videos    Party_Video[]
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+  user_id   String
+  user      User     @relation(fields: [user_id], references: [id])
+  party_id  String
+  party     Party    @relation(fields: [party_id], references: [id])
+}
+
+model Upvote {
+  id         String  @id @default(uuid())
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+  user_id    String
+  user       User    @relation(fields: [user_id], references: [id])
+  message_id String
+  message    Message @relation(fields: [message_id], references: [id])
 }
 
 model User_Party {
@@ -106,20 +125,22 @@ model User_Party {
   party    Party  @relation(fields: [party_id], references: [id])
 }
 
-model Like {
-  id       String @id @default(uuid())
-  user_id  String
-  user     User   @relation(fields: [user_id], references: [id])
-  party_id String
-  party    Party  @relation(fields: [party_id], references: [id])
+model Playlist_Video {
+  id          String   @id @default(uuid())
+  index       Int
+  playlist_id String
+  video_id    String
+  playlist    Playlist @relation(fields: [playlist_id], references: [id])
+  video       Video    @relation(fields: [video_id], references: [id])
 }
 
-model Upvote {
-  id         String  @id @default(uuid())
-  user_id    String
-  user       User    @relation(fields: [user_id], references: [id])
-  message_id String
-  message    Message @relation(fields: [message_id], references: [id])
+model Party_Video {
+  id       String @id @default(uuid())
+  index    Int
+  party_id String
+  video_id String
+  party    Party  @relation(fields: [party_id], references: [id])
+  video    Video  @relation(fields: [video_id], references: [id])
 }
 
 enum Party_Type {

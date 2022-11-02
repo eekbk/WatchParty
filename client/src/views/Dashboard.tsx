@@ -93,11 +93,6 @@ function Dashboard() {
               </Row>
               <Row style={{ justifyContent: 'center' }}>
                 {user.parties
-                  .sort(
-                    (a, b) =>
-                      Number(new Date(a.date_time)) -
-                      Number(new Date(b.date_time))
-                  )
                   .filter(
                     // to get only the today and upcoming parties
                     (a) => {
@@ -108,6 +103,11 @@ function Dashboard() {
                         a.type === 'PARTY'
                       );
                     }
+                  )
+                  .sort(
+                    (a, b) =>
+                      Number(new Date(a.date_time)) -
+                      Number(new Date(b.date_time))
                   )
                   .slice(0, 4)
                   .map((party) => (

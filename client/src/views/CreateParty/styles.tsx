@@ -9,6 +9,8 @@ import {
   Col,
   CloseButton,
   Alert,
+  Tab,
+  Tabs,
 } from 'react-bootstrap';
 import { Typeahead, Token } from 'react-bootstrap-typeahead';
 
@@ -92,41 +94,42 @@ text = '#E5F4E3';
 // accent = '#BA5C12';
 // text = '#C1292E';
 
-export const StyledContainer = styled(Container)``;
+export const CreatePartyContainer = styled(Container)``;
 export const StyledImageContainer = styled(Container)``;
-export const StyledTypeahead = styled(Typeahead)``;
+
+export const StyledTypeahead = styled(Typeahead)`
+  .rbt-input-multi.disabled {
+    cursor: default;
+  }
+`;
+
 export const StyledToken = styled(Token)``;
-export const StyledRow = styled(Row)``;
+
+export const StyledRow = styled(Row)`
+  justify-content: center;
+`;
+
 export const StyledCol = styled(Col)``;
 export const StyledCloseButton = styled(CloseButton)``;
 export const StyledAlert = styled(Alert)``;
 
-export const StyledAccordion = styled(Accordion)`
-  &::-webkit-scrollbar-thumb {
-    width: 20px;
-    opacity: 0;
-    box-shadow: inset 0px 0px 5px black;
-  }
-  &::-webkit-scrollbar {
-    width: 20px;
-    opacity: 0;
-  }
-  &:hover {
-    &::-webkit-scrollbar-thumb {
-      background: #7d7d7d;
-      opacity: 1;
-      border-radius: 10px;
-      &:active {
-        border: 1px solid white;
-      }
-    }
-    &::-webkit-scrollbar {
-      background: #3f3f3f;
-      opacity: 1;
-      border-radius: 10px;
-    }
+export const HeaderRow = styled(Row)`
+  justify-content: center;
+`;
+
+export const HeaderColumn = styled(Col)`
+  text-align: center;
+`;
+
+export const StyledTabs = styled(Tabs)`
+  --bs-nav-tabs-link-active-bg: #320e3b;
+  --bs-nav-tabs-link-active-color: white;
+  .nav-link {
+    color: white;
   }
 `;
+
+export const StyledTab = styled(Tab)``;
 
 export const StyledAccordionItem = styled(Item)``;
 
@@ -198,30 +201,6 @@ export const StyledForm = styled(Form)`
   //box-shadow: inset 0px 0px 5px black;
   padding: 10px;
   border-radius: 16px;
-  &::-webkit-scrollbar-thumb {
-    width: 20px;
-    opacity: 0;
-    box-shadow: inset 0px 0px 5px black;
-  }
-  &::-webkit-scrollbar {
-    width: 20px;
-    opacity: 0;
-  }
-  &:hover {
-    &::-webkit-scrollbar-thumb {
-      background: #7d7d7d;
-      opacity: 1;
-      border-radius: 10px;
-      &:active {
-        border: 1px solid white;
-      }
-    }
-    &::-webkit-scrollbar {
-      background: #3f3f3f;
-      opacity: 1;
-      border-radius: 10px;
-    }
-  }
 `;
 
 export const StyledFormLabel = styled(Label)`
@@ -257,38 +236,6 @@ export const StyledFormTextarea = styled(Control)`
   }
 `;
 
-// This is how you turn off the scrollbar in case you want to make your own:
-// &::-webkit-scrollbar {
-// 	display: none;
-// }
-// This is how you make your own:
-// https://www.w3schools.com/HOWTO/howto_css_custom_scrollbar.asp
-// https://levelup.gitconnected.com/build-on-hover-custom-scrollbar-in-react-d846194a7ea4
-
 export const StyledScrollableGroup = styled(Group)`
   overflow-y: auto;
-  &::-webkit-scrollbar-thumb {
-    width: 20px;
-    opacity: 0;
-  }
-  &::-webkit-scrollbar {
-    width: 20px;
-    opacity: 0;
-  }
-  &:hover {
-    &::-webkit-scrollbar-thumb {
-      box-shadow: inset 0px 0px 5px black;
-      background: #7d7d7d;
-      opacity: 1;
-      border-radius: 10px;
-      &:active {
-        border: 1px solid white;
-      }
-    }
-    &::-webkit-scrollbar {
-      background: #3f3f3f;
-      opacity: 1;
-      border-radius: 10px;
-    }
-  }
 `;
