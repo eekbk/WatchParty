@@ -17,10 +17,9 @@ function VoiceButton() {
   const pages = ['home', 'profile', 'create party', 'calendar'];
   const urls = {
     home: '/',
-    login: '/auth/google',
-    logout: '/logout',
     profile: '/profile',
     'create party': '/createParty',
+    calendar: '/calendar',
   };
 
   useEffect(() => {
