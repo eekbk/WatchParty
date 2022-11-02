@@ -145,6 +145,21 @@ export const StRow = styled(Row)`
   left: 0.8rem;
   opacity: 0;
   width: 100%;
+  opacity: inherit;
+  backdrop-filter: blur(10px) saturate(50%);
+  -webkit-backdrop-filter: blur(10px) saturate(50%);
+  background-color: rgba(17, 25, 40, 0);
+`;
+
+export const StContainer = styled(Container)`
+  opacity: 0;
+  float: left;
+  position: absolute;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  top: 0;
+  left: 0;
   &:hover {
     opacity: 1;
   }
@@ -157,9 +172,10 @@ export const PStRow = styled(Row)`
   left: 0.8rem;
   opacity: 0;
   width: 100%;
-  &:hover {
-    opacity: 1;
-  }
+  opacity: inherit;
+  backdrop-filter: blur(10px) saturate(50%);
+  -webkit-backdrop-filter: blur(10px) saturate(50%);
+  background-color: rgba(17, 25, 40, 0);
 `;
 
 export const DmChatBox = styled(Container)`
