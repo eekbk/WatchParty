@@ -1,5 +1,5 @@
 // export const StyledCardButton = styled(Button);
-import { Button } from 'react-bootstrap';
+import { Button, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 
 export const StyledGlassButton = styled(Button)`
@@ -30,4 +30,20 @@ export const StyledGlassButton = styled(Button)`
   &:hover {
     background: linear-gradient(#541763, #a12dbe);
   }
+`;
+
+export const StyledPlusIcon = styled(Col)`
+  padding: 0px;
+  margin: 0px;
+  font-size: 85%;
+  vertical-align: 10%;
+  cursor: pointer;
+`;
+
+export const StyledGoBackIcon = styled(Col)`
+  padding: 0px;
+  margin: 0px;
+  font-size: 85%;
+  vertical-align: 8%;
+  cursor: pointer;
 `;
