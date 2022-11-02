@@ -1,8 +1,8 @@
-import axios from 'axios';
+// import axios from 'axios';
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IoSearch } from 'react-icons/io5';
-import { SearchContext } from '../../contexts/searchContext';
+// import { SearchContext } from '../../contexts/searchContext';
 import { VoiceContext } from '../../contexts/voiceContext';
 import {
   SearchForm,
@@ -15,8 +15,8 @@ import {
 function SearchBar() {
   const [textVal, setTextVal] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { setUsersMatch, setPartiesMatch, setVideosMatch } =
-    useContext(SearchContext);
+  // const { setUsersMatch, setPartiesMatch, setVideosMatch } =
+  //   useContext(SearchContext);
   const { resetTranscript, searchBarVal, setSearchBarVal, isSent } =
     useContext(VoiceContext);
   const navigate = useNavigate();
@@ -26,22 +26,24 @@ function SearchBar() {
     // make sure there is text
     if (text.length) {
       const q = text.trim().replaceAll(' ', '&').replaceAll(' and ', '&');
-      axios
-        .get(`/api/search/${q}`)
-        .then(({ data }) => {
-          setVideosMatch(data.videos);
-          setUsersMatch(data.users);
-          setPartiesMatch(data.parties);
-        })
-        .then(() => {
-          navigate('/search');
-        })
-        .then(() => {
-          setIsLoading(true);
-        })
-        .catch((err) => {
-          console.error('The Error from handleSubmit:', err);
-        });
+      // route to the search page with q as the param
+      navigate(`/search/${q}`);
+      // axios
+      //   .get(`/api/search/${q}`)
+      //   .then(({ data }) => {
+      //     setVideosMatch(data.videos);
+      //     setUsersMatch(data.users);
+      //     setPartiesMatch(data.parties);
+      //   })
+      //   .then(() => {
+      //     navigate('/search');
+      //   })
+      //   .then(() => {
+      //     setIsLoading(true);
+      //   })
+      //   .catch((err) => {
+      //     console.error('The Error from handleSubmit:', err);
+      //   });
     }
   };
 
