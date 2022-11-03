@@ -231,13 +231,18 @@ function Video({
             sm="auto"
             style={{
               padding: '0px',
-              width: '4rem',
+              width: '2.5rem',
             }}
           >
             <VolSlider
               value={volume * 100}
               onChange={setVolume}
-              style={{ height: '1.5rm', transform: 'rotate(-90deg)' }}
+              style={{
+                height: '1.5rm',
+                transform: 'rotate(-90deg)',
+                position: 'relative',
+                top: '12px',
+              }}
             />
           </Col>
           <Col md="auto" lg="auto" sm="auto">
