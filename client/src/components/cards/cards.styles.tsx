@@ -91,9 +91,9 @@ export const StyledPartyCardImg = styled(Card.Img)``;
 
 export const StyledPartyCardImgOverlay = styled(Card.ImgOverlay)`
   padding: 0;
-  pointer-events: none;
+  /* pointer-events: none; */
   /* justify-self: right; */
-
+  height: 30%;
   /* width: 30%; */
 `;
 
@@ -138,7 +138,6 @@ export const StyledPartyTitle = styled(Card.Title)`
   font-size: larger;
   padding: 0;
   margin: 4px;
-  color: green;
 `;
 
 export const StyledPartyDesc = styled(Card.Text)`
