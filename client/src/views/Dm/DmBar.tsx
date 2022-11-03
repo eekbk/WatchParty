@@ -22,6 +22,7 @@ function DmBar({ user, socket, changeDm }) {
         textAlign: 'center',
         overflowY: 'auto',
         height: '100%',
+        maxHeight: 'calc(70vh + 65px)',
       }}
     >
       {dms.parties
