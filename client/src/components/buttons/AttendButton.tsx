@@ -1,9 +1,17 @@
 import axios from 'axios';
 import { useContext } from 'react';
 import { IoAdd } from 'react-icons/io5';
+import {
+  RiCheckboxBlankCircleLine,
+  RiCheckboxCircleLine,
+} from 'react-icons/ri';
 import { CiUndo, CiCircleRemove } from 'react-icons/ci';
-import { StyledGlassButton , StyledPlusIcon, StyledGoBackIcon } from './buttons.styles';
-import { UserContext } from '../context';
+import {
+  StyledGlassButton,
+  StyledPlusIcon,
+  StyledGoBackIcon,
+} from './buttons.styles';
+// import { UserContext } from '../context';
 import { UserContext } from '../../context';
 
 function AttendButton({ partyId, isAttending, setIsAttending }: any) {
@@ -41,11 +49,11 @@ function AttendButton({ partyId, isAttending, setIsAttending }: any) {
 
   return isAttending ? (
     <StyledGoBackIcon>
-      <CiUndo onClick={handleClick} />
+      <RiCheckboxCircleLine onClick={handleClick} />
     </StyledGoBackIcon>
   ) : (
     <StyledPlusIcon>
-      <IoAdd onClick={handleClick} />
+      <RiCheckboxBlankCircleLine onClick={handleClick} />
     </StyledPlusIcon>
   );
 }
