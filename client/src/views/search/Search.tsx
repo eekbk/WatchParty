@@ -2,10 +2,10 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import UserCard from '../../cards/UserCard';
-import PartyCard from '../../cards/PartyCard';
-import VideoCard from '../../cards/VideoCard';
-import { SearchContext } from '../../contexts/searchContext';
+import UserCard from '../../components/cards/UserCard';
+import PartyCard from '../../components/cards/PartyCard';
+import VideoCard from '../../components/cards/VideoCard';
+// import { SearchContext } from '../../contexts/searchContext';
 import { UserContext } from '../../context';
 import { CategoryTitle } from '../../styles';
 import {
