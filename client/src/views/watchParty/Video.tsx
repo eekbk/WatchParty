@@ -29,7 +29,7 @@ function Video({
   vH,
 }) {
   // state vars
-  const [isPlaying, setPause] = useState(() => !status);
+  const [isPlaying, setPause] = useState(() => false);
   const [pSeconds, setSeconds] = useState(() => 0.0001);
   const [duration, setDur] = useState(1);
   const [volume, setVol] = useState(0.5);
@@ -56,7 +56,7 @@ function Video({
         socket.emit('giveRoom', {
           room: room.id,
           video: video + 1,
-          start: pSeconds,
+          start: 0,
           playing: isPlaying,
         });
         setVid(video + 1);
@@ -79,7 +79,7 @@ function Video({
         socket.emit('giveRoom', {
           room: room.id,
           video,
-          start: pSeconds,
+          start: 0,
           playing: isPlaying,
         });
       }
@@ -87,7 +87,7 @@ function Video({
       socket.emit('giveRoom', {
         room: room.id,
         video: video ? video - 1 : video,
-        start: pSeconds,
+        start: 0,
         playing: isPlaying,
       });
       setVid(video ? video - 1 : video);
@@ -122,6 +122,7 @@ function Video({
 
   // updates once
   useEffect(() => {
+    setDuration();
     socket.on('pause', (arg: boolean) => {
       setPause(arg);
     });
