@@ -37,7 +37,14 @@ export const StyledPlusIcon = styled(Col)`
   margin: 0px;
   font-size: 85%;
   vertical-align: 10%;
+  background-color: transparent;
   cursor: pointer;
+  &:hover {
+    font-size: 110%;
+  }
+  &:focus {
+    font-size: 110%;
+  }
 `;
 
 export const StyledGoBackIcon = styled(Col)`
