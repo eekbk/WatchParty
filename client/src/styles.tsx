@@ -141,7 +141,7 @@ export const ArchiveGlassCard = styled(Card)`
 
 export const StRow = styled(Row)`
   position: absolute;
-  bottom: 0.5rem;
+  bottom: 0;
   left: 0.8rem;
   opacity: 0;
   width: 100%;
@@ -168,7 +168,7 @@ export const StContainer = styled(Container)`
 export const PStRow = styled(Row)`
   position: absolute;
   max-height: 85%;
-  top: 0.5rem;
+  top: 0;
   left: 0.8rem;
   opacity: 0;
   width: 100%;

@@ -29,7 +29,7 @@ function Video({
   vH,
 }) {
   // state vars
-  const [isPlaying, setPause] = useState(() => !status);
+  const [isPlaying, setPause] = useState(() => false);
   const [pSeconds, setSeconds] = useState(() => 0.0001);
   const [duration, setDur] = useState(1);
   const [volume, setVol] = useState(0.5);
@@ -56,7 +56,7 @@ function Video({
         socket.emit('giveRoom', {
           room: room.id,
           video: video + 1,
-          start: pSeconds,
+          start: 0,
           playing: isPlaying,
         });
         setVid(video + 1);
@@ -79,7 +79,7 @@ function Video({
         socket.emit('giveRoom', {
           room: room.id,
           video,
-          start: pSeconds,
+          start: 0,
           playing: isPlaying,
         });
       }
@@ -87,7 +87,7 @@ function Video({
       socket.emit('giveRoom', {
         room: room.id,
         video: video ? video - 1 : video,
-        start: pSeconds,
+        start: 0,
         playing: isPlaying,
       });
       setVid(video ? video - 1 : video);
@@ -122,6 +122,7 @@ function Video({
 
   // updates once
   useEffect(() => {
+    setDuration();
     socket.on('pause', (arg: boolean) => {
       setPause(arg);
     });
@@ -230,13 +231,18 @@ function Video({
             sm="auto"
             style={{
               padding: '0px',
-              width: '4rem',
+              width: '2.5rem',
             }}
           >
             <VolSlider
               value={volume * 100}
               onChange={setVolume}
-              style={{ height: '1.5rm', transform: 'rotate(-90deg)' }}
+              style={{
+                height: '1.5rm',
+                transform: 'rotate(-90deg)',
+                position: 'relative',
+                top: '12px',
+              }}
             />
           </Col>
           <Col md="auto" lg="auto" sm="auto">
