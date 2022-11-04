@@ -27,7 +27,8 @@ function Message({ message, user, socket }) {
           borderRadius: '10px',
           width: 'fit-content',
           display: 'inline-block',
-          padding: '4px',
+          padding: '6px',
+          marginTop: '3px',
         }}
       >
         {message.message}
