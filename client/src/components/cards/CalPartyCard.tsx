@@ -147,7 +147,6 @@ function CalPartyCard({ party }) {
         </StyledPartyDesc>
         <StyledIsFollowing>
           {/* <Row> */}
-
           {creatorText}
           {adminText}
           {/* maybe remove????????????????????????????????????????????????????? */}
@@ -159,7 +158,7 @@ function CalPartyCard({ party }) {
         </StyledPartyTime>
       </StyledCardBody>
       <StyledPartyCardFooter>
-        <StyledPartyCardFooterCol sm={2}>
+        <StyledPartyCardFooterCol sm={6} style={{ width: 'fit-content' }}>
           {isCreator || isAdmin ? (
             <StyledGlassButton
               onClick={handleCardClick}
@@ -178,8 +177,7 @@ function CalPartyCard({ party }) {
             </StyledGlassButton>
           )}
         </StyledPartyCardFooterCol>
-        <StyledPartyCardFooterCol />
-        <StyledPartyCardFooterCol sm={2}>
+        <StyledPartyCardFooterCol sm={6} style={{ width: 'fit-content' }}>
           {!isCreator && !isAdmin ? (
             <AttendButton
               partyId={id}
