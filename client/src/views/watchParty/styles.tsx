@@ -32,6 +32,24 @@ export const StyledParticipant = styled(Item)`
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(94, 48, 121, 0.3);
   color: ${text};
+  .form-check-input:checked {
+    border-color: #44087b;
+    background-color: #44087b;
+  }
+  .form-check-input {
+    &:active:focus {
+      outline: black solid 2px;
+      box-shadow: none;
+    }
+    &:active {
+      outline: black solid 2px;
+      box-shadow: none;
+    }
+    &:focus {
+      outline: black solid 2px;
+      box-shadow: none;
+    }
+  }
 `;
 
 export const StyledListHeader = styled('p')`

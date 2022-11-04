@@ -56,7 +56,6 @@ export function Playlist({ playlist, setPlaylist, room, status, vH }) {
 
   const handleResize = () => {
     setVHeight((vH.current.clientHeight - 65) * 0.8);
-    console.log(vHeight, (vH.current.clientHeight - 65) * 0.8);
   };
 
   return (
@@ -64,6 +63,7 @@ export function Playlist({ playlist, setPlaylist, room, status, vH }) {
       <StyledListHeader
         onClick={() => setClicked(!clicked)}
         hidden={!status || status.role === 'NORMIE'}
+        style={{ marginRight: '15px' }}
       >
         Playlist
       </StyledListHeader>
