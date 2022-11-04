@@ -74,9 +74,11 @@ function PartyCard({ party }) {
   }, [isSent]);
 
   const goToParty = () => {
-    navigate('/watchParty', {
-      state: { party },
-    });
+    if (user) {
+      navigate('/watchParty', {
+        state: { party },
+      });
+    }
   };
   const handleCardClick = () => {
     goToParty();

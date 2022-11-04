@@ -21,8 +21,6 @@ const { Group } = Form;
 const { Collapse, Brand, Toggle } = Navbar;
 const { Link } = Nav;
 
-// Style the background color to black
-// justifyItems center for grids?
 let primary;
 let secondary;
 let tertiary;
@@ -119,13 +117,14 @@ export const Footer = styled.footer`
 // offcanvas responsive for menus that could be cluttered on mobile?
 // collapse and fade for wrapping conditionally visible components?
 export const StyledVideoCard = styled(Card)`
-  background: rgba(94, 48, 121, 0.25);
+  background: rgba(28, 7, 47, 0.75);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   border: 1px solid rgba(94, 48, 121, 0.3);
   color: ${text};
+  padding: 5px;
 `;
 
 export const ArchiveGlassCard = styled(Card)`
@@ -406,32 +405,7 @@ export const StyledForm = styled(Form)`
 // https://www.w3schools.com/HOWTO/howto_css_custom_scrollbar.asp
 // https://levelup.gitconnected.com/build-on-hover-custom-scrollbar-in-react-d846194a7ea4
 
-export const StyledScrollableGroup = styled(Group)`
-  &::-webkit-scrollbar-thumb {
-    width: 20px;
-    opacity: 0;
-    box-shadow: inset 0px 0px 5px black;
-  }
-  &::-webkit-scrollbar {
-    width: 20px;
-    opacity: 0;
-  }
-  &:hover {
-    &::-webkit-scrollbar-thumb {
-      background: #7d7d7d;
-      opacity: 1;
-      border-radius: 10px;
-      &:active {
-        border: 1px solid white;
-      }
-    }
-    &::-webkit-scrollbar {
-      background: #3f3f3f;
-      opacity: 1;
-      border-radius: 10px;
-    }
-  }
-`;
+export const StyledScrollableGroup = styled(Group)``;
 
 export const LButton = styled(Button)`
   color: white;

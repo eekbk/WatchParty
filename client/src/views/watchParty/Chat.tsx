@@ -57,6 +57,7 @@ function Chat({
   // for style
   useEffect(() => {
     window.addEventListener('resize', handleResize);
+    // TODO: remove me
     console.log(vH, vHeight);
   }, [vHeight]);
 

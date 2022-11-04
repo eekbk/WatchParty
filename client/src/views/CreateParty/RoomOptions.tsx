@@ -100,7 +100,7 @@ export function RoomOptions({
               options={user.tempFollowing}
               placeholder="Enter usernames"
               ref={typeaheadRef2}
-              selected={invited}
+              selected={privateR ? invited : []}
               renderToken={(option: any, { onRemove }, index) => (
                 <StyledToken key={index} onRemove={onRemove} option={option}>
                   {`@${option.username}`}

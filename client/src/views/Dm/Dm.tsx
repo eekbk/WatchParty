@@ -20,7 +20,7 @@ function Dm({ socket, room }) {
         room: (e.target as HTMLInputElement).id,
       })
       .then((dmMessages) => setMessages(dmMessages.data))
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
 
     setRoom((e.target as HTMLInputElement).id);
     socket.emit('join', {
@@ -30,6 +30,7 @@ function Dm({ socket, room }) {
   };
 
   useEffect(() => {
+    // TODO: remove me
     console.log(user);
   }, [user]);
 
