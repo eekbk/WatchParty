@@ -44,7 +44,7 @@ passport.use(
       if (!user) {
         const newUser = await prisma.user.create({
           data: {
-            user_name: profile.name.givenName + profile.name.familyName[0],
+            user_name: `${profile.name.givenName} ${profile.name.familyName[0]}`,
             googleId: profile.id,
             profile: profile.photos[0].value,
           },
