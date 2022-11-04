@@ -9,6 +9,7 @@ import {
   Image,
   Navbar,
   Nav,
+  Tabs,
 } from 'react-bootstrap';
 import {
   BsPlayCircleFill,
@@ -432,6 +433,14 @@ export const LButton = styled(Button)`
     outline: none;
     box-shadow: none;
     background-color: #8a25e2;
+  }
+`;
+
+export const StyledTabs = styled(Tabs)`
+  --bs-nav-tabs-link-active-bg: #320e3b;
+  --bs-nav-tabs-link-active-color: white;
+  .nav-link {
+    color: white;
   }
 `;
 
