@@ -10,7 +10,7 @@ export function VideoList({ playlist, handleVideoRemoval }) {
   return (
     <StyledForm style={{ marginTop: '10px', width: '20rem' }}>
       <StyledFormLabel style={{ width: '100%', textAlign: 'center' }}>
-        Video List
+        {playlist.length ? 'Video List' : 'Video List*'}
       </StyledFormLabel>
       <StyledScrollableGroup style={{ maxHeight: 'max(22rem, 50vh)' }}>
         {playlist.map((vd, i) => (

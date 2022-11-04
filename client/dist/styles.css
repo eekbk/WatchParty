@@ -1,5 +1,5 @@
 ::-webkit-scrollbar-thumb {
-  width: 20px;
+  width: 100%;
   box-shadow: inset 0px 0px 5px black;
   background: #898989;
   border-radius: 10px;
@@ -8,7 +8,7 @@
   box-shadow: inset 0px 0px 10px black;
 }
 ::-webkit-scrollbar {
-  width: 20px;
+  width: 15px;
   background-color: #302e2e;
   border-radius: 20px;
 }

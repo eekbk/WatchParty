@@ -205,24 +205,20 @@ function Video({
       />
       <StContainer>
         <PStRow>
-          <Col md={4}>
-            <Playlist
-              room={room}
-              playlist={playlist}
-              setPlaylist={setPlaylist}
-              status={status}
-            />
-          </Col>
-          <Col md={4} hidden={!participants}>
-            {participants ? (
-              <Participants
-                room={room}
-                status={status}
-                participants={participants || []}
-                setParticipants={setParticipants}
-              />
-            ) : null}
-          </Col>
+          <Playlist
+            room={room}
+            playlist={playlist}
+            setPlaylist={setPlaylist}
+            status={status}
+            vH={vH}
+          />
+          <Participants
+            room={room}
+            status={status}
+            participants={participants || []}
+            setParticipants={setParticipants}
+            vH={vH}
+          />
         </PStRow>
         <StRow>
           <Col
