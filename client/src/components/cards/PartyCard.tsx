@@ -89,7 +89,6 @@ function PartyCard({ party }) {
     });
   };
   const handleCardClick = () => {
-    console.log('clicked');
     goToParty();
   };
 
