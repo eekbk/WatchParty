@@ -13,13 +13,12 @@ export function Participants({
   vH,
 }) {
   const [show, setShow] = useState(false);
-  const [vHeight, setVHeight] = useState(
-    vH.current ? (vH.current.clientHeight - 65) * 0.8 : '80%'
-  );
+  const [vHeight, setVHeight] = useState(0);
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-  }, [vHeight]);
+    setVHeight((vH.current.clientHeight - 65) * 0.8);
+  }, []);
 
   const changeRole = (i) => {
     const tempParticipants = participants.slice();
@@ -42,7 +41,7 @@ export function Participants({
   };
 
   const handleResize = () => {
-    setVHeight(vH.current ? vH.current.clientHeight - 65 : '80%');
+    setVHeight((vH.current.clientHeight - 65) * 0.8);
   };
 
   return (
