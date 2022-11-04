@@ -51,7 +51,7 @@ search.get('/:q', async (req: Request, res: Response) => {
         },
       },
     });
-    // query the db for parties with descrip or name matching q
+    const usersIds = users.map((u) => u.id);
     const parties = await prisma.party.findMany({
       where: {
         OR: [
@@ -65,6 +65,22 @@ search.get('/:q', async (req: Request, res: Response) => {
             description: {
               search: qSearch,
               mode: 'insensitive',
+            },
+          },
+          {
+            user_parties: {
+              some: {
+                AND: [
+                  {
+                    user_id: {
+                      in: usersIds,
+                    },
+                  },
+                  {
+                    role: 'CREATOR',
+                  },
+                ],
+              },
             },
           },
         ],
