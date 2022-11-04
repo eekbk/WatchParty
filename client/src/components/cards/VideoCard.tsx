@@ -53,7 +53,6 @@ function VideoCard({ video }) {
 
   const cardTitle = title.length > 100 ? `${title.slice(0, 100)}...` : title;
 
-  // console.log('hello there');
   return (
     <StyledVideoCard onClick={handleCardClick}>
       <StyledCardRow className="no-gutters">
