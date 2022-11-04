@@ -49,7 +49,9 @@ export function Participants({
     <Col md={4} style={{ display: 'flex', flexDirection: 'column' }}>
       <StyledListHeader
         onClick={() => setShow(!show)}
-        hidden={!(status && status.role === 'CREATOR')}
+        hidden={
+          !(status && status.role === 'CREATOR') || !(participants.length > 1)
+        }
       >
         Participants
       </StyledListHeader>
