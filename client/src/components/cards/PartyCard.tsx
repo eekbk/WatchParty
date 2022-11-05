@@ -1,14 +1,9 @@
 import { Card, Modal /* Col, Row */ } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-// import { IoAdd } from 'react-icons/io5';
-// import { HiPlusSm, HiMinusSm } from 'react-icons/hi';
-// import { RiArrowGoBackLine } from 'react-icons/ri';
-// import { HiArrowUturnLeft } from 'react-icons/hi2';
 import { UserContext } from '../../context';
 import { VoiceContext } from '../../contexts/voiceContext';
 import AttendButton from '../buttons/AttendButton';
-// import JoinButton from '../buttons/JoinButton';
 import {
   StyledPartyCard,
   StyledPartyTitle,
