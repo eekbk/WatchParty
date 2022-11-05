@@ -1,4 +1,4 @@
-import { Card /* Col, Row */ } from 'react-bootstrap';
+import { Card, Modal /* Col, Row */ } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 // import { IoAdd } from 'react-icons/io5';
@@ -25,6 +25,7 @@ import {
   PartyCardStatus,
   // StyledCardFooter,
 } from './cards.styles';
+import { StyledGlassButton } from '../buttons/buttons.styles';
 
 function PartyCard({ party }) {
   const { id, description, thumbnail, name, date_time, users } = party;
@@ -39,6 +40,7 @@ function PartyCard({ party }) {
   const [isAttending, setIsAttending] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isCreator, setIsCreator] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const creator = users.filter((user) => user.role === 'CREATOR')[0];
   const creatorText =
     user && creator.id === user.id
@@ -55,6 +57,9 @@ function PartyCard({ party }) {
     }
     return null;
   };
+
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   useEffect(() => {
     if (user) {
@@ -84,9 +89,13 @@ function PartyCard({ party }) {
   }, [isSent]);
 
   const goToParty = () => {
-    navigate('/watchParty', {
-      state: { party },
-    });
+    if (user) {
+      navigate('/watchParty', {
+        state: { party },
+      });
+    } else {
+      handleShowModal();
+    }
   };
   const handleCardClick = () => {
     goToParty();
@@ -143,66 +152,57 @@ function PartyCard({ party }) {
   };
 
   return (
-    <StyledPartyCard>
-      <Card.Img variant="top" src={thumbnail} />
-      {user && (
-        <StyledPartyCardImgOverlay>
-          {/* <Row  > */}
-          <StyledPartyCardImgOverlayText>
-            {isAdmin ? (
-              'ADMIN'
-            ) : isCreator ? (
-              'HOST'
-            ) : (
-              <>
-                <AttendButton
-                  partyId={id}
-                  isAttending={isAttending}
-                  setIsAttending={setIsAttending}
-                />
-                <PartyCardStatus sm={8}>
-                  {isAttending ? 'GOING' : 'JOIN'}
-                </PartyCardStatus>
-              </>
-            )}
-            {/* JOIN
+    <>
+      <StyledPartyCard>
+        <Card.Img variant="top" src={thumbnail} />
+        {user && (
+          <StyledPartyCardImgOverlay>
+            {/* <Row  > */}
+            <StyledPartyCardImgOverlayText>
+              {isAdmin ? (
+                'ADMIN'
+              ) : isCreator ? (
+                'HOST'
+              ) : (
+                <>
+                  <AttendButton
+                    partyId={id}
+                    isAttending={isAttending}
+                    setIsAttending={setIsAttending}
+                  />
+                  <PartyCardStatus sm={8}>
+                    {isAttending ? 'GOING' : 'JOIN'}
+                  </PartyCardStatus>
+                </>
+              )}
+              {/* JOIN
           <HiPlusSm /> */}
-          </StyledPartyCardImgOverlayText>
-          {/* </Row> */}
-        </StyledPartyCardImgOverlay>
-      )}
-      <StyledCardBody>
-        <StyledPartyTitle onClick={handleCardClick}>
-          {stringAbbreviator(name, 'title')}
-        </StyledPartyTitle>
-        <StyledPartyDesc>
-          {stringAbbreviator(description, 'description')}
-        </StyledPartyDesc>
-        <StyledIsFollowing>
-          {/* <Row> */}
-
-          {creatorText}
-          {/* <Card.Text>{isFollowing ? <i>following</i>: '  '}</Card.Text> */}
-          {/* </Row> */}
-        </StyledIsFollowing>
-        <StyledPartyTime>
-          <small>{dateTimeConversion(date_time)}</small>
-        </StyledPartyTime>
-      </StyledCardBody>
-      {/* <StyledPartyCardFooter>
-        <StyledPartyCardFooterCol sm={2}>
-          {!isCreator && !isAdmin ? (
-            <AttendButton
-              partyId={id}
-              isAttending={isAttending}
-              setIsAttending={setIsAttending}
-            />
-          ) : (
-            []
-          )}
-        </StyledPartyCardFooterCol>
-      </StyledPartyCardFooter> */}
-    </StyledPartyCard>
+            </StyledPartyCardImgOverlayText>
+            {/* </Row> */}
+          </StyledPartyCardImgOverlay>
+        )}
+        <StyledCardBody onClick={handleCardClick}>
+          <StyledPartyTitle>
+            {stringAbbreviator(name, 'title')}
+          </StyledPartyTitle>
+          <StyledPartyDesc>
+            {stringAbbreviator(description, 'description')}
+          </StyledPartyDesc>
+          <StyledIsFollowing>{creatorText}</StyledIsFollowing>
+          <StyledPartyTime>
+            <small>{dateTimeConversion(date_time)}</small>
+          </StyledPartyTime>
+        </StyledCardBody>
+      </StyledPartyCard>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>You must be logged in to do that!</Modal.Title>
+          <Modal.Body>
+            <StyledGlassButton href="/auth/google">Login</StyledGlassButton>
+          </Modal.Body>
+        </Modal.Header>
+      </Modal>
+    </>
   );
 }
 
