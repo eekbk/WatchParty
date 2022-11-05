@@ -1,5 +1,14 @@
 import styled from 'styled-components';
-import { Button, Form, Container, InputGroup, Col, Row } from 'react-bootstrap';
+import {
+  Button,
+  Form,
+  Container,
+  InputGroup,
+  Col,
+  Row,
+  Tabs,
+  Tab,
+} from 'react-bootstrap';
 
 export const SearchPageHeading = styled(Row)`
   justify-content: space-between;
@@ -7,6 +16,12 @@ export const SearchPageHeading = styled(Row)`
   padding-bottom: 0px;
   margin-bottom: 0;
   align-items: baseline;
+`;
+
+export const SearchTabContainer = styled(Container)`
+  /* padding: 1em; */
+  height: 100%;
+  padding-bottom: 30px;
 `;
 
 export const SeeMoreLink = styled.div`
@@ -24,7 +39,9 @@ export const SearchPageCol = styled(Col)`
 
 export const SearchPageRow = styled(Row)`
   align-content: center;
-  justify-content: center;
+  /* justify-content: center; */
+  justify-content: left;
+  /* margin: 1em; */
 `;
 
 export const SearchBarContainer = styled(Container)`
@@ -111,6 +128,28 @@ export const SearchButton = styled(Button)`
   &:focus {
     background-color: #a663cc;
   }
+`;
+
+export const StyledTabs = styled(Tabs)`
+  --bs-nav-tabs-link-active-bg: black;
+  --bs-nav-tabs-link-active-color: white;
+  .nav-link {
+    color: white;
+  }
+`;
+
+export const StyledTabNav = styled.ul``;
+
+export const StyledSearchOutlet = styled.div``;
+
+export const StyledTab = styled(Tab)``;
+
+export const StyledRow = styled(Row)`
+  justify-content: center;
+`;
+
+export const StyledPartyRow = styled(Row)`
+  justify-content: right;
 `;
 
 // export const StyledPartyCard = styled(Card)`
