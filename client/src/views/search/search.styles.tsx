@@ -22,6 +22,7 @@ export const SearchTabContainer = styled(Container)`
   /* padding: 1em; */
   height: 100%;
   padding-bottom: 30px;
+  align-content: space-around;
 `;
 
 export const SeeMoreLink = styled.div`
