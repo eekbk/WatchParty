@@ -77,6 +77,7 @@ playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
               console.error(err);
             }
           }
+          return formattedPlaylist;
         })()
       );
     })

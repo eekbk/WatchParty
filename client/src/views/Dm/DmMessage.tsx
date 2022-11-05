@@ -5,7 +5,7 @@ function DmMessage({ message, user }) {
     <Container
       style={{
         wordWrap: 'break-word',
-        maxWidth: '80%',
+        maxWidth: '95%',
         width: 'fit-content',
         marginTop: '5px',
         marginBottom: '5px',
@@ -15,6 +15,7 @@ function DmMessage({ message, user }) {
       }}
     >
       {`${message.user.user_name} `}
+      <br />
       <Container
         style={{
           backgroundColor: user
@@ -22,11 +23,12 @@ function DmMessage({ message, user }) {
               ? '#6929a9'
               : '#8e298e'
             : '#6929a9',
-          maxWidth: '85%',
+          maxWidth: '95%',
           borderRadius: '10px',
           width: 'fit-content',
           display: 'inline-block',
-          padding: '4px',
+          padding: '6px',
+          marginTop: '3px',
         }}
       >
         {message.message}

@@ -1,13 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Form } from 'react-bootstrap';
-import { StyledButton } from '../../styles';
-import { StyledListGroup, StyledListItem } from './styles';
+import { Form, Col } from 'react-bootstrap';
+import { StyledListGroup, StyledParticipant, StyledListHeader } from './styles';
 
 const { Check } = Form;
 
-export function Participants({ participants, setParticipants, room, status }) {
+export function Participants({
+  participants,
+  setParticipants,
+  room,
+  status,
+  vH,
+}) {
   const [show, setShow] = useState(false);
+  const [vHeight, setVHeight] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    setVHeight((vH.current.clientHeight - 65) * 0.8);
+  }, []);
 
   const changeRole = (i) => {
     const tempParticipants = participants.slice();
@@ -29,51 +40,52 @@ export function Participants({ participants, setParticipants, room, status }) {
       });
   };
 
+  const handleResize = () => {
+    setVHeight((vH.current.clientHeight - 65) * 0.8);
+  };
+
   return (
-    <StyledListGroup
-      id="dropdown-basic-button"
-      title="Participants"
-      style={{
-        overflowY: 'auto',
-      }}
-      hidden={!(status && status.role === 'CREATOR')}
-    >
-      <StyledListItem
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
+    <Col md={4} style={{ display: 'flex', flexDirection: 'column' }}>
+      <StyledListHeader
+        onClick={() => setShow(!show)}
+        hidden={
+          !(status && status.role === 'CREATOR') || !(participants.length > 1)
+        }
       >
-        <h5 style={{ alignSelf: 'center' }}>Participants</h5>
-        <StyledButton
-          onClick={() => setShow(!show)}
-          style={{ marginLeft: '10px', marginRight: '10px' }}
-          variant="outline-dark"
-        >
-          {show ? 'Close' : 'Open'}
-        </StyledButton>
-      </StyledListItem>
-      {participants.map((pt, i) =>
-        pt.role !== 'CREATOR' ? (
-          <StyledListItem
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-            }}
-            hidden={!show}
-          >
-            {pt.username}
-            :
-            {' '}
-            <Check
-              type="switch"
-              label="Admin"
-              onChange={() => changeRole(i)}
-              checked={pt.role === 'ADMIN'}
-            />
-          </StyledListItem>
-        ) : null
-      )}
-    </StyledListGroup>
+        Participants
+      </StyledListHeader>
+      <StyledListGroup
+        id="dropdown-basic-button"
+        title="Participants"
+        style={{
+          overflowY: 'auto',
+          maxHeight: vHeight,
+          textAlign: 'center',
+        }}
+        hidden={!(status && status.role === 'CREATOR')}
+      >
+        {participants.map((pt, i) =>
+          pt.role !== 'CREATOR' ? (
+            <StyledParticipant
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+              hidden={!show}
+            >
+              {pt.username}
+              :
+              {' '}
+              <Check
+                type="switch"
+                label="Admin"
+                onChange={() => changeRole(i)}
+                checked={pt.role === 'ADMIN'}
+              />
+            </StyledParticipant>
+          ) : null
+        )}
+      </StyledListGroup>
+    </Col>
   );
 }

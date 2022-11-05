@@ -73,7 +73,13 @@ user.get('/', (req: RequestWithUser, res: Response) => {
             username: usr.user.user_name,
             role: usr.role,
           }));
+          pt.videos = pt.party_videos.map((vd) => ({
+            ...vd.video,
+            index: vd.index,
+          }));
+          pt.videos.sort((a, b) => a.index - b.index);
           delete pt.user_parties;
+          delete pt.party_videos;
         });
         user.parties = parties;
         // Getting the user's roles in their parties
@@ -383,7 +389,7 @@ user.post('/dm', (req: RequestWithUser, res: Response) => {
           .catch((err) => console.error(err));
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
 });
 
 export default user;

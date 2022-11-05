@@ -85,13 +85,13 @@ party.post('/', (req: RequestWithUser, res: Response) => {
   admins = admins || [];
   invitees = invitees.filter((i) => !admins.some((a) => i.id === a.id));
   const participants = admins
-    .map((id: string) => ({ role: 'ADMIN', user: { connect: { id } } }))
+    .map((ad: any) => ({ role: 'ADMIN', user: { connect: { id: ad.id } } }))
     .concat(
-      invitees.map((id: string) => ({
+      invitees.map((inv: any) => ({
         role: 'NORMIE',
         user: {
           connect: {
-            id,
+            id: inv.id,
           },
         },
       }))
@@ -144,7 +144,6 @@ party.post('/video', (req: Request, res: Response) => {
     })
     .then((results) => {
       if (results) {
-        console.log('video exists?');
         res.status(200).send(results);
       } else {
         return Promise.resolve(
@@ -156,7 +155,6 @@ party.post('/video', (req: Request, res: Response) => {
     })
     .then((video: YoutubeVideo) => {
       if (video === undefined) {
-        console.log('link bad?');
         return undefined;
       }
       const tempVideo = video.data;
@@ -177,10 +175,8 @@ party.post('/video', (req: Request, res: Response) => {
     })
     .then((r) => {
       if (r === undefined) {
-        console.log('something bad happened?');
         return undefined;
       }
-      console.log('video created/updated?');
       res.send(formattedVideo);
     })
     .catch((err) => {
@@ -320,8 +316,7 @@ party.post('/role', (req: RequestWithUser, res: Response) => {
         role,
       },
     })
-    .then((resu) => {
-      console.log(resu);
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((err) => {

@@ -1,14 +1,20 @@
-import { CloseButton, Form } from 'react-bootstrap';
-import { useState } from 'react';
+import { Col, Form } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { StyledVideoCard, StyledButton } from '../../styles';
-import { StyledListGroup, StyledListItem } from './styles';
+import { StyledListGroup, StyledListHeader, StyledListItem } from './styles';
 
-const { Group, Control, Text } = Form;
+const { Group, Control } = Form;
 
-export function Playlist({ playlist, setPlaylist, room, status }) {
+export function Playlist({ playlist, setPlaylist, room, status, vH }) {
   const [video, setVideo] = useState('');
   const [clicked, setClicked] = useState(false);
+  const [vHeight, setVHeight] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    setVHeight((vH.current.clientHeight - 65) * 0.8);
+  }, []);
 
   const handleVideoAddition = () => {
     const regExp =
@@ -48,65 +54,77 @@ export function Playlist({ playlist, setPlaylist, room, status }) {
     setPlaylist(videos);
   };
 
+  const handleResize = () => {
+    setVHeight((vH.current.clientHeight - 65) * 0.8);
+  };
+
   return (
-    <StyledListGroup
-      id="dropdown-basic-button"
-      title="Playlist"
-      style={{
-        overflowY: 'auto',
-        maxHeight: '800px',
-      }}
-      hidden={!status || status.role === 'NORMIE'}
-    >
-      <StyledListItem
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
+    <Col md={4} style={{ display: 'flex', flexDirection: 'column' }}>
+      <StyledListHeader
+        onClick={() => setClicked(!clicked)}
+        hidden={!status || status.role === 'NORMIE'}
+        style={{ marginRight: '15px' }}
       >
-        <h5 style={{ alignSelf: 'center', marginRight: '10px' }}>Playlist</h5>
-        <StyledButton
-          onClick={() => setClicked(!clicked)}
-          variant="outline-dark"
-        >
-          {clicked ? 'Close' : 'Open'}
-        </StyledButton>
-      </StyledListItem>
-      {playlist.map((video, i) => (
-        <StyledListItem hidden={!clicked}>
-          <StyledVideoCard>
-            <CloseButton onClick={() => handleVideoRemoval(i)} />
-            <StyledVideoCard.Title>{video.title}</StyledVideoCard.Title>
-            <StyledVideoCard.Body>
-              <StyledVideoCard.Img src={video.thumbnail} />
-              <StyledVideoCard.Text>
-                {video.description.slice(0, 150)}
-              </StyledVideoCard.Text>
-            </StyledVideoCard.Body>
-          </StyledVideoCard>
-        </StyledListItem>
-      ))}
-      <StyledListItem hidden={!clicked}>
-        <Form>
-          <Group>
-            <Control
-              placeholder="Paste Url Here"
-              onChange={(e) => setVideo(e.target.value)}
-              value={video}
-            />
-            <Group style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Text>Choose a youtube video to add</Text>
+        Playlist
+      </StyledListHeader>
+      <StyledListGroup
+        id="dropdown-basic-button"
+        title="Playlist"
+        style={{
+          overflowY: 'auto',
+          maxHeight: vHeight,
+          textAlign: 'center',
+          paddingTop: '0px',
+        }}
+        hidden={!status || status.role === 'NORMIE'}
+      >
+        {playlist.map((video, i) => (
+          <StyledListItem hidden={!clicked}>
+            <StyledVideoCard>
+              <StyledVideoCard.Title>{video.title}</StyledVideoCard.Title>
+              <StyledVideoCard.Body>
+                <StyledVideoCard.Img src={video.thumbnail} />
+                <StyledVideoCard.Text>
+                  {video.description.slice(0, 150)}
+                </StyledVideoCard.Text>
+              </StyledVideoCard.Body>
               <StyledButton
-                style={{ marginLeft: '5px' }}
-                onClick={handleVideoAddition}
-                variant="outline-dark"
+                style={{
+                  width: 'fit-content',
+                  margin: '5px',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                }}
+                onClick={() => handleVideoRemoval(i)}
               >
-                Add
+                Remove
               </StyledButton>
+            </StyledVideoCard>
+          </StyledListItem>
+        ))}
+        <StyledListItem hidden={!clicked}>
+          <Form>
+            <Group>
+              <Control
+                placeholder="Paste Url Here"
+                onChange={(e) => setVideo(e.target.value)}
+                value={video}
+              />
+              <Group
+                style={{ display: 'flex', justifyContent: 'space-between' }}
+              >
+                <StyledButton
+                  style={{ marginLeft: '5px', marginTop: '5px' }}
+                  onClick={handleVideoAddition}
+                  variant="outline-dark"
+                >
+                  Add
+                </StyledButton>
+              </Group>
             </Group>
-          </Group>
-        </Form>
-      </StyledListItem>
-    </StyledListGroup>
+          </Form>
+        </StyledListItem>
+      </StyledListGroup>
+    </Col>
   );
 }
