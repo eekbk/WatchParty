@@ -84,11 +84,14 @@ search.get('/:q', async (req: Request, res: Response) => {
             },
           },
         ],
-        AND: {
-          date_time: {
-            gte: new Date(),
+        AND: [
+          {
+            date_time: {
+              gte: new Date(),
+            },
+            type: 'PARTY',
           },
-        },
+        ],
       },
       orderBy: {
         date_time: 'asc',
