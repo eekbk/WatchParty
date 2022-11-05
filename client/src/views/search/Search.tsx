@@ -15,6 +15,9 @@ import {
   StyledTab,
   SearchPageRow,
   SearchTabContainer,
+  SearchPageHeading,
+  SearchPageCol,
+  CenteredSearchPageRow,
 } from './search.styles';
 import { StyledGlassButton } from '../../components/buttons/buttons.styles';
 
@@ -79,21 +82,19 @@ function Search({ socket }) {
     <Container>
       {isVideoClicked ? (
         <>
-          <SearchPageRow>
-            <VideoCard
-              video={selectedVideo}
-              setIsVideoClicked={setIsVideoClicked}
-              setSelectedVideo={setSelectedVideo}
-              setVideoParties={setVideoParties}
-            />
-          </SearchPageRow>
-          <h3>This Video Appears in These Parties</h3>
+          <SearchPageHeading>
+            Parties featuring &quot;
+            {selectedVideo.title}
+            &quot;:
+          </SearchPageHeading>
           <SearchPageRow>{partiesRender(videoParties)}</SearchPageRow>
-          <SearchPageRow>
-            <StyledGlassButton onClick={() => setIsVideoClicked(false)}>
-              Back
-            </StyledGlassButton>
-          </SearchPageRow>
+          <CenteredSearchPageRow>
+            <SearchPageCol sm={2}>
+              <StyledGlassButton onClick={() => setIsVideoClicked(false)}>
+                Back
+              </StyledGlassButton>
+            </SearchPageCol>
+          </CenteredSearchPageRow>
         </>
       ) : (
         <StyledRow>
