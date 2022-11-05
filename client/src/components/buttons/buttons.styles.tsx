@@ -33,6 +33,35 @@ export const StyledGlassButton = styled(Button)`
   }
 `;
 
+export const StyledActiveMicIcon = styled.span`
+  background-color: #6a1d7d;
+  font-size: 150%;
+  padding: 5px 10px;
+  border: 1px solid white;
+  margin: 2rem;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+
+export const StyledDisabledMicIcon = styled.span`
+  background-color: black;
+  /* color: #6a1d7d; */
+  font-size: 150%;
+  padding: 5px 10px;
+  border: 1px solid #6a1d7d;
+  margin: 2rem;
+  text-align: center;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+
+export const StyledHelpButton = styled.span`
+  cursor: pointer;
+  font-size: large;
+  /* color: #6a1d7d; */
+`;
+
 export const StyledPlusIcon = styled(Col)`
   padding: 0px;
   margin: 0px;
