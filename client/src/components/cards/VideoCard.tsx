@@ -23,7 +23,6 @@ function VideoCard({
       await setSelectedVideo(video);
       // send an axios request to get all of the parties attached to the video
       const { data } = await axios.get(`/api/video/parties/${id}`);
-      console.log('parties from axios:', data);
       await setVideoParties(data);
       await setIsVideoClicked(true);
     } catch (err) {
