@@ -15,6 +15,8 @@ export function VoiceContextProvider({ children }) {
   const [blockName, setBlockName] = useState('');
   const [dmName, setDmName] = useState('');
   const [partyName, setPartyName] = useState('');
+  const [closeModalToggle, setCloseModalToggle] = useState(false);
+  const [openModalToggle, setOpenModalToggle] = useState(false);
 
   // const navigate = useNavigate();
 
@@ -25,8 +27,8 @@ export function VoiceContextProvider({ children }) {
     },
     {
       command: [
-        'Turn off mic',
-        'Stop listening',
+        'turn off mic',
+        'stop listening',
         'privacy please',
         'turn voice control off',
         'turn off voice control',
@@ -42,7 +44,7 @@ export function VoiceContextProvider({ children }) {
       callback: (verbalSearch) => setSearchBarVal(verbalSearch),
     },
     {
-      command: ['enter', 'send', 'make it so'],
+      command: ['enter', 'send', 'please', 'thank you', 'make it so'],
       callback: () => setIsSent(!isSent),
     },
     {
@@ -68,6 +70,14 @@ export function VoiceContextProvider({ children }) {
     {
       command: ['open *', 'start the party called *'],
       callback: (party) => setPartyName(party),
+    },
+    {
+      command: ['exit', 'close'],
+      callback: () => setCloseModalToggle(!closeModalToggle),
+    },
+    {
+      command: ['help', 'info'],
+      callback: () => setOpenModalToggle(!openModalToggle),
     },
   ];
 
@@ -113,6 +123,8 @@ export function VoiceContextProvider({ children }) {
       dmName,
       setDmName,
       partyName,
+      closeModalToggle,
+      openModalToggle,
     }),
     [
       SpeechRecognition,
