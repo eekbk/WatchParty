@@ -52,30 +52,6 @@ function BlockButton({
 
   const handleClick = () => {
     updateBlockStatus();
-    // try {
-    //   await axios.post('/api/user/block', {
-    //     // data: {
-    //     blockerId: user.id,
-    //     blockedId: otherUserId,
-    //     // },
-    //   });
-    //   await setIsBlocking(true);
-    // } catch (err) {
-    //   console.error('Your error from follow, fool:\n', err);
-    // }
-
-    // axios
-    //   .get('/api/user')
-    //   .then((data) => {
-    //     setUser(data.data);
-    //   })
-    //   .then(() => {
-    //     setAToggle(!aToggle);
-    //   })
-    //   .catch((err) => {
-    //     console.error('The error from trying to update the user data:', err);
-    //   });
-    // await setAToggle(!aToggle);
   };
 
   useEffect(() => {
