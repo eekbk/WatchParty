@@ -4,14 +4,14 @@ import { prisma } from '../db/index';
 export const video: Router = express.Router();
 
 // get all parties a video is attached to
-video.get('/parties/:videoId', (req: Request, res: Response) => {
+video.get('/parties/:videoId', async (req: Request, res: Response) => {
   const { videoId } = req.params;
-  prisma.party
-    .findMany({
+  try {
+    const parties = await prisma.party.findMany({
       where: {
-        videos: {
+        party_videos: {
           some: {
-            id: videoId,
+            video_id: videoId,
           },
         },
       },
@@ -28,22 +28,17 @@ video.get('/parties/:videoId', (req: Request, res: Response) => {
           },
         },
       },
-    })
-    .then((parties) => {
-      parties.forEach((party: any) => {
-        party.users = party.user_parties.map((usr) => ({
-          id: usr.user.id,
-          username: usr.user.user_name,
-          role: usr.role,
-        }));
-        delete party.user_parties;
-      });
-      return parties;
-    })
-    .then((parties) => {
-      res.status(200).send(parties);
-    })
-    .catch((err) => {
-      res.sendStatus(500);
     });
+    parties.forEach((party: any) => {
+      party.users = party.user_parties.map((uP) => ({
+        id: uP.user.id,
+        username: uP.user.user_name,
+        role: uP.role,
+      }));
+      delete party.user_parties;
+    });
+    res.status(200).send(parties);
+  } catch (err) {
+    res.sendStatus(500);
+  }
 });
