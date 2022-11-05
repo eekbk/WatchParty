@@ -39,7 +39,6 @@ function Search({ socket }) {
 
   useEffect(() => {
     // do the axios search
-    console.log('partyStartIndex:', partyStartIndex);
     axios
       .get(`/api/search/${q}`)
       .then(({ data }) => {

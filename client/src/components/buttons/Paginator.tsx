@@ -13,10 +13,7 @@ function Paginator({ resultsPerPage, totalResults, startIndexSetter }) {
         key={number}
         active={number === active}
         onClick={() => {
-          console.log('booyah clicked');
-          console.log('active before:', active);
           paginate(number);
-          console.log('active after:', active);
         }}
       >
         {number}
