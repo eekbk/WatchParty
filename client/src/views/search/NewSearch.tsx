@@ -10,20 +10,13 @@ import Paginator from '../../components/buttons/Paginator';
 import { UserContext } from '../../context';
 // import { CategoryTitle } from '../../styles';
 import {
-  // StyledCol,
+  StyledCol,
   StyledRow,
   StyledTabs,
   StyledTab,
   SearchPageRow,
   SearchTabContainer,
 } from './search.styles';
-// import {
-//   // SearchPageCol,
-//   SearchPageRow, SearchTabContainer,
-//   // SearchPageHeading,
-//   // SeeMoreLink,
-// } from './search.styles';
-// import VideoCard from '../../cards/VideoCard';
 
 function Search({ socket }) {
   const [usersMatch, setUsersMatch] = useState([]);
@@ -52,14 +45,6 @@ function Search({ socket }) {
         console.error('The Error from handleSubmit:', err);
       });
   }, [q, user, partyStartIndex]);
-
-  // const paginate = (number, startIndexSetter) => {
-  //   console.log('er we in paginate');
-  //   console.log('partyStartIndex before', partyStartIndex);
-  //   console.log('number we changing it to:', number);
-  //   startIndexSetter(number);
-  //   console.log('partyStartIndex after', partyStartIndex);
-  // };
 
   console.log('partiesMatch:', partiesMatch);
 
@@ -106,22 +91,24 @@ function Search({ socket }) {
           </StyledTab>
           <StyledTab eventKey="users" title="Users">
             <SearchTabContainer>
-              {usersMatch
-                .filter((match) => {
-                  if (user) {
-                    return (
-                      !user.blockers.includes(match.id) &&
-                      !user.blocking.includes(match.id)
-                    );
-                  }
-                  return match;
-                })
-                .slice(userStartIndex, userStartIndex + 12)
-                .map((userMatch) => (
-                  <Col md={6}>
-                    <UserCard obj={userMatch} socket={socket} />
-                  </Col>
-                ))}
+              <SearchPageRow>
+                {usersMatch
+                  .filter((match) => {
+                    if (user) {
+                      return (
+                        !user.blockers.includes(match.id) &&
+                        !user.blocking.includes(match.id)
+                      );
+                    }
+                    return match;
+                  })
+                  .slice(userStartIndex, userStartIndex + 12)
+                  .map((userMatch) => (
+                    <Col md={3}>
+                      <UserCard obj={userMatch} socket={socket} />
+                    </Col>
+                  ))}
+              </SearchPageRow>
               {usersMatch.length > 12 ? (
                 <Paginator
                   resultsPerPage={12}
@@ -134,13 +121,20 @@ function Search({ socket }) {
           </StyledTab>
           <StyledTab eventKey="videos" title="Videos">
             <SearchTabContainer>
-              {videosMatch
-                .slice(videoStartIndex, videoStartIndex + 12)
-                .map((video) => (
-                  <Row xs={3}>
-                    <VideoCard video={video} key={video.id} />
-                  </Row>
-                ))}
+              <StyledRow>
+                {/* <StyledCol>
+                </StyledCol> */}
+
+                {videosMatch
+                  .slice(videoStartIndex, videoStartIndex + 12)
+                  .map((video) => (
+                    // <Row xs={3}>
+                    <Col md={6}>
+                      <VideoCard video={video} key={video.id} />
+                    </Col>
+                    // </Row>
+                  ))}
+              </StyledRow>
               {videosMatch.length > 12 ? (
                 <Paginator
                   resultsPerPage={12}
