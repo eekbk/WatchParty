@@ -1,8 +1,5 @@
-// import { useContext } from 'react';
 import axios from 'axios';
 import { Col, Row } from 'react-bootstrap';
-// import { SearchContext } from '../../contexts/searchContext';
-// import { UserContext } from '../context';
 import {
   StyledVideoCard,
   StyledVideoCardImg,
@@ -13,43 +10,30 @@ import {
   // StyledVideoPartyCount,
 } from './cards.styles';
 
-// ModCard stands for Modular Card. Hopefully we can reuse it
-function VideoCard({ video }) {
-  // const { user } = useContext(UserContext);
-  const { thumbnail, title /* , parties */ } = video;
-  // console.log('here are the props...\nobj:', obj, '\nkind:', kind);
-  // const { setPartiesMatch, setUsersMatch, setVideosMatch } =
-  //   useContext(SearchContext);
+function VideoCard({
+  video,
+  setIsVideoClicked,
+  setSelectedVideo,
+  setVideoParties,
+}) {
+  const { thumbnail, title, id } = video;
 
-  // const footerText =
-  //   parties.length === 1
-  //     ? `feat. in ${parties.length} party!`
-  //     : `feat. in ${parties.length} parties!`;
-
-  // const [cardTitle, setCardTitle] = useState('');
-  // const [cardText, setCardText] = useState('');
-  // const [follows, setFollows] = useState(0);
-  // const [isFollowing, setIsFollowing] = useState(false);
-  // const [isBlocking, setIsBlocking] = useState(false);
-
-  // set the parties count
-  // useEffect(() => {
-  //   axios.get(`/api/search/party/${video.id}`)
-  // }, []);
+  const selectVideo = async () => {
+    console.log('you clickin that video fam');
+    try {
+      await setSelectedVideo(video);
+      // send an axios request to get all of the parties attached to the video
+      const { data } = await axios.get(`/api/video/parties/${id}`);
+      console.log('parties from axios:', data);
+      await setVideoParties(data);
+      await setIsVideoClicked(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleCardClick = () => {
-    // send axios request to video endpoint with partyIds
-    axios
-      .get(`/api/video/parties/${video.id}`)
-      .then(({ data }) => {
-        // setPartiesMatch(data);
-        // setUsersMatch([]);
-        // setVideosMatch([]);
-        console.log(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    selectVideo();
   };
 
   const cardTitle = title.length > 100 ? `${title.slice(0, 100)}...` : title;
