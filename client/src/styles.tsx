@@ -86,12 +86,12 @@ export const Header = styled.header`
   justify-content: center;
 
   // for gradient header, footer
-  /* background-color: purple; 
+  /* background-color: purple;
 	background-image: linear-gradient(#320e3b, black);
   text-shadow: 0px -1px #333; */
 `;
 
-export const Footer = styled.footer`
+export const OldFooter = styled.footer`
   position: fixed;
   color: white;
   bottom: 0;
@@ -107,11 +107,36 @@ export const Footer = styled.footer`
   padding: 0;
   display: flex;
   align-items: center;
-  /* 
+  /*
   for gradient footer
-  background-color: purple; 
+  background-color: purple;
 	background-image: linear-gradient(#320e3b,#6a1d7d);
-  text-shadow: 0px -1px #333; 
+  text-shadow: 0px -1px #333;
+  */
+`;
+
+export const Footer = styled.footer`
+  position: fixed;
+  justify-content: right;
+  color: white;
+  bottom: 0;
+  height: 100px;
+  width: 100%;
+  z-index: 3;
+  background: transparent;
+  /* border-radius: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.31); */
+  margin: 0;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  /*
+  for gradient footer
+  background-color: purple;
+	background-image: linear-gradient(#320e3b,#6a1d7d);
+  text-shadow: 0px -1px #333;
   */
 `;
 
