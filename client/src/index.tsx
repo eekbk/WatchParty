@@ -13,7 +13,7 @@ import Dashboard from './views/Dashboard';
 import Dm from './views/Dm/Dm';
 import Archive from './views/Archive/Archive';
 import Calendar from './views/Calendar';
-import Search from './views/search/NewSearch';
+import Search from './views/search/Search';
 
 const socket = io();
 
