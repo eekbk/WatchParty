@@ -1,5 +1,6 @@
 import { Pagination } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
+import { StyledPagination } from './buttons.styles';
 
 function Paginator({ resultsPerPage, totalResults, startIndexSetter }) {
   const [active, setActive] = useState(1);
@@ -29,7 +30,7 @@ function Paginator({ resultsPerPage, totalResults, startIndexSetter }) {
   };
 
   return (
-    <Pagination>
+    <StyledPagination size="sm">
       <Pagination.Prev
         onClick={() => {
           if (active > 1) {
@@ -47,7 +48,7 @@ function Paginator({ resultsPerPage, totalResults, startIndexSetter }) {
         }}
         //  hidden={active === pageCount || pageCount <= 1 || !pageCount}
       />
-    </Pagination>
+    </StyledPagination>
   );
 }
 
