@@ -19,7 +19,6 @@ function VideoCard({
   const { thumbnail, title, id } = video;
 
   const selectVideo = async () => {
-    console.log('you clickin that video fam');
     try {
       await setSelectedVideo(video);
       // send an axios request to get all of the parties attached to the video
