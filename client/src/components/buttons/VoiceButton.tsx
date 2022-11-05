@@ -1,9 +1,13 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form } from 'react-bootstrap';
+// import { Form } from 'react-bootstrap';
 import { BsMic, BsMicMute } from 'react-icons/bs';
 import { VoiceContext } from '../../contexts/voiceContext';
-import { StyledActiveMicIcon, StyledDisabledMicIcon } from './buttons.styles';
+import {
+  StyledActiveMicIcon,
+  StyledDisabledMicIcon,
+  StyledTranscript,
+} from './buttons.styles';
 
 function VoiceButton() {
   const navigate = useNavigate();
@@ -37,16 +41,7 @@ function VoiceButton() {
 
   return (
     <>
-      {/* <Form>
-        <Form.Check
-          type="switch"
-          id="vc-switch"
-          label={isSwitchOn ? 'Voice Control ON' : 'Voice Control OFF'}
-          onChange={handleVoiceToggle}
-          checked={isSwitchOn}
-        />
-      </Form> */}
-      {isSwitchOn ? <p>{transcript}</p> : []}
+      {isSwitchOn ? <StyledTranscript>{transcript}</StyledTranscript> : []}
       {isSwitchOn ? (
         <StyledActiveMicIcon onClick={handleVoiceToggle}>
           <BsMic />
