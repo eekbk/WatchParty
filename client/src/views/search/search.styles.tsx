@@ -11,11 +11,12 @@ import {
 } from 'react-bootstrap';
 
 export const SearchPageHeading = styled(Row)`
-  justify-content: space-between;
+  justify-content: center;
   padding-top: 10px;
   padding-bottom: 0px;
   margin-bottom: 0;
   align-items: baseline;
+  font-size: large;
 `;
 
 export const SearchTabContainer = styled(Container)`
@@ -43,6 +44,11 @@ export const SearchPageRow = styled(Row)`
   /* justify-content: center; */
   justify-content: left;
   /* margin: 1em; */
+`;
+
+export const CenteredSearchPageRow = styled(Row)`
+  justify-content: center;
+  padding: 1rem;
 `;
 
 export const SearchBarContainer = styled(Container)`
@@ -152,29 +158,3 @@ export const StyledRow = styled(Row)`
 export const StyledPartyRow = styled(Row)`
   justify-content: right;
 `;
-
-// export const StyledPartyCard = styled(Card)`
-//   height: 23rem;
-//   width: 18rem;
-//   padding: 0 auto;
-//   cursor: pointer;
-// `;
-
-// export const StyledVideoCard = styled(Card)`
-//   width: 18rem;
-//   height: 10rem;
-// `;
-
-// export const StyledUserCardImg = styled(Image)`
-//   width: 100px;
-//   height: 100px;
-//   margin: 8px;
-// `;
-
-// export const StyledCardBody = styled(Card.Body)`
-//   padding-left: 20px;
-//   margin: 0 auto;
-//   /* text-align: right; */
-// `;
-
-// export const StyledCardButton = styled(Button);
