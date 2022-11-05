@@ -14,13 +14,15 @@ import {
   StyledRow,
   StyledTabs,
   StyledTab,
-} from '../CreateParty/styles';
-import {
-  // SearchPageCol,
   SearchPageRow,
-  // SearchPageHeading,
-  // SeeMoreLink,
+  SearchTabContainer,
 } from './search.styles';
+// import {
+//   // SearchPageCol,
+//   SearchPageRow, SearchTabContainer,
+//   // SearchPageHeading,
+//   // SeeMoreLink,
+// } from './search.styles';
 // import VideoCard from '../../cards/VideoCard';
 
 function Search({ socket }) {
@@ -51,13 +53,13 @@ function Search({ socket }) {
       });
   }, [q, user, partyStartIndex]);
 
-  const paginate = (number, startIndexSetter) => {
-    console.log('er we in paginate');
-    console.log('partyStartIndex before', partyStartIndex);
-    console.log('number we changing it to:', number);
-    startIndexSetter(number);
-    console.log('partyStartIndex after', partyStartIndex);
-  };
+  // const paginate = (number, startIndexSetter) => {
+  //   console.log('er we in paginate');
+  //   console.log('partyStartIndex before', partyStartIndex);
+  //   console.log('number we changing it to:', number);
+  //   startIndexSetter(number);
+  //   console.log('partyStartIndex after', partyStartIndex);
+  // };
 
   console.log('partiesMatch:', partiesMatch);
 
@@ -70,53 +72,84 @@ function Search({ socket }) {
           onSelect={(k) => setKey(k)}
         >
           <StyledTab eventKey="parties" title="Parties">
-            <SearchPageRow>
-              {partiesMatch
-                .filter((party) => {
-                  const creator = party.users.filter(
-                    (u) => u.role === 'CREATOR'
-                  )[0];
-                  return (
-                    !user.blockers.includes(creator.id) &&
-                    !user.blocking.includes(creator.id)
-                  );
-                })
-                .slice(partyStartIndex, partyStartIndex + 8)
-                .map((party) => (
-                  <Col xs={3}>
-                    <PartyCard party={party} />
-                  </Col>
-                ))}
-            </SearchPageRow>
-            <Paginator
-              resultsPerPage={8}
-              totalResults={partiesMatch.length}
-              // paginate={paginate}
-              startIndexSetter={setPartyStartIndex}
-            />
+            <SearchTabContainer>
+              <SearchPageRow>
+                {partiesMatch
+                  .filter((party) => {
+                    const creator = party.users.filter(
+                      (u) => u.role === 'CREATOR'
+                    )[0];
+                    if (user) {
+                      return (
+                        !user.blockers.includes(creator.id) &&
+                        !user.blocking.includes(creator.id)
+                      );
+                    }
+                    return party;
+                  })
+                  .slice(partyStartIndex, partyStartIndex + 8)
+                  .map((party) => (
+                    <Col xs={3}>
+                      <PartyCard party={party} />
+                    </Col>
+                  ))}
+              </SearchPageRow>
+              {partiesMatch.length > 8 ? (
+                <Paginator
+                  resultsPerPage={8}
+                  totalResults={partiesMatch.length}
+                  // paginate={paginate}
+                  startIndexSetter={setPartyStartIndex}
+                />
+              ) : null}
+            </SearchTabContainer>
           </StyledTab>
           <StyledTab eventKey="users" title="Users">
-            {usersMatch
-              .filter(
-                (match) =>
-                  !user.blockers.includes(match.id) &&
-                  !user.blocking.includes(match.id)
-              )
-              .slice(userStartIndex, userStartIndex + 12)
-              .map((userMatch) => (
-                <Col md={6}>
-                  <UserCard obj={userMatch} socket={socket} />
-                </Col>
-              ))}
+            <SearchTabContainer>
+              {usersMatch
+                .filter((match) => {
+                  if (user) {
+                    return (
+                      !user.blockers.includes(match.id) &&
+                      !user.blocking.includes(match.id)
+                    );
+                  }
+                  return match;
+                })
+                .slice(userStartIndex, userStartIndex + 12)
+                .map((userMatch) => (
+                  <Col md={6}>
+                    <UserCard obj={userMatch} socket={socket} />
+                  </Col>
+                ))}
+              {usersMatch.length > 12 ? (
+                <Paginator
+                  resultsPerPage={12}
+                  totalResults={usersMatch.length}
+                  // paginate={paginate}
+                  startIndexSetter={setUserStartIndex}
+                />
+              ) : null}
+            </SearchTabContainer>
           </StyledTab>
           <StyledTab eventKey="videos" title="Videos">
-            {videosMatch
-              .slice(videoStartIndex, videoStartIndex + 12)
-              .map((video) => (
-                <Row xs={3}>
-                  <VideoCard video={video} key={video.id} />
-                </Row>
-              ))}
+            <SearchTabContainer>
+              {videosMatch
+                .slice(videoStartIndex, videoStartIndex + 12)
+                .map((video) => (
+                  <Row xs={3}>
+                    <VideoCard video={video} key={video.id} />
+                  </Row>
+                ))}
+              {videosMatch.length > 12 ? (
+                <Paginator
+                  resultsPerPage={12}
+                  totalResults={videosMatch.length}
+                  // paginate={paginate}
+                  startIndexSetter={setVideoStartIndex}
+                />
+              ) : null}
+            </SearchTabContainer>
           </StyledTab>
         </StyledTabs>
       </StyledRow>
