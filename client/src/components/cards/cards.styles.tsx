@@ -61,8 +61,8 @@ export const StyledUserCard = styled(Card)`
 `;
 
 export const StyledVideoCard = styled(Card)`
-  width: 90%;
-  height: 100%;
+  min-width: 30%;
+  /* height: 100%; */
   cursor: pointer;
   box-sizing: border-box;
   overflow: hidden;
