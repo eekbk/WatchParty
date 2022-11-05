@@ -1,5 +1,5 @@
 import { Pagination } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { StyledPagination } from './buttons.styles';
 
 function Paginator({ resultsPerPage, totalResults, startIndexSetter }) {

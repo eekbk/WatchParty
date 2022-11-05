@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import { Container, Col, Row } from 'react-bootstrap';
+import { Container, Col } from 'react-bootstrap';
 import { /* useNavigate, */ useParams } from 'react-router-dom';
 import UserCard from '../../components/cards/UserCard';
 import PartyCard from '../../components/cards/PartyCard';
@@ -10,7 +10,6 @@ import Paginator from '../../components/buttons/Paginator';
 import { UserContext } from '../../context';
 // import { CategoryTitle } from '../../styles';
 import {
-  StyledCol,
   StyledRow,
   StyledTabs,
   StyledTab,

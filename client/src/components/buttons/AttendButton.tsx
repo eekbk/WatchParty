@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { useContext } from 'react';
-import { IoAdd } from 'react-icons/io5';
+// import { IoAdd } from 'react-icons/io5';
 import {
   RiCheckboxBlankCircleLine,
   RiCheckboxCircleLine,
 } from 'react-icons/ri';
-import { CiUndo, CiCircleRemove } from 'react-icons/ci';
+// import { CiUndo, CiCircleRemove } from 'react-icons/ci';
 import {
-  StyledGlassButton,
+  // StyledGlassButton,
   StyledPlusIcon,
   StyledGoBackIcon,
 } from './buttons.styles';
