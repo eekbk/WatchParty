@@ -1,10 +1,10 @@
-import { Card, Col, Row } from 'react-bootstrap';
+import { Card /* Col, Row */ } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import { IoAdd } from 'react-icons/io5';
-import { HiPlusSm, HiMinusSm } from 'react-icons/hi';
-import { RiArrowGoBackLine } from 'react-icons/ri';
-import { HiArrowUturnLeft } from 'react-icons/hi2';
+// import { IoAdd } from 'react-icons/io5';
+// import { HiPlusSm, HiMinusSm } from 'react-icons/hi';
+// import { RiArrowGoBackLine } from 'react-icons/ri';
+// import { HiArrowUturnLeft } from 'react-icons/hi2';
 import { UserContext } from '../../context';
 import { VoiceContext } from '../../contexts/voiceContext';
 import AttendButton from '../buttons/AttendButton';
@@ -15,8 +15,8 @@ import {
   StyledCardBody,
   StyledPartyDesc,
   StyledIsFollowing,
-  StyledPartyCardFooterCol,
-  StyledPartyCardFooter,
+  // StyledPartyCardFooterCol,
+  // StyledPartyCardFooter,
   StyledPartyTime,
   StyledPartyCardImgOverlay,
   StyledPartyCardImgOverlayText,
@@ -145,30 +145,32 @@ function PartyCard({ party }) {
   return (
     <StyledPartyCard>
       <Card.Img variant="top" src={thumbnail} />
-      <StyledPartyCardImgOverlay>
-        {/* <Row  > */}
-        <StyledPartyCardImgOverlayText>
-          {isAdmin ? (
-            'ADMIN'
-          ) : isCreator ? (
-            'HOST'
-          ) : (
-            <>
-              <PartyCardStatus sm={8}>
-                {isAttending ? 'GOING' : 'JOIN'}
-              </PartyCardStatus>
-              <AttendButton
-                partyId={id}
-                isAttending={isAttending}
-                setIsAttending={setIsAttending}
-              />
-            </>
-          )}
-          {/* JOIN
+      {user && (
+        <StyledPartyCardImgOverlay>
+          {/* <Row  > */}
+          <StyledPartyCardImgOverlayText>
+            {isAdmin ? (
+              'ADMIN'
+            ) : isCreator ? (
+              'HOST'
+            ) : (
+              <>
+                <AttendButton
+                  partyId={id}
+                  isAttending={isAttending}
+                  setIsAttending={setIsAttending}
+                />
+                <PartyCardStatus sm={8}>
+                  {isAttending ? 'GOING' : 'JOIN'}
+                </PartyCardStatus>
+              </>
+            )}
+            {/* JOIN
           <HiPlusSm /> */}
-        </StyledPartyCardImgOverlayText>
-        {/* </Row> */}
-      </StyledPartyCardImgOverlay>
+          </StyledPartyCardImgOverlayText>
+          {/* </Row> */}
+        </StyledPartyCardImgOverlay>
+      )}
       <StyledCardBody>
         <StyledPartyTitle onClick={handleCardClick}>
           {stringAbbreviator(name, 'title')}

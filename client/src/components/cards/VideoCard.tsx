@@ -1,7 +1,7 @@
-import { useContext } from 'react';
+// import { useContext } from 'react';
 import axios from 'axios';
 import { Col, Row } from 'react-bootstrap';
-import { SearchContext } from '../../contexts/searchContext';
+// import { SearchContext } from '../../contexts/searchContext';
 // import { UserContext } from '../context';
 import {
   StyledVideoCard,
@@ -18,8 +18,8 @@ function VideoCard({ video }) {
   // const { user } = useContext(UserContext);
   const { thumbnail, title /* , parties */ } = video;
   // console.log('here are the props...\nobj:', obj, '\nkind:', kind);
-  const { setPartiesMatch, setUsersMatch, setVideosMatch } =
-    useContext(SearchContext);
+  // const { setPartiesMatch, setUsersMatch, setVideosMatch } =
+  //   useContext(SearchContext);
 
   // const footerText =
   //   parties.length === 1
@@ -42,9 +42,10 @@ function VideoCard({ video }) {
     axios
       .get(`/api/video/parties/${video.id}`)
       .then(({ data }) => {
-        setPartiesMatch(data);
-        setUsersMatch([]);
-        setVideosMatch([]);
+        // setPartiesMatch(data);
+        // setUsersMatch([]);
+        // setVideosMatch([]);
+        console.log(data);
       })
       .catch((err) => {
         console.error(err);

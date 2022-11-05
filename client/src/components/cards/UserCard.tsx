@@ -42,15 +42,17 @@ function UserCard({ obj, socket }) {
         console.error('WHAT THE?!? LOOK AT THIS:', err);
       });
     // run this again when follows changes
-  }, [follows, user.following, obj]); // maybe add user here
+  }, [follows, /* user.following, */ obj]); // maybe add user here
 
   useEffect(() => {
-    if (user.following.includes(obj.id)) {
-      setIsFollowing(true);
-    } else {
-      setIsFollowing(false);
+    if (user) {
+      if (user.following.includes(obj.id)) {
+        setIsFollowing(true);
+      } else {
+        setIsFollowing(false);
+      }
     }
-  }, [user.following, obj]);
+  }, [/* user.following, */ obj]);
 
   // console.log('hello there');
   return (
@@ -64,46 +66,50 @@ function UserCard({ obj, socket }) {
             <Row>
               <StyledPartyTitle>{cardTitle}</StyledPartyTitle>
             </Row>
-            <StyledIsFollowing>
-              <Row>{cardText}</Row>
-              <Row>{isFollowing ? 'following ✅' : '  '}</Row>
-            </StyledIsFollowing>
+            {user && (
+              <StyledIsFollowing>
+                <Row>{cardText}</Row>
+                <Row>{isFollowing ? 'following ✅' : '  '}</Row>
+              </StyledIsFollowing>
+            )}
           </StyledCardBody>
         </Col>
       </Row>
-      <StyledUserCardFooter>
-        <StyledUserCardFooterCol
-          sm={2}
-          style={{
-            marginRight: '23px',
-          }}
-        >
-          <FollowButton
-            otherUserId={obj.id}
-            setFollows={setFollows}
-            follows={follows}
-            isFollowing={isFollowing}
-            setIsFollowing={setIsFollowing}
-            otherUserName={obj.user_name}
-          />
-        </StyledUserCardFooterCol>
-        <StyledUserCardFooterCol sm={2}>
-          <BlockButton
-            otherUserId={obj.id}
-            isBlocking={isBlocking}
-            setIsBlocking={setIsBlocking}
-            otherUserName={obj.user_name}
-          />
-        </StyledUserCardFooterCol>
-        <StyledUserCardFooterCol sm={2}>
-          <DmButton
-            otherUserId={obj.id}
-            otherUserName={obj.user_name}
-            currentUserId={user.id}
-            socket={socket}
-          />
-        </StyledUserCardFooterCol>
-      </StyledUserCardFooter>
+      {user && (
+        <StyledUserCardFooter>
+          <StyledUserCardFooterCol
+            sm={2}
+            style={{
+              marginRight: '23px',
+            }}
+          >
+            <FollowButton
+              otherUserId={obj.id}
+              setFollows={setFollows}
+              follows={follows}
+              isFollowing={isFollowing}
+              setIsFollowing={setIsFollowing}
+              otherUserName={obj.user_name}
+            />
+          </StyledUserCardFooterCol>
+          <StyledUserCardFooterCol sm={2}>
+            <BlockButton
+              otherUserId={obj.id}
+              isBlocking={isBlocking}
+              setIsBlocking={setIsBlocking}
+              otherUserName={obj.user_name}
+            />
+          </StyledUserCardFooterCol>
+          <StyledUserCardFooterCol sm={2}>
+            <DmButton
+              otherUserId={obj.id}
+              otherUserName={obj.user_name}
+              currentUserId={user.id}
+              socket={socket}
+            />
+          </StyledUserCardFooterCol>
+        </StyledUserCardFooter>
+      )}
     </StyledUserCard>
   );
 }
