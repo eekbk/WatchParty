@@ -1,5 +1,5 @@
 // export const StyledCardButton = styled(Button);
-import { Button, Col } from 'react-bootstrap';
+import { Button, Col, Pagination } from 'react-bootstrap';
 import styled from 'styled-components';
 
 export const StyledGlassButton = styled(Button)`
@@ -39,12 +39,12 @@ export const StyledPlusIcon = styled(Col)`
   vertical-align: 10%;
   background-color: transparent;
   cursor: pointer;
-  &:hover {
+  /* &:hover {
     font-size: 110%;
   }
   &:focus {
     font-size: 110%;
-  }
+  } */
 `;
 
 export const StyledGoBackIcon = styled(Col)`
@@ -54,3 +54,18 @@ export const StyledGoBackIcon = styled(Col)`
   vertical-align: 8%;
   cursor: pointer;
 `;
+
+export const StyledPagination = styled(Pagination)`
+  --bs-pagination-active-bg: #6a1d7d;
+  --bs-pagination-bg: black;
+  --bs-pagination-color: white;
+  --bs-pagination-border: 10px solid #6a1d7d;
+  justify-content: center;
+  justify-self: center;
+  margin-top: 1rem;
+  /* bottom: 30px;
+  position: absolute; */
+  /* align-self: baseline; */
+`;
+
+export const StyledPageNums = styled(Pagination.Item);
