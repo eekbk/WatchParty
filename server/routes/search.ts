@@ -122,7 +122,13 @@ search.get('/:q', async (req: Request, res: Response) => {
         username: usr.user.user_name,
         role: usr.role,
       }));
+      pt.videos = pt.party_videos.map((vid) => ({
+        ...vid.video,
+        index: vid.index,
+      }));
+      pt.videos.sort((a, b) => a.index - b.index);
       delete pt.user_parties;
+      delete pt.party_videos;
     });
     const results = {
       videos,
