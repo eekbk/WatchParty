@@ -26,6 +26,7 @@ export const StyledDashPartyCard = styled(Card)`
   height: 22rem;
   width: 18rem;
   padding: 0 auto;
+  /* margin-top: 1rem; */
   cursor: pointer;
   box-sizing: content-box;
   background-color: black;
@@ -38,6 +39,7 @@ export const StyledPartyCard = styled(Card)`
   height: 20rem;
   width: 18rem;
   padding: 0 auto;
+  margin-top: 1rem;
   box-sizing: content-box;
   background-color: black;
   /* align-items: end; */
@@ -50,6 +52,7 @@ export const StyledUserCard = styled(Card)`
   width: 17rem;
   height: 10rem;
   box-sizing: border-box;
+  margin-top: 1rem;
   margin-bottom: 10px;
   margin-right: 4px;
   background-color: black;
@@ -63,7 +66,8 @@ export const StyledVideoCard = styled(Card)`
   cursor: pointer;
   box-sizing: border-box;
   overflow: hidden;
-  margin: 4px;
+  margin-top: 1rem;
+  /* margin: 4px; */
   background-color: black;
   border-color: #6a1d7d;
   border-width: 1px;
