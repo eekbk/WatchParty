@@ -95,8 +95,9 @@ export const OldFooter = styled.footer`
   position: fixed;
   color: white;
   bottom: 0;
+  right: 0;
   height: 35px;
-  width: 100%;
+  width: 15%;
   z-index: 3;
   background: rgba(0, 0, 0, 0.22);
   border-radius: 16px;
@@ -120,8 +121,9 @@ export const Footer = styled.footer`
   justify-content: right;
   color: white;
   bottom: 0;
+  right: 0;
   height: 100px;
-  width: 100%;
+  width: 30%;
   z-index: 3;
   background: transparent;
   /* border-radius: 16px;
