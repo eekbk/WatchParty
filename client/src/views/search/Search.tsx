@@ -8,6 +8,7 @@ import VideoCard from '../../components/cards/VideoCard';
 import Paginator from '../../components/buttons/Paginator';
 // import { SearchContext } from '../../contexts/searchContext';
 import { UserContext } from '../../context';
+import { VoiceContext } from '../../contexts/voiceContext';
 // import { CategoryTitle } from '../../styles';
 import {
   StyledRow,
@@ -34,6 +35,7 @@ function Search({ socket }) {
 
   const [key, setKey] = useState('parties');
   const { user } = useContext(UserContext);
+  const { voiceKey /* setVoiceKey */ } = useContext(VoiceContext);
   // const navigate = useNavigate();
   const { q } = useParams();
 
@@ -50,6 +52,12 @@ function Search({ socket }) {
         console.error('The Error from handleSubmit:', err);
       });
   }, [q, user, partyStartIndex]);
+
+  useEffect(() => {
+    if (voiceKey !== key) {
+      setKey(voiceKey);
+    }
+  }, [voiceKey]);
 
   // watch out for searches while we are on videos page
   useEffect(() => {
@@ -104,27 +112,7 @@ function Search({ socket }) {
           >
             <StyledTab eventKey="parties" title="Parties">
               <SearchTabContainer>
-                <SearchPageRow>
-                  {partiesMatch
-                    .filter((party) => {
-                      const creator = party.users.filter(
-                        (u) => u.role === 'CREATOR'
-                      )[0];
-                      if (user) {
-                        return (
-                          !user.blockers.includes(creator.id) &&
-                          !user.blocking.includes(creator.id)
-                        );
-                      }
-                      return party;
-                    })
-                    .slice(partyStartIndex, partyStartIndex + 8)
-                    .map((party) => (
-                      <Col xs={3}>
-                        <PartyCard party={party} />
-                      </Col>
-                    ))}
-                </SearchPageRow>
+                <SearchPageRow>{partiesRender(partiesMatch)}</SearchPageRow>
                 {partiesMatch.length > 8 ? (
                   <Paginator
                     resultsPerPage={8}
