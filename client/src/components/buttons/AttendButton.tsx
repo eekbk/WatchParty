@@ -1,23 +1,33 @@
 import axios from 'axios';
-import { useContext } from 'react';
-// import { IoAdd } from 'react-icons/io5';
+import { useContext, useEffect } from 'react';
 import {
   RiCheckboxBlankCircleLine,
   RiCheckboxCircleLine,
 } from 'react-icons/ri';
-// import { CiUndo, CiCircleRemove } from 'react-icons/ci';
 import {
   // StyledGlassButton,
   StyledPlusIcon,
   StyledGoBackIcon,
 } from './buttons.styles';
-// import { UserContext } from '../context';
 import { UserContext } from '../../context';
+import { VoiceContext } from '../../contexts/voiceContext';
 
-function AttendButton({ partyId, isAttending, setIsAttending }: any) {
+function AttendButton({ name, partyId, isAttending, setIsAttending }: any) {
   const { user, setUser } = useContext(UserContext);
+  const { attendPartyName, setAttendPartyName, resetTranscript } =
+    useContext(VoiceContext);
 
-  const handleClick = async () => {
+  useEffect(() => {
+    if (attendPartyName.toUpperCase() === name.toUpperCase()) {
+      (async () => {
+        await updateAttendStatus();
+        await setAttendPartyName('');
+        resetTranscript();
+      })();
+    }
+  }, [attendPartyName]);
+
+  const updateAttendStatus = async () => {
     try {
       if (!isAttending) {
         await axios.post('/api/party/attend', {
@@ -45,6 +55,10 @@ function AttendButton({ partyId, isAttending, setIsAttending }: any) {
       .catch((err) => {
         console.error('The error from trying to update the user data:', err);
       });
+  };
+
+  const handleClick = () => {
+    updateAttendStatus();
   };
 
   return isAttending ? (
