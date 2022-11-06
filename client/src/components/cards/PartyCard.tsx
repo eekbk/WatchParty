@@ -98,16 +98,16 @@ function PartyCard({ party }) {
 
   const stringAbbreviator = (string, type) => {
     if (type === 'title') {
-      if (string && string.length > 45) {
+      if (string && string.length > 35) {
         // return dotDotDotConcat(53);
-        return `${string.slice(0, 45)}...`;
+        return `${string.slice(0, 35)}...`;
       }
       return string;
     }
     if (type === 'description') {
-      if (string && string.length > 70) {
+      if (string && string.length > 57) {
         // return dotDotDotConcat(65);
-        return `${string.slice(0, 70)}...`;
+        return `${string.slice(0, 57)}...`;
       }
       return string;
     }
@@ -161,6 +161,7 @@ function PartyCard({ party }) {
               ) : (
                 <>
                   <AttendButton
+                    name={name}
                     partyId={id}
                     isAttending={isAttending}
                     setIsAttending={setIsAttending}
