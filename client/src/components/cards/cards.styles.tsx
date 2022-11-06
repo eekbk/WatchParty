@@ -184,5 +184,5 @@ export const PartyCardStatus = styled(Col)`
   padding: 0px;
   justify-content: center;
   /* align-items: center; */
-  margin: 0px 0px 0px 10px;
+  margin: 0 auto;
 `;

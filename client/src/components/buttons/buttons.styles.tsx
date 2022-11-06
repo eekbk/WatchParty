@@ -64,11 +64,12 @@ export const StyledHelpButton = styled.span`
 `;
 
 export const StyledPlusIcon = styled(Col)`
-  padding: 0px;
+  padding: 0 0 0 6px;
   margin: 0px;
   font-size: 85%;
   vertical-align: 10%;
   background-color: transparent;
+  justify-content: center;
   cursor: pointer;
   /* &:hover {
     font-size: 110%;
@@ -79,10 +80,11 @@ export const StyledPlusIcon = styled(Col)`
 `;
 
 export const StyledGoBackIcon = styled(Col)`
-  padding: 0px;
+  padding: 0 0 0 6px;
   margin: 0px;
   font-size: 85%;
   vertical-align: 8%;
+  justify-content: center;
   cursor: pointer;
 `;
 
