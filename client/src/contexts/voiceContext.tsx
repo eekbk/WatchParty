@@ -47,7 +47,7 @@ export function VoiceContextProvider({ children }) {
       callback: (verbalSearch) => setSearchBarVal(verbalSearch),
     },
     {
-      command: ['enter', 'send', 'please', 'thank you', 'make it so'],
+      command: ['enter', 'send', 'please', 'thank you', 'thanks', 'make it so'],
       callback: () => setIsSent(!isSent),
     },
     {
