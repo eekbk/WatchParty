@@ -1,5 +1,5 @@
 // export const StyledCardButton = styled(Button);
-import { Button, Col, Pagination } from 'react-bootstrap';
+import { Button, Col, Pagination, Modal } from 'react-bootstrap';
 import styled from 'styled-components';
 
 export const StyledGlassButton = styled(Button)`
@@ -52,6 +52,7 @@ export const StyledDisabledMicIcon = styled.span`
   border: 1px solid #6a1d7d;
   margin: 2rem 1rem;
   text-align: center;
+  /* vertical-align: 100%; */
   border-radius: 50%;
   cursor: pointer;
 `;
@@ -105,4 +106,10 @@ export const StyledTranscript = styled.span`
   padding: 0.5em;
   border-radius: 20px;
   margin-bottom: 2rem;
+`;
+
+export const StyledModal = styled(Modal)`
+  --bs-modal-bg: #6a1d7d;
+  --bs-modal-color: white;
+  /* --bs-modal-border: 1px solid #6a1d7d; */
 `;

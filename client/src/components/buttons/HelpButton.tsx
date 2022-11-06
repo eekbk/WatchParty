@@ -1,8 +1,8 @@
 import { BsQuestion } from 'react-icons/bs';
 import { useState, useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Modal, Row } from 'react-bootstrap';
-import { StyledHelpButton } from './buttons.styles';
+import { Modal } from 'react-bootstrap';
+import { StyledHelpButton, StyledModal } from './buttons.styles';
 import { VoiceContext } from '../../contexts/voiceContext';
 
 function HelpButton() {
@@ -127,7 +127,7 @@ function HelpButton() {
 
   return (
     <>
-      <Modal
+      <StyledModal
         size="lg"
         centered
         show={showHelpModal}
@@ -143,7 +143,7 @@ function HelpButton() {
         <Modal.Footer>
           (Say &quot;exit, please&quot; to close this box)
         </Modal.Footer>
-      </Modal>
+      </StyledModal>
       <StyledHelpButton onClick={handleOpenHelpModal}>
         <BsQuestion />
       </StyledHelpButton>
