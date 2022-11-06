@@ -18,7 +18,10 @@ function AttendButton({ name, partyId, isAttending, setIsAttending }: any) {
     useContext(VoiceContext);
 
   useEffect(() => {
-    if (attendPartyName.toUpperCase() === name.toUpperCase()) {
+    if (
+      attendPartyName &&
+      attendPartyName.toUpperCase() === name.toUpperCase()
+    ) {
       (async () => {
         await updateAttendStatus();
         await setAttendPartyName('');
