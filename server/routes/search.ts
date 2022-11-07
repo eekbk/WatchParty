@@ -51,7 +51,7 @@ search.get('/:q', async (req: Request, res: Response) => {
         },
       },
     });
-    // query the db for parties with descrip or name matching q
+    const usersIds = users.map((u) => u.id);
     const parties = await prisma.party.findMany({
       where: {
         OR: [
@@ -67,12 +67,31 @@ search.get('/:q', async (req: Request, res: Response) => {
               mode: 'insensitive',
             },
           },
-        ],
-        AND: {
-          date_time: {
-            gte: new Date(),
+          {
+            user_parties: {
+              some: {
+                AND: [
+                  {
+                    user_id: {
+                      in: usersIds,
+                    },
+                  },
+                  {
+                    role: 'CREATOR',
+                  },
+                ],
+              },
+            },
           },
-        },
+        ],
+        AND: [
+          {
+            date_time: {
+              gte: new Date(),
+            },
+            type: 'PARTY',
+          },
+        ],
       },
       orderBy: {
         date_time: 'asc',
@@ -103,7 +122,13 @@ search.get('/:q', async (req: Request, res: Response) => {
         username: usr.user.user_name,
         role: usr.role,
       }));
+      pt.videos = pt.party_videos.map((vid) => ({
+        ...vid.video,
+        index: vid.index,
+      }));
+      pt.videos.sort((a, b) => a.index - b.index);
       delete pt.user_parties;
+      delete pt.party_videos;
     });
     const results = {
       videos,

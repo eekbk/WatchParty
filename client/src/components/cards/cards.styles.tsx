@@ -18,16 +18,6 @@ export const StyledCardBody = styled(Card.Body)`
   /* text-align: right; */
 `;
 
-export const StyledPartyCard = styled(Card)`
-  height: 22rem;
-  width: 18rem;
-  padding: 0 auto;
-  box-sizing: content-box;
-  background-color: black;
-
-  border-color: #6a1d7d;
-  border-width: 1px;
-`;
 export const StyledDashPartyCard = styled(Card)`
   /* height: 23rem;
   width: 18rem;
@@ -36,6 +26,7 @@ export const StyledDashPartyCard = styled(Card)`
   height: 22rem;
   width: 18rem;
   padding: 0 auto;
+  /* margin-top: 1rem; */
   cursor: pointer;
   box-sizing: content-box;
   background-color: black;
@@ -44,10 +35,24 @@ export const StyledDashPartyCard = styled(Card)`
   border-width: 1px;
 `;
 
+export const StyledPartyCard = styled(Card)`
+  height: 20rem;
+  width: 18rem;
+  padding: 0 auto;
+  margin-top: 1rem;
+  box-sizing: content-box;
+  background-color: black;
+  /* align-items: end; */
+  border-color: #6a1d7d;
+  border-width: 1px;
+  overflow: hidden;
+`;
+
 export const StyledUserCard = styled(Card)`
   width: 17rem;
   height: 10rem;
   box-sizing: border-box;
+  margin-top: 1rem;
   margin-bottom: 10px;
   margin-right: 4px;
   background-color: black;
@@ -56,12 +61,13 @@ export const StyledUserCard = styled(Card)`
 `;
 
 export const StyledVideoCard = styled(Card)`
-  width: 90%;
-  height: 100%;
+  min-width: 30%;
+  /* height: 100%; */
   cursor: pointer;
   box-sizing: border-box;
   overflow: hidden;
-  margin: 4px;
+  margin-top: 1rem;
+  /* margin: 4px; */
   background-color: black;
   border-color: #6a1d7d;
   border-width: 1px;
@@ -83,6 +89,27 @@ export const StyledVideoCardImg = styled(Card.Img)`
   margin: 0;
   /* border-radius: 20px; */
   overflow: hidden;
+`;
+
+export const StyledPartyCardImg = styled(Card.Img)``;
+
+export const StyledPartyCardImgOverlay = styled(Card.ImgOverlay)`
+  padding: 0;
+  /* pointer-events: none; */
+  /* justify-self: right; */
+  height: 30%;
+  /* width: 30%; */
+`;
+
+export const StyledPartyCardImgOverlayText = styled(Row)`
+  background-color: black;
+  border-color: #6a1d7d;
+  border-width: 1px;
+  width: 35%;
+  justify-content: space-around;
+  padding-right: 6px;
+  padding-left: 5px;
+  margin: 0px;
 `;
 
 export const StyledVideoPartyCount = styled(Row)`
@@ -151,4 +178,11 @@ export const StyledPartyCardFooterCol = styled(Col)`
 
 export const StyledVideoTitle = styled(Card.Title)`
   font-size: medium;
+`;
+
+export const PartyCardStatus = styled(Col)`
+  padding: 0px;
+  justify-content: center;
+  /* align-items: center; */
+  margin: 0 auto;
 `;

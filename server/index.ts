@@ -7,6 +7,7 @@ import { prisma } from './db/index';
 import { party } from './routes/party';
 import { playlist } from './routes/playlist';
 import { search } from './routes/search';
+import { video } from './routes/video';
 
 const app: Express = express();
 
@@ -43,7 +44,7 @@ passport.use(
       if (!user) {
         const newUser = await prisma.user.create({
           data: {
-            user_name: profile.name.givenName + profile.name.familyName[0],
+            user_name: `${profile.name.givenName} ${profile.name.familyName[0]}`,
             googleId: profile.id,
             profile: profile.photos[0].value,
           },
@@ -87,6 +88,7 @@ app.use('/api/user', user);
 app.use('/api/party', party);
 app.use('/api/playlist', playlist);
 app.use('/api/search', search);
+app.use('/api/video', video);
 
 app.get(
   '/auth/google',
@@ -108,9 +110,9 @@ app.get(
   }
 );
 
-app.get('/', (req, res) => {
-  res.status(200).send();
-});
+// app.get('/', (req, res) => {
+//   res.status(200).send();
+// });
 
 app.post('/logout', (req, res) => {
   if (req.session) {
@@ -136,17 +138,6 @@ app.post('/api/seed', async (req: Request, res: Response) => {
     console.error('Error from /seed', err);
     res.sendStatus(500);
   }
-});
-
-app.get('/*', (req: Request, res: Response) => {
-  res.sendFile(
-    path.resolve(__dirname, '..', 'client', 'dist', 'index.html'),
-    (_data: object, err: string) => {
-      if (err) {
-        res.status(500).send(err);
-      }
-    }
-  );
 });
 
 // Socket.io events and listeners
@@ -325,6 +316,17 @@ io.on('connection', (socket: any) => {
         });
     }
   });
+});
+
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(
+    path.resolve(__dirname, '..', 'client', 'dist', 'index.html'),
+    (_data: object, err: string) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+    }
+  );
 });
 
 http.listen(PORT, () => {

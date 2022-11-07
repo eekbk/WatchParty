@@ -6,16 +6,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
 import { CreateParty } from './views/CreateParty/CreateParty';
 import { UserContextProvider } from './context';
-import { SearchContextProvider } from './contexts/searchContext';
 import { VoiceContextProvider } from './contexts/voiceContext';
 import App from './views/app';
 import WatchParty from './views/watchParty/Room';
 import Dashboard from './views/Dashboard';
-// import Profile from './views/Profile';
-import Search from './views/search/Search';
 import Dm from './views/Dm/Dm';
 import Archive from './views/Archive/Archive';
 import Calendar from './views/Calendar';
+import Search from './views/search/Search';
 
 const socket = io();
 
@@ -26,13 +24,16 @@ function RouteHandler() {
         <Routes>
           <Route path="/" element={<App />}>
             <Route path="" element={<Dashboard />} />
-            <Route path="search" element={<Search socket={socket} />} />
+            {/* <Route path="search" element={<Search socket={socket} />} /> */}
             <Route path="calendar" element={<Calendar />} />
             <Route path="watchParty" element={<WatchParty socket={socket} />} />
             <Route path="createParty" element={<CreateParty />} />
             {/* <Route path="profile" element={<Profile />} /> */}
             <Route path="dm" element={<Dm socket={socket} room="" />} />
             <Route path="archive" element={<Archive />} />
+            <Route path="search">
+              <Route path=":q" element={<Search socket={socket} />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
@@ -43,9 +44,7 @@ function RouteHandler() {
 ReactDOM.createRoot(document.getElementById('app')!).render(
   <UserContextProvider>
     <VoiceContextProvider>
-      <SearchContextProvider>
-        <RouteHandler />
-      </SearchContextProvider>
+      <RouteHandler />
     </VoiceContextProvider>
   </UserContextProvider>
 );

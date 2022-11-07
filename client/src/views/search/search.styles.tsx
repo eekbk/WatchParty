@@ -1,15 +1,32 @@
 import styled from 'styled-components';
-import { Button, Form, Container, InputGroup, Col, Row } from 'react-bootstrap';
+import {
+  Button,
+  Form,
+  Container,
+  InputGroup,
+  Col,
+  Row,
+  Tabs,
+  Tab,
+} from 'react-bootstrap';
 
 export const SearchPageHeading = styled(Row)`
-  justify-content: space-between;
+  justify-content: center;
   padding-top: 10px;
   padding-bottom: 0px;
   margin-bottom: 0;
   align-items: baseline;
+  font-size: large;
 `;
 
-export const SeeMoreLink = styled.p`
+export const SearchTabContainer = styled(Container)`
+  /* padding: 1em; */
+  height: 100%;
+  padding-bottom: 30px;
+  align-content: space-around;
+`;
+
+export const SeeMoreLink = styled.div`
   margin-bottom: 4px;
   /* justify-content: right; */
   text-align: right;
@@ -24,7 +41,14 @@ export const SearchPageCol = styled(Col)`
 
 export const SearchPageRow = styled(Row)`
   align-content: center;
+  /* justify-content: center; */
+  justify-content: left;
+  /* margin: 1em; */
+`;
+
+export const CenteredSearchPageRow = styled(Row)`
   justify-content: center;
+  padding: 1rem;
 `;
 
 export const SearchBarContainer = styled(Container)`
@@ -113,28 +137,24 @@ export const SearchButton = styled(Button)`
   }
 `;
 
-// export const StyledPartyCard = styled(Card)`
-//   height: 23rem;
-//   width: 18rem;
-//   padding: 0 auto;
-//   cursor: pointer;
-// `;
+export const StyledTabs = styled(Tabs)`
+  --bs-nav-tabs-link-active-bg: black;
+  --bs-nav-tabs-link-active-color: white;
+  .nav-link {
+    color: white;
+  }
+`;
 
-// export const StyledVideoCard = styled(Card)`
-//   width: 18rem;
-//   height: 10rem;
-// `;
+export const StyledTabNav = styled.ul``;
 
-// export const StyledUserCardImg = styled(Image)`
-//   width: 100px;
-//   height: 100px;
-//   margin: 8px;
-// `;
+export const StyledSearchOutlet = styled.div``;
 
-// export const StyledCardBody = styled(Card.Body)`
-//   padding-left: 20px;
-//   margin: 0 auto;
-//   /* text-align: right; */
-// `;
+export const StyledTab = styled(Tab)``;
 
-// export const StyledCardButton = styled(Button);
+export const StyledRow = styled(Row)`
+  justify-content: center;
+`;
+
+export const StyledPartyRow = styled(Row)`
+  justify-content: right;
+`;

@@ -1,7 +1,13 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form } from 'react-bootstrap';
+// import { Form } from 'react-bootstrap';
+import { BsMic, BsMicMute } from 'react-icons/bs';
 import { VoiceContext } from '../../contexts/voiceContext';
+import {
+  StyledActiveMicIcon,
+  StyledDisabledMicIcon,
+  StyledTranscript,
+} from './buttons.styles';
 
 function VoiceButton() {
   const navigate = useNavigate();
@@ -17,10 +23,9 @@ function VoiceButton() {
   const pages = ['home', 'profile', 'create party', 'calendar'];
   const urls = {
     home: '/',
-    login: '/auth/google',
-    logout: '/logout',
     profile: '/profile',
     'create party': '/createParty',
+    calendar: '/calendar',
   };
 
   useEffect(() => {
@@ -35,16 +40,18 @@ function VoiceButton() {
   }, [redirectUrl]);
 
   return (
-    <Form>
-      <Form.Check
-        type="switch"
-        id="vc-switch"
-        label={isSwitchOn ? 'Voice Control ON' : 'Voice Control OFF'}
-        onChange={handleVoiceToggle}
-        checked={isSwitchOn}
-      />
-      {isSwitchOn ? <p>{transcript}</p> : []}
-    </Form>
+    <>
+      {isSwitchOn ? <StyledTranscript>{transcript}</StyledTranscript> : []}
+      {isSwitchOn ? (
+        <StyledActiveMicIcon onClick={handleVoiceToggle}>
+          <BsMic />
+        </StyledActiveMicIcon>
+      ) : (
+        <StyledDisabledMicIcon onClick={handleVoiceToggle}>
+          <BsMicMute />
+        </StyledDisabledMicIcon>
+      )}
+    </>
   );
 }
 export default VoiceButton;

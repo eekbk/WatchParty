@@ -1,12 +1,36 @@
 import axios from 'axios';
-import { useContext } from 'react';
-import { StyledGlassButton } from './buttons.styles';
+import { useContext, useEffect } from 'react';
+import {
+  RiCheckboxBlankCircleLine,
+  RiCheckboxCircleLine,
+} from 'react-icons/ri';
+import {
+  // StyledGlassButton,
+  StyledPlusIcon,
+  StyledGoBackIcon,
+} from './buttons.styles';
 import { UserContext } from '../../context';
+import { VoiceContext } from '../../contexts/voiceContext';
 
-function AttendButton({ partyId, isAttending, setIsAttending }: any) {
+function AttendButton({ name, partyId, isAttending, setIsAttending }: any) {
   const { user, setUser } = useContext(UserContext);
+  const { attendPartyName, setAttendPartyName, resetTranscript } =
+    useContext(VoiceContext);
 
-  const handleClick = async () => {
+  useEffect(() => {
+    if (
+      attendPartyName &&
+      attendPartyName.toUpperCase() === name.toUpperCase()
+    ) {
+      (async () => {
+        await updateAttendStatus();
+        await setAttendPartyName('');
+        resetTranscript();
+      })();
+    }
+  }, [attendPartyName]);
+
+  const updateAttendStatus = async () => {
     try {
       if (!isAttending) {
         await axios.post('/api/party/attend', {
@@ -36,10 +60,18 @@ function AttendButton({ partyId, isAttending, setIsAttending }: any) {
       });
   };
 
-  return (
-    <StyledGlassButton onClick={handleClick} size="sm" disabled={!user}>
-      {isAttending ? 'decline' : 'attend'}
-    </StyledGlassButton>
+  const handleClick = () => {
+    updateAttendStatus();
+  };
+
+  return isAttending ? (
+    <StyledGoBackIcon>
+      <RiCheckboxCircleLine onClick={handleClick} />
+    </StyledGoBackIcon>
+  ) : (
+    <StyledPlusIcon>
+      <RiCheckboxBlankCircleLine onClick={handleClick} />
+    </StyledPlusIcon>
   );
 }
 
