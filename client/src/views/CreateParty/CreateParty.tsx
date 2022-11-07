@@ -248,7 +248,13 @@ export function CreateParty() {
         <StyledAlert
           key="success"
           variant="success"
-          style={{ maxWidth: '20rem', margin: '40%', textAlign: 'center' }}
+          style={{
+            width: 'fit-content',
+            textAlign: 'center',
+            position: 'absolute',
+            left: 'calc(50% - 91px)',
+            top: '50vh',
+          }}
         >
           Watch Party Created!
         </StyledAlert>

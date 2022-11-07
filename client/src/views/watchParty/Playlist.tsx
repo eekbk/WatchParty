@@ -6,14 +6,25 @@ import { StyledListGroup, StyledListHeader, StyledListItem } from './styles';
 
 const { Group, Control } = Form;
 
-export function Playlist({ playlist, setPlaylist, room, status, vH }) {
+export function Playlist({
+  playlist,
+  setPlaylist,
+  room,
+  status,
+  vH,
+  socket,
+  vid,
+  setVid,
+  isPlaying,
+  navigate,
+}) {
   const [video, setVideo] = useState('');
   const [clicked, setClicked] = useState(false);
   const [vHeight, setVHeight] = useState(0);
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-    setVHeight((vH.current.clientHeight - 65) * 0.8);
+    setVHeight(vH.current ? (vH.current.clientHeight - 65) * 0.8 : 0);
   }, []);
 
   const handleVideoAddition = () => {
@@ -27,9 +38,16 @@ export function Playlist({ playlist, setPlaylist, room, status, vH }) {
         .post('/api/party/video', { videoId, videoUrl })
         .then((vd) => {
           setVideo('');
-          setPlaylist(playlist.concat([vd.data]));
+          setPlaylist(
+            playlist.concat([{ ...vd.data, index: playlist.length }])
+          );
+          socket.emit('playlist', {
+            room: room.id,
+            playlist: playlist.concat([{ ...vd.data, index: playlist.length }]),
+          });
           return axios.put(`/api/party/addVideo/${room.id}`, {
             video: vd.data.id,
+            index: playlist.length,
           });
         })
         .catch((err) => {
@@ -45,17 +63,56 @@ export function Playlist({ playlist, setPlaylist, room, status, vH }) {
     const videos = playlist.slice();
     videos.splice(i, 1);
     axios
-      .put(`/api/party/removeVideo/${room.id}`, { video: playlist[i].id })
-      .then(() => {
-        // TODO: Somehow get all the places that can render this to update their
-        // parties from the database to reflect the role changes
+      .put(`/api/party/removeVideo/${room.id}`, {
+        video: playlist[i].id,
+        index: playlist[i].index,
       })
       .catch((err) => console.error(err));
-    setPlaylist(videos);
+    if (i === vid && vid === playlist.length - 1) {
+      if (!playlist[vid + 1] && room.will_archive) {
+        const data = JSON.stringify(room);
+        const config = {
+          method: 'post',
+          url: '/api/party/archive',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          data,
+        };
+        axios(config)
+          .then(() => {
+            socket.emit('endParty', {
+              room: room.id,
+            });
+            navigate('/');
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else if (!playlist[vid + 1] && !room.will_archive) {
+        axios
+          .delete(`/api/party/${room.id}`)
+          .then(() => {
+            socket.emit('endParty', {
+              room: room.id,
+            });
+            navigate('/');
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    } else {
+      socket.emit('playlist', {
+        room: room.id,
+        playlist: videos,
+      });
+      setPlaylist(videos);
+    }
   };
 
   const handleResize = () => {
-    setVHeight((vH.current.clientHeight - 65) * 0.8);
+    setVHeight(vH.current ? (vH.current.clientHeight - 65) * 0.8 : 0);
   };
 
   return (
@@ -88,17 +145,34 @@ export function Playlist({ playlist, setPlaylist, room, status, vH }) {
                   {video.description.slice(0, 150)}
                 </StyledVideoCard.Text>
               </StyledVideoCard.Body>
-              <StyledButton
-                style={{
-                  width: 'fit-content',
-                  margin: '5px',
-                  marginLeft: 'auto',
-                  marginRight: 'auto',
-                }}
-                onClick={() => handleVideoRemoval(i)}
-              >
-                Remove
-              </StyledButton>
+              <Col style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <StyledButton
+                  style={{
+                    width: 'fit-content',
+                    margin: '5px',
+                  }}
+                  onClick={() => {
+                    socket.emit('giveRoom', {
+                      room: room.id,
+                      video: i,
+                      start: 0,
+                      playing: isPlaying,
+                    });
+                    setVid(i);
+                  }}
+                >
+                  Select
+                </StyledButton>
+                <StyledButton
+                  style={{
+                    width: 'fit-content',
+                    margin: '5px',
+                  }}
+                  onClick={() => handleVideoRemoval(i)}
+                >
+                  Remove
+                </StyledButton>
+              </Col>
             </StyledVideoCard>
           </StyledListItem>
         ))}

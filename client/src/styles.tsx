@@ -37,7 +37,7 @@ accent = '#15616D';
 text = '#E5F4E3';
 
 export const StyledBackgroundContainer = styled(Container)`
-  background: radial-gradient(ellipse at center, #320e3b, black);
+  //background: radial-gradient(ellipse at center, #320e3b, black);
   height: fit-content;
   min-height: 100vh;
   flex-flow: flow wrap;
