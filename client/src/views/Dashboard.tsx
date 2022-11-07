@@ -24,6 +24,7 @@ function Dashboard() {
             // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
             (a) => Number(new Date(a.date_time)) >= Number(today)
           )
+          .filter((pt) => !pt.is_private)
           .sort(
             (a, b) =>
               Number(new Date(a.date_time)) - Number(new Date(b.date_time))
