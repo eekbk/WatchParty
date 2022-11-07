@@ -6,10 +6,6 @@ import { YoutubeVideo, RequestWithUser } from '../../interfaces/interfaces';
 
 export const party: Router = express.Router();
 
-party.get('/test', (req: Request, res: Response) => {
-  prisma.video.findMany().then((results) => res.send(results));
-});
-
 // Get all watch parties
 party.get('/', (req: Request, res: Response) => {
   // Retrieve all watch parties from the database
@@ -132,6 +128,55 @@ party.post('/', (req: RequestWithUser, res: Response) => {
     });
 });
 
+// Gets a watch party by its id
+party.get('/id/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  prisma.party
+    .findUnique({
+      where: {
+        id,
+      },
+      include: {
+        party_videos: {
+          select: {
+            video: true,
+            index: true,
+          },
+        },
+        user_parties: {
+          select: {
+            role: true,
+            user: {
+              select: {
+                user_name: true,
+                id: true,
+              },
+            },
+          },
+        },
+      },
+    })
+    .then((pt: any) => {
+      pt.users = pt.user_parties.map((usr) => ({
+        id: usr.user.id,
+        username: usr.user.user_name,
+        role: usr.role,
+      }));
+      pt.videos = pt.party_videos.map((vd) => ({
+        ...vd.video,
+        index: vd.index,
+      }));
+      pt.videos.sort((a, b) => a.index - b.index);
+      delete pt.user_parties;
+      delete pt.party_videos;
+      res.status(200).send(pt);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
+
 // Gets a video from the youtube api and stores its relevant information in the database
 party.post('/video', (req: Request, res: Response) => {
   const { videoId, videoUrl } = req.body;
@@ -239,18 +284,19 @@ party.post('/archive', (req: RequestWithUser, res: Response) => {
 });
 
 // Adds a video to an existing watch party
-// TODO: Give the new video an index
 party.put('/addVideo/:id', (req: Request, res: Response) => {
   const { id } = req.params;
-  const { video } = req.body;
-  prisma.party
-    .update({
-      where: {
-        id,
-      },
+  const { video, index } = req.body;
+  prisma.party_Video
+    .create({
       data: {
-        // TODO: Verify this
-        party_videos: {
+        index,
+        party: {
+          connect: {
+            id,
+          },
+        },
+        video: {
           connect: {
             id: video,
           },
@@ -269,18 +315,14 @@ party.put('/addVideo/:id', (req: Request, res: Response) => {
 // Removes a video from an existing watch party
 party.put('/removeVideo/:id', (req: Request, res: Response) => {
   const { id } = req.params;
-  const { video } = req.body;
-  prisma.party
-    .update({
+  const { video, index } = req.body;
+  prisma.party_Video
+    .deleteMany({
       where: {
-        id,
-      },
-      data: {
-        // TODO: verify this
-        party_videos: {
-          disconnect: {
-            id: video,
-          },
+        AND: {
+          party_id: id,
+          video_id: video,
+          index,
         },
       },
     })
@@ -389,4 +431,37 @@ party.post('/dmMessages', (req: RequestWithUser, res: Response) => {
       })
       .catch((err) => res.status(404).send(JSON.stringify(err)));
   }
+});
+
+// Deletes a watch party by its id
+party.delete('/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  prisma.user_Party
+    .deleteMany({
+      where: {
+        party_id: id,
+      },
+    })
+    .then(() => prisma.message.deleteMany({
+        where: {
+          party_id: id,
+        },
+      }))
+    .then(() => prisma.party_Video.deleteMany({
+        where: {
+          party_id: id,
+        },
+      }))
+    .then(() => prisma.party.delete({
+        where: {
+          id,
+        },
+      }))
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
 });
