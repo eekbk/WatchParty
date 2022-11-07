@@ -133,7 +133,11 @@ function PartyCard({ party }) {
     const day = dateTime[8] === '0' ? dateTime[9] : dateTime.slice(8, 10);
     const isAm = dateTime.slice(11, 13) < '13';
     const time = () => {
-      if (isAm && dateTime[11] === 0) {
+      // if it takes place at 12am hour
+      if (dateTime.slice(11, 13) === '00') {
+        return `12${dateTime.slice(13, 16)}am`;
+      }
+      if (isAm && dateTime[11] === '0') {
         return `${dateTime.slice(12, 16)}am`;
       }
       if (isAm) {
