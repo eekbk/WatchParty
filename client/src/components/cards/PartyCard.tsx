@@ -1,4 +1,4 @@
-import { Card } from 'react-bootstrap';
+import { Card, Modal /* Col, Row */ } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context';
@@ -10,11 +10,17 @@ import {
   StyledCardBody,
   StyledPartyDesc,
   StyledIsFollowing,
-  StyledPartyCardFooterCol,
-  StyledPartyCardFooter,
+  // StyledPartyCardFooterCol,
+  // StyledPartyCardFooter,
   StyledPartyTime,
+  StyledPartyCardImgOverlay,
+  StyledPartyCardImgOverlayText,
+  // DontGoButton,
+  // JoinButton,
+  PartyCardStatus,
   // StyledCardFooter,
 } from './cards.styles';
+import { StyledGlassButton } from '../buttons/buttons.styles';
 
 function PartyCard({ party }) {
   const { id, description, thumbnail, name, date_time, users } = party;
@@ -29,6 +35,7 @@ function PartyCard({ party }) {
   const [isAttending, setIsAttending] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isCreator, setIsCreator] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const creator = users.filter((user) => user.role === 'CREATOR')[0];
   const creatorText =
     user && creator.id === user.id
@@ -45,6 +52,9 @@ function PartyCard({ party }) {
     }
     return null;
   };
+
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   useEffect(() => {
     if (user) {
@@ -78,6 +88,8 @@ function PartyCard({ party }) {
       navigate('/watchParty', {
         state: { party },
       });
+    } else {
+      handleShowModal();
     }
   };
   const handleCardClick = () => {
@@ -86,16 +98,16 @@ function PartyCard({ party }) {
 
   const stringAbbreviator = (string, type) => {
     if (type === 'title') {
-      if (string && string.length > 45) {
+      if (string && string.length > 35) {
         // return dotDotDotConcat(53);
-        return `${string.slice(0, 45)}...`;
+        return `${string.slice(0, 35)}...`;
       }
       return string;
     }
     if (type === 'description') {
-      if (string && string.length > 70) {
+      if (string && string.length > 57) {
         // return dotDotDotConcat(65);
-        return `${string.slice(0, 70)}...`;
+        return `${string.slice(0, 57)}...`;
       }
       return string;
     }
@@ -121,54 +133,76 @@ function PartyCard({ party }) {
     const day = dateTime[8] === '0' ? dateTime[9] : dateTime.slice(8, 10);
     const isAm = dateTime.slice(11, 13) < '13';
     const time = () => {
-      if (isAm && dateTime[11] === 0) {
+      // if it takes place at 12am hour
+      if (dateTime.slice(11, 13) === '00') {
+        return `12${dateTime.slice(13, 16)}am`;
+      }
+      if (isAm && dateTime[11] === '0') {
         return `${dateTime.slice(12, 16)}am`;
       }
       if (isAm) {
         return `${dateTime.slice(11, 16)}am`;
       }
       const pmHour = parseInt(dateTime.slice(11, 13), 10) - 12;
-      return `${pmHour}${dateTime.slice(13, 16)} pm`;
+      return `${pmHour}${dateTime.slice(13, 16)}pm`;
       // isAm ? `${dateTime.slice(11, 13)  }am` : dateTime.slice()
     };
     return `Starts ${time()}, ${month} ${day}, ${year}`;
   };
 
   return (
-    <StyledPartyCard>
-      <Card.Img variant="top" src={thumbnail} />
-      <StyledCardBody>
-        <StyledPartyTitle onClick={handleCardClick}>
-          {stringAbbreviator(name, 'title')}
-        </StyledPartyTitle>
-        <StyledPartyDesc>
-          {stringAbbreviator(description, 'description')}
-        </StyledPartyDesc>
-        <StyledIsFollowing>
-          {/* <Row> */}
-
-          {creatorText}
-          {/* <Card.Text>{isFollowing ? <i>following</i>: '  '}</Card.Text> */}
-          {/* </Row> */}
-        </StyledIsFollowing>
-        <StyledPartyTime>
-          <small>{dateTimeConversion(date_time)}</small>
-        </StyledPartyTime>
-      </StyledCardBody>
-      <StyledPartyCardFooter>
-        <StyledPartyCardFooterCol sm={2}>
-          {!isCreator && !isAdmin ? (
-            <AttendButton
-              partyId={id}
-              isAttending={isAttending}
-              setIsAttending={setIsAttending}
-            />
-          ) : (
-            []
-          )}
-        </StyledPartyCardFooterCol>
-      </StyledPartyCardFooter>
-    </StyledPartyCard>
+    <>
+      <StyledPartyCard>
+        <Card.Img variant="top" src={thumbnail} />
+        {user && (
+          <StyledPartyCardImgOverlay>
+            {/* <Row  > */}
+            <StyledPartyCardImgOverlayText>
+              {isAdmin ? (
+                'ADMIN'
+              ) : isCreator ? (
+                'HOST'
+              ) : (
+                <>
+                  <AttendButton
+                    name={name}
+                    partyId={id}
+                    isAttending={isAttending}
+                    setIsAttending={setIsAttending}
+                  />
+                  <PartyCardStatus sm={8}>
+                    {isAttending ? 'GOING' : 'JOIN'}
+                  </PartyCardStatus>
+                </>
+              )}
+              {/* JOIN
+          <HiPlusSm /> */}
+            </StyledPartyCardImgOverlayText>
+            {/* </Row> */}
+          </StyledPartyCardImgOverlay>
+        )}
+        <StyledCardBody onClick={handleCardClick}>
+          <StyledPartyTitle>
+            {stringAbbreviator(name, 'title')}
+          </StyledPartyTitle>
+          <StyledPartyDesc>
+            {stringAbbreviator(description, 'description')}
+          </StyledPartyDesc>
+          <StyledIsFollowing>{creatorText}</StyledIsFollowing>
+          <StyledPartyTime>
+            <small>{dateTimeConversion(date_time)}</small>
+          </StyledPartyTime>
+        </StyledCardBody>
+      </StyledPartyCard>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>You must be logged in to do that!</Modal.Title>
+          <Modal.Body>
+            <StyledGlassButton href="/auth/google">Login</StyledGlassButton>
+          </Modal.Body>
+        </Modal.Header>
+      </Modal>
+    </>
   );
 }
 
