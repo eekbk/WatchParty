@@ -1,6 +1,7 @@
 import axios from 'axios';
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, ProgressBar, Col } from 'react-bootstrap';
 import { Participants } from './Participants';
 import {
@@ -28,6 +29,7 @@ function Video({
   isArchived,
   vH,
 }) {
+  const navigate = useNavigate();
   // state vars
   const [isPlaying, setPause] = useState(() => false);
   const [pSeconds, setSeconds] = useState(() => 0.0001);
@@ -52,14 +54,7 @@ function Video({
   const changeVid = (bool) => {
     setSeconds(0);
     if (bool) {
-      if (video < playlist.length) {
-        socket.emit('giveRoom', {
-          room: room.id,
-          video: video + 1,
-          start: 0,
-          playing: isPlaying,
-        });
-        setVid(video + 1);
+      if (video < playlist.length - 1) {
         if (!playlist[video + 1] && room.will_archive) {
           const data = JSON.stringify(room);
           const config = {
@@ -71,9 +66,36 @@ function Video({
             data,
           };
 
-          axios(config).catch((error) => {
-            console.error(error);
+          axios(config)
+            .then(() => {
+              socket.emit('endParty', {
+                room: room.id,
+              });
+              navigate('/');
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        } else if (!playlist[video + 1] && !room.will_archive) {
+          axios
+            .delete(`/api/party/${room.id}`)
+            .then(() => {
+              socket.emit('endParty', {
+                room: room.id,
+              });
+              navigate('/');
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        } else {
+          socket.emit('giveRoom', {
+            room: room.id,
+            video: video + 1,
+            start: 0,
+            playing: isPlaying,
           });
+          setVid(video + 1);
         }
       } else {
         socket.emit('giveRoom', {
@@ -211,6 +233,11 @@ function Video({
             setPlaylist={setPlaylist}
             status={status}
             vH={vH}
+            socket={socket}
+            vid={video}
+            setVid={setVid}
+            isPlaying={isPlaying}
+            navigate={navigate}
           />
           <Participants
             room={room}
@@ -218,6 +245,7 @@ function Video({
             participants={participants || []}
             setParticipants={setParticipants}
             vH={vH}
+            socket={socket}
           />
         </PStRow>
         <StRow>
