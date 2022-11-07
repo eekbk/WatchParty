@@ -21,6 +21,7 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           playlist_videos: {
             select: {
               video: true,
+              index: true,
             },
           },
         },
@@ -32,7 +33,10 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           description: pl.description,
           user_id: pl.user_id,
           thumbnail: pl.thumbnail,
-          videos: pl.playlist_videos.map((plv) => plv.video),
+          videos: pl.playlist_videos.map((plv) => ({
+            ...plv.video,
+            index: plv.index,
+          })),
         }));
         // Getting all the parties the user is affiliated with
         return prisma.party.findMany({
