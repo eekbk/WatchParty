@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Card, Image, Row, Col } from 'react-bootstrap';
+import { Card, Image, Row, Col, Container } from 'react-bootstrap';
 
 export const StyledCardRow = styled(Row)`
   padding-left: 0;
@@ -103,12 +103,26 @@ export const StyledPartyCardImgOverlay = styled(Card.ImgOverlay)`
 
 export const StyledPartyCardImgOverlayText = styled(Row)`
   background-color: black;
-  border-color: #6a1d7d;
-  border-width: 1px;
+  border: 1px solid #6a1d7d;
+  border-top-width: 0px;
+  border-left-width: 0px;
   width: 35%;
   justify-content: space-around;
-  padding-right: 6px;
-  padding-left: 5px;
+  /* padding-right: 6px;
+  padding-left: 5px; */
+  margin: 0px;
+`;
+
+export const PurpleBackground = styled(Container)`
+  background-color: #6a1d7d;
+  justify-content: center;
+  border: 1px solid white;
+  border-top-width: 0px;
+  border-left-width: 0px;
+  width: 35%;
+  /* justify-content: space-around; */
+  /* padding-right: 6px;
+  padding-left: 5px; */
   margin: 0px;
 `;
 
@@ -180,9 +194,33 @@ export const StyledVideoTitle = styled(Card.Title)`
   font-size: medium;
 `;
 
-export const PartyCardStatus = styled(Col)`
+export const PartyCardStatus = styled.span`
   padding: 0px;
   justify-content: center;
   /* align-items: center; */
-  margin: 0 auto;
+  /* margin: 0 auto; */
+  width: fit-content;
+`;
+
+export const PartyCardHostOrAdminLabel = styled.span`
+  display: inline-flex;
+  justify-self: center;
+  width: fit-content;
+`;
+
+export const PartyCardHostOrAdminCol = styled(Col)`
+  padding: 0px;
+  justify-content: center;
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+`;
+
+export const PartyCardNormieCol = styled(Col)`
+  padding: 0 0.8rem;
+  justify-content: space-between;
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
 `;

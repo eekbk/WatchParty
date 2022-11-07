@@ -1,14 +1,7 @@
 import axios from 'axios';
 import { useContext, useEffect } from 'react';
-import {
-  RiCheckboxBlankCircleLine,
-  RiCheckboxCircleLine,
-} from 'react-icons/ri';
-import {
-  // StyledGlassButton,
-  StyledPlusIcon,
-  StyledGoBackIcon,
-} from './buttons.styles';
+import { FiCircle, FiCheckCircle } from 'react-icons/fi';
+import { StyledAttendIcon } from './buttons.styles';
 import { UserContext } from '../../context';
 import { VoiceContext } from '../../contexts/voiceContext';
 
@@ -64,14 +57,14 @@ function AttendButton({ name, partyId, isAttending, setIsAttending }: any) {
     updateAttendStatus();
   };
 
-  return isAttending ? (
-    <StyledGoBackIcon>
-      <RiCheckboxCircleLine onClick={handleClick} />
-    </StyledGoBackIcon>
-  ) : (
-    <StyledPlusIcon>
-      <RiCheckboxBlankCircleLine onClick={handleClick} />
-    </StyledPlusIcon>
+  return (
+    <StyledAttendIcon>
+      {isAttending ? (
+        <FiCheckCircle onClick={handleClick} />
+      ) : (
+        <FiCircle onClick={handleClick} />
+      )}
+    </StyledAttendIcon>
   );
 }
 

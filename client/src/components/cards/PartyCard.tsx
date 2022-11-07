@@ -1,4 +1,4 @@
-import { Card, Modal /* Col, Row */ } from 'react-bootstrap';
+import { Card, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context';
@@ -10,15 +10,13 @@ import {
   StyledCardBody,
   StyledPartyDesc,
   StyledIsFollowing,
-  // StyledPartyCardFooterCol,
-  // StyledPartyCardFooter,
   StyledPartyTime,
   StyledPartyCardImgOverlay,
   StyledPartyCardImgOverlayText,
-  // DontGoButton,
-  // JoinButton,
   PartyCardStatus,
-  // StyledCardFooter,
+  PartyCardHostOrAdminLabel,
+  PartyCardHostOrAdminCol,
+  PartyCardNormieCol,
 } from './cards.styles';
 import { StyledGlassButton } from '../buttons/buttons.styles';
 
@@ -156,29 +154,30 @@ function PartyCard({ party }) {
         <Card.Img variant="top" src={thumbnail} />
         {user && (
           <StyledPartyCardImgOverlay>
-            {/* <Row  > */}
             <StyledPartyCardImgOverlayText>
               {isAdmin ? (
-                'ADMIN'
+                <PartyCardHostOrAdminCol>
+                  <PartyCardHostOrAdminLabel>ADMIN</PartyCardHostOrAdminLabel>
+                </PartyCardHostOrAdminCol>
               ) : isCreator ? (
-                'HOST'
+                <PartyCardHostOrAdminCol>
+                  <PartyCardHostOrAdminLabel>HOST</PartyCardHostOrAdminLabel>
+                </PartyCardHostOrAdminCol>
               ) : (
-                <>
+                <PartyCardNormieCol>
                   <AttendButton
                     name={name}
                     partyId={id}
                     isAttending={isAttending}
                     setIsAttending={setIsAttending}
                   />
-                  <PartyCardStatus sm={8}>
+
+                  <PartyCardStatus>
                     {isAttending ? 'GOING' : 'JOIN'}
                   </PartyCardStatus>
-                </>
+                </PartyCardNormieCol>
               )}
-              {/* JOIN
-          <HiPlusSm /> */}
             </StyledPartyCardImgOverlayText>
-            {/* </Row> */}
           </StyledPartyCardImgOverlay>
         )}
         <StyledCardBody onClick={handleCardClick}>

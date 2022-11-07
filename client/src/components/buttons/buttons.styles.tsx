@@ -1,19 +1,14 @@
-// export const StyledCardButton = styled(Button);
-import { Button, Col, Pagination, Modal } from 'react-bootstrap';
+import { Button, Pagination, Modal } from 'react-bootstrap';
 import styled from 'styled-components';
 
 export const StyledGlassButton = styled(Button)`
   position: relative;
-  /* display: inline-block; */
-  /* padding: 15px 25px; */
   margin-right: 5px;
   margin-left: 5px;
   background-color: purple; /*for compatibility with older browsers*/
   background-image: linear-gradient(#320e3b, #6a1d7d);
   text-shadow: 0px -1px #333;
   border-color: transparent;
-  /* border-radius: 30px;
-  border-collapse: separate; */
 
   &:after {
     content: '';
@@ -46,13 +41,11 @@ export const StyledActiveMicIcon = styled.span`
 
 export const StyledDisabledMicIcon = styled.span`
   background-color: black;
-  /* color: #6a1d7d; */
   font-size: 150%;
   padding: 5px 10px;
   border: 1px solid #6a1d7d;
   margin: 2rem 1rem;
   text-align: center;
-  /* vertical-align: 100%; */
   border-radius: 50%;
   cursor: pointer;
 `;
@@ -60,32 +53,11 @@ export const StyledDisabledMicIcon = styled.span`
 export const StyledHelpButton = styled.span`
   cursor: pointer;
   font-size: large;
-  /* color: #6a1d7d; */
 `;
 
-export const StyledPlusIcon = styled(Col)`
-  padding: 0 0 0 6px;
-  margin: 0px;
-  font-size: 85%;
-  vertical-align: 10%;
-  background-color: transparent;
-  justify-content: center;
-  cursor: pointer;
-  /* &:hover {
-    font-size: 110%;
-  }
-  &:focus {
-    font-size: 110%;
-  } */
-`;
-
-export const StyledGoBackIcon = styled(Col)`
-  padding: 0 0 0 6px;
-  margin: 0px;
-  font-size: 85%;
-  vertical-align: 8%;
-  justify-content: center;
-  cursor: pointer;
+export const StyledAttendIcon = styled.span`
+  display: flex;
+  width: fit-content;
 `;
 
 export const StyledPagination = styled(Pagination)`
@@ -96,9 +68,6 @@ export const StyledPagination = styled(Pagination)`
   justify-content: center;
   justify-self: center;
   margin-top: 1rem;
-  /* bottom: 30px;
-  position: absolute; */
-  /* align-self: baseline; */
 `;
 
 export const StyledPageNums = styled(Pagination.Item);
