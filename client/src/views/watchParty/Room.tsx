@@ -7,6 +7,7 @@ import { UserContext } from '../../context';
 
 const { default: Video } = require('./Video.tsx');
 const { default: Chat } = require('./Chat.tsx');
+const { default: Likes } = require('./Likes.tsx');
 
 // function WatchParty({ videos, user, room }: any) {
 function WatchParty({ socket }) {
@@ -96,6 +97,7 @@ function WatchParty({ socket }) {
               socket={socket}
             />
           </Card>
+          <Likes />
         </Col>
         <Col xs={12} xl={3} style={{ padding: '0px', textAlign: 'center' }}>
           <h4>Chat</h4>
