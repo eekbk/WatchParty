@@ -144,7 +144,7 @@ function PartyCard({ party }) {
         return `${dateTime.slice(11, 16)}am`;
       }
       const pmHour = parseInt(dateTime.slice(11, 13), 10) - 12;
-      return `${pmHour}${dateTime.slice(13, 16)} pm`;
+      return `${pmHour}${dateTime.slice(13, 16)}pm`;
       // isAm ? `${dateTime.slice(11, 13)  }am` : dateTime.slice()
     };
     return `Starts ${time()}, ${month} ${day}, ${year}`;
