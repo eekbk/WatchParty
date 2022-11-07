@@ -33,7 +33,9 @@ export function UserPlaylists({ user, setPlaylist, playlist }) {
               <StyledButton
                 style={{ marginTop: '5px' }}
                 onClick={() => {
-                  setPlaylist(playlist.concat(pl.videos));
+                  setPlaylist(
+                    playlist.concat(pl.videos.sort((a, b) => a.index - b.index))
+                  );
                 }}
                 variant="outline-dark"
               >
