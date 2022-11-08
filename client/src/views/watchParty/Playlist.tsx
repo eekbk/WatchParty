@@ -158,6 +158,12 @@ export function Playlist({
                       start: 0,
                       playing: isPlaying,
                     });
+                    axios
+                      .put(`/api/party/update/${room.id}`, {
+                        current_video: i,
+                        current_time: 0,
+                      })
+                      .catch((err) => console.error(err));
                     setVid(i);
                   }}
                 >

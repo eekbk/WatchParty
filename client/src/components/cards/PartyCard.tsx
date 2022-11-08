@@ -23,7 +23,7 @@ import {
 import { StyledGlassButton } from '../buttons/buttons.styles';
 
 function PartyCard({ party }) {
-  const { id, description, thumbnail, name, date_time, users } = party;
+  const { id, description, thumbnail, name, start_date, users } = party;
   const { user } = useContext(UserContext);
   const {
     partyName,
@@ -190,7 +190,7 @@ function PartyCard({ party }) {
           </StyledPartyDesc>
           <StyledIsFollowing>{creatorText}</StyledIsFollowing>
           <StyledPartyTime>
-            <small>{dateTimeConversion(date_time)}</small>
+            <small>{dateTimeConversion(start_date)}</small>
           </StyledPartyTime>
         </StyledCardBody>
       </StyledPartyCard>

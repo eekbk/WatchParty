@@ -18,6 +18,7 @@ function App() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, setUser, setVerified } = useContext(UserContext);
+
   // special AND very important useEffect
   useEffect(() => {
     if (location.pathname === '/watchParty') {

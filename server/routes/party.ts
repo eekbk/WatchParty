@@ -72,7 +72,7 @@ party.post('/', (req: RequestWithUser, res: Response) => {
     will_archive,
     admins,
     invitees,
-    date_time,
+    start_date,
     user_id,
     videos,
     thumbnail,
@@ -105,7 +105,7 @@ party.post('/', (req: RequestWithUser, res: Response) => {
       data: {
         name,
         description,
-        date_time,
+        start_date,
         type,
         status,
         is_private,
@@ -170,6 +170,27 @@ party.get('/id/:id', (req: Request, res: Response) => {
       delete pt.user_parties;
       delete pt.party_videos;
       res.status(200).send(pt);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
+
+// Updates a watch party by its id
+party.put('/update/:id', (req: Request, res: Response) => {
+  const { id } = req.params;
+  const data = req.body;
+  prisma.party
+    .update({
+      where: {
+        id,
+      },
+      data,
+    })
+    .then((results) => {
+      console.log('updated: ', results);
+      res.sendStatus(200);
     })
     .catch((err) => {
       console.error(err);
@@ -442,21 +463,27 @@ party.delete('/:id', (req: Request, res: Response) => {
         party_id: id,
       },
     })
-    .then(() => prisma.message.deleteMany({
+    .then(() =>
+      prisma.message.deleteMany({
         where: {
           party_id: id,
         },
-      }))
-    .then(() => prisma.party_Video.deleteMany({
+      })
+    )
+    .then(() =>
+      prisma.party_Video.deleteMany({
         where: {
           party_id: id,
         },
-      }))
-    .then(() => prisma.party.delete({
+      })
+    )
+    .then(() =>
+      prisma.party.delete({
         where: {
           id,
         },
-      }))
+      })
+    )
     .then(() => {
       res.sendStatus(200);
     })

@@ -32,10 +32,10 @@ function Video({
   const navigate = useNavigate();
   // state vars
   const [isPlaying, setPause] = useState(() => false);
-  const [pSeconds, setSeconds] = useState(() => 0.0001);
+  const [pSeconds, setSeconds] = useState(() => room.current_time);
   const [duration, setDur] = useState(1);
   const [volume, setVol] = useState(0.5);
-  const [video, setVid] = useState(0);
+  const [video, setVid] = useState(room.current_video);
 
   const videoPlayer = useRef<ReactPlayer>(null);
   if (status) {
@@ -54,7 +54,7 @@ function Video({
   const changeVid = (bool) => {
     setSeconds(0);
     if (bool) {
-      if (video < playlist.length - 1) {
+      if (video < playlist.length) {
         if (!playlist[video + 1] && room.will_archive) {
           const data = JSON.stringify(room);
           const config = {
@@ -65,7 +65,6 @@ function Video({
             },
             data,
           };
-
           axios(config)
             .then(() => {
               socket.emit('endParty', {
@@ -96,6 +95,12 @@ function Video({
             playing: isPlaying,
           });
           setVid(video + 1);
+          axios
+            .put(`/api/party/update/${room.id}`, {
+              current_video: video + 1,
+              current_time: 0,
+            })
+            .catch((err) => console.error(err));
         }
       } else {
         socket.emit('giveRoom', {
@@ -127,12 +132,24 @@ function Video({
     setDur(videoPlayer.current.getDuration());
   };
 
+  // TODO: Get video player to start at stored video/time if nobody is already in the room
+  const onReady = () => {
+    // videoPlayer.current.seekTo(pSeconds, 'seconds');
+    // setPause(isPlaying);
+  };
+
   // pauses all clients
   const pauseVid = () => {
     setPause(false);
     socket.emit('pause', { room: room.id, bool: false });
     socket.emit('seek', { room: room.id, amount: pSeconds });
     videoPlayer.current.seekTo(pSeconds, 'seconds');
+    axios
+      .put(`/api/party/update/${room.id}`, {
+        current_video: video,
+        current_time: pSeconds,
+      })
+      .catch((err) => console.error(err));
   };
   // plays all clients
   const playVid = () => {
@@ -195,11 +212,13 @@ function Video({
     >
       <ReactPlayer
         ref={videoPlayer}
+        onReady={onReady}
         config={{
           youtube: {
             playerVars: {
               controls: 0,
               color: 'white',
+              start: pSeconds,
             },
           },
         }}

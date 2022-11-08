@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { StyledDashPartyCard } from './cards.styles';
 
 function DashboardPartyCard({ party }) {
-  const { description, thumbnail, name, date_time } = party;
+  const { description, thumbnail, name, start_date } = party;
   const navigate = useNavigate();
   const handleCardClick = (party) => {
     // console.log('party in search:', party);
@@ -73,7 +73,7 @@ function DashboardPartyCard({ party }) {
         <Card.Text>{stringAbbreviator(description, 'description')}</Card.Text>
       </Card.Body>
       <Card.Footer>
-        <small className="text-muted">{dateTimeConversion(date_time)}</small>
+        <small className="text-muted">{dateTimeConversion(start_date)}</small>
       </Card.Footer>
     </StyledDashPartyCard>
   );
