@@ -16,7 +16,7 @@ export const SearchPageHeading = styled(Row)`
   padding-bottom: 0px;
   margin-bottom: 0;
   align-items: baseline;
-  font-size: large;
+  font-size: 2rem;
 `;
 
 export const SearchTabContainer = styled(Container)`
@@ -138,8 +138,11 @@ export const SearchButton = styled(Button)`
 `;
 
 export const StyledTabs = styled(Tabs)`
+  --bs-nav-tabs-border-color: #6a1d7d;
+  --bs-nav-tabs-link-hover-border-color: #6a1d7d;
   --bs-nav-tabs-link-active-bg: black;
   --bs-nav-tabs-link-active-color: white;
+  --bs-nav-tabs-link-active-border-color: #6a1d7d;
   .nav-link {
     color: white;
   }

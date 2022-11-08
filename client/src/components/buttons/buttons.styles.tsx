@@ -85,3 +85,14 @@ export const StyledModal = styled(Modal)`
   --bs-modal-color: white;
   /* --bs-modal-border: 1px solid #6a1d7d; */
 `;
+
+export const StyledModalHeader = styled(Modal.Header)`
+  --bs-modal-header-border-width: 0px;
+`;
+
+export const StyledATag = styled.a`
+  color: #d236f9;
+  &:hover {
+    color: #320e3b;
+  }
+`;

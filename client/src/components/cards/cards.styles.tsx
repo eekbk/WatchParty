@@ -1,5 +1,13 @@
 import styled from 'styled-components';
-import { Card, Image, Row, Col, Container } from 'react-bootstrap';
+import {
+  Card,
+  Image,
+  Row,
+  Col,
+  Container,
+  Modal,
+  Tooltip,
+} from 'react-bootstrap';
 
 export const StyledCardRow = styled(Row)`
   padding-left: 0;
@@ -223,4 +231,17 @@ export const PartyCardNormieCol = styled(Col)`
   align-items: center;
   text-align: center;
   cursor: pointer;
+`;
+
+export const StyledModal = styled(Modal)`
+  --bs-modal-bg-color: #6a1d7d;
+`;
+
+export const StyledModalHeader = styled(Modal.Header)`
+  --bs-modal-bg-color: #6a1d7d;
+`;
+
+export const StyledTooltip = styled(Tooltip)`
+  background-color: #6a1d7d;
+  pointer-events: none; // to stop the flickering, but it doesn't
 `;
