@@ -177,7 +177,7 @@ function CalPartyCard({ party }) {
             </StyledGlassButton>
           )}
         </StyledPartyCardFooterCol>
-        <StyledPartyCardFooterCol sm={6} style={{ width: 'fit-content' }}>
+        {/* <StyledPartyCardFooterCol sm={6} style={{ width: 'fit-content' }}>
           {!isCreator && !isAdmin ? (
             <AttendButton
               partyId={id}
@@ -187,7 +187,7 @@ function CalPartyCard({ party }) {
           ) : (
             []
           )}
-        </StyledPartyCardFooterCol>
+        </StyledPartyCardFooterCol> */}
       </StyledPartyCardFooter>
     </StyledPartyCard>
   );

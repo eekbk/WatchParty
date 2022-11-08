@@ -41,10 +41,9 @@ export function LoggedOut() {
           <Col xs={12}>
             <h2
               style={{
-                height: '40px',
+                height: '45px',
                 textAlign: 'center',
-                backgroundColor: '#320E3B',
-                fontSize: '30px',
+                fontSize: '35px',
               }}
               hidden={!allParties.length}
             >
