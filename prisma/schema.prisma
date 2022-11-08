@@ -99,13 +99,14 @@ model Video {
 }
 
 model Like {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now()) @db.Timestamptz(0)
-  updatedAt DateTime @updatedAt @db.Timestamptz(0)
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @db.Timestamptz(0)
+  updatedAt DateTime  @updatedAt @db.Timestamptz(0)
   user_id   String
-  user      User     @relation(fields: [user_id], references: [id])
+  user      User      @relation(fields: [user_id], references: [id])
   party_id  String
-  party     Party    @relation(fields: [party_id], references: [id])
+  party     Party     @relation(fields: [party_id], references: [id])
+  type      Like_Type
 }
 
 model Upvote {
@@ -170,4 +171,9 @@ enum Message_Type {
 enum Relation_Type {
   BLOCK
   FOLLOW
+}
+
+enum Like_Type {
+  LIKE
+  DISLIKE
 }

@@ -13,6 +13,9 @@ CREATE TYPE "Message_Type" AS ENUM ('DM', 'COMMENT');
 -- CreateEnum
 CREATE TYPE "Relation_Type" AS ENUM ('BLOCK', 'FOLLOW');
 
+-- CreateEnum
+CREATE TYPE "Like_Type" AS ENUM ('LIKE', 'DISLIKE');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -105,6 +108,7 @@ CREATE TABLE "Like" (
     "updatedAt" TIMESTAMPTZ(0) NOT NULL,
     "user_id" TEXT NOT NULL,
     "party_id" TEXT NOT NULL,
+    "type" "Like_Type" NOT NULL,
 
     CONSTRAINT "Like_pkey" PRIMARY KEY ("id")
 );
