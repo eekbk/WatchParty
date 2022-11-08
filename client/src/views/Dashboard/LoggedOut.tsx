@@ -25,14 +25,16 @@ export function LoggedOut() {
           .sort(
             (a, b) =>
               Number(new Date(a.start_date)) - Number(new Date(b.start_date))
-          );
+          )
+          .sort((a, b) => a.likes_count > b.likes_count);
         setAllParties(tempParties);
         setLoading(false);
       })
+      .then(() => console.log(allParties, 'allParties.....'))
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [allParties]);
 
   return (
     <Container>
