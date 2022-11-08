@@ -1,7 +1,7 @@
 # WatchParty
 Simultaneously watch Youtube videos with others! Chat while you watch! Archive the parties to relive the memories!
 
-After logging in, You are taken to your PROFILE page where you can see the current top rooms. There is a list of reminders for the upcoming parties you are attending.
+After logging in, You are taken to your Dashboard where you can see the current top rooms. There is a list of reminders for the upcoming parties you are attending.
 
 You can use the SEARCH bar to search for public rooms, users or videos. Clicking on a room will bring you to that room. You can follow users to have their parties prioritized on your page. If somebody's being less than excellent, you can block them. They will no longer show up in searches or in chats, and you won't show up in theirs.
 
