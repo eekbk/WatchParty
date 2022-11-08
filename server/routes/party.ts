@@ -492,3 +492,55 @@ party.delete('/:id', (req: Request, res: Response) => {
       res.sendStatus(500);
     });
 });
+
+// for likes and dislikes
+party.post('/like', (req: RequestWithUser, res: Response) => {
+  const { user_id, party_id, type } = req.body;
+  prisma.like
+    .findFirst({
+      where: {
+        user_id,
+        party_id,
+      },
+    })
+    .then((results) => {
+      if (!results) {
+        prisma.like
+          .create({
+            data: {
+              user_id,
+              party_id,
+              type,
+            },
+          })
+          .then(() => res.status(201).send('like created'));
+      } else if (results.type === type) {
+          res.status(404).send('already created');
+        } else {
+          prisma.like
+            .updateMany({
+              where: {
+                user_id,
+                party_id,
+              },
+              data: {
+                type,
+              },
+            })
+            .then(() => res.status(201).send('like changed'));
+        }
+    });
+});
+
+party.post('/get/like', (req: Request, res: Response) => {
+  const { party_id } = req.body;
+  prisma.like
+    .findMany({
+      where: {
+        party_id,
+      },
+    })
+    .then((likes) => {
+      res.status(200).send(JSON.stringify(likes));
+    });
+});
