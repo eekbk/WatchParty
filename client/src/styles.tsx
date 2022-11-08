@@ -16,6 +16,8 @@ import {
   BsPauseCircleFill,
   BsFillArrowRightCircleFill,
   BsFillArrowLeftCircleFill,
+  BsHandThumbsUp,
+  BsHandThumbsDown,
 } from 'react-icons/bs';
 // const { Title, Body, Img, Text } = Card;
 const { Group } = Form;
@@ -252,6 +254,19 @@ export const DmSideBar = styled(Group)`
 
 export const PlayButton = styled(BsPlayCircleFill)`
   opacity: inherit;
+  color: #d8d8d8;
+`;
+
+export const LikeButton = styled(BsHandThumbsUp)`
+  opacity: inherit;
+  margin-right: 5px;
+  color: #d8d8d8;
+`;
+
+export const DislikeButton = styled(BsHandThumbsDown)`
+  opacity: inherit;
+  margin-right: 3px;
+  margin-left: 5px;
   color: #d8d8d8;
 `;
 
