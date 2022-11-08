@@ -34,12 +34,12 @@ function Profile() {
             // )
             .sort(
               (a, b) =>
-                Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+                Number(new Date(a.start_date)) - Number(new Date(b.start_date))
             )
             .filter(
               // to get only the today and upcoming parties
-              // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
-              (a) => Number(new Date(a.date_time)) >= Number(today)
+              // (a) => Number(new Date(a.start_date)) - Number(new Date()) > 0
+              (a) => Number(new Date(a.start_date)) >= Number(today)
             )
         );
       })
@@ -63,7 +63,7 @@ function Profile() {
             {/* my parties
     {parties.map((p, idx) => (    
       <ListGroup key={p.id} >
-        <ListGroup.Item>{p.date_time.slice(5, 10)}  {p.name}</ListGroup.Item>
+        <ListGroup.Item>{p.start_date.slice(5, 10)}  {p.name}</ListGroup.Item>
       </ListGroup>
     ))} */}
           </Row>
@@ -95,7 +95,7 @@ function Profile() {
                         </td>
                         <td>
                           *
-                          {party.date_time.slice(5, 10)}
+                          {party.start_date.slice(5, 10)}
                         </td>
                         <td>{party.name}</td>
                         {/* <td>
@@ -136,7 +136,7 @@ function Profile() {
                   </td> */}
                         <td>
                           *
-                          {party.date_time.slice(5, 10)}
+                          {party.start_date.slice(5, 10)}
                         </td>
                         <td>{party.name}</td>
                         {/* <td>
