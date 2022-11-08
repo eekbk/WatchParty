@@ -21,8 +21,6 @@ export function VoiceContextProvider({ children }) {
   const [voiceKey, setVoiceKey] = useState('parties');
   const [voicePageNum, setVoicePageNum] = useState(1);
 
-  // const navigate = useNavigate();
-
   const commands = [
     {
       command: ['Go to *', 'Take me (to) *'],

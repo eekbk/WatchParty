@@ -54,7 +54,6 @@ function UserCard({ obj, socket }) {
     }
   }, [/* user.following, */ obj]);
 
-  // console.log('hello there');
   return (
     <StyledUserCard>
       <Row>
