@@ -31,6 +31,7 @@ function Video({
 }) {
   const navigate = useNavigate();
   // state vars
+  const [clicked, setClicked] = useState(false);
   const [isPlaying, setPause] = useState(() => false);
   const [pSeconds, setSeconds] = useState(() => room.current_time);
   const [duration, setDur] = useState(1);
@@ -244,7 +245,17 @@ function Video({
           top: '0',
         }}
       />
-      <StContainer>
+      <StContainer
+        style={
+          clicked
+            ? {
+                'backdrop-filter': 'blur(10px) saturate(50%)',
+                '-webkit-backdrop-filter': 'blur(10px) saturate(50%)',
+                'background-color': 'rgba(17, 25, 40, 0)',
+              }
+            : {}
+        }
+      >
         <PStRow>
           <Playlist
             room={room}
@@ -257,6 +268,8 @@ function Video({
             setVid={setVid}
             isPlaying={isPlaying}
             navigate={navigate}
+            clicked={clicked}
+            setClicked={setClicked}
           />
           <Participants
             room={room}

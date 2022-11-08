@@ -171,7 +171,6 @@ export const StContainer = styled(Container)`
 
 export const PStRow = styled(Row)`
   position: absolute;
-  max-height: 85%;
   top: 0;
   left: 0.8rem;
   opacity: 0;
