@@ -40,7 +40,13 @@ function App() {
         .catch((err) => {
           setUser(null);
           setVerified(true);
-          navigate('/');
+          console.log(location.pathname.slice(0, 7));
+          if (
+            location.pathname !== '/' &&
+            location.pathname.slice(0, 7) !== '/search'
+          ) {
+            navigate('/');
+          }
           console.error(err);
         });
     }
@@ -88,14 +94,6 @@ function App() {
                   style={{ color: 'white' }}
                 >
                   Profile
-                </Nav.Link> */}
-                {/* <Nav.Link
-                  hidden={!user}
-                  to="/calendar"
-                  as={Link}
-                  style={{ color: 'white' }}
-                >
-                  Calendar
                 </Nav.Link> */}
                 <Nav.Link
                   hidden={!user}

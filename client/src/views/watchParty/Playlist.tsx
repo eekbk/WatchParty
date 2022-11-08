@@ -17,14 +17,15 @@ export function Playlist({
   setVid,
   isPlaying,
   navigate,
+  clicked,
+  setClicked,
 }) {
   const [video, setVideo] = useState('');
-  const [clicked, setClicked] = useState(false);
   const [vHeight, setVHeight] = useState(0);
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-    setVHeight(vH.current ? (vH.current.clientHeight - 65) * 0.8 : 0);
+    setVHeight(vH.current ? (vH.current.clientHeight + 0.15) * 0.8 : 0);
   }, []);
 
   const handleVideoAddition = () => {
