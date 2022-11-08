@@ -51,6 +51,10 @@ function HelpButton() {
         </li>
         <li>Clear the transcript: &quot;clear&quot; or &quot;reset&quot;</li>
         <li>Open help box by saying &quot;help&quot; or &quot;info&quot;.</li>
+        <li>
+          If app is not responding, try briefly pausing between command and
+          &quot;send&quot; or &quot;please&quot;
+        </li>
       </ul>
     </p>
   );
@@ -140,7 +144,7 @@ function HelpButton() {
           {generalHelpText}
           {pageSpecificText()}
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer style={{ justifyContent: 'space-between' }}>
           (Say &quot;exit, please&quot; to close this box)
         </Modal.Footer>
       </StyledModal>
