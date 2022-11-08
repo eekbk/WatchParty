@@ -97,7 +97,7 @@ function WatchParty({ socket }) {
               socket={socket}
             />
           </Card>
-          <Likes />
+          <Likes user_id={user ? user.id : null} party_id={room.id} />
         </Col>
         <Col xs={12} xl={3} style={{ padding: '0px', textAlign: 'center' }}>
           <h4>Chat</h4>
