@@ -302,28 +302,13 @@ function Video({
               disabled={
                 isArchived ? false : status ? status.role !== 'CREATOR' : true
               }
-              onClick={playVid}
+              onClick={() => (isPlaying ? pauseVid() : playVid())}
             >
-              <PlayButton size="2em" />
-            </LButton>
-          </Col>
-          <Col md="auto" lg="auto" sm="auto">
-            <LButton
-              style={{
-                visibility: isArchived
-                  ? 'visible'
-                  : status
-                  ? status.role === 'CREATOR'
-                    ? 'visible'
-                    : 'hidden'
-                  : 'hidden',
-              }}
-              disabled={
-                isArchived ? false : status ? status.role !== 'CREATOR' : true
-              }
-              onClick={pauseVid}
-            >
-              <PauseButton size="2em" />
+              {isPlaying ? (
+                <PauseButton size="2em" />
+              ) : (
+                <PlayButton size="2em" />
+              )}
             </LButton>
           </Col>
           <Col md="auto" lg="auto" sm="auto">
