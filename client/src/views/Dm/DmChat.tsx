@@ -84,7 +84,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
   }, [messages]);
   return (
     <DmChatBox>
-      DM Be nice!!
+      DM
       <Form>
         <ThinScrollBar
           ref={scrolly}

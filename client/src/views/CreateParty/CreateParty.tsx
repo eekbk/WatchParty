@@ -161,7 +161,15 @@ export function CreateParty() {
     <CreatePartyContainer>
       <HeaderRow>
         <HeaderColumn style={{ textAlign: 'center' }}>
-          <h1>Create Watch Party</h1>
+          <h1
+            style={{
+              height: '45px',
+              textAlign: 'center',
+              fontSize: '35px',
+            }}
+          >
+            Create Watch Party
+          </h1>
           <br />
         </HeaderColumn>
       </HeaderRow>
