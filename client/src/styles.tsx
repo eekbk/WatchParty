@@ -39,7 +39,6 @@ accent = '#15616D';
 text = '#E5F4E3';
 
 export const StyledBackgroundContainer = styled(Container)`
-  //background: radial-gradient(ellipse at center, #320e3b, black);
   height: fit-content;
   min-height: 100vh;
   flex-flow: flow wrap;
@@ -50,7 +49,6 @@ export const StyledBackgroundContainer = styled(Container)`
   }
   .navbar-dark {
     background: rgba(28, 7, 47, 0.75);
-    border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(17.9px);
     -webkit-backdrop-filter: blur(17.9px);
