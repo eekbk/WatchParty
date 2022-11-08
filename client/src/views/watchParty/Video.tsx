@@ -1,6 +1,7 @@
 import axios from 'axios';
 import ReactPlayer from 'react-player';
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, ProgressBar, Col } from 'react-bootstrap';
 import { Participants } from './Participants';
 import {
@@ -28,12 +29,13 @@ function Video({
   isArchived,
   vH,
 }) {
+  const navigate = useNavigate();
   // state vars
   const [isPlaying, setPause] = useState(() => false);
-  const [pSeconds, setSeconds] = useState(() => 0.0001);
+  const [pSeconds, setSeconds] = useState(() => room.current_time);
   const [duration, setDur] = useState(1);
   const [volume, setVol] = useState(0.5);
-  const [video, setVid] = useState(0);
+  const [video, setVid] = useState(room.current_video);
 
   const videoPlayer = useRef<ReactPlayer>(null);
   if (status) {
@@ -53,13 +55,6 @@ function Video({
     setSeconds(0);
     if (bool) {
       if (video < playlist.length) {
-        socket.emit('giveRoom', {
-          room: room.id,
-          video: video + 1,
-          start: 0,
-          playing: isPlaying,
-        });
-        setVid(video + 1);
         if (!playlist[video + 1] && room.will_archive) {
           const data = JSON.stringify(room);
           const config = {
@@ -70,10 +65,42 @@ function Video({
             },
             data,
           };
-
-          axios(config).catch((error) => {
-            console.error(error);
+          axios(config)
+            .then(() => {
+              socket.emit('endParty', {
+                room: room.id,
+              });
+              navigate('/');
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        } else if (!playlist[video + 1] && !room.will_archive) {
+          axios
+            .delete(`/api/party/${room.id}`)
+            .then(() => {
+              socket.emit('endParty', {
+                room: room.id,
+              });
+              navigate('/');
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        } else {
+          socket.emit('giveRoom', {
+            room: room.id,
+            video: video + 1,
+            start: 0,
+            playing: isPlaying,
           });
+          setVid(video + 1);
+          axios
+            .put(`/api/party/update/${room.id}`, {
+              current_video: video + 1,
+              current_time: 0,
+            })
+            .catch((err) => console.error(err));
         }
       } else {
         socket.emit('giveRoom', {
@@ -105,12 +132,24 @@ function Video({
     setDur(videoPlayer.current.getDuration());
   };
 
+  // TODO: Get video player to start at stored video/time if nobody is already in the room
+  const onReady = () => {
+    // videoPlayer.current.seekTo(pSeconds, 'seconds');
+    // setPause(isPlaying);
+  };
+
   // pauses all clients
   const pauseVid = () => {
     setPause(false);
     socket.emit('pause', { room: room.id, bool: false });
     socket.emit('seek', { room: room.id, amount: pSeconds });
     videoPlayer.current.seekTo(pSeconds, 'seconds');
+    axios
+      .put(`/api/party/update/${room.id}`, {
+        current_video: video,
+        current_time: pSeconds,
+      })
+      .catch((err) => console.error(err));
   };
   // plays all clients
   const playVid = () => {
@@ -173,11 +212,13 @@ function Video({
     >
       <ReactPlayer
         ref={videoPlayer}
+        onReady={onReady}
         config={{
           youtube: {
             playerVars: {
               controls: 0,
               color: 'white',
+              start: pSeconds,
             },
           },
         }}
@@ -211,6 +252,11 @@ function Video({
             setPlaylist={setPlaylist}
             status={status}
             vH={vH}
+            socket={socket}
+            vid={video}
+            setVid={setVid}
+            isPlaying={isPlaying}
+            navigate={navigate}
           />
           <Participants
             room={room}
@@ -218,6 +264,7 @@ function Video({
             participants={participants || []}
             setParticipants={setParticipants}
             vH={vH}
+            socket={socket}
           />
         </PStRow>
         <StRow>

@@ -9,10 +9,9 @@ import { UserContextProvider } from './context';
 import { VoiceContextProvider } from './contexts/voiceContext';
 import App from './views/app';
 import WatchParty from './views/watchParty/Room';
-import Dashboard from './views/Dashboard';
+import { Dashboard } from './views/Dashboard/Dashboard';
 import Dm from './views/Dm/Dm';
 import Archive from './views/Archive/Archive';
-import Calendar from './views/Calendar';
 import Search from './views/search/Search';
 
 const socket = io();
@@ -25,7 +24,7 @@ function RouteHandler() {
           <Route path="/" element={<App />}>
             <Route path="" element={<Dashboard />} />
             {/* <Route path="search" element={<Search socket={socket} />} /> */}
-            <Route path="calendar" element={<Calendar />} />
+            {/* <Route path="calendar" element={<Calendar />} /> */}
             <Route path="watchParty" element={<WatchParty socket={socket} />} />
             <Route path="createParty" element={<CreateParty />} />
             {/* <Route path="profile" element={<Profile />} /> */}

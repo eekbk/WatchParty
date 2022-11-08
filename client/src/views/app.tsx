@@ -17,7 +17,8 @@ import HelpButton from '../components/buttons/HelpButton';
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser, setVerified } = useContext(UserContext);
+
   // special AND very important useEffect
   useEffect(() => {
     if (location.pathname === '/watchParty') {
@@ -29,13 +30,16 @@ function App() {
 
   useEffect(() => {
     if (!user) {
+      setVerified(false);
       axios
         .get('/api/user')
         .then((data) => {
+          setVerified(true);
           setUser(data.data);
         })
         .catch((err) => {
           setUser(null);
+          setVerified(true);
           navigate('/');
           console.error(err);
         });
@@ -43,9 +47,11 @@ function App() {
   }, [user]);
 
   const handleLogout = () => {
+    setVerified(false);
     axios
       .post('/logout')
       .then(() => {
+        setVerified(true);
         setUser(null);
       })
       .catch((err) => {
@@ -83,14 +89,14 @@ function App() {
                 >
                   Profile
                 </Nav.Link> */}
-                <Nav.Link
+                {/* <Nav.Link
                   hidden={!user}
                   to="/calendar"
                   as={Link}
                   style={{ color: 'white' }}
                 >
                   Calendar
-                </Nav.Link>
+                </Nav.Link> */}
                 <Nav.Link
                   hidden={!user}
                   to="/dm"

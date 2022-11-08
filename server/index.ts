@@ -237,6 +237,21 @@ io.on('connection', (socket: any) => {
       .catch((err) => console.error(err));
   });
 
+  // Sends the updated playlist
+  socket.on('playlist', ({ playlist, room }) => {
+    io.to(room).emit('playlist', playlist);
+  });
+
+  // Sends the updated participants
+  socket.on('participants', ({ participants, room }) => {
+    io.to(room).emit('participants', participants);
+  });
+
+  // Ends the party
+  socket.on('endParty', ({ room }) => {
+    io.to(room).emit('endParty');
+  });
+
   // Direct Messages
 
   // Sends out chat to dm-d user

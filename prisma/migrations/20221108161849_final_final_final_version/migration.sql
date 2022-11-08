@@ -13,11 +13,14 @@ CREATE TYPE "Message_Type" AS ENUM ('DM', 'COMMENT');
 -- CreateEnum
 CREATE TYPE "Relation_Type" AS ENUM ('BLOCK', 'FOLLOW');
 
+-- CreateEnum
+CREATE TYPE "Like_Type" AS ENUM ('LIKE', 'DISLIKE');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMPTZ NOT NULL,
+    "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(0) NOT NULL,
     "user_name" TEXT NOT NULL,
     "googleId" TEXT NOT NULL,
     "profile" TEXT NOT NULL,
@@ -28,8 +31,8 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Relation" (
     "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMPTZ NOT NULL,
+    "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(0) NOT NULL,
     "relator_id" TEXT NOT NULL,
     "relatee_id" TEXT NOT NULL,
     "type" "Relation_Type" NOT NULL,
@@ -40,8 +43,8 @@ CREATE TABLE "Relation" (
 -- CreateTable
 CREATE TABLE "Message" (
     "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMPTZ NOT NULL,
+    "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(0) NOT NULL,
     "room_timestamp" TEXT,
     "message" TEXT NOT NULL,
     "user_id" TEXT NOT NULL,
@@ -55,17 +58,19 @@ CREATE TABLE "Message" (
 -- CreateTable
 CREATE TABLE "Party" (
     "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMPTZ NOT NULL,
+    "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(0) NOT NULL,
     "name" TEXT,
     "description" TEXT,
     "is_private" BOOLEAN NOT NULL DEFAULT false,
     "will_archive" BOOLEAN NOT NULL DEFAULT false,
-    "date_time" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "start_date" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "likes_count" INTEGER NOT NULL DEFAULT 0,
     "type" "Party_Type" NOT NULL,
     "status" "Status" NOT NULL DEFAULT 'UPCOMING',
     "thumbnail" TEXT,
+    "current_video" INTEGER DEFAULT 0,
+    "current_time" DECIMAL(65,30) DEFAULT 0.0001,
 
     CONSTRAINT "Party_pkey" PRIMARY KEY ("id")
 );
@@ -73,8 +78,8 @@ CREATE TABLE "Party" (
 -- CreateTable
 CREATE TABLE "Playlist" (
     "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMPTZ NOT NULL,
+    "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(0) NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "thumbnail" TEXT NOT NULL,
@@ -86,8 +91,8 @@ CREATE TABLE "Playlist" (
 -- CreateTable
 CREATE TABLE "Video" (
     "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMPTZ NOT NULL,
+    "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(0) NOT NULL,
     "url" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
@@ -99,10 +104,11 @@ CREATE TABLE "Video" (
 -- CreateTable
 CREATE TABLE "Like" (
     "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMPTZ NOT NULL,
+    "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(0) NOT NULL,
     "user_id" TEXT NOT NULL,
     "party_id" TEXT NOT NULL,
+    "type" "Like_Type" NOT NULL,
 
     CONSTRAINT "Like_pkey" PRIMARY KEY ("id")
 );
@@ -110,8 +116,8 @@ CREATE TABLE "Like" (
 -- CreateTable
 CREATE TABLE "Upvote" (
     "id" TEXT NOT NULL,
-    "createdAt" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMPTZ NOT NULL,
+    "createdAt" TIMESTAMPTZ(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMPTZ(0) NOT NULL,
     "user_id" TEXT NOT NULL,
     "message_id" TEXT NOT NULL,
 

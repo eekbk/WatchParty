@@ -11,19 +11,24 @@ export function Participants({
   room,
   status,
   vH,
+  socket,
 }) {
   const [show, setShow] = useState(false);
   const [vHeight, setVHeight] = useState(0);
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-    setVHeight((vH.current.clientHeight - 65) * 0.8);
+    setVHeight(vH.current ? (vH.current.clientHeight - 65) * 0.8 : 0);
   }, []);
 
   const changeRole = (i) => {
     const tempParticipants = participants.slice();
     tempParticipants[i].role =
       tempParticipants[i].role === 'ADMIN' ? 'NORMIE' : 'ADMIN';
+    socket.emit('participants', {
+      room: room.id,
+      participants: tempParticipants,
+    });
     setParticipants(tempParticipants);
     axios
       .post('/api/party/role', {
@@ -31,17 +36,13 @@ export function Participants({
         party_id: room.id,
         role: tempParticipants[i].role,
       })
-      .then(() => {
-        // TODO: Somehow get all the places that can render this to update their
-        // parties from the database to reflect the role changes
-      })
       .catch((err) => {
         console.error(err);
       });
   };
 
   const handleResize = () => {
-    setVHeight((vH.current.clientHeight - 65) * 0.8);
+    setVHeight(vH.current ? (vH.current.clientHeight - 65) * 0.8 : 0);
   };
 
   return (

@@ -86,7 +86,7 @@ search.get('/:q', async (req: Request, res: Response) => {
         ],
         AND: [
           {
-            date_time: {
+            start_date: {
               gte: new Date(),
             },
             type: 'PARTY',
@@ -94,7 +94,7 @@ search.get('/:q', async (req: Request, res: Response) => {
         ],
       },
       orderBy: {
-        date_time: 'asc',
+        start_date: 'asc',
       },
       include: {
         party_videos: {

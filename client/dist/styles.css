@@ -12,3 +12,11 @@
   background-color: #302e2e;
   border-radius: 20px;
 }
+
+body {
+  background: radial-gradient(ellipse at center, #320e3b, black);
+}
+
+:root {
+  background-color: black;
+}

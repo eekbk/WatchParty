@@ -61,12 +61,13 @@ export function CreateParty() {
         })
         .catch((err) => console.error(err));
     }
+    date.setTime(date.getTime() - date.getTimezoneOffset() * 60 * 1000);
     axios
       .post('/api/party', {
         party: {
           name,
           description,
-          date_time: date,
+          start_date: date,
           is_private: privateR,
           will_archive: archive,
           invitees: invited.map((i) => ({ id: i.id })),
@@ -98,10 +99,9 @@ export function CreateParty() {
       /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = video.match(regExp);
     const videoId = match[2];
-    const videoUrl = video;
     if (match && match[2].length === 11) {
       axios
-        .post('/api/party/video', { videoId, videoUrl })
+        .post('/api/party/video', { videoId, videoUrl: `youtu.be/${videoId}` })
         .then((vd) => {
           setVideo('');
           setPlaylist(playlist.concat([vd.data]));
@@ -248,7 +248,13 @@ export function CreateParty() {
         <StyledAlert
           key="success"
           variant="success"
-          style={{ maxWidth: '20rem', margin: '40%', textAlign: 'center' }}
+          style={{
+            width: 'fit-content',
+            textAlign: 'center',
+            position: 'absolute',
+            left: 'calc(50% - 91px)',
+            top: '50vh',
+          }}
         >
           Watch Party Created!
         </StyledAlert>
