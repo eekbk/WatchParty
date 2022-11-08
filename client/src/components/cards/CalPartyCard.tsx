@@ -18,7 +18,7 @@ import {
 } from './cards.styles';
 
 function CalPartyCard({ party }) {
-  const { id, description, thumbnail, name, date_time, users } = party;
+  const { id, description, thumbnail, name, start_date, users } = party;
   const { user } = useContext(UserContext);
   const {
     partyName,
@@ -154,7 +154,7 @@ function CalPartyCard({ party }) {
           {/* </Row> */}
         </StyledIsFollowing>
         <StyledPartyTime>
-          <>{dateTimeConversion(date_time)}</>
+          <>{dateTimeConversion(start_date)}</>
         </StyledPartyTime>
       </StyledCardBody>
       <StyledPartyCardFooter>

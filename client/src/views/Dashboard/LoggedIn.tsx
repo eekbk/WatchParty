@@ -95,22 +95,22 @@ export function LoggedIn() {
           [...tempArr, ...tempUserArr]
             .sort(
               (a, b) =>
-                Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+                Number(new Date(a.start_date)) - Number(new Date(b.start_date))
             )
             .filter(
               // to get only the today and upcoming parties
-              (a) => Number(new Date(a.date_time)) >= Number(today)
+              (a) => Number(new Date(a.start_date)) >= Number(today)
             )
         );
         setAllParties(
           data.data
             .sort(
               (a, b) =>
-                Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+                Number(new Date(a.start_date)) - Number(new Date(b.start_date))
             )
             .filter(
               // to get only the today and upcoming parties
-              (a) => Number(new Date(a.date_time)) >= Number(today)
+              (a) => Number(new Date(a.start_date)) >= Number(today)
             )
         );
         setLoading(false);

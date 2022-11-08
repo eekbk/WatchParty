@@ -18,13 +18,13 @@ export function LoggedOut() {
         const tempParties = data.data
           .filter(
             // to get only the today and upcoming parties
-            // (a) => Number(new Date(a.date_time)) - Number(new Date()) > 0
-            (a) => Number(new Date(a.date_time)) >= Number(today)
+            // (a) => Number(new Date(a.start_date)) - Number(new Date()) > 0
+            (a) => Number(new Date(a.start_date)) >= Number(today)
           )
           .filter((pt) => !pt.is_private)
           .sort(
             (a, b) =>
-              Number(new Date(a.date_time)) - Number(new Date(b.date_time))
+              Number(new Date(a.start_date)) - Number(new Date(b.start_date))
           );
         setAllParties(tempParties);
         setLoading(false);
