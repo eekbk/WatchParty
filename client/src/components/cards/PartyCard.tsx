@@ -18,17 +18,16 @@ import {
   PartyCardHostOrAdminCol,
   PartyCardNormieCol,
 } from './cards.styles';
-import { StyledGlassButton } from '../buttons/buttons.styles';
+import {
+  StyledModal,
+  StyledModalHeader,
+  StyledATag,
+} from '../buttons/buttons.styles';
 
 function PartyCard({ party }) {
   const { id, description, thumbnail, name, start_date, users } = party;
   const { user } = useContext(UserContext);
-  const {
-    partyName,
-    resetTranscript,
-    // setPartyName,
-    isSent,
-  } = useContext(VoiceContext);
+  const { partyName, resetTranscript, isSent } = useContext(VoiceContext);
   const navigate = useNavigate();
   const [isAttending, setIsAttending] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -39,7 +38,6 @@ function PartyCard({ party }) {
     user && creator.id === user.id
       ? 'YOU are hosting!'
       : `hosted by ${creator.username}`;
-  // const [isFollowing, setIsFollowing] = useState(false);
 
   // create a function to check if the user is involved in the party
   const checkRole = () => {
@@ -97,14 +95,12 @@ function PartyCard({ party }) {
   const stringAbbreviator = (string, type) => {
     if (type === 'title') {
       if (string && string.length > 35) {
-        // return dotDotDotConcat(53);
         return `${string.slice(0, 35)}...`;
       }
       return string;
     }
     if (type === 'description') {
       if (string && string.length > 57) {
-        // return dotDotDotConcat(65);
         return `${string.slice(0, 57)}...`;
       }
       return string;
@@ -193,14 +189,20 @@ function PartyCard({ party }) {
           </StyledPartyTime>
         </StyledCardBody>
       </StyledPartyCard>
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>You must be logged in to do that!</Modal.Title>
-          <Modal.Body>
+      <StyledModal show={showModal} onHide={handleCloseModal}>
+        <StyledModalHeader closeButton>
+          <Modal.Title>
+            You must&nbsp;
+            <StyledATag href="/auth/google">
+              <span>LOGIN</span>
+            </StyledATag>
+            &nbsp;to do that!
+          </Modal.Title>
+          {/* <Modal.Body>
             <StyledGlassButton href="/auth/google">Login</StyledGlassButton>
-          </Modal.Body>
-        </Modal.Header>
-      </Modal>
+          </Modal.Body> */}
+        </StyledModalHeader>
+      </StyledModal>
     </>
   );
 }
