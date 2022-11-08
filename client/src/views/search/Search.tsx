@@ -36,7 +36,6 @@ function Search({ socket }) {
   const [key, setKey] = useState('parties');
   const { user } = useContext(UserContext);
   const { voiceKey /* setVoiceKey */ } = useContext(VoiceContext);
-  // const navigate = useNavigate();
   const { q } = useParams();
 
   useEffect(() => {

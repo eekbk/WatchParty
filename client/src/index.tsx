@@ -23,16 +23,12 @@ function RouteHandler() {
         <Routes>
           <Route path="/" element={<App />}>
             <Route path="" element={<Dashboard />} />
-            {/* <Route path="search" element={<Search socket={socket} />} /> */}
-            {/* <Route path="calendar" element={<Calendar />} /> */}
             <Route path="watchParty" element={<WatchParty socket={socket} />} />
             <Route path="createParty" element={<CreateParty />} />
             {/* <Route path="profile" element={<Profile />} /> */}
             <Route path="dm" element={<Dm socket={socket} room="" />} />
             <Route path="archive" element={<Archive />} />
-            <Route path="search">
-              <Route path=":q" element={<Search socket={socket} />} />
-            </Route>
+            <Route path="search/:q" element={<Search socket={socket} />} />
           </Route>
         </Routes>
       </BrowserRouter>
