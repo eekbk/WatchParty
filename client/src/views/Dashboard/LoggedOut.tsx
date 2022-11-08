@@ -30,11 +30,10 @@ export function LoggedOut() {
         setAllParties(tempParties);
         setLoading(false);
       })
-      .then(() => console.log(allParties, 'allParties.....'))
       .catch((err) => {
         console.error(err);
       });
-  }, [allParties]);
+  }, []);
 
   return (
     <Container>
