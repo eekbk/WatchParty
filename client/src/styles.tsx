@@ -93,28 +93,18 @@ export const Header = styled.header`
 
 export const Footer = styled.footer`
   position: fixed;
-  justify-content: right;
+  justify-content: left;
   color: white;
   bottom: 0;
-  right: 0;
+  left: 0;
   height: 100px;
-  width: 30%;
+  width: 40%;
   z-index: 3;
   background: transparent;
-  /* border-radius: 16px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 0, 0, 0.31); */
   margin: 0;
-  padding: 0 2rem;
+  padding: 0 0 1rem 3rem;
   display: flex;
   align-items: center;
-  /*
-  for gradient footer
-  background-color: purple;
-	background-image: linear-gradient(#320e3b,#6a1d7d);
-  text-shadow: 0px -1px #333;
-  */
 `;
 
 // offcanvas responsive for menus that could be cluttered on mobile?
@@ -353,6 +343,7 @@ export const StyledButton = styled(Button)`
   color: ${text};
   background-color: ${tertiary};
   border-color: ${accent};
+  z-index: 2;
   &:after {
     content: '';
     position: absolute;
