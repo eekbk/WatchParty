@@ -127,6 +127,9 @@
     ],
     "@typescript-eslint/no-empty-function": [
       "warn"
+    ],
+    "no-console": [
+      "off"
     ]
   }
 }
