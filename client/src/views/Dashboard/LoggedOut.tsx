@@ -25,7 +25,8 @@ export function LoggedOut() {
           .sort(
             (a, b) =>
               Number(new Date(a.start_date)) - Number(new Date(b.start_date))
-          );
+          )
+          .sort((a, b) => a.likes_count > b.likes_count);
         setAllParties(tempParties);
         setLoading(false);
       })
@@ -77,7 +78,7 @@ export function LoggedOut() {
           <Col xs={12}>
             <h2
               style={{
-                height: '40px',
+                height: '45px',
                 textAlign: 'center',
                 fontSize: '30px',
               }}
