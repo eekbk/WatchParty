@@ -140,7 +140,8 @@ export const SearchButton = styled(Button)`
 export const StyledTabs = styled(Tabs)`
   --bs-nav-tabs-border-color: #6a1d7d;
   --bs-nav-tabs-link-hover-border-color: #6a1d7d;
-  --bs-nav-tabs-link-active-bg: black;
+  /* --bs-nav-tabs-link-active-bg: black; */
+  --bs-nav-tabs-link-active-bg: #6a1d7d;
   --bs-nav-tabs-link-active-color: white;
   --bs-nav-tabs-link-active-border-color: #6a1d7d;
   .nav-link {
