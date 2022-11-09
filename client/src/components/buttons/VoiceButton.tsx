@@ -1,4 +1,5 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 // import { Form } from 'react-bootstrap';
 import { BsMic, BsMicMute } from 'react-icons/bs';
@@ -8,8 +9,10 @@ import {
   StyledDisabledMicIcon,
   StyledTranscript,
 } from './buttons.styles';
+import { StyledModal, StyledModalHeader } from '../cards/cards.styles';
 
 function VoiceButton() {
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const {
     transcript,
@@ -17,15 +20,20 @@ function VoiceButton() {
     resetTranscript,
     redirectUrl,
     handleVoiceToggle,
+    closeModalToggle,
   } = useContext(VoiceContext);
 
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
+
   // maybe we have to put all the navigation stuff in here
-  const pages = ['home', 'profile', 'create party', 'calendar'];
+  const pages = ['home', 'profile', 'create party', 'calendar', 'login'];
   const urls = {
     home: '/',
     profile: '/profile',
     'create party': '/createParty',
     calendar: '/calendar',
+    login: '/auth/google',
   };
 
   useEffect(() => {
@@ -33,11 +41,17 @@ function VoiceButton() {
       if (pages.includes(redirectUrl)) {
         navigate(urls[redirectUrl]);
       } else {
-        alert('Page not recognized');
+        handleShowModal();
       }
     }
     resetTranscript();
   }, [redirectUrl]);
+
+  useEffect(() => {
+    if (showModal) {
+      handleCloseModal();
+    }
+  }, [closeModalToggle]);
 
   return (
     <>
@@ -51,6 +65,19 @@ function VoiceButton() {
           <BsMicMute />
         </StyledDisabledMicIcon>
       )}
+      <StyledModal show={showModal} onHide={handleCloseModal}>
+        <StyledModalHeader closeButton>
+          <Modal.Title>
+            Page &quot;
+            {redirectUrl}
+            &quot; not recognized
+          </Modal.Title>
+        </StyledModalHeader>
+        {/* <Modal.Body>
+            <Button href="/auth/google">Login</Button>
+          </Modal.Body> */}
+        <Modal.Footer>Say &quot;exit, send&quot; to close</Modal.Footer>
+      </StyledModal>
     </>
   );
 }

@@ -150,6 +150,7 @@ export function VoiceContextProvider({ children }) {
       dmName,
       setDmName,
       partyName,
+      setPartyName,
       closeModalToggle,
       openModalToggle,
       voiceKey,
