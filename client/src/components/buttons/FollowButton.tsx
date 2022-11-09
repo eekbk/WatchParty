@@ -12,11 +12,9 @@ function FollowButton({
   isFollowing,
   setIsFollowing,
 }: any) {
-  // console.log('FOLLOWS:', follows);
   const { user, setUser } = useContext(UserContext);
   const { followName, setFollowName, resetTranscript } =
     useContext(VoiceContext);
-  // const [isFollowing, setIsFollowing] = useState(false);
   const [aToggle, setAToggle] = useState(false);
 
   const updateFollowStatus = async () => {
@@ -33,10 +31,8 @@ function FollowButton({
     } else {
       try {
         await axios.post('/api/user/follow', {
-          // data: {
           followerId: user.id,
           followedId: otherUserId,
-          // },
         });
         await setIsFollowing(true);
         setFollows(follows + 1);
@@ -58,12 +54,11 @@ function FollowButton({
     await setAToggle(!aToggle);
   };
 
-  const handleClick = /* async */ () => {
+  const handleClick = () => {
     updateFollowStatus();
   };
 
   useEffect(() => {
-    // console.log(`Are you listening?? ${otherUserName} or are you ${followName}`)
     if (followName.toUpperCase() === otherUserName.toUpperCase()) {
       updateFollowStatus();
       resetTranscript();

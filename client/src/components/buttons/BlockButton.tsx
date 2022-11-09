@@ -10,20 +10,10 @@ function BlockButton({
   isBlocking,
   setIsBlocking,
 }: any) {
-  // console.log('FOLLOWS:', follows);
   const { user, setUser } = useContext(UserContext);
-  const {
-    blockName,
-    resetTranscript,
-    // setBlockName,
-    // isSent,
-  } = useContext(VoiceContext);
-  // const [isFollowing, setIsFollowing] = useState(false);
+  const { blockName, resetTranscript } = useContext(VoiceContext);
   const [aToggle, setAToggle] = useState(false);
 
-  // useEffect(() => {
-
-  // });
   const updateBlockStatus = async () => {
     try {
       await axios.post('/api/user/block', {

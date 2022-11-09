@@ -1,13 +1,13 @@
 import axios from 'axios';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, OverlayTrigger } from 'react-bootstrap';
 import {
   StyledVideoCard,
   StyledVideoCardImg,
   StyledVideoTitle,
   StyledCardRow,
   StyledCardCol,
-  // StyledCardBody,
-  // StyledVideoPartyCount,
+  StyledIsFollowing,
+  StyledTooltip,
 } from './cards.styles';
 
 function VideoCard({
@@ -16,7 +16,7 @@ function VideoCard({
   setSelectedVideo,
   setVideoParties,
 }) {
-  const { thumbnail, title, id } = video;
+  const { thumbnail, title, id, parties } = video;
 
   const selectVideo = async () => {
     try {
@@ -34,21 +34,36 @@ function VideoCard({
     selectVideo();
   };
 
-  const cardTitle = title.length > 100 ? `${title.slice(0, 100)}...` : title;
+  const cardTitle = title.length > 45 ? `${title.slice(0, 45)}...` : title;
+
+  const tooltip = (
+    <StyledTooltip id="tooltip">
+      Click to see parties featuring this video
+    </StyledTooltip>
+  );
 
   return (
-    <StyledVideoCard onClick={handleCardClick}>
-      <StyledCardRow className="no-gutters">
-        <StyledCardCol sm={4}>
-          <StyledVideoCardImg src={thumbnail} />
-        </StyledCardCol>
-        <Col lg={8}>
-          <Row>
-            <StyledVideoTitle>{cardTitle}</StyledVideoTitle>
-          </Row>
-        </Col>
-      </StyledCardRow>
-    </StyledVideoCard>
+    <OverlayTrigger delay={800} placement="top" overlay={tooltip}>
+      <StyledVideoCard onClick={handleCardClick}>
+        <StyledCardRow className="no-gutters">
+          <StyledCardCol sm={3}>
+            <StyledVideoCardImg src={thumbnail} />
+          </StyledCardCol>
+          <Col lg={9} style={{ alignItems: 'space-between', padding: '.5rem' }}>
+            <Row>
+              <StyledVideoTitle>{cardTitle}</StyledVideoTitle>
+            </Row>
+            <Row>
+              <StyledIsFollowing>
+                {parties.length === 1
+                  ? `Appears in ${parties.length} video`
+                  : `Appears in ${parties.length} videos`}
+              </StyledIsFollowing>
+            </Row>
+          </Col>
+        </StyledCardRow>
+      </StyledVideoCard>
+    </OverlayTrigger>
   );
 }
 

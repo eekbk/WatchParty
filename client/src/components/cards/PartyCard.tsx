@@ -1,4 +1,4 @@
-import { Card, Modal /* Col, Row */ } from 'react-bootstrap';
+import { Card, Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context';
@@ -10,38 +10,43 @@ import {
   StyledCardBody,
   StyledPartyDesc,
   StyledIsFollowing,
-  // StyledPartyCardFooterCol,
-  // StyledPartyCardFooter,
   StyledPartyTime,
   StyledPartyCardImgOverlay,
   StyledPartyCardImgOverlayText,
-  // DontGoButton,
-  // JoinButton,
   PartyCardStatus,
-  // StyledCardFooter,
+  PartyCardHostOrAdminLabel,
+  PartyCardHostOrAdminCol,
+  PartyCardNormieCol,
 } from './cards.styles';
-import { StyledGlassButton } from '../buttons/buttons.styles';
+import {
+  StyledModal,
+  StyledModalHeader,
+  StyledATag,
+} from '../buttons/buttons.styles';
 
 function PartyCard({ party }) {
   const { id, description, thumbnail, name, start_date, users } = party;
   const { user } = useContext(UserContext);
   const {
+    listening,
     partyName,
+    setPartyName,
     resetTranscript,
-    // setPartyName,
     isSent,
+    closeModalToggle,
   } = useContext(VoiceContext);
   const navigate = useNavigate();
   const [isAttending, setIsAttending] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isCreator, setIsCreator] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showNotYetModal, setShowNotYetModal] = useState(false);
+  const [roomOpen, setRoomOpen] = useState(false);
   const creator = users.filter((user) => user.role === 'CREATOR')[0];
   const creatorText =
     user && creator.id === user.id
       ? 'YOU are hosting!'
       : `hosted by ${creator.username}`;
-  // const [isFollowing, setIsFollowing] = useState(false);
 
   // create a function to check if the user is involved in the party
   const checkRole = () => {
@@ -53,8 +58,10 @@ function PartyCard({ party }) {
     return null;
   };
 
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
+  const handleCloseLoginModal = () => setShowLoginModal(false);
+  const handleCloseNotYetModal = () => setShowNotYetModal(false);
+  const handleShowLoginModal = () => setShowLoginModal(true);
+  const handleShowNotYetModal = () => setShowNotYetModal(true);
 
   useEffect(() => {
     if (user) {
@@ -75,7 +82,20 @@ function PartyCard({ party }) {
     }
   }, [user]);
 
-  // for voiceControl
+  useEffect(() => {
+    const now = new Date(Date.now());
+    const nowAdj = now.setTime(
+      now.getTime() - now.getTimezoneOffset() * 60 * 1000
+    );
+    const startDateString: any = new Date(start_date);
+    const timeUntilParty = startDateString - nowAdj;
+    const minutesUntilParty = Math.floor(timeUntilParty / 1000 / 60);
+    if (minutesUntilParty <= 15) {
+      setRoomOpen(true);
+    }
+  }, [start_date]);
+
+  // for voiceControl go to party
   useEffect(() => {
     if (partyName && partyName.toUpperCase() === party.name.toUpperCase()) {
       resetTranscript();
@@ -83,15 +103,29 @@ function PartyCard({ party }) {
     }
   }, [isSent]);
 
+  // for voiceControl close modal
+  useEffect(() => {
+    setPartyName('');
+    if (showLoginModal) {
+      handleCloseLoginModal();
+    }
+    if (showNotYetModal) {
+      setShowNotYetModal(false);
+    }
+  }, [closeModalToggle]);
+
   const goToParty = () => {
-    if (user) {
+    if (!user) {
+      handleShowLoginModal();
+    } else if (!roomOpen && !isCreator) {
+      handleShowNotYetModal();
+    } else {
       navigate('/watchParty', {
         state: { party },
       });
-    } else {
-      handleShowModal();
     }
   };
+
   const handleCardClick = () => {
     goToParty();
   };
@@ -99,14 +133,12 @@ function PartyCard({ party }) {
   const stringAbbreviator = (string, type) => {
     if (type === 'title') {
       if (string && string.length > 35) {
-        // return dotDotDotConcat(53);
         return `${string.slice(0, 35)}...`;
       }
       return string;
     }
     if (type === 'description') {
       if (string && string.length > 57) {
-        // return dotDotDotConcat(65);
         return `${string.slice(0, 57)}...`;
       }
       return string;
@@ -150,35 +182,38 @@ function PartyCard({ party }) {
     return `Starts ${time()}, ${month} ${day}, ${year}`;
   };
 
+  // console.log('party:', party);
+
   return (
     <>
       <StyledPartyCard>
         <Card.Img variant="top" src={thumbnail} />
         {user && (
           <StyledPartyCardImgOverlay>
-            {/* <Row  > */}
             <StyledPartyCardImgOverlayText>
               {isAdmin ? (
-                'ADMIN'
+                <PartyCardHostOrAdminCol>
+                  <PartyCardHostOrAdminLabel>ADMIN</PartyCardHostOrAdminLabel>
+                </PartyCardHostOrAdminCol>
               ) : isCreator ? (
-                'HOST'
+                <PartyCardHostOrAdminCol>
+                  <PartyCardHostOrAdminLabel>HOST</PartyCardHostOrAdminLabel>
+                </PartyCardHostOrAdminCol>
               ) : (
-                <>
+                <PartyCardNormieCol>
                   <AttendButton
                     name={name}
                     partyId={id}
                     isAttending={isAttending}
                     setIsAttending={setIsAttending}
                   />
-                  <PartyCardStatus sm={8}>
+
+                  <PartyCardStatus>
                     {isAttending ? 'GOING' : 'JOIN'}
                   </PartyCardStatus>
-                </>
+                </PartyCardNormieCol>
               )}
-              {/* JOIN
-          <HiPlusSm /> */}
             </StyledPartyCardImgOverlayText>
-            {/* </Row> */}
           </StyledPartyCardImgOverlay>
         )}
         <StyledCardBody onClick={handleCardClick}>
@@ -194,14 +229,34 @@ function PartyCard({ party }) {
           </StyledPartyTime>
         </StyledCardBody>
       </StyledPartyCard>
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>You must be logged in to do that!</Modal.Title>
-          <Modal.Body>
+      <StyledModal show={showLoginModal} onHide={handleCloseLoginModal}>
+        <StyledModalHeader closeButton>
+          <Modal.Title>
+            You must&nbsp;
+            <StyledATag href="/auth/google">
+              <span>LOGIN</span>
+            </StyledATag>
+            &nbsp;to do that!
+          </Modal.Title>
+        </StyledModalHeader>
+        {/* <Modal.Body>
+            <Button href="/auth/google">Login</Button>
+          </Modal.Body> */}
+        {listening ? (
+          <Modal.Footer>Say &quot;exit, send&quot; to close</Modal.Footer>
+        ) : null}
+      </StyledModal>
+      <StyledModal show={showNotYetModal} onHide={handleCloseNotYetModal}>
+        <StyledModalHeader closeButton>
+          <Modal.Title>This party is not open yet!</Modal.Title>
+          {/* <Modal.Body>
             <StyledGlassButton href="/auth/google">Login</StyledGlassButton>
-          </Modal.Body>
-        </Modal.Header>
-      </Modal>
+          </Modal.Body> */}
+        </StyledModalHeader>
+        {listening ? (
+          <Modal.Footer>Say &quot;exit, send&quot; to close</Modal.Footer>
+        ) : null}
+      </StyledModal>
     </>
   );
 }

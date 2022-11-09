@@ -71,7 +71,6 @@ function Paginator({ resultsPerPage, totalResults, startIndexSetter }) {
             paginate(active - 1);
           }
         }}
-        // hidden={active === 1 || pageCount <= 1}
       />
       {pages}
       <Pagination.Next
@@ -80,7 +79,6 @@ function Paginator({ resultsPerPage, totalResults, startIndexSetter }) {
             paginate(active + 1);
           }
         }}
-        //  hidden={active === pageCount || pageCount <= 1 || !pageCount}
       />
     </StyledPagination>
   );
