@@ -17,19 +17,13 @@ import { Typeahead, Token } from 'react-bootstrap-typeahead';
 const { Item, Header, Body } = Accordion;
 const { Label, Text, Control, Group, Check } = Form;
 
-let primary;
-let secondary;
-let tertiary;
-let accent;
-let text;
 const disabledForm = '#e9ecef';
 
-// Preferred
-primary = '#320E3B';
-secondary = '#A663CC';
-tertiary = '#48AcF0';
-accent = '#15616D';
-text = '#E5F4E3';
+const primary = '#320E3B';
+const secondary = '#A663CC';
+const tertiary = '#48AcF0';
+const accent = '#15616D';
+const text = '#E5F4E3';
 
 export const CreatePartyContainer = styled(Container)``;
 export const StyledImageContainer = styled(Container)``;
@@ -85,15 +79,9 @@ export const StyledVideoCard = styled(Card)`
 
 export const StyledButton = styled(Button)`
   position: relative;
-  /* display: inline-block; */
-  /* padding: 15px 25px; */
-  //margin-right: 5px;
-  //background-color: purple; /*for compatibility with older browsers*/
   background-image: linear-gradient(#320e3b, #6a1d7d);
   text-shadow: 0px -1px #333;
   border-color: transparent;
-  /* border-radius: 30px;
-  border-collapse: separate; */
 
   &:after {
     content: '';
@@ -133,9 +121,7 @@ export const StyledButton = styled(Button)`
 `;
 
 export const StyledForm = styled(Form)`
-  //background-color: ${secondary};
   color: ${text};
-  //box-shadow: inset 0px 0px 5px black;
   padding: 10px;
   border-radius: 16px;
 `;

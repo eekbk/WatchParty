@@ -1,6 +1,6 @@
 // File for handling user endpoints
 import express, { Response, Router } from 'express';
-import { RequestWithUser } from '../../interfaces/interfaces';
+import { RequestWithUser } from '../../interfaces/server';
 import { prisma } from '../db/index';
 
 const user: Router = express.Router();
@@ -9,7 +9,7 @@ const user: Router = express.Router();
 user.get('/', (req: RequestWithUser, res: Response) => {
   const { user } = req;
   if (user === undefined) {
-    res.sendStatus(400);
+    res.status(200).send(null);
   } else {
     // Getting all the user's playlists
     prisma.playlist

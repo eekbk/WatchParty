@@ -2,7 +2,7 @@
 import express, { Request, Response, Router } from 'express';
 import axios from 'axios';
 import { prisma } from '../db/index';
-import { YoutubeVideo, RequestWithUser } from '../../interfaces/interfaces';
+import { YoutubeVideo, RequestWithUser } from '../../interfaces/server';
 
 export const party: Router = express.Router();
 

@@ -1,4 +1,3 @@
-// File for root element
 import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -37,7 +36,7 @@ function RouteHandler() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('app')!).render(
+ReactDOM.createRoot(document.getElementById('app')).render(
   <UserContextProvider>
     <VoiceContextProvider>
       <RouteHandler />

@@ -4,6 +4,11 @@ import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import PartyCard from '../../components/cards/PartyCard';
+import { Room } from '../../../../interfaces/client';
+
+interface data {
+  data: Room[];
+}
 
 export function LoggedOut() {
   const [allParties, setAllParties] = useState([]);
@@ -12,7 +17,7 @@ export function LoggedOut() {
   useEffect(() => {
     axios
       .get('/api/party')
-      .then((data: any) => {
+      .then((data: data) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const tempParties = data.data

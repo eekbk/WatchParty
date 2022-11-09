@@ -237,7 +237,6 @@ export const PartyCardNormieCol = styled(Col)`
   display: inline-flex;
   align-items: center;
   text-align: center;
-  cursor: pointer;
 `;
 
 export const StyledModal = styled(Modal)`

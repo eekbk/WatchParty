@@ -10,7 +10,7 @@ function Likes({ user_id, party_id }) {
   const sendLike = () => {
     axios
       .post('/api/party/like', { user_id, party_id, type: 'LIKE' })
-      .then((res) => {
+      .then(() => {
         getLikes();
       })
       .catch((err) => console.error(err));
@@ -19,7 +19,7 @@ function Likes({ user_id, party_id }) {
   const sendDislike = () => {
     axios
       .post('/api/party/like', { user_id, party_id, type: 'DISLIKE' })
-      .then((res) => {
+      .then(() => {
         getLikes();
       })
       .catch((err) => console.error(err));

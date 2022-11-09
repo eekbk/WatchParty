@@ -1,15 +1,18 @@
 import { useEffect, useState, useContext, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Card, Container, Row, Col } from 'react-bootstrap';
-// import io from 'socket.io-client';
 import axios from 'axios';
 import { UserContext } from '../../context';
+import { Room } from '../../../../interfaces/client';
+
+interface data {
+  data: Room;
+}
 
 const { default: Video } = require('./Video.tsx');
 const { default: Chat } = require('./Chat.tsx');
 const { default: Likes } = require('./Likes.tsx');
 
-// function WatchParty({ videos, user, room }: any) {
 function WatchParty({ socket }) {
   // styling
   const vH = useRef(null);
@@ -40,7 +43,7 @@ function WatchParty({ socket }) {
     });
     axios
       .get(`/api/party/id/${room.id}`)
-      .then(({ data: party }: any) => {
+      .then(({ data: party }: data) => {
         setRoom(party);
         setParticipants(party.users);
         setPlaylist(party.videos);
@@ -83,7 +86,6 @@ function WatchParty({ socket }) {
             <Video
               vH={vH}
               isArchived={isArchived}
-              user={user}
               playlist={playlist}
               setPlaylist={setPlaylist}
               participants={participants}
