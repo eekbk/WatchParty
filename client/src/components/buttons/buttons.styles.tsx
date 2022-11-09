@@ -66,6 +66,7 @@ export const StyledPagination = styled(Pagination)`
   --bs-pagination-color: white;
   --bs-pagination-border: 10px solid #6a1d7d;
   --bs-pagination-active-border-color: #a12dbe;
+  --bs-pagination-border-color: #6a1d7d;
   justify-content: center;
   justify-self: center;
   margin-top: 1rem;
