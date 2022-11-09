@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-// import { Form } from 'react-bootstrap';
 import { BsMic, BsMicMute } from 'react-icons/bs';
 import { VoiceContext } from '../../contexts/voiceContext';
 import {
   StyledActiveMicIcon,
   StyledDisabledMicIcon,
   StyledTranscript,
+  StyledModal,
+  StyledModalHeader,
 } from './buttons.styles';
-import { StyledModal, StyledModalHeader } from '../cards/cards.styles';
 
 function VoiceButton() {
   const [showModal, setShowModal] = useState(false);
