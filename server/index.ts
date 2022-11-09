@@ -95,9 +95,7 @@ app.get(
   passport.authenticate(
     'google',
     { scope: ['profile'] },
-    (req: Request, res: Response) => {
-      // console.log('not empty now');
-    }
+    (req: Request, res: Response) => {}
   )
 );
 

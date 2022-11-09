@@ -13,6 +13,7 @@ import { Dashboard } from './views/Dashboard/Dashboard';
 import Dm from './views/Dm/Dm';
 import Archive from './views/Archive/Archive';
 import Search from './views/search/Search';
+// import { Profile } from './views/Profile';
 
 const socket = io();
 

@@ -124,6 +124,9 @@
     ],
     "no-await-in-loop": [
       "warn"
+    ],
+    "@typescript-eslint/no-empty-function": [
+      "warn"
     ]
   }
 }

@@ -1,4 +1,4 @@
-import { Card, Modal, Button } from 'react-bootstrap';
+import { Card, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context';
@@ -182,12 +182,15 @@ function PartyCard({ party }) {
     return `Starts ${time()}, ${month} ${day}, ${year}`;
   };
 
-  // console.log('party:', party);
-
   return (
     <>
       <StyledPartyCard>
-        <Card.Img variant="top" src={thumbnail} />
+        <Card.Img
+          variant="top"
+          src={thumbnail}
+          onClick={handleCardClick}
+          style={{ cursor: 'pointer' }}
+        />
         {user && (
           <StyledPartyCardImgOverlay>
             <StyledPartyCardImgOverlayText>
@@ -209,7 +212,7 @@ function PartyCard({ party }) {
                   />
 
                   <PartyCardStatus>
-                    {isAttending ? 'GOING' : 'JOIN'}
+                    {isAttending ? 'GOING' : 'RSVP'}
                   </PartyCardStatus>
                 </PartyCardNormieCol>
               )}

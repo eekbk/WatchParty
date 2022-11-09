@@ -247,7 +247,6 @@ user.delete('/follow', (req: RequestWithUser, res: Response) => {
       },
     })
     .then(() => {
-      // console.log('heres the data after the update:\n', data);
       res.sendStatus(200);
     })
     .catch((err) => {

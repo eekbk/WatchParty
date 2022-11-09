@@ -6,7 +6,6 @@ function DashboardPartyCard({ party }) {
   const { description, thumbnail, name, start_date } = party;
   const navigate = useNavigate();
   const handleCardClick = (party) => {
-    // console.log('party in search:', party);
     navigate('/watchParty', {
       state: { party },
     });

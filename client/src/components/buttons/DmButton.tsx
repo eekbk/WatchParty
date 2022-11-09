@@ -10,12 +10,10 @@ function DmButton({ socket, otherUserId, otherUserName, currentUserId }) {
 
   const openDm = async () => {
     try {
-      const { data } = await axios.post('/api/user/dm', {
+      await axios.post('/api/user/dm', {
         currentUserId,
         otherUserId,
       });
-      // TODO: Remove me
-      console.log(data);
       navigate('/dm');
     } catch (err) {
       console.error(err);

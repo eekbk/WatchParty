@@ -40,7 +40,6 @@ function App() {
         .catch((err) => {
           setUser(null);
           setVerified(true);
-          console.log(location.pathname.slice(0, 7));
           if (
             location.pathname !== '/' &&
             location.pathname.slice(0, 7) !== '/search'

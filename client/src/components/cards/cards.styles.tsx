@@ -99,13 +99,17 @@ export const StyledVideoCardImg = styled(Card.Img)`
   overflow: hidden;
 `;
 
-export const StyledPartyCardImg = styled(Card.Img)``;
+export const StyledPartyCardImg = styled(Card.Img)`
+  cursor: pointer;
+`;
 
 export const StyledPartyCardImgOverlay = styled(Card.ImgOverlay)`
   padding: 0;
+  width: fit-content;
+  height: fit-content;
   /* pointer-events: none; */
   /* justify-self: right; */
-  height: 30%;
+  /* height: 30%; */
   /* width: 30%; */
 `;
 
@@ -114,8 +118,10 @@ export const StyledPartyCardImgOverlayText = styled(Row)`
   border: 1px solid #6a1d7d;
   border-top-width: 0px;
   border-left-width: 0px;
-  width: 35%;
+  width: 87.25px;
+  height: fit-content;
   justify-content: space-around;
+  padding: 5px;
   /* padding-right: 6px;
   padding-left: 5px; */
   margin: 0px;
@@ -222,10 +228,11 @@ export const PartyCardHostOrAdminCol = styled(Col)`
   display: inline-flex;
   align-items: center;
   text-align: center;
+  width: fit-content;
 `;
 
 export const PartyCardNormieCol = styled(Col)`
-  padding: 0 0.8rem;
+  padding: 0px;
   justify-content: space-between;
   display: inline-flex;
   align-items: center;

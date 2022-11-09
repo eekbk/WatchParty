@@ -18,7 +18,6 @@ export function LoggedOut() {
         const tempParties = data.data
           .filter(
             // to get only the today and upcoming parties
-            // (a) => Number(new Date(a.start_date)) - Number(new Date()) > 0
             (a) => Number(new Date(a.start_date)) >= Number(today)
           )
           .filter((pt) => !pt.is_private)
@@ -26,7 +25,7 @@ export function LoggedOut() {
             (a, b) =>
               Number(new Date(a.start_date)) - Number(new Date(b.start_date))
           )
-          .sort((a, b) => a.likes_count > b.likes_count);
+          .sort((a, b) => b.likes.length - a.likes.length);
         setAllParties(tempParties);
         setLoading(false);
       })
@@ -69,9 +68,16 @@ export function LoggedOut() {
                 fontSize: '20px',
               }}
             >
-              Simultaneously watch Youtube videos with others! Chat while you
-              watch! Archive the parties to relive the memories! Login with
-              Google to get started!
+              Simultaneously watch Youtube videos with others! 
+              {' '}
+              <br />
+              Chat while you watch! 
+              {' '}
+              <br />
+              Archive the parties to relive the memories! 
+              {' '}
+              <br />
+              Login with Google to get started!
             </p>
             <br />
           </Col>

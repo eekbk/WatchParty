@@ -46,7 +46,6 @@ function Likes({ user_id, party_id }) {
 
   useEffect(() => {
     getLikes();
-    console.log('startup');
   }, []);
 
   return (
