@@ -253,8 +253,9 @@ function PartyCard({ party }) {
         <Modal.Body>
           The party will open 15 minutes before the start time
           <br />
-          Start time:&nbsp;
+          <br />
           {dateTimeConversion(start_date)}
+          <br />
         </Modal.Body>
         {listening ? (
           <Modal.Footer>Say &quot;exit, send&quot; to close</Modal.Footer>
