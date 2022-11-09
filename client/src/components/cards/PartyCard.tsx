@@ -97,9 +97,19 @@ function PartyCard({ party }) {
 
   // for voiceControl go to party
   useEffect(() => {
-    if (partyName && partyName.toUpperCase() === party.name.toUpperCase()) {
-      resetTranscript();
-      goToParty();
+    if (partyName) {
+      const puncRegex = /[.,\/#!$%\^\'&\*;:{}=\-_`~()]/g;
+      const spaceRegex = /\s{2,}/g;
+      const compareOne = party.name
+        .replace(puncRegex, '')
+        .replace(spaceRegex, ' ');
+      const compareTwo = partyName
+        .replace(puncRegex, '')
+        .replace(spaceRegex, ' ');
+      if (compareOne.toUpperCase() === compareTwo.toUpperCase()) {
+        resetTranscript();
+        goToParty();
+      }
     }
   }, [isSent]);
 
