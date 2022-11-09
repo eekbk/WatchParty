@@ -58,6 +58,7 @@ export const StyledHelpButton = styled.span`
 export const StyledAttendIcon = styled.span`
   display: flex;
   width: fit-content;
+  cursor: pointer;
 `;
 
 export const StyledPagination = styled(Pagination)`

@@ -1,6 +1,6 @@
 import { Container } from 'react-bootstrap';
 
-function Message({ message, user, socket }) {
+function Message({ message, user }) {
   return (
     <Container
       style={{

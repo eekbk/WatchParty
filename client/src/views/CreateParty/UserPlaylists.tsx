@@ -13,7 +13,7 @@ export function UserPlaylists({ user, setPlaylist, playlist }) {
         Import Playlist
       </StyledFormLabel>
       <StyledScrollableGroup style={{ maxHeight: 'max(22rem, 50vh)' }}>
-        {user.playlists.map((pl, i) => (
+        {user.playlists.map((pl) => (
           <StyledVideoCard style={{ marginTop: '10px' }}>
             <StyledVideoCard.Title
               style={{
