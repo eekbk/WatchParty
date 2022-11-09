@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Container, Col, Row, Tab, Spinner } from 'react-bootstrap';
 import { StyledTabs } from '../../styles';
 import { UserContext } from '../../context';
-import CalPartyCard from '../../components/cards/CalPartyCard';
+import PartyCard from '../../components/cards/PartyCard';
 
 // function CalRow({ children }) {
 //   return <Row xs={4}>{children}</Row>;
@@ -36,7 +36,7 @@ export function LoggedIn() {
             width: 'fit-content',
           }}
         >
-          <CalPartyCard party={pt} />
+          <PartyCard party={pt} />
         </Col>
       );
     });
@@ -63,7 +63,7 @@ export function LoggedIn() {
             width: 'fit-content',
           }}
         >
-          <CalPartyCard party={pt} />
+          <PartyCard party={pt} />
         </Col>
       );
     });

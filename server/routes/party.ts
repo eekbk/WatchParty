@@ -35,6 +35,7 @@ party.get('/', (req: Request, res: Response) => {
             },
           },
         },
+        likes: true,
       },
     })
     .then((parties: any) => {
@@ -49,6 +50,8 @@ party.get('/', (req: Request, res: Response) => {
           index: vd.index,
         }));
         pt.videos.sort((a, b) => a.index - b.index);
+        pt.dislikes = pt.likes.filter((l) => l.type === 'DISLIKE');
+        pt.likes = pt.likes.filter((l) => l.type === 'LIKE');
         delete pt.user_parties;
         delete pt.party_videos;
       });
@@ -515,20 +518,20 @@ party.post('/like', (req: RequestWithUser, res: Response) => {
           })
           .then(() => res.status(201).send('like created'));
       } else if (results.type === type) {
-          res.status(404).send('already created');
-        } else {
-          prisma.like
-            .updateMany({
-              where: {
-                user_id,
-                party_id,
-              },
-              data: {
-                type,
-              },
-            })
-            .then(() => res.status(201).send('like changed'));
-        }
+        res.status(404).send('already created');
+      } else {
+        prisma.like
+          .updateMany({
+            where: {
+              user_id,
+              party_id,
+            },
+            data: {
+              type,
+            },
+          })
+          .then(() => res.status(201).send('like changed'));
+      }
     });
 });
 

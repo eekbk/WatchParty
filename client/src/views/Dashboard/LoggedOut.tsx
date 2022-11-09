@@ -25,7 +25,8 @@ export function LoggedOut() {
           .sort(
             (a, b) =>
               Number(new Date(a.start_date)) - Number(new Date(b.start_date))
-          );
+          )
+          .sort((a, b) => a.likes_count > b.likes_count);
         setAllParties(tempParties);
         setLoading(false);
       })
@@ -38,12 +39,48 @@ export function LoggedOut() {
     <Container>
       {!loading ? (
         <Row style={{ justifyContent: 'center' }}>
+          <Col
+            xs={12}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignContent: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <h1
+              style={{
+                height: '45px',
+                textAlign: 'center',
+                fontSize: '35px',
+              }}
+              hidden={!allParties.length}
+            >
+              Watch Party
+            </h1>
+            <br />
+            <p
+              style={{
+                maxWidth: '40rem',
+                display: 'flex',
+                justifySelf: 'center',
+                alignSelf: 'center',
+                textAlign: 'center',
+                fontSize: '20px',
+              }}
+            >
+              Simultaneously watch Youtube videos with others! Chat while you
+              watch! Archive the parties to relive the memories! Login with
+              Google to get started!
+            </p>
+            <br />
+          </Col>
           <Col xs={12}>
             <h2
               style={{
                 height: '45px',
                 textAlign: 'center',
-                fontSize: '35px',
+                fontSize: '30px',
               }}
               hidden={!allParties.length}
             >
