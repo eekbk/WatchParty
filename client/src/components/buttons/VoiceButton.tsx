@@ -3,6 +3,7 @@ import { Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { BsMic, BsMicMute } from 'react-icons/bs';
 import { VoiceContext } from '../../contexts/voiceContext';
+import HelpButton from './HelpButton';
 import {
   StyledActiveMicIcon,
   StyledDisabledMicIcon,
@@ -27,13 +28,14 @@ function VoiceButton() {
   const handleCloseModal = () => setShowModal(false);
 
   // maybe we have to put all the navigation stuff in here
-  const pages = ['home', 'profile', 'create party', 'calendar', 'login'];
+  const pages = ['home', 'profile', 'create party', 'calendar', 'login', 'DMs'];
   const urls = {
     home: '/',
     profile: '/profile',
     'create party': '/createParty',
     calendar: '/calendar',
     login: '/auth/google',
+    DMs: '/dm',
   };
 
   useEffect(() => {
@@ -55,16 +57,6 @@ function VoiceButton() {
 
   return (
     <>
-      {isSwitchOn ? <StyledTranscript>{transcript}</StyledTranscript> : []}
-      {isSwitchOn ? (
-        <StyledActiveMicIcon onClick={handleVoiceToggle}>
-          <BsMic />
-        </StyledActiveMicIcon>
-      ) : (
-        <StyledDisabledMicIcon onClick={handleVoiceToggle}>
-          <BsMicMute />
-        </StyledDisabledMicIcon>
-      )}
       <StyledModal show={showModal} onHide={handleCloseModal}>
         <StyledModalHeader closeButton>
           <Modal.Title>
@@ -78,6 +70,17 @@ function VoiceButton() {
           </Modal.Body> */}
         <Modal.Footer>Say &quot;exit, send&quot; to close</Modal.Footer>
       </StyledModal>
+      {isSwitchOn ? (
+        <StyledActiveMicIcon onClick={handleVoiceToggle}>
+          <BsMic />
+        </StyledActiveMicIcon>
+      ) : (
+        <StyledDisabledMicIcon onClick={handleVoiceToggle}>
+          <BsMicMute />
+        </StyledDisabledMicIcon>
+      )}
+      <HelpButton />
+      {isSwitchOn ? <StyledTranscript>{transcript}</StyledTranscript> : []}
     </>
   );
 }

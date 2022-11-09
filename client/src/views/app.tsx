@@ -12,7 +12,6 @@ import { UserContext } from '../context';
 import SearchBar from './search/SearchBar';
 // import VoiceControl from './voiceControl/VoiceControl';
 import VoiceButton from '../components/buttons/VoiceButton';
-import HelpButton from '../components/buttons/HelpButton';
 
 function App() {
   const location = useLocation();
@@ -136,7 +135,6 @@ function App() {
       </MainContent>
       <Footer>
         <VoiceButton />
-        <HelpButton />
       </Footer>
     </StyledBackgroundContainer>
   );
