@@ -52,6 +52,10 @@ search.get('/:q', async (req: Request, res: Response) => {
       },
     });
     const usersIds = users.map((u) => u.id);
+    const now = new Date(Date.now());
+    const nowAdj = new Date(
+      now.setTime(now.getTime() - now.getTimezoneOffset() * 60 * 1000)
+    );
     const parties = await prisma.party.findMany({
       where: {
         OR: [
@@ -87,7 +91,7 @@ search.get('/:q', async (req: Request, res: Response) => {
         AND: [
           {
             start_date: {
-              gte: new Date(),
+              gte: nowAdj.toISOString(),
             },
             type: 'PARTY',
           },

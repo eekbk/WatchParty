@@ -15,7 +15,16 @@ video.get('/parties/:videoId', async (req: Request, res: Response) => {
           },
         },
       },
+      orderBy: {
+        start_date: 'asc',
+      },
       include: {
+        party_videos: {
+          select: {
+            video: true,
+            index: true,
+          },
+        },
         user_parties: {
           select: {
             role: true,
@@ -35,7 +44,13 @@ video.get('/parties/:videoId', async (req: Request, res: Response) => {
         username: uP.user.user_name,
         role: uP.role,
       }));
+      party.videos = party.party_videos.map((vid) => ({
+        ...vid.video,
+        index: vid.index,
+      }));
+      party.videos.sort((a, b) => a.index - b.index);
       delete party.user_parties;
+      delete party.party_videos;
     });
     res.status(200).send(parties);
   } catch (err) {

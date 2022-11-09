@@ -1,4 +1,4 @@
-import { Card, Modal } from 'react-bootstrap';
+import { Card, Modal, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context';
@@ -27,12 +27,21 @@ import {
 function PartyCard({ party }) {
   const { id, description, thumbnail, name, start_date, users } = party;
   const { user } = useContext(UserContext);
-  const { partyName, resetTranscript, isSent } = useContext(VoiceContext);
+  const {
+    listening,
+    partyName,
+    setPartyName,
+    resetTranscript,
+    isSent,
+    closeModalToggle,
+  } = useContext(VoiceContext);
   const navigate = useNavigate();
   const [isAttending, setIsAttending] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isCreator, setIsCreator] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showNotYetModal, setShowNotYetModal] = useState(false);
+  const [roomOpen, setRoomOpen] = useState(false);
   const creator = users.filter((user) => user.role === 'CREATOR')[0];
   const creatorText =
     user && creator.id === user.id
@@ -49,8 +58,10 @@ function PartyCard({ party }) {
     return null;
   };
 
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
+  const handleCloseLoginModal = () => setShowLoginModal(false);
+  const handleCloseNotYetModal = () => setShowNotYetModal(false);
+  const handleShowLoginModal = () => setShowLoginModal(true);
+  const handleShowNotYetModal = () => setShowNotYetModal(true);
 
   useEffect(() => {
     if (user) {
@@ -71,7 +82,20 @@ function PartyCard({ party }) {
     }
   }, [user]);
 
-  // for voiceControl
+  useEffect(() => {
+    const now = new Date(Date.now());
+    const nowAdj = now.setTime(
+      now.getTime() - now.getTimezoneOffset() * 60 * 1000
+    );
+    const startDateString: any = new Date(start_date);
+    const timeUntilParty = startDateString - nowAdj;
+    const minutesUntilParty = Math.floor(timeUntilParty / 1000 / 60);
+    if (minutesUntilParty <= 15) {
+      setRoomOpen(true);
+    }
+  }, [start_date]);
+
+  // for voiceControl go to party
   useEffect(() => {
     if (partyName && partyName.toUpperCase() === party.name.toUpperCase()) {
       resetTranscript();
@@ -79,15 +103,29 @@ function PartyCard({ party }) {
     }
   }, [isSent]);
 
+  // for voiceControl close modal
+  useEffect(() => {
+    setPartyName('');
+    if (showLoginModal) {
+      handleCloseLoginModal();
+    }
+    if (showNotYetModal) {
+      setShowNotYetModal(false);
+    }
+  }, [closeModalToggle]);
+
   const goToParty = () => {
-    if (user) {
+    if (!user) {
+      handleShowLoginModal();
+    } else if (!roomOpen && !isCreator) {
+      handleShowNotYetModal();
+    } else {
       navigate('/watchParty', {
         state: { party },
       });
-    } else {
-      handleShowModal();
     }
   };
+
   const handleCardClick = () => {
     goToParty();
   };
@@ -144,6 +182,8 @@ function PartyCard({ party }) {
     return `Starts ${time()}, ${month} ${day}, ${year}`;
   };
 
+  // console.log('party:', party);
+
   return (
     <>
       <StyledPartyCard>
@@ -189,7 +229,7 @@ function PartyCard({ party }) {
           </StyledPartyTime>
         </StyledCardBody>
       </StyledPartyCard>
-      <StyledModal show={showModal} onHide={handleCloseModal}>
+      <StyledModal show={showLoginModal} onHide={handleCloseLoginModal}>
         <StyledModalHeader closeButton>
           <Modal.Title>
             You must&nbsp;
@@ -198,10 +238,24 @@ function PartyCard({ party }) {
             </StyledATag>
             &nbsp;to do that!
           </Modal.Title>
+        </StyledModalHeader>
+        {/* <Modal.Body>
+            <Button href="/auth/google">Login</Button>
+          </Modal.Body> */}
+        {listening ? (
+          <Modal.Footer>Say &quot;exit, send&quot; to close</Modal.Footer>
+        ) : null}
+      </StyledModal>
+      <StyledModal show={showNotYetModal} onHide={handleCloseNotYetModal}>
+        <StyledModalHeader closeButton>
+          <Modal.Title>This party is not open yet!</Modal.Title>
           {/* <Modal.Body>
             <StyledGlassButton href="/auth/google">Login</StyledGlassButton>
           </Modal.Body> */}
         </StyledModalHeader>
+        {listening ? (
+          <Modal.Footer>Say &quot;exit, send&quot; to close</Modal.Footer>
+        ) : null}
       </StyledModal>
     </>
   );
