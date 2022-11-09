@@ -87,8 +87,8 @@ function PartyCard({ party }) {
     const nowAdj = now.setTime(
       now.getTime() - now.getTimezoneOffset() * 60 * 1000
     );
-    const startDateString: any = new Date(start_date);
-    const timeUntilParty = startDateString - nowAdj;
+    const startDateString: Date = new Date(start_date);
+    const timeUntilParty = Number(startDateString) - nowAdj;
     const minutesUntilParty = Math.floor(timeUntilParty / 1000 / 60);
     if (minutesUntilParty <= 15) {
       setRoomOpen(true);

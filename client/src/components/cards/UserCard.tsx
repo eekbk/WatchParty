@@ -16,7 +16,7 @@ import {
 } from './cards.styles';
 
 // ModCard stands for Modular Card. Hopefully we can reuse it
-function UserCard({ obj, socket }) {
+function UserCard({ obj }) {
   const { user } = useContext(UserContext);
   const [cardTitle, setCardTitle] = useState('');
   const [cardText, setCardText] = useState('');
@@ -103,7 +103,6 @@ function UserCard({ obj, socket }) {
               otherUserId={obj.id}
               otherUserName={obj.user_name}
               currentUserId={user.id}
-              socket={socket}
             />
           </StyledUserCardFooterCol>
         </StyledUserCardFooter>

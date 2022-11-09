@@ -4,7 +4,7 @@ import axios from 'axios';
 import { VoiceContext } from '../../contexts/voiceContext';
 import { StyledGlassButton } from './buttons.styles';
 
-function DmButton({ socket, otherUserId, otherUserName, currentUserId }) {
+function DmButton({ otherUserId, otherUserName, currentUserId }) {
   const navigate = useNavigate();
   const { dmName } = useContext(VoiceContext);
 

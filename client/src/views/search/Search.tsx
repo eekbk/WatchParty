@@ -20,7 +20,7 @@ import {
 } from './search.styles';
 import { StyledGlassButton } from '../../components/buttons/buttons.styles';
 
-function Search({ socket }) {
+function Search() {
   const [usersMatch, setUsersMatch] = useState([]);
   const [partiesMatch, setPartiesMatch] = useState([]);
   const [videosMatch, setVideosMatch] = useState([]);
@@ -180,7 +180,7 @@ function Search({ socket }) {
                           .slice(userStartIndex, userStartIndex + 12)
                           .map((userMatch) => (
                             <Col md={3}>
-                              <UserCard obj={userMatch} socket={socket} />
+                              <UserCard obj={userMatch} />
                             </Col>
                           ))}
                       </SearchPageRow>

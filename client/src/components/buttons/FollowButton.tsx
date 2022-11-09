@@ -11,7 +11,7 @@ function FollowButton({
   setFollows,
   isFollowing,
   setIsFollowing,
-}: any) {
+}) {
   const { user, setUser } = useContext(UserContext);
   const { followName, setFollowName, resetTranscript } =
     useContext(VoiceContext);

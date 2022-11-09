@@ -1,4 +1,5 @@
 import express, { Request, Response, Router } from 'express';
+import { CustomParty } from '../../interfaces/server';
 import { prisma } from '../db/index';
 
 export const video: Router = express.Router();
@@ -38,7 +39,7 @@ video.get('/parties/:videoId', async (req: Request, res: Response) => {
         },
       },
     });
-    parties.forEach((party: any) => {
+    parties.forEach((party: CustomParty) => {
       party.users = party.user_parties.map((uP) => ({
         id: uP.user.id,
         username: uP.user.user_name,

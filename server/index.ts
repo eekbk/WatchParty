@@ -3,11 +3,13 @@ import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
 import session from 'express-session';
+import { Message_Type, User } from '@prisma/client';
 import { prisma } from './db/index';
 import { party } from './routes/party';
 import { playlist } from './routes/playlist';
 import { search } from './routes/search';
 import { video } from './routes/video';
+import { CustomSocket } from '../interfaces/server';
 
 const app: Express = express();
 
@@ -92,11 +94,7 @@ app.use('/api/video', video);
 
 app.get(
   '/auth/google',
-  passport.authenticate(
-    'google',
-    { scope: ['profile'] },
-    (req: Request, res: Response) => {}
-  )
+  passport.authenticate('google', { scope: ['profile'] }, null)
 );
 
 app.get(
@@ -107,10 +105,6 @@ app.get(
     res.redirect('/');
   }
 );
-
-// app.get('/', (req, res) => {
-//   res.status(200).send();
-// });
 
 app.post('/logout', (req, res) => {
   if (req.session) {
@@ -126,20 +120,8 @@ app.post('/logout', (req, res) => {
   }
 });
 
-// endpoint for seeding database
-app.post('/api/seed', async (req: Request, res: Response) => {
-  const { table, dataObj } = req.body;
-  try {
-    const createdData = await prisma[table].createMany(dataObj);
-    res.status(201).send(createdData);
-  } catch (err) {
-    console.error('Error from /seed', err);
-    res.sendStatus(500);
-  }
-});
-
 // Socket.io events and listeners
-io.on('connection', (socket: any) => {
+io.on('connection', (socket: CustomSocket) => {
   // Joining a watch party
   socket.on('join', (place: { room: string; type: string }) => {
     if (place.type === 'DM') {
@@ -179,7 +161,12 @@ io.on('connection', (socket: any) => {
   // create new message in db as well
   socket.on(
     'chat',
-    (chat: { room: string; message: string; user: string; type: any }) => {
+    (chat: {
+      room: string;
+      message: string;
+      user: string;
+      type: Message_Type;
+    }) => {
       prisma.message
         .create({
           data: {
@@ -255,7 +242,12 @@ io.on('connection', (socket: any) => {
   // Sends out chat to dm-d user
   socket.on(
     'DmChat',
-    (chat: { dmId: string; message: string; user: any; type: any }) => {
+    (chat: {
+      dmId: string;
+      message: string;
+      user: User;
+      type: Message_Type;
+    }) => {
       prisma.message
         .create({
           data: {

@@ -1,4 +1,11 @@
+import { Party } from '@prisma/client';
 import express, { Request, Response, Router } from 'express';
+import {
+  CustomParty,
+  ptVd,
+  SearchParty,
+  SearchVideo,
+} from '../../interfaces/server';
 import { prisma } from '../db/index';
 
 export const search: Router = express.Router();
@@ -35,7 +42,7 @@ search.get('/:q', async (req: Request, res: Response) => {
         },
       },
     });
-    videos.map((vd: any) => {
+    videos.map((vd: SearchVideo) => {
       vd.parties = vd.party_videos.map((pt) => ({
         ...pt.party,
       }));
@@ -120,7 +127,7 @@ search.get('/:q', async (req: Request, res: Response) => {
         },
       },
     });
-    parties.forEach((pt: any) => {
+    parties.forEach((pt: CustomParty) => {
       pt.users = pt.user_parties.map((usr) => ({
         id: usr.user.id,
         username: usr.user.user_name,
@@ -150,7 +157,7 @@ search.get('/party/:videoId', async (req: Request, res: Response) => {
   const { videoId } = req.params;
   try {
     // find all the parties with a playlist that contains the video
-    let parties: any = await prisma.video.findUnique({
+    let parties: SearchParty | Party[] = await prisma.video.findUnique({
       where: {
         id: videoId,
       },
@@ -162,8 +169,7 @@ search.get('/party/:videoId', async (req: Request, res: Response) => {
         },
       },
     });
-    parties = parties.party_videos.map((vd: any) => vd.party);
-    delete parties.party_videos;
+    parties = parties.party_videos.map((vd: ptVd) => vd.party);
     res.status(200).send(parties);
   } catch (err) {
     console.error('The error from :videoId endpoint:\n', err);

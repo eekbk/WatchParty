@@ -1,6 +1,7 @@
 import express, { Request, Response, Router } from 'express';
 import axios from 'axios';
 import { prisma } from '../db/index';
+import { YoutubePlaylist } from '../../interfaces/server';
 
 export const playlist: Router = express.Router();
 
@@ -37,7 +38,7 @@ playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
     .get(
       `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${process.env.YOUTUBE_KEY}`
     )
-    .then((playlist: any) => {
+    .then((playlist: YoutubePlaylist) => {
       if (playlist === undefined) {
         return undefined;
       }
@@ -55,7 +56,7 @@ playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
         (async () => {
           while (nextPageToken) {
             try {
-              const playlist: any = await axios.get(
+              const playlist: YoutubePlaylist = await axios.get(
                 `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${process.env.YOUTUBE_KEY}&pageToken=${nextPageToken}`
               );
               tempPlaylist = playlist.data.items.filter(

@@ -1,6 +1,11 @@
 // File for handling user endpoints
 import express, { Response, Router } from 'express';
-import { RequestWithUser } from '../../interfaces/server';
+import {
+  CustomParty,
+  CustomPlaylist,
+  RequestWithUser,
+  userConnection,
+} from '../../interfaces/server';
 import { prisma } from '../db/index';
 
 const user: Router = express.Router();
@@ -26,8 +31,10 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           },
         },
       })
-      .then((playlists: any) => {
+      .then((playlists: CustomPlaylist[]) => {
         user.playlists = playlists.map((pl) => ({
+          createdAt: pl.createdAt,
+          updatedAt: pl.updatedAt,
           id: pl.id,
           name: pl.name,
           description: pl.description,
@@ -70,7 +77,7 @@ user.get('/', (req: RequestWithUser, res: Response) => {
           },
         });
       })
-      .then((parties: any) => {
+      .then((parties: CustomParty[]) => {
         parties.forEach((pt) => {
           pt.users = pt.user_parties.map((usr) => ({
             id: usr.user.id,
@@ -370,7 +377,7 @@ user.post('/dm', (req: RequestWithUser, res: Response) => {
       if (bool) {
         res.status(404).send('connection already exist');
       } else {
-        const dm: any = users.map((user) => ({
+        const dm: userConnection[] = users.map((user) => ({
           role: 'CREATOR',
           user: {
             connect: {

@@ -123,7 +123,7 @@
       "warn"
     ],
     "no-await-in-loop": [
-      "warn"
+      "off"
     ],
     "@typescript-eslint/no-empty-function": [
       "off"
