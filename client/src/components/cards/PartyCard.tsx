@@ -1,4 +1,4 @@
-import { Card, Modal, Button } from 'react-bootstrap';
+import { Card, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context';
@@ -88,8 +88,8 @@ function PartyCard({ party }) {
       now.getTime() - now.getTimezoneOffset() * 60 * 1000
     );
     const startDateString: any = new Date(start_date);
-    const timeUntilParty = startDateString - nowAdj;
-    const minutesUntilParty = Math.floor(timeUntilParty / 1000 / 60);
+    const msUntilParty = startDateString - nowAdj;
+    const minutesUntilParty = Math.floor(msUntilParty / 1000 / 60);
     if (minutesUntilParty <= 15) {
       setRoomOpen(true);
     }
@@ -249,10 +249,13 @@ function PartyCard({ party }) {
       <StyledModal show={showNotYetModal} onHide={handleCloseNotYetModal}>
         <StyledModalHeader closeButton>
           <Modal.Title>This party is not open yet!</Modal.Title>
-          {/* <Modal.Body>
-            <StyledGlassButton href="/auth/google">Login</StyledGlassButton>
-          </Modal.Body> */}
         </StyledModalHeader>
+        <Modal.Body>
+          The party will open 15 minutes before the start time
+          <br />
+          Start time:&nbsp;
+          {dateTimeConversion(start_date)}
+        </Modal.Body>
         {listening ? (
           <Modal.Footer>Say &quot;exit, send&quot; to close</Modal.Footer>
         ) : null}
