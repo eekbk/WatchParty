@@ -27,6 +27,7 @@
     "regenerator-runtime": "^0.13.10",
     "socket.io": "^4.5.2",
     "socket.io-client": "^4.5.2",
+    "source-map-loader": "^4.0.1",
     "styled-components": "^5.3.6"
   },
   "devDependencies": {
@@ -79,7 +80,8 @@
     "prepare": "husky install",
     "pre-commit": "npx husky add .husky/pre-commit \"npx lint-staged\"",
     "husky-setup": "npm run prepare && pre-commit",
-    "devStart": "nodemon script.ts"
+    "devStart": "nodemon script.ts",
+    "lint": "npx prettier --write && npx eslint --fix --max-warnings 6969"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

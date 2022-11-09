@@ -111,7 +111,7 @@
       "warn"
     ],
     "camelcase": [
-      "warn"
+      "off"
     ],
     "react/jsx-indent-props": [
       "warn"
@@ -126,7 +126,7 @@
       "warn"
     ],
     "@typescript-eslint/no-empty-function": [
-      "warn"
+      "off"
     ],
     "no-console": [
       "off"
