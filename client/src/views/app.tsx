@@ -33,19 +33,21 @@ function App() {
       axios
         .get('/api/user')
         .then((data) => {
-          setVerified(true);
-          setUser(data.data);
+          if (data.data) {
+            setVerified(true);
+            setUser(data.data);
+          } else {
+            setUser(null);
+            setVerified(true);
+            if (
+              location.pathname !== '/' &&
+              location.pathname.slice(0, 7) !== '/search'
+            ) {
+              navigate('/');
+            }
+          }
         })
         .catch((err) => {
-          setUser(null);
-          setVerified(true);
-          console.log(location.pathname.slice(0, 7));
-          if (
-            location.pathname !== '/' &&
-            location.pathname.slice(0, 7) !== '/search'
-          ) {
-            navigate('/');
-          }
           console.error(err);
         });
     }

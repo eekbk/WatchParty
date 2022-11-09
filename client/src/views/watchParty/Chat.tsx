@@ -57,8 +57,6 @@ function Chat({
   // for style
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-    // TODO: remove me
-    // console.log(vH, vHeight);
   }, [vHeight]);
 
   // handle updates
@@ -103,7 +101,7 @@ function Chat({
           style={{ overflowY: 'auto', height: '100%' }}
         >
           {messages.map((message) => (
-            <Message message={message} user={user} socket={socket} />
+            <Message message={message} user={user} />
           ))}
         </ThinScrollBar>
         {isArchived ? null : (

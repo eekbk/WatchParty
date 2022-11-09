@@ -2,7 +2,7 @@
 import express, { Request, Response, Router } from 'express';
 import axios from 'axios';
 import { prisma } from '../db/index';
-import { YoutubeVideo, RequestWithUser } from '../../interfaces/interfaces';
+import { YoutubeVideo, RequestWithUser } from '../../interfaces/server';
 
 export const party: Router = express.Router();
 
@@ -192,7 +192,6 @@ party.put('/update/:id', (req: Request, res: Response) => {
       data,
     })
     .then((results) => {
-      console.log('updated: ', results);
       res.sendStatus(200);
     })
     .catch((err) => {
@@ -480,6 +479,13 @@ party.delete('/:id', (req: Request, res: Response) => {
         },
       })
     )
+    .then(() => {
+      prisma.like.deleteMany({
+        where: {
+          party_id: id,
+        },
+      });
+    })
     .then(() =>
       prisma.party.delete({
         where: {

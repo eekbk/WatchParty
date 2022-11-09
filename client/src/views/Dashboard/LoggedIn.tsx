@@ -4,10 +4,11 @@ import { Container, Col, Row, Tab, Spinner } from 'react-bootstrap';
 import { StyledTabs } from '../../styles';
 import { UserContext } from '../../context';
 import PartyCard from '../../components/cards/PartyCard';
+import { Room } from '../../../../interfaces/client';
 
-// function CalRow({ children }) {
-//   return <Row xs={4}>{children}</Row>;
-// }
+interface data {
+  data: Room[];
+}
 
 export function LoggedIn() {
   const { user } = useContext(UserContext);
@@ -74,7 +75,7 @@ export function LoggedIn() {
   useEffect(() => {
     axios
       .get('/api/party')
-      .then((data: any) => {
+      .then((data: data) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const tempArr = data.data // all parties
@@ -118,6 +119,7 @@ export function LoggedIn() {
       .catch((err) => {
         console.error(err);
       });
+    console.log(user);
   }, []);
 
   return (

@@ -1,4 +1,3 @@
-// File for styling components
 import styled from 'styled-components';
 import {
   Button,
@@ -19,24 +18,16 @@ import {
   BsHandThumbsUp,
   BsHandThumbsDown,
 } from 'react-icons/bs';
-// const { Title, Body, Img, Text } = Card;
+
 const { Group } = Form;
 const { Collapse, Brand, Toggle } = Navbar;
 const { Link } = Nav;
 
-let primary;
-let secondary;
-let tertiary;
-let accent;
-let text;
-// const disabledForm = '#e9ecef';
-
-// Preferred
-primary = '#320E3B';
-secondary = '#A663CC';
-tertiary = '#48AcF0';
-accent = '#15616D';
-text = '#E5F4E3';
+const primary = '#320E3B';
+const secondary = '#A663CC';
+const tertiary = '#48AcF0';
+const accent = '#15616D';
+const text = '#E5F4E3';
 
 export const StyledBackgroundContainer = styled(Container)`
   height: fit-content;

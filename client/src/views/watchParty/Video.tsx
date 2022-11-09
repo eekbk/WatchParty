@@ -16,6 +16,7 @@ import {
   StContainer,
 } from '../../styles';
 import { Playlist } from './Playlist';
+import { Room } from '../../../../interfaces/client';
 
 function Video({
   playlist,
@@ -24,7 +25,6 @@ function Video({
   setParticipants,
   status,
   room,
-  user,
   socket,
   isArchived,
   vH,
@@ -33,7 +33,7 @@ function Video({
   // state vars
   const [clicked, setClicked] = useState(false);
   const [isPlaying, setPause] = useState(() => false);
-  const [pSeconds, setSeconds] = useState(() => room.current_time);
+  const [pSeconds, setSeconds] = useState(() => Number(room.current_time));
   const [duration, setDur] = useState(1);
   const [volume, setVol] = useState(0.5);
   const [video, setVid] = useState(room.current_video);
@@ -135,8 +135,8 @@ function Video({
 
   // TODO: Get video player to start at stored video/time if nobody is already in the room
   const onReady = () => {
-    // videoPlayer.current.seekTo(pSeconds, 'seconds');
-    // setPause(isPlaying);
+    videoPlayer.current.seekTo(pSeconds, 'seconds');
+    setPause(isPlaying);
   };
 
   // pauses all clients
@@ -162,6 +162,7 @@ function Video({
 
   // updates once
   useEffect(() => {
+    console.log(room);
     setDuration();
     socket.on('pause', (arg: boolean) => {
       setPause(arg);
@@ -177,7 +178,7 @@ function Video({
     socket.on(
       'giveRoom',
       (video: {
-        room: any;
+        room: Room;
         video: number;
         start: number;
         playing: boolean;
@@ -307,13 +308,17 @@ function Video({
                 visibility: isArchived
                   ? 'visible'
                   : status
-                  ? status.role === 'CREATOR'
+                  ? status.role === 'CREATOR' || status.role === 'ADMIN'
                     ? 'visible'
                     : 'hidden'
                   : 'hidden',
               }}
               disabled={
-                isArchived ? false : status ? status.role !== 'CREATOR' : true
+                isArchived
+                  ? false
+                  : status
+                  ? status.role !== 'CREATOR' && status.role !== 'ADMIN'
+                  : true
               }
               onClick={() => (isPlaying ? pauseVid() : playVid())}
             >
@@ -330,13 +335,17 @@ function Video({
                 visibility: isArchived
                   ? 'visible'
                   : status
-                  ? status.role === 'CREATOR'
+                  ? status.role === 'CREATOR' || status.role === 'ADMIN'
                     ? 'visible'
                     : 'hidden'
                   : 'hidden',
               }}
               disabled={
-                isArchived ? false : status ? status.role !== 'CREATOR' : true
+                isArchived
+                  ? false
+                  : status
+                  ? status.role !== 'CREATOR' && status.role !== 'ADMIN'
+                  : true
               }
               onClick={() => changeVid(false)}
             >
@@ -349,13 +358,17 @@ function Video({
                 visibility: isArchived
                   ? 'visible'
                   : status
-                  ? status.role === 'CREATOR'
+                  ? status.role === 'CREATOR' || status.role === 'ADMIN'
                     ? 'visible'
                     : 'hidden'
                   : 'hidden',
               }}
               disabled={
-                isArchived ? false : status ? status.role !== 'CREATOR' : true
+                isArchived
+                  ? false
+                  : status
+                  ? status.role !== 'CREATOR' && status.role !== 'ADMIN'
+                  : true
               }
               onClick={() => changeVid(true)}
             >

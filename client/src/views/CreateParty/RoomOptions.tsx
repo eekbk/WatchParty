@@ -9,6 +9,7 @@ import {
   StyledFormControl,
   StyledFormTextarea,
 } from './styles';
+import { Relation } from '../../../../interfaces/client';
 
 export function RoomOptions({
   setArchive,
@@ -53,10 +54,10 @@ export function RoomOptions({
           <StyledFormGroup style={{ marginTop: '10px' }}>
             <StyledFormLabel>Assign Admins</StyledFormLabel>
             <StyledTypeahead
-              labelKey={(option: any) => option.username}
+              labelKey={(option: Relation) => option.username}
               multiple
               id="keep-menu-open"
-              onChange={(selected: any[]) => {
+              onChange={(selected: Relation[]) => {
                 setAdmins(selected);
                 setInvited(
                   invited.concat(
@@ -71,7 +72,7 @@ export function RoomOptions({
               placeholder="Enter usernames"
               ref={typeaheadRef1}
               selected={admins}
-              renderToken={(option: any, { onRemove }, index) => (
+              renderToken={(option: Relation, { onRemove }, index) => (
                 <StyledToken key={index} onRemove={onRemove} option={option}>
                   {`@${option.username}`}
                 </StyledToken>
@@ -84,10 +85,10 @@ export function RoomOptions({
             <StyledFormLabel>Invite</StyledFormLabel>
             <StyledTypeahead
               disabled={!privateR}
-              labelKey={(option: any) => option.username}
+              labelKey={(option: Relation) => option.username}
               multiple
               id="keep-menu-open"
-              onChange={(selected: any[]) => {
+              onChange={(selected: Relation[]) => {
                 setInvited(selected);
                 setAdmins(
                   admins.filter((adm) =>
@@ -101,7 +102,7 @@ export function RoomOptions({
               placeholder="Enter usernames"
               ref={typeaheadRef2}
               selected={privateR ? invited : []}
-              renderToken={(option: any, { onRemove }, index) => (
+              renderToken={(option: Relation, { onRemove }, index) => (
                 <StyledToken key={index} onRemove={onRemove} option={option}>
                   {`@${option.username}`}
                 </StyledToken>

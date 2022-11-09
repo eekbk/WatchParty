@@ -40,9 +40,7 @@ function SearchBar() {
   };
 
   const simulateNetworkRequest = async () => {
-    await setTimeout(() => {
-      console.log('');
-    }, 2000);
+    await setTimeout(() => {}, 2000);
   };
 
   useEffect(() => {

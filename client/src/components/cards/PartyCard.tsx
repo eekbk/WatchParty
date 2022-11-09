@@ -192,12 +192,15 @@ function PartyCard({ party }) {
     return `Starts ${time()}, ${month} ${day}, ${year}`;
   };
 
-  // console.log('party:', party);
-
   return (
     <>
       <StyledPartyCard>
-        <Card.Img variant="top" src={thumbnail} />
+        <Card.Img
+          variant="top"
+          src={thumbnail}
+          onClick={handleCardClick}
+          style={{ cursor: 'pointer' }}
+        />
         {user && (
           <StyledPartyCardImgOverlay>
             <StyledPartyCardImgOverlayText>
@@ -219,7 +222,7 @@ function PartyCard({ party }) {
                   />
 
                   <PartyCardStatus>
-                    {isAttending ? 'GOING' : 'JOIN'}
+                    {isAttending ? 'GOING' : 'RSVP'}
                   </PartyCardStatus>
                 </PartyCardNormieCol>
               )}

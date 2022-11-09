@@ -1,4 +1,3 @@
-// File for root element
 import 'regenerator-runtime/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -13,6 +12,7 @@ import { Dashboard } from './views/Dashboard/Dashboard';
 import Dm from './views/Dm/Dm';
 import Archive from './views/Archive/Archive';
 import Search from './views/search/Search';
+// import { Profile } from './views/Profile';
 
 const socket = io();
 
@@ -36,7 +36,7 @@ function RouteHandler() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById('app')!).render(
+ReactDOM.createRoot(document.getElementById('app')).render(
   <UserContextProvider>
     <VoiceContextProvider>
       <RouteHandler />

@@ -63,6 +63,7 @@ model Party {
   is_private    Boolean       @default(false)
   will_archive  Boolean       @default(false)
   start_date    DateTime      @default(now()) @db.Timestamptz(0)
+  // TODO: remove likes_count property
   likes_count   Int           @default(0)
   type          Party_Type
   status        Status        @default(UPCOMING)
