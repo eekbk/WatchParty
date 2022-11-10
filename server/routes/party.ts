@@ -304,6 +304,8 @@ party.post('/archive', (req: RequestWithUser, res: Response) => {
       },
       data: {
         status: 'ARCHIVED',
+        current_video: 0,
+        current_time: 0.0001,
       },
     })
     .then((data) => res.status(201).send(JSON.stringify(data)))

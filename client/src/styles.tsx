@@ -75,11 +75,6 @@ export const Header = styled.header`
   z-index: 2;
   margin: 0px;
   justify-content: center;
-
-  // for gradient header, footer
-  /* background-color: purple;
-	background-image: linear-gradient(#320e3b, black);
-  text-shadow: 0px -1px #333; */
 `;
 
 export const Footer = styled.footer`
