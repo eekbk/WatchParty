@@ -15,10 +15,10 @@ import {
   SearchPageRow,
   SearchTabContainer,
   SearchPageHeading,
-  SearchPageCol,
   CenteredSearchPageRow,
+  StyledLeftRow,
+  StyledATag,
 } from './search.styles';
-import { StyledGlassButton } from '../../components/buttons/buttons.styles';
 
 function Search() {
   const [usersMatch, setUsersMatch] = useState([]);
@@ -125,18 +125,18 @@ function Search() {
         <Container>
           {isVideoClicked ? (
             <>
+              <StyledLeftRow>
+                <StyledATag onClick={() => setIsVideoClicked(false)}>
+                  back to search results
+                </StyledATag>
+              </StyledLeftRow>
               <SearchPageHeading>
                 Parties featuring &quot;
                 {selectedVideo.title}
                 &quot;:
               </SearchPageHeading>
-              <SearchPageRow>{partiesRender(videoParties)}</SearchPageRow>
               <CenteredSearchPageRow>
-                <SearchPageCol sm={2}>
-                  <StyledGlassButton onClick={() => setIsVideoClicked(false)}>
-                    Back
-                  </StyledGlassButton>
-                </SearchPageCol>
+                {partiesRender(videoParties)}
               </CenteredSearchPageRow>
             </>
           ) : (
@@ -221,7 +221,6 @@ function Search() {
                         <Paginator
                           resultsPerPage={12}
                           totalResults={videosMatch.length}
-                          // paginate={paginate}
                           startIndexSetter={setVideoStartIndex}
                         />
                       ) : null}
