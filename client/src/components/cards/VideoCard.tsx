@@ -56,8 +56,8 @@ function VideoCard({
             <Row>
               <StyledIsFollowing>
                 {parties.length === 1
-                  ? `Appears in ${parties.length} video`
-                  : `Appears in ${parties.length} videos`}
+                  ? `Appears in ${parties.length} party`
+                  : `Appears in ${parties.length} parties`}
               </StyledIsFollowing>
             </Row>
           </Col>

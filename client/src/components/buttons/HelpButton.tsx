@@ -8,17 +8,19 @@ import { VoiceContext } from '../../contexts/voiceContext';
 function HelpButton() {
   const [showHelpModal, setShowHelpModal] = useState(false);
   const location = useLocation();
-  const { openModalToggle, closeModalToggle, listening } =
+  const { openModalToggle, closeModalToggle, listening, resetTranscript } =
     useContext(VoiceContext);
 
   useEffect(() => {
     if (listening) {
       setShowHelpModal(true);
+      resetTranscript();
     }
   }, [openModalToggle]);
 
   useEffect(() => {
     setShowHelpModal(false);
+    resetTranscript();
   }, [closeModalToggle]);
 
   const handleCloseHelpModal = () => setShowHelpModal(false);
