@@ -84,7 +84,7 @@ export const Footer = styled.footer`
   bottom: 0;
   left: 0;
   height: 100px;
-  width: 40%;
+  width: fit-content;
   z-index: 3;
   background: transparent;
   margin: 0;
