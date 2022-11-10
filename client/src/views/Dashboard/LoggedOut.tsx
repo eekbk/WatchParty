@@ -65,7 +65,7 @@ export function LoggedOut() {
             <br />
             <p
               style={{
-                maxWidth: '40rem',
+                maxWidth: '50rem',
                 display: 'flex',
                 justifySelf: 'center',
                 alignSelf: 'center',
@@ -73,16 +73,9 @@ export function LoggedOut() {
                 fontSize: '20px',
               }}
             >
-              Simultaneously watch Youtube videos with others! 
-              {' '}
-              <br />
-              Chat while you watch! 
-              {' '}
-              <br />
-              Archive the parties to relive the memories! 
-              {' '}
-              <br />
-              Login with Google to get started!
+              Simultaneously watch Youtube videos with others! Chat while you
+              watch! Archive the parties to relive the memories! Login with
+              Google to get started!
             </p>
             <br />
           </Col>

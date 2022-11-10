@@ -81,6 +81,7 @@ export const StyledTranscript = styled.span`
   border-radius: 20px;
   margin-bottom: 2rem;
   margin-left: 0.5rem;
+  margin-right: 2rem;
 `;
 
 export const StyledModal = styled(Modal)`
