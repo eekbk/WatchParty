@@ -1,10 +1,12 @@
 {
   "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "extends": [
     "eslint:recommended",
     "airbnb",
     "airbnb/hooks",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
   "env": {
     "es6": true,
@@ -12,7 +14,7 @@
   },
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 9,
+    "ecmaVersion": "latest",
     "ecmaFeatures": {
       "jsx": true
     }
@@ -24,13 +26,7 @@
     ]
   },
   "rules": {
-    "import/extensions": [
-      "warn",
-      "always",
-      {
-        "ignorePackages": true
-      }
-    ],
+    "import/extensions": 0,
     "no-unused-vars": [
       "warn",
       {
@@ -78,10 +74,61 @@
     "no-nested-ternary": [
       "off"
     ],
+    "no-plusplus": [
+      "off"
+    ],
     "no-param-reassign": [
       "off"
     ],
     "@typescript-eslint/no-var-requires": [
+      "off"
+    ],
+    "react/react-in-jsx-scope": [
+      "off"
+    ],
+    "react/jsx-filename-extension": [
+      1, { "extensions": [".js", ".jsx", "ts", "tsx"] }
+    ],
+    "import/prefer-default-export": [
+      "off"
+    ],
+    "import/no-unresolved": [
+      "off"
+    ],
+    "react/jsx-closing-tag-location": [
+      "off"
+    ],
+    "no-useless-escape": [
+      "off"
+    ],
+    "implicit-arrow-linebreak": [
+      "off"
+    ],
+    "react/jsx-indent": [
+      "warn"
+    ],
+    "prefer-const": [
+      "warn"
+    ],
+    "camelcase": [
+      "off"
+    ],
+    "react/jsx-indent-props": [
+      "warn"
+    ],
+    "react/jsx-closing-bracket-location": [
+      "warn"
+    ],
+    "react/jsx-one-expression-per-line": [
+      "warn"
+    ],
+    "no-await-in-loop": [
+      "off"
+    ],
+    "@typescript-eslint/no-empty-function": [
+      "off"
+    ],
+    "no-console": [
       "off"
     ]
   }

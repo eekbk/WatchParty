@@ -1,0 +1,22 @@
+::-webkit-scrollbar-thumb {
+  width: 100%;
+  box-shadow: inset 0px 0px 5px black;
+  background: #898989;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:active {
+  box-shadow: inset 0px 0px 10px black;
+}
+::-webkit-scrollbar {
+  width: 15px;
+  background-color: #302e2e;
+  border-radius: 20px;
+}
+
+body {
+  background: radial-gradient(ellipse at center, #320e3b, black);
+}
+
+:root {
+  background-color: black;
+}

@@ -9,3 +9,14 @@ Thumbs.db
 yarn.lock
 pnpm-lock.yaml
 .env
+rootkey.csv
+bundle.js
+Dictaphone.tsx
+VoiceToggle.tsx
+VoiceControl.tsx
+VoiceControl2.tsx
+helperFuncs
+SearchBarAdvancedzzz.tsx
+ModCard.tsx
+PartyCountdown.tsx
+
