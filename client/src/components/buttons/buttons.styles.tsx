@@ -33,7 +33,7 @@ export const StyledActiveMicIcon = styled.span`
   font-size: 150%;
   padding: 5px 10px;
   border: 1px solid white;
-  margin: 2rem 1rem;
+  margin: 2rem 0.5rem;
   text-align: center;
   border-radius: 50%;
   cursor: pointer;
@@ -44,7 +44,7 @@ export const StyledDisabledMicIcon = styled.span`
   font-size: 150%;
   padding: 5px 10px;
   border: 1px solid #6a1d7d;
-  margin: 2rem 1rem;
+  margin: 2rem 0.5rem;
   text-align: center;
   border-radius: 50%;
   cursor: pointer;
@@ -67,6 +67,7 @@ export const StyledPagination = styled(Pagination)`
   --bs-pagination-color: white;
   --bs-pagination-border: 10px solid #6a1d7d;
   --bs-pagination-active-border-color: #a12dbe;
+  --bs-pagination-border-color: #6a1d7d;
   justify-content: center;
   justify-self: center;
   margin-top: 1rem;
@@ -79,6 +80,7 @@ export const StyledTranscript = styled.span`
   padding: 0.5em;
   border-radius: 20px;
   margin-bottom: 2rem;
+  margin-left: 0.5rem;
 `;
 
 export const StyledModal = styled(Modal)`

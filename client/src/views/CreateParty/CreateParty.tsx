@@ -10,10 +10,10 @@ import {
   CreatePartyContainer,
   HeaderRow,
   HeaderColumn,
-  StyledTabs,
   StyledTab,
   StyledButton,
 } from './styles';
+import { StyledTabs } from '../../styles';
 import { RoomDetails } from './RoomDetails';
 import { RoomOptions } from './RoomOptions';
 import { VideoImports } from './VideoImports';
