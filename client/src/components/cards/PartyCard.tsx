@@ -88,8 +88,8 @@ function PartyCard({ party }) {
       now.getTime() - now.getTimezoneOffset() * 60 * 1000
     );
     const startDateString: Date = new Date(start_date);
-    const timeUntilParty = Number(startDateString) - nowAdj;
-    const minutesUntilParty = Math.floor(timeUntilParty / 1000 / 60);
+    const msUntilParty = Number(startDateString) - nowAdj;
+    const minutesUntilParty = Math.floor(msUntilParty / 1000 / 60);
     if (minutesUntilParty <= 15) {
       setRoomOpen(true);
     }
@@ -97,9 +97,19 @@ function PartyCard({ party }) {
 
   // for voiceControl go to party
   useEffect(() => {
-    if (partyName && partyName.toUpperCase() === party.name.toUpperCase()) {
-      resetTranscript();
-      goToParty();
+    if (partyName) {
+      const puncRegex = /[.,\/#!$%\^\'&\*;:{}=\-_`~()]/g;
+      const spaceRegex = /\s{2,}/g;
+      const compareOne = party.name
+        .replace(puncRegex, '')
+        .replace(spaceRegex, ' ');
+      const compareTwo = partyName
+        .replace(puncRegex, '')
+        .replace(spaceRegex, ' ');
+      if (compareOne.toUpperCase() === compareTwo.toUpperCase()) {
+        resetTranscript();
+        goToParty();
+      }
     }
   }, [isSent]);
 
@@ -252,10 +262,14 @@ function PartyCard({ party }) {
       <StyledModal show={showNotYetModal} onHide={handleCloseNotYetModal}>
         <StyledModalHeader closeButton>
           <Modal.Title>This party is not open yet!</Modal.Title>
-          {/* <Modal.Body>
-            <StyledGlassButton href="/auth/google">Login</StyledGlassButton>
-          </Modal.Body> */}
         </StyledModalHeader>
+        <Modal.Body>
+          The party will open 15 minutes before the start time
+          <br />
+          <br />
+          {dateTimeConversion(start_date)}
+          <br />
+        </Modal.Body>
         {listening ? (
           <Modal.Footer>Say &quot;exit, send&quot; to close</Modal.Footer>
         ) : null}
