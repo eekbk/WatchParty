@@ -28,7 +28,7 @@ function RouteHandler() {
             {/* <Route path="profile" element={<Profile />} /> */}
             <Route path="dm" element={<Dm socket={socket} room="" />} />
             <Route path="archive" element={<Archive />} />
-            <Route path="search/:q" element={<Search socket={socket} />} />
+            <Route path="search/:q" element={<Search />} />
           </Route>
         </Routes>
       </BrowserRouter>

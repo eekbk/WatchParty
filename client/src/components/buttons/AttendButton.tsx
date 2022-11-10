@@ -5,7 +5,7 @@ import { StyledAttendIcon } from './buttons.styles';
 import { UserContext } from '../../context';
 import { VoiceContext } from '../../contexts/voiceContext';
 
-function AttendButton({ name, partyId, isAttending, setIsAttending }: any) {
+function AttendButton({ name, partyId, isAttending, setIsAttending }) {
   const { user, setUser } = useContext(UserContext);
   const { attendPartyName, setAttendPartyName, resetTranscript } =
     useContext(VoiceContext);

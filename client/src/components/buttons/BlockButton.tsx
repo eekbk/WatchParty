@@ -9,7 +9,7 @@ function BlockButton({
   otherUserName,
   isBlocking,
   setIsBlocking,
-}: any) {
+}) {
   const { user, setUser } = useContext(UserContext);
   const { blockName, resetTranscript } = useContext(VoiceContext);
   const [aToggle, setAToggle] = useState(false);

@@ -1,8 +1,13 @@
 // File for handling WatchParty endpoints
 import express, { Request, Response, Router } from 'express';
 import axios from 'axios';
+import { User } from '@prisma/client';
 import { prisma } from '../db/index';
-import { YoutubeVideo, RequestWithUser } from '../../interfaces/server';
+import {
+  YoutubeVideo,
+  RequestWithUser,
+  CustomParty,
+} from '../../interfaces/server';
 
 export const party: Router = express.Router();
 
@@ -38,7 +43,7 @@ party.get('/', (req: Request, res: Response) => {
         likes: true,
       },
     })
-    .then((parties: any) => {
+    .then((parties: CustomParty[]) => {
       parties.forEach((pt) => {
         pt.users = pt.user_parties.map((usr) => ({
           id: usr.user.id,
@@ -66,27 +71,26 @@ party.get('/', (req: Request, res: Response) => {
 // Creates a watch party
 party.post('/', (req: RequestWithUser, res: Response) => {
   const { party } = req.body;
-  let {
+  const {
     name,
     description,
     type,
     status,
     is_private,
     will_archive,
-    admins,
-    invitees,
     start_date,
     user_id,
     videos,
     thumbnail,
   } = party;
+  let { invitees, admins } = party;
   invitees = invitees || [];
   admins = admins || [];
   invitees = invitees.filter((i) => !admins.some((a) => i.id === a.id));
   const participants = admins
-    .map((ad: any) => ({ role: 'ADMIN', user: { connect: { id: ad.id } } }))
+    .map((ad: User) => ({ role: 'ADMIN', user: { connect: { id: ad.id } } }))
     .concat(
-      invitees.map((inv: any) => ({
+      invitees.map((inv: User) => ({
         role: 'NORMIE',
         user: {
           connect: {
@@ -159,7 +163,7 @@ party.get('/id/:id', (req: Request, res: Response) => {
         },
       },
     })
-    .then((pt: any) => {
+    .then((pt: CustomParty) => {
       pt.users = pt.user_parties.map((usr) => ({
         id: usr.user.id,
         username: usr.user.user_name,
@@ -191,7 +195,7 @@ party.put('/update/:id', (req: Request, res: Response) => {
       },
       data,
     })
-    .then((results) => {
+    .then(() => {
       res.sendStatus(200);
     })
     .catch((err) => {
@@ -275,7 +279,7 @@ party.get('/archive', (req: RequestWithUser, res: Response) => {
         },
       },
     })
-    .then((archives: any) => {
+    .then((archives: CustomParty[]) => {
       archives.map((pt) => {
         pt.videos = pt.party_videos.map((vd) => ({
           ...vd.video,
