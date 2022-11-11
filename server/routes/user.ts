@@ -10,31 +10,6 @@ import { prisma } from '../db/index';
 
 const user: Router = express.Router();
 
-user.get('/test', async (req: RequestWithUser, res: Response) => {
-  try {
-    const result = await prisma.party.findFirst({
-      where: {
-        type: 'DM',
-        user_parties: {
-          every: {
-            OR: [
-              { user_id: '650a4784-70cb-42a3-95d5-2ff88e6611f7' },
-              { user_id: 'e5957273-f746-4c36-9f96-a1a3e5150b40' },
-            ],
-          },
-        },
-      },
-      select: {
-        id: true,
-      },
-    });
-    res.status(200).send(result);
-  } catch (err) {
-    console.log(err);
-    res.sendStatus(500);
-  }
-});
-
 // Gets relevant user data from the database and appends it to the user
 user.get('/', (req: RequestWithUser, res: Response) => {
   const { user } = req;
