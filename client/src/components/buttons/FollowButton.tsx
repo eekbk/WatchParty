@@ -36,6 +36,10 @@ function FollowButton({
         });
         await setIsFollowing(true);
         setFollows(follows + 1);
+        await axios.post('/api/user/dm', {
+          currentUserId: user.id,
+          otherUserId,
+        });
       } catch (err) {
         console.error('Your error from follow, fool:\n', err);
       }

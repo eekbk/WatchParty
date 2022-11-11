@@ -45,7 +45,8 @@ function Search() {
       .get(`/api/search/${q}`)
       .then(({ data }) => {
         setVideosMatch(data.videos);
-        setUsersMatch(data.users);
+        const usersNotMe = data.users.filter((match) => user.id !== match.id);
+        setUsersMatch(usersNotMe);
         setPartiesMatch(data.parties);
         setIsLoading(false);
       })
