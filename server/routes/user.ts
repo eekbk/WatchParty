@@ -12,19 +12,20 @@ const user: Router = express.Router();
 
 user.get('/test', async (req: RequestWithUser, res: Response) => {
   try {
-    const result = await prisma.user_Party.findFirst({
+    const result = await prisma.party.findFirst({
       where: {
-        party: {
-          type: 'DM',
-          user_parties: {
-            every: {
-              OR: [
-                { user_id: '650a4784-70cb-42a3-95d5-2ff88e6611f7' },
-                { user_id: 'e5957273-f746-4c36-9f96-a1a3e5150b40' },
-              ],
-            },
+        type: 'DM',
+        user_parties: {
+          every: {
+            OR: [
+              { user_id: '650a4784-70cb-42a3-95d5-2ff88e6611f7' },
+              { user_id: 'e5957273-f746-4c36-9f96-a1a3e5150b40' },
+            ],
           },
         },
+      },
+      select: {
+        id: true,
       },
     });
     res.status(200).send(result);
@@ -333,20 +334,34 @@ user.post('/block', async (req: RequestWithUser, res: Response) => {
           ],
         },
       });
-      await prisma.user_Party.deleteMany({
+      const where = await prisma.party.findFirst({
         where: {
-          party: {
-            type: 'DM',
-            user_parties: {
-              every: {
-                OR: [
-                  { user_id: '650a4784-70cb-42a3-95d5-2ff88e6611f7' },
-                  { user_id: 'e5957273-f746-4c36-9f96-a1a3e5150b40' },
-                ],
-              },
+          type: 'DM',
+          user_parties: {
+            every: {
+              OR: [
+                { user_id: '650a4784-70cb-42a3-95d5-2ff88e6611f7' },
+                { user_id: 'e5957273-f746-4c36-9f96-a1a3e5150b40' },
+              ],
             },
           },
         },
+        select: {
+          id: true,
+        },
+      });
+      await prisma.user_Party.deleteMany({
+        where: {
+          party_id: where.id,
+        },
+      });
+      await prisma.message.deleteMany({
+        where: {
+          party_id: where.id,
+        },
+      });
+      await prisma.party.delete({
+        where,
       });
       res.sendStatus(201);
     }
