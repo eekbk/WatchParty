@@ -53,7 +53,7 @@ function BlockButton({
 
   return (
     <StyledGlassButton size="sm" onClick={handleClick}>
-      {isBlocking ? 'unblock' : ' block '}
+      block
     </StyledGlassButton>
   );
 }

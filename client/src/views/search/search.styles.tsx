@@ -26,24 +26,35 @@ export const SearchTabContainer = styled(Container)`
   align-content: space-around;
 `;
 
+export const StyledLeftRow = styled(Row)`
+  justify-content: left;
+  padding: 1rem 0 0 6rem;
+`;
+
+export const StyledATag = styled.a`
+  color: #6a1d7d;
+  font-size: larger;
+  width: fit-content;
+  cursor: pointer;
+  &:hover {
+    color: #a663cc;
+  }
+`;
+
 export const SeeMoreLink = styled.div`
   margin-bottom: 4px;
-  /* justify-content: right; */
   text-align: right;
   cursor: pointer;
 `;
 
 export const SearchPageCol = styled(Col)`
-  /* align-items: center; */
   align-content: center;
   justify-content: center;
 `;
 
 export const SearchPageRow = styled(Row)`
   align-content: center;
-  /* justify-content: center; */
   justify-content: left;
-  /* margin: 1em; */
 `;
 
 export const CenteredSearchPageRow = styled(Row)`
@@ -67,7 +78,6 @@ export const SearchBarContainer = styled(Container)`
 
 export const SearchInputContainer = styled(InputGroup)`
   width: 100%;
-  /* min-height: 4em; */
   display: flex;
   align-items: center;
   position: relative;

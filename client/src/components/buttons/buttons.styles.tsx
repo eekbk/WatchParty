@@ -96,6 +96,7 @@ export const StyledModalHeader = styled(Modal.Header)`
 
 export const StyledATag = styled.a`
   color: #d236f9;
+  cursor: pointer;
   &:hover {
     color: #320e3b;
   }
