@@ -17,20 +17,22 @@ function DmChat({ socket, room, user, messages, setMessages }) {
 
   // Functions
   const submitChat = () => {
-    socket.emit('DmChat', {
-      dmId: room,
-      type: 'DM',
-      message: chat,
-      user,
-    });
-    setMessages([
-      ...messages,
-      {
+    if (chat.length) {
+      socket.emit('DmChat', {
+        dmId: room,
+        type: 'DM',
         message: chat,
-        user: { user_name: user.user_name, id: user.id },
-      },
-    ]);
-    setChat('');
+        user,
+      });
+      setMessages([
+        ...messages,
+        {
+          message: chat,
+          user: { user_name: user.user_name, id: user.id },
+        },
+      ]);
+      setChat('');
+    }
   };
 
   const handleSubmit = (e) => {
@@ -99,6 +101,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
             value={chat}
             onChange={(event) => setChat(event.target.value)}
             placeholder="type here!"
+            className="dm-chat"
           />
           <StyledButton
             type="submit"

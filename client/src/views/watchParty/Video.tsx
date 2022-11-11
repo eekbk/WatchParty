@@ -78,7 +78,7 @@ function Video({
             });
         } else if (!playlist[video + 1] && !room.will_archive) {
           axios
-            .delete(`/api/party/${room.id}`)
+            .delete(`/api/party/delete/${room.id}`)
             .then(() => {
               socket.emit('endParty', {
                 room: room.id,
@@ -133,7 +133,6 @@ function Video({
     setDur(videoPlayer.current.getDuration());
   };
 
-  // TODO: Get video player to start at stored video/time if nobody is already in the room
   const onReady = () => {
     videoPlayer.current.seekTo(pSeconds, 'seconds');
     setPause(isPlaying);
@@ -162,7 +161,6 @@ function Video({
 
   // updates once
   useEffect(() => {
-    console.log(room);
     setDuration();
     socket.on('pause', (arg: boolean) => {
       setPause(arg);

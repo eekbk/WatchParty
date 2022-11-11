@@ -106,11 +106,6 @@ export const StyledButton = styled(Button)`
     box-shadow: none;
     background-color: #8a25e2;
   }
-  &:active {
-    outline: none;
-    box-shadow: none;
-    background-color: #8a25e2;
-  }
   &:focus {
     outline: black solid 2px;
   }

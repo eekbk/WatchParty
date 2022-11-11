@@ -70,6 +70,7 @@ export function RoomDetails({ setName, setDescription, setDate, date, name }) {
               : `0${new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).getDate()}`
           }`}
           type="date"
+          className="party-date"
           onChange={(e) => {
             const tempTime = date.toString().slice(16, 21);
             let tempDate = new Date(e.target.value);
@@ -92,6 +93,7 @@ export function RoomDetails({ setName, setDescription, setDate, date, name }) {
           min="00:00"
           max="23:59"
           type="time"
+          className="party-time"
           onChange={(e) => {
             date.setHours(
               e.target.value.slice(0, 2),

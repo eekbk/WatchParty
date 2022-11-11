@@ -63,13 +63,10 @@ export const CenteredSearchPageRow = styled(Row)`
 `;
 
 export const SearchBarContainer = styled(Container)`
-  display: flex;
-  flex-direction: column;
   width: 28rem;
   max-width: 80vw;
-  height: 3.8em;
+  height: fit-content;
   background-color: transparent;
-  padding-top: 4px;
   overflow: hidden;
   padding-left: 0px;
   padding-right: 0px;
@@ -78,12 +75,13 @@ export const SearchBarContainer = styled(Container)`
 
 export const SearchInputContainer = styled(InputGroup)`
   width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   position: relative;
-  padding: 2px 15px;
   padding-left: 0px;
   padding-right: 0px;
+  justify-content: center;
 `;
 
 export const SearchForm = styled(Form.Control)`
@@ -96,13 +94,13 @@ export const SearchForm = styled(Form.Control)`
   font-weight: 500;
   border-radius: 20px;
   background-color: white;
-  padding: 8px;
+  padding: 9px;
 
   box-shadow: 0px 2px 12px 3px rgba(0, 0, 0, 0.14);
-  /* vertical-align: middle; */
 
   &:focus {
     outline: none;
+    box-shadow: 0px 0px 2px black;
     &::placeholder {
       opacity: 0;
     }
@@ -135,7 +133,6 @@ export const SearchButton = styled(Button)`
   font-weight: 500;
   border-radius: 20px;
   background-color: white;
-  padding: 4px;
   /* box-shadow: 0px 2px 12px 3px rgba(0, 0, 0, 0.14); */
 
   /* vertical-align: middle; */

@@ -463,7 +463,7 @@ party.post('/dmMessages', (req: RequestWithUser, res: Response) => {
 });
 
 // Deletes a watch party by its id
-party.delete('/:id', (req: Request, res: Response) => {
+party.delete('/delete/:id', (req: Request, res: Response) => {
   const { id } = req.params;
   prisma.user_Party
     .deleteMany({
