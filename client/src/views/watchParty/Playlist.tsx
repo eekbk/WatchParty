@@ -92,7 +92,7 @@ export function Playlist({
           });
       } else if (!playlist[vid + 1] && !room.will_archive) {
         axios
-          .delete(`/api/party/${room.id}`)
+          .delete(`/api/party/delete/${room.id}`)
           .then(() => {
             socket.emit('endParty', {
               room: room.id,
