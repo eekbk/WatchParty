@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { Nav, Navbar, Container } from 'react-bootstrap';
-import { useContext, useEffect } from 'react';
+import { Nav, Navbar, Container, Spinner } from 'react-bootstrap';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   StyledBackgroundContainer,
@@ -16,7 +16,8 @@ import VoiceButton from '../components/buttons/VoiceButton';
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, setUser, setVerified } = useContext(UserContext);
+  const [verified, setVerified] = useState(false);
+  const { user, setUser } = useContext(UserContext);
 
   // special AND very important useEffect
   useEffect(() => {
@@ -39,12 +40,7 @@ function App() {
           } else {
             setUser(null);
             setVerified(true);
-            if (
-              location.pathname !== '/' &&
-              location.pathname.slice(0, 7) !== '/search'
-            ) {
-              navigate('/');
-            }
+            navigate('/');
           }
         })
         .catch((err) => {
@@ -127,13 +123,28 @@ function App() {
                   Logout
                 </Nav.Link>
               </Nav>
-              <SearchBar />
+              {user ? <SearchBar /> : null}
             </Navbar.Collapse>
           </Container>
         </Navbar>
       </Header>
       <MainContent>
-        <Outlet />
+        {verified ? (
+          <Outlet />
+        ) : (
+          <Spinner
+            animation="border"
+            role="status"
+            style={{
+              color: '#A663CC',
+              position: 'absolute',
+              left: '50%',
+              top: '50vh',
+            }}
+          >
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        )}
       </MainContent>
       <Footer>
         <VoiceButton />

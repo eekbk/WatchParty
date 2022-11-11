@@ -4,17 +4,172 @@
   background: #898989;
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:active {
   box-shadow: inset 0px 0px 10px black;
 }
+
 ::-webkit-scrollbar {
   width: 15px;
   background-color: #302e2e;
   border-radius: 20px;
 }
 
+.btn {
+  box-shadow: none;
+  --bs-btn-focus-shadow-rgb: none;
+  --bs-btn-box-shadow: none;
+  border: none;
+}
+
+.btn:active:focus {
+  box-shadow: none;
+}
+
+.btn:focus {
+  box-shadow: none;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0px 10px 0px white;
+}
+
+.form-check-input {
+  border: none;
+}
+
+.form-check-input:active {
+  box-shadow: none;
+}
+
+.form-check-input:focus {
+  box-shadow: none;
+}
+
+.form-check-input:active:focus {
+  box-shadow: none;
+}
+
+.form-check-input:focus-visible {
+  box-shadow: 0 0px 10px 0px white;
+}
+
+.rbt-input-multi:active {
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+.rbt-input-multi.focus {
+  box-shadow: 0 0px 10px 0px white;
+  border: none;
+  outline: none;
+}
+
+.rbt-input-multi:active:focus {
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+.rbt-input-multi:focus-visible {
+  box-shadow: 0 0px 10px 0px white;
+  border: none;
+  outline: none;
+}
+
+.sc-bjfHbI:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.sc-bjfHbI:active {
+  box-shadow: none;
+  outline: none;
+}
+
+.sc-bjfHbI:active:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.sc-bjfHbI:focus-visible {
+  border-color: white;
+  box-shadow: 0 0px 8px 0px white;
+}
+
+.QXylE:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.QXylE:active {
+  box-shadow: none;
+  outline: none;
+}
+
+.QXylE:active:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.QXylE:focus-visible {
+  border-color: white;
+  box-shadow: 0 0px 8px 0px white;
+}
+
+.dm-chat:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.dm-chat:active {
+  box-shadow: none;
+  outline: none;
+}
+
+.dm-chat:active:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.dm-chat:focus-visible {
+  border-color: white;
+  box-shadow: 0 0px 8px 0px white;
+}
+
+.btn-close:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.btn-close:active {
+  box-shadow: none;
+  outline: none;
+}
+
+.btn-close:active:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.btn-close:focus-visible {
+  border: none;
+  box-shadow: 0 0px 8px 0px black;
+}
+
+.party-date:hover {
+  border-color: transparent;
+}
+
+.party-time:hover {
+  border-color: transparent;
+}
+
 body {
   background: radial-gradient(ellipse at center, #320e3b, black);
+  /* --bs-btn-focus-shadow-rgb: none;
+  --bs-btn-box-shadow: none; */
 }
 
 :root {

@@ -18,6 +18,7 @@ export function VideoList({ playlist, handleVideoRemoval }) {
             <StyledCloseButton
               onClick={() => handleVideoRemoval(i)}
               style={{ marginTop: '5px', marginLeft: '5px' }}
+              variant="white"
             />
             <StyledVideoCard.Title
               style={{
