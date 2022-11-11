@@ -125,7 +125,7 @@ export const SearchIcon = styled.span`
 
 export const SearchButton = styled(Button)`
   width: 40px;
-  height: 100%;
+  height: 37.25px;
   outline: none;
   border: none;
   /* font-size: 15px; */
