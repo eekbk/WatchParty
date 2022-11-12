@@ -166,10 +166,23 @@
   border-color: transparent;
 }
 
+.bKxxWa:hover {
+  box-shadow: 0 0px 10px 0px white;
+}
+
+.kWljIi:hover {
+  box-shadow: 0 0px 10px 0px white;
+}
+
+.loIfYA:hover {
+  box-shadow: 0 0px 10px 0px white;
+}
+
 body {
   background: radial-gradient(ellipse at center, #320e3b, black);
   /* --bs-btn-focus-shadow-rgb: none;
   --bs-btn-box-shadow: none; */
+  /* font-family:fantasy; */
 }
 
 :root {
