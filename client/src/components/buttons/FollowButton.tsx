@@ -20,22 +20,22 @@ function FollowButton({
   const updateFollowStatus = async () => {
     if (isFollowing) {
       try {
+        setIsFollowing(false);
+        setFollows(follows - 1);
         await axios.delete('/api/user/follow', {
           data: { followerId: user.id, followedId: otherUserId },
         });
-        await setIsFollowing(false);
-        setFollows(follows - 1);
       } catch (err) {
         console.error('Your error from unfollow, fool:\n', err);
       }
     } else {
       try {
+        setIsFollowing(true);
+        setFollows(follows + 1);
         await axios.post('/api/user/follow', {
           followerId: user.id,
           followedId: otherUserId,
         });
-        await setIsFollowing(true);
-        setFollows(follows + 1);
         await axios.post('/api/user/dm', {
           currentUserId: user.id,
           otherUserId,

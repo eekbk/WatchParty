@@ -17,7 +17,7 @@ import {
   SearchPageHeading,
   CenteredSearchPageRow,
   StyledLeftRow,
-  StyledATag,
+  StyledBackLink,
 } from './search.styles';
 
 function Search() {
@@ -31,6 +31,7 @@ function Search() {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [videoParties, setVideoParties] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [update, setUpdate] = useState(false);
 
   const [key, setKey] = useState('parties');
   const { user } = useContext(UserContext);
@@ -45,15 +46,36 @@ function Search() {
       .get(`/api/search/${q}`)
       .then(({ data }) => {
         setVideosMatch(data.videos);
-        const usersNotMe = data.users.filter((match) => user.id !== match.id);
+        const usersNotMe = data.users
+          .filter((match) => user.id !== match.id)
+          .filter(
+            (match) =>
+              !user.blockers.includes(match.id) &&
+              !user.blocking.includes(match.id)
+          );
         setUsersMatch(usersNotMe);
-        setPartiesMatch(data.parties);
+        setPartiesMatch(partiesRender(data.parties));
         setIsLoading(false);
       })
       .catch((err) => {
         console.error('The Error from handleSubmit:', err);
       });
   }, [q, partyStartIndex]); // i did remove 'user' from here in case something breaks, add it back!
+
+  useEffect(() => {
+    if (update) {
+      const usersNotMe = usersMatch
+        .filter((match) => user.id !== match.id)
+        .filter(
+          (match) =>
+            !user.blockers.includes(match.id) &&
+            !user.blocking.includes(match.id)
+        );
+      setUsersMatch(usersNotMe);
+      setPartiesMatch(partiesRender(partiesMatch));
+      setUpdate(false);
+    }
+  }, [update]);
 
   useEffect(() => {
     if (!partiesMatch.length && !videosMatch.length) {
@@ -80,159 +102,168 @@ function Search() {
   }, [videosMatch, partiesMatch, usersMatch]);
 
   const partiesRender = (array) =>
-    array
-      .filter((party) => {
-        const creator = party.users.filter((u) => u.role === 'CREATOR')[0];
-        if (user) {
-          return (
-            !user.blockers.includes(creator.id) &&
-            !user.blocking.includes(creator.id)
-          );
-        }
-        return party;
-      })
-      .slice(partyStartIndex, partyStartIndex + 8)
-      .map((party) => (
-        <Col xs={3}>
-          <PartyCard party={party} />
-        </Col>
-      ));
-
+    array.filter((party) => {
+      const creator = party.users.filter((u) => u.role === 'CREATOR')[0];
+      if (user) {
+        return (
+          !user.blockers.includes(creator.id) &&
+          !user.blocking.includes(creator.id)
+        );
+      }
+      return party;
+    });
   return (
     <div>
-      {!usersMatch.length &&
-      !partiesMatch.length &&
-      !videosMatch.length &&
-      !isLoading ? (
-        <SearchPageHeading>
+      <Spinner
+        hidden={!isLoading}
+        animation="border"
+        role="status"
+        style={{
+          color: '#A663CC',
+          position: 'absolute',
+          left: '50%',
+          top: '50vh',
+        }}
+      >
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+      <Container
+        hidden={
+          !usersMatch.length && !partiesMatch.length && !videosMatch.length
+        }
+      >
+        {isVideoClicked ? (
+          <>
+            <StyledLeftRow>
+              <StyledBackLink onClick={() => setIsVideoClicked(false)}>
+                Back
+              </StyledBackLink>
+            </StyledLeftRow>
+            <SearchPageHeading>
+              Parties featuring &quot;
+              {selectedVideo.title}
+              &quot;:
+            </SearchPageHeading>
+            <CenteredSearchPageRow>
+              {partiesRender(videoParties)
+                .slice(partyStartIndex, partyStartIndex + 8)
+                .map((party) => (
+                  <Col xs={3}>
+                    <PartyCard party={party} />
+                  </Col>
+                ))}
+            </CenteredSearchPageRow>
+          </>
+        ) : (
+          <StyledRow>
+            <StyledTabs
+              id="search-results-tabs"
+              activeKey={key}
+              onSelect={(k) => setKey(k)}
+            >
+              {partiesMatch.length ? (
+                <StyledTab eventKey="parties" title="Parties">
+                  <SearchTabContainer>
+                    <SearchPageRow>
+                      {partiesMatch
+                        .slice(partyStartIndex, partyStartIndex + 8)
+                        .map((party) => (
+                          <Col xs={3}>
+                            <PartyCard party={party} />
+                          </Col>
+                        ))}
+                    </SearchPageRow>
+                    {partiesMatch.length > 8 ? (
+                      <Paginator
+                        resultsPerPage={8}
+                        totalResults={partiesMatch.length}
+                        // paginate={paginate}
+                        startIndexSetter={setPartyStartIndex}
+                      />
+                    ) : null}
+                  </SearchTabContainer>
+                </StyledTab>
+              ) : null}
+              {usersMatch.length ? (
+                <StyledTab eventKey="users" title="Users">
+                  <SearchTabContainer>
+                    <SearchPageRow>
+                      {usersMatch
+                        .filter((match) => {
+                          if (user) {
+                            return (
+                              !user.blockers.includes(match.id) &&
+                              !user.blocking.includes(match.id)
+                            );
+                          }
+                          return match;
+                        })
+                        .slice(userStartIndex, userStartIndex + 12)
+                        .map((userMatch) => (
+                          <Col md={3}>
+                            <UserCard obj={userMatch} setUpdate={setUpdate} />
+                          </Col>
+                        ))}
+                    </SearchPageRow>
+                    {usersMatch.length > 12 ? (
+                      <Paginator
+                        resultsPerPage={12}
+                        totalResults={usersMatch.length}
+                        // paginate={paginate}
+                        startIndexSetter={setUserStartIndex}
+                      />
+                    ) : null}
+                  </SearchTabContainer>
+                </StyledTab>
+              ) : null}
+              {videosMatch.length ? (
+                <StyledTab eventKey="videos" title="Videos">
+                  <SearchTabContainer>
+                    <StyledRow>
+                      {/* <StyledCol>
+            </StyledCol> */}
+                      {videosMatch
+                        .slice(videoStartIndex, videoStartIndex + 12)
+                        .map((video) => (
+                          // <Row xs={3}>
+                          <Col md={6}>
+                            <VideoCard
+                              video={video}
+                              key={video.id}
+                              setIsVideoClicked={setIsVideoClicked}
+                              setSelectedVideo={setSelectedVideo}
+                              setVideoParties={setVideoParties}
+                            />
+                          </Col>
+                          // </Row>
+                        ))}
+                    </StyledRow>
+                    {videosMatch.length > 12 ? (
+                      <Paginator
+                        resultsPerPage={12}
+                        totalResults={videosMatch.length}
+                        startIndexSetter={setVideoStartIndex}
+                      />
+                    ) : null}
+                  </SearchTabContainer>
+                </StyledTab>
+              ) : null}
+            </StyledTabs>
+          </StyledRow>
+        )}
+        <SearchPageHeading
+          hidden={
+            usersMatch.length ||
+            partiesMatch.length ||
+            videosMatch.length ||
+            isLoading
+          }
+        >
           No matches for &quot;
           {readableQ}
           &quot;
         </SearchPageHeading>
-      ) : !partiesMatch.length && !usersMatch.length && !videosMatch.length ? (
-        <Spinner
-          animation="border"
-          role="status"
-          style={{
-            color: '#A663CC',
-            position: 'absolute',
-            left: '50%',
-            top: '50vh',
-          }}
-        >
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      ) : (
-        <Container>
-          {isVideoClicked ? (
-            <>
-              <StyledLeftRow>
-                <StyledATag onClick={() => setIsVideoClicked(false)}>
-                  back to search results
-                </StyledATag>
-              </StyledLeftRow>
-              <SearchPageHeading>
-                Parties featuring &quot;
-                {selectedVideo.title}
-                &quot;:
-              </SearchPageHeading>
-              <CenteredSearchPageRow>
-                {partiesRender(videoParties)}
-              </CenteredSearchPageRow>
-            </>
-          ) : (
-            <StyledRow>
-              <StyledTabs
-                id="search-results-tabs"
-                activeKey={key}
-                onSelect={(k) => setKey(k)}
-              >
-                {partiesMatch.length ? (
-                  <StyledTab eventKey="parties" title="Parties">
-                    <SearchTabContainer>
-                      <SearchPageRow>
-                        {partiesRender(partiesMatch)}
-                      </SearchPageRow>
-                      {partiesMatch.length > 8 ? (
-                        <Paginator
-                          resultsPerPage={8}
-                          totalResults={partiesMatch.length}
-                          // paginate={paginate}
-                          startIndexSetter={setPartyStartIndex}
-                        />
-                      ) : null}
-                    </SearchTabContainer>
-                  </StyledTab>
-                ) : null}
-                {usersMatch.length ? (
-                  <StyledTab eventKey="users" title="Users">
-                    <SearchTabContainer>
-                      <SearchPageRow>
-                        {usersMatch
-                          .filter((match) => {
-                            if (user) {
-                              return (
-                                !user.blockers.includes(match.id) &&
-                                !user.blocking.includes(match.id)
-                              );
-                            }
-                            return match;
-                          })
-                          .slice(userStartIndex, userStartIndex + 12)
-                          .map((userMatch) => (
-                            <Col md={3}>
-                              <UserCard obj={userMatch} />
-                            </Col>
-                          ))}
-                      </SearchPageRow>
-                      {usersMatch.length > 12 ? (
-                        <Paginator
-                          resultsPerPage={12}
-                          totalResults={usersMatch.length}
-                          // paginate={paginate}
-                          startIndexSetter={setUserStartIndex}
-                        />
-                      ) : null}
-                    </SearchTabContainer>
-                  </StyledTab>
-                ) : null}
-                {videosMatch.length ? (
-                  <StyledTab eventKey="videos" title="Videos">
-                    <SearchTabContainer>
-                      <StyledRow>
-                        {/* <StyledCol>
-            </StyledCol> */}
-                        {videosMatch
-                          .slice(videoStartIndex, videoStartIndex + 12)
-                          .map((video) => (
-                            // <Row xs={3}>
-                            <Col md={6}>
-                              <VideoCard
-                                video={video}
-                                key={video.id}
-                                setIsVideoClicked={setIsVideoClicked}
-                                setSelectedVideo={setSelectedVideo}
-                                setVideoParties={setVideoParties}
-                              />
-                            </Col>
-                            // </Row>
-                          ))}
-                      </StyledRow>
-                      {videosMatch.length > 12 ? (
-                        <Paginator
-                          resultsPerPage={12}
-                          totalResults={videosMatch.length}
-                          startIndexSetter={setVideoStartIndex}
-                        />
-                      ) : null}
-                    </SearchTabContainer>
-                  </StyledTab>
-                ) : null}
-              </StyledTabs>
-            </StyledRow>
-          )}
-        </Container>
-      )}
+      </Container>
     </div>
   );
 }

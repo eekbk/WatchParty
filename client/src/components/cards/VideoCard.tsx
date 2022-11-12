@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Col, Row, OverlayTrigger } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import {
   StyledVideoCard,
   StyledVideoCardImg,
@@ -7,7 +7,6 @@ import {
   StyledCardRow,
   StyledCardCol,
   StyledIsFollowing,
-  StyledTooltip,
 } from './cards.styles';
 
 function VideoCard({
@@ -36,34 +35,32 @@ function VideoCard({
 
   const cardTitle = title.length > 45 ? `${title.slice(0, 45)}...` : title;
 
-  const tooltip = (
-    <StyledTooltip id="tooltip">
-      Click to see parties featuring this video
-    </StyledTooltip>
-  );
+  // const tooltip = (
+  //   <StyledTooltip id="tooltip">
+  //     Click to see parties featuring this video
+  //   </StyledTooltip>
+  // );
 
   return (
-    <OverlayTrigger delay={800} placement="top" overlay={tooltip}>
-      <StyledVideoCard onClick={handleCardClick}>
-        <StyledCardRow className="no-gutters">
-          <StyledCardCol sm={3}>
-            <StyledVideoCardImg src={thumbnail} />
-          </StyledCardCol>
-          <Col lg={9} style={{ alignItems: 'space-between', padding: '.5rem' }}>
-            <Row>
-              <StyledVideoTitle>{cardTitle}</StyledVideoTitle>
-            </Row>
-            <Row>
-              <StyledIsFollowing>
-                {parties.length === 1
-                  ? `Appears in ${parties.length} party`
-                  : `Appears in ${parties.length} parties`}
-              </StyledIsFollowing>
-            </Row>
-          </Col>
-        </StyledCardRow>
-      </StyledVideoCard>
-    </OverlayTrigger>
+    <StyledVideoCard onClick={handleCardClick}>
+      <StyledCardRow className="no-gutters">
+        <StyledCardCol sm={3}>
+          <StyledVideoCardImg src={thumbnail} />
+        </StyledCardCol>
+        <Col lg={9} style={{ alignItems: 'space-between', padding: '.5rem' }}>
+          <Row>
+            <StyledVideoTitle>{cardTitle}</StyledVideoTitle>
+          </Row>
+          <Row>
+            <StyledIsFollowing>
+              {parties.length === 1
+                ? `Appears in ${parties.length} party`
+                : `Appears in ${parties.length} parties`}
+            </StyledIsFollowing>
+          </Row>
+        </Col>
+      </StyledCardRow>
+    </StyledVideoCard>
   );
 }
 
