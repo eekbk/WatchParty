@@ -5,7 +5,7 @@ import { StyledAttendIcon } from './buttons.styles';
 import { UserContext } from '../../context';
 import { VoiceContext } from '../../contexts/voiceContext';
 
-function AttendButton({ name, partyId, isAttending, setIsAttending }) {
+function AttendButton({ name, partyId, party, isAttending, setIsAttending }) {
   const { user, setUser } = useContext(UserContext);
   const { attendPartyName, setAttendPartyName, resetTranscript } =
     useContext(VoiceContext);
@@ -26,19 +26,25 @@ function AttendButton({ name, partyId, isAttending, setIsAttending }) {
   const updateAttendStatus = async () => {
     try {
       if (!isAttending) {
+        party.users.push({
+          id: user.id,
+          username: user.user_name,
+          role: 'NORMIE',
+        });
+        setIsAttending(true);
         await axios.post('/api/party/attend', {
           party_id: partyId,
           user_id: user.id,
         });
-        await setIsAttending(true);
       } else {
+        party.users = party.users.filter((usr) => user.id !== usr.id);
+        setIsAttending(false);
         await axios.delete('/api/party/role', {
           data: {
             party_id: partyId,
             user_id: user.id,
           },
         });
-        await setIsAttending(false);
       }
     } catch (err) {
       console.error('Error message:', err);

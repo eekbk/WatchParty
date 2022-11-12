@@ -4,25 +4,23 @@ import { StyledGlassButton } from './buttons.styles';
 import { UserContext } from '../../context';
 import { VoiceContext } from '../../contexts/voiceContext';
 
-function BlockButton({
-  otherUserId,
-  otherUserName,
-  isBlocking,
-  setIsBlocking,
-}) {
+function BlockButton({ otherUserId, otherUserName, setUpdate }) {
   const { user, setUser } = useContext(UserContext);
   const { blockName, resetTranscript } = useContext(VoiceContext);
   const [aToggle, setAToggle] = useState(false);
 
   const updateBlockStatus = async () => {
     try {
+      const tempUser = { ...user };
+      tempUser.blocking.push(otherUserId);
+      setUpdate(true);
+      setUser(tempUser);
       await axios.post('/api/user/block', {
         // data: {
         blockerId: user.id,
         blockedId: otherUserId,
         // },
       });
-      await setIsBlocking(true);
     } catch (err) {
       console.error('Your error from follow, fool:\n', err);
     }

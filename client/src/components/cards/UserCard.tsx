@@ -8,40 +8,31 @@ import DmButton from '../buttons/DmButton';
 import {
   StyledUserCard,
   StyledUserCardImg,
-  StyledCardBody,
   StyledIsFollowing,
   StyledPartyTitle,
   StyledUserCardFooter,
   StyledUserCardFooterCol,
+  StyledUserCardBody,
 } from './cards.styles';
 
 // ModCard stands for Modular Card. Hopefully we can reuse it
-function UserCard({ obj }) {
+function UserCard({ obj, setUpdate }) {
   const { user } = useContext(UserContext);
   const [cardTitle, setCardTitle] = useState('');
-  const [cardText, setCardText] = useState('');
   const [follows, setFollows] = useState(0);
   const [isFollowing, setIsFollowing] = useState(false);
-  const [isBlocking, setIsBlocking] = useState(false);
 
   useEffect(() => {
     // if the card is a user
     axios
       .get(`/api/user/explicit/followers/${obj.id}`)
-      .then(({ data }) => {
-        setFollows(data);
-      })
-      .then(() => {
-        setCardTitle(obj.user_name);
-      })
-      .then(() => {
-        setCardText(`followers: ${follows}`);
-      })
+      .then(({ data }) => setFollows(data))
+      .then(() => setCardTitle(obj.user_name))
       .catch((err) => {
         console.error('WHAT THE?!? LOOK AT THIS:', err);
       });
     // run this again when follows changes
-  }, [follows, /* user.following, */ obj]); // maybe add user here
+  }, []); // maybe add user here
 
   useEffect(() => {
     if (user) {
@@ -60,17 +51,21 @@ function UserCard({ obj }) {
           <StyledUserCardImg roundedCircle src={obj.profile} />
         </Col>
         <Col>
-          <StyledCardBody>
+          <StyledUserCardBody>
             <Row>
               <StyledPartyTitle>{cardTitle}</StyledPartyTitle>
             </Row>
             {user && (
               <StyledIsFollowing>
-                <Row>{cardText}</Row>
+                {/* <Row>{cardText}</Row> */}
+                <Row>
+                  followers:&nbsp;
+                  {follows}
+                </Row>
                 <Row>{isFollowing ? 'following ✅' : '  '}</Row>
               </StyledIsFollowing>
             )}
-          </StyledCardBody>
+          </StyledUserCardBody>
         </Col>
       </Row>
       {user && (
@@ -92,9 +87,8 @@ function UserCard({ obj }) {
           </StyledUserCardFooterCol>
           <StyledUserCardFooterCol sm={2}>
             <BlockButton
+              setUpdate={setUpdate}
               otherUserId={obj.id}
-              isBlocking={isBlocking}
-              setIsBlocking={setIsBlocking}
               otherUserName={obj.user_name}
             />
           </StyledUserCardFooterCol>

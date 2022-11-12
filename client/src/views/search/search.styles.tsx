@@ -86,7 +86,7 @@ export const SearchInputContainer = styled(InputGroup)`
 
 export const SearchForm = styled(Form.Control)`
   width: 100%;
-  height: 100%;
+  height: 37.25px;
   outline: none;
   border: none;
   font-size: 15px;
@@ -141,6 +141,33 @@ export const SearchButton = styled(Button)`
   }
   &:focus {
     background-color: #a663cc;
+  }
+`;
+
+export const StyledBackLink = styled('p')`
+  background: black;
+  /* background: rgba(28, 7, 47, 0.75); */
+  border-radius: 8px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid #6a1d7d;
+  color: #e5f4e3;
+  margin: 0px;
+  margin-bottom: 5px;
+  text-align: center;
+  width: fit-content;
+  padding: 8px 12px;
+  display: flex;
+  font-size: larger;
+  align-self: center;
+  user-select: none;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0px 10px 0px white;
+  }
+  &:focus-visible {
+    box-shadow: 0 0px 10px 0px white;
   }
 `;
 

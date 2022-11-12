@@ -17,6 +17,7 @@ export function LoggedIn() {
   const [rows, setRows] = useState(null);
   const [rowsT, setRowsT] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [updated, setUpdated] = useState(false);
 
   useEffect(() => {
     const tempRows = [];
@@ -73,53 +74,67 @@ export function LoggedIn() {
   }, [parties]);
 
   useEffect(() => {
-    axios
-      .get('/api/party')
-      .then((data: data) => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const tempArr = data.data // all parties
-          .filter((party) =>
-            party.users.some((partyU) =>
-              user.following.some(
-                (f) => f === partyU.id && partyU.role === 'CREATOR'
-                // userParty id && user party role is the creator or the users party
+    if (!updated) {
+      axios
+        .get('/api/party')
+        .then((data: data) => {
+          data.data = data.data.filter(
+            (party) =>
+              !party.users.some(
+                (usr) =>
+                  (user.blocking.includes(usr.id) && usr.role === 'CREATOR') ||
+                  (user.blockers.includes(usr.id) && usr.role === 'CREATOR')
               )
-            )
           );
-        const tempUserArr = user.parties.filter(
-          (party) =>
-            party.users.some((u) => u.id === user.id && u.role === 'CREATOR') &&
-            party.type === 'PARTY'
-        );
-        setParties(
-          [...tempArr, ...tempUserArr]
-            .sort(
-              (a, b) =>
-                Number(new Date(a.start_date)) - Number(new Date(b.start_date))
-            )
-            .filter(
-              // to get only the today and upcoming parties
-              (a) => Number(new Date(a.start_date)) >= Number(today)
-            )
-        );
-        setAllParties(
-          data.data
-            .sort(
-              (a, b) =>
-                Number(new Date(a.start_date)) - Number(new Date(b.start_date))
-            )
-            .filter(
-              // to get only the today and upcoming parties
-              (a) => Number(new Date(a.start_date)) >= Number(today)
-            )
-        );
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const tempArr = data.data // all parties
+            .filter((party) =>
+              party.users.some((partyU) =>
+                user.following.some(
+                  (f) => f === partyU.id && partyU.role === 'CREATOR'
+                  // userParty id && user party role is the creator or the users party
+                )
+              )
+            );
+          const tempUserArr = data.data.filter(
+            (party) =>
+              party.users.some(
+                (u) => u.id === user.id && u.role === 'CREATOR'
+              ) && party.type === 'PARTY'
+          );
+          setParties(
+            [...tempArr, ...tempUserArr]
+              .sort(
+                (a, b) =>
+                  Number(new Date(a.start_date)) -
+                  Number(new Date(b.start_date))
+              )
+              .filter(
+                // to get only the today and upcoming parties
+                (a) => Number(new Date(a.start_date)) >= Number(today)
+              )
+          );
+          setAllParties(
+            data.data
+              .sort(
+                (a, b) =>
+                  Number(new Date(a.start_date)) -
+                  Number(new Date(b.start_date))
+              )
+              .filter(
+                // to get only the today and upcoming parties
+                (a) => Number(new Date(a.start_date)) >= Number(today)
+              )
+          );
+          setLoading(false);
+          setUpdated(true);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [updated]);
 
   return (
     <Container>

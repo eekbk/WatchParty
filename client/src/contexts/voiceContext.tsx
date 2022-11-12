@@ -37,7 +37,7 @@ export function VoiceContextProvider({ children }) {
       callback: () => handleVoiceToggle(),
     },
     {
-      command: ['clear', 'reset'],
+      command: ['clear', 'reset', 'cancel'],
       callback: ({ resetTranscript }) => resetTranscript(),
     },
     {
@@ -47,6 +47,7 @@ export function VoiceContextProvider({ children }) {
     {
       command: ['enter', 'send', 'please', 'thank you', 'thanks', 'make it so'],
       callback: () => setIsSent(!isSent),
+      isFuzzyMatch: true,
     },
     {
       command: ['compose message *', 'write *', 'right *'],

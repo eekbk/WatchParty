@@ -50,9 +50,9 @@ function PartyCard({ party }) {
 
   // create a function to check if the user is involved in the party
   const checkRole = () => {
-    for (let i = 0; i < user.parties.length; i += 1) {
-      if (user.parties[i].id === id) {
-        return user.parties[i].role;
+    for (let i = 0; i < party.users.length; i += 1) {
+      if (party.users[i].id === user.id) {
+        return party.users[i].role;
       }
     }
     return null;
@@ -215,6 +215,7 @@ function PartyCard({ party }) {
               ) : (
                 <PartyCardNormieCol>
                   <AttendButton
+                    party={party}
                     name={name}
                     partyId={id}
                     isAttending={isAttending}

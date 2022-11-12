@@ -26,6 +26,12 @@ export const StyledCardBody = styled(Card.Body)`
   /* text-align: right; */
 `;
 
+export const StyledUserCardBody = styled(Card.Body)`
+  padding: 8px;
+  margin: 0;
+  align-content: space-between;
+`;
+
 export const StyledDashPartyCard = styled(Card)`
   /* height: 23rem;
   width: 18rem;
