@@ -60,6 +60,10 @@ export const StyledPartyCard = styled(Card)`
   border-color: #6a1d7d;
   border-width: 1px;
   overflow: hidden;
+  &:hover {
+    border-color: white;
+    box-shadow: 0 0px 8px 0px white;
+  }
 `;
 
 export const StyledUserCard = styled(Card)`
@@ -85,6 +89,10 @@ export const StyledVideoCard = styled(Card)`
   background-color: black;
   border-color: #6a1d7d;
   border-width: 1px;
+  &:hover {
+    border-color: white;
+    box-shadow: 0 0px 8px 0px white;
+  }
 `;
 
 export const StyledUserCardImg = styled(Image)`

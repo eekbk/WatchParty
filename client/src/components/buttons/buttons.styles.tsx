@@ -66,6 +66,10 @@ export const StyledActiveMicIcon = styled.span`
   text-align: center;
   border-radius: 50%;
   cursor: pointer;
+  &:hover {
+    border-color: white;
+    box-shadow: 0 0px 8px 0px white;
+  }
 `;
 
 export const StyledDisabledMicIcon = styled.span`
@@ -77,6 +81,10 @@ export const StyledDisabledMicIcon = styled.span`
   text-align: center;
   border-radius: 50%;
   cursor: pointer;
+  &:hover {
+    border-color: white;
+    box-shadow: 0 0px 8px 0px white;
+  }
 `;
 
 export const StyledHelpButton = styled.span`
