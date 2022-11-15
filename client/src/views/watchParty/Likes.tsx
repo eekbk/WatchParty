@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { LikeButton, DislikeButton, LButton } from '../../styles';
 
-function Likes({ user_id, party_id }) {
+function Likes({ user_id, party_id, isArchived }) {
   const [like, setLike] = useState(() => 0);
   const [dislike, setDislike] = useState(() => 0);
 
@@ -52,12 +52,12 @@ function Likes({ user_id, party_id }) {
     <Container
       style={{ textAlign: 'right', position: 'relative', bottom: '38px' }}
     >
-      <LButton onClick={sendLike}>
+      <LButton onClick={sendLike} hidden={isArchived}>
         <LikeButton size="2em" /> 
         {' '}
         {like}
       </LButton>
-      <LButton onClick={sendDislike}>
+      <LButton onClick={sendDislike} hidden={isArchived}>
         <DislikeButton size="2em" />
         {dislike}
       </LButton>
