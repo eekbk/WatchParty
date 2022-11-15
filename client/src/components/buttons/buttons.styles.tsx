@@ -27,6 +27,35 @@ export const StyledGlassButton = styled(Button)`
     background: linear-gradient(#541763, #a12dbe);
   }
 `;
+export const StyledGlassFollowButton = styled(Button)`
+  position: relative;
+  /* margin-right: 3px;
+  margin-left: 3px; */
+  padding-right: 0.2rem;
+  padding-left: 0.2rem;
+  margin: 0 0.3rem;
+  background-color: purple; /*for compatibility with older browsers*/
+  background-image: linear-gradient(#320e3b, #6a1d7d);
+  text-shadow: 0px -1px #333;
+  border-color: transparent;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(100% - 4px);
+    height: 50%;
+    background: linear-gradient(
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0.2)
+    );
+  }
+
+  &:hover {
+    background: linear-gradient(#541763, #a12dbe);
+  }
+`;
 
 export const StyledActiveMicIcon = styled.span`
   background-color: #6a1d7d;
@@ -37,6 +66,10 @@ export const StyledActiveMicIcon = styled.span`
   text-align: center;
   border-radius: 50%;
   cursor: pointer;
+  &:hover {
+    border-color: white;
+    box-shadow: 0 0px 8px 0px white;
+  }
 `;
 
 export const StyledDisabledMicIcon = styled.span`
@@ -48,6 +81,10 @@ export const StyledDisabledMicIcon = styled.span`
   text-align: center;
   border-radius: 50%;
   cursor: pointer;
+  &:hover {
+    border-color: white;
+    box-shadow: 0 0px 8px 0px white;
+  }
 `;
 
 export const StyledHelpButton = styled.span`

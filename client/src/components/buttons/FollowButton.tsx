@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context';
 import { VoiceContext } from '../../contexts/voiceContext';
-import { StyledGlassButton } from './buttons.styles';
+import { StyledGlassFollowButton } from './buttons.styles';
 
 function FollowButton({
   otherUserId,
@@ -74,13 +74,13 @@ function FollowButton({
   }, [aToggle]);
 
   return (
-    <StyledGlassButton
+    <StyledGlassFollowButton
       size="sm"
       onClick={handleClick}
       style={{ width: '73px' }}
     >
       {isFollowing ? 'unfollow' : 'follow'}
-    </StyledGlassButton>
+    </StyledGlassFollowButton>
   );
 }
 
