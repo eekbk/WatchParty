@@ -17,6 +17,7 @@ function DmButton({ otherUserId, otherUserName, currentUserId }) {
       navigate('/dm');
     } catch (err) {
       console.error(err);
+      navigate('/dm');
     }
   };
 
