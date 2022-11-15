@@ -15,7 +15,7 @@ function Chat({
   vH,
 }): JSX.Element {
   // State vars
-  const [vHeight, setVHight] = useState(
+  const [vHeight, setVHeight] = useState(
     vH.current ? vH.current.clientHeight - 65 : '80%'
   );
   const [chat, setChat] = useState('');
@@ -43,7 +43,7 @@ function Chat({
   };
 
   const handleResize = () => {
-    setVHight(vH.current ? vH.current.clientHeight - 65 : '80%');
+    setVHeight(vH.current ? vH.current.clientHeight - 84 : '80%');
   };
 
   // func for async voiceSubmit
@@ -90,8 +90,8 @@ function Chat({
         backgroundColor: 'transparent',
         borderRadius: '0px 5px 5px 0px',
         margin: '0px',
-        height: vH.current ? vH.current.clientHeight - 65 : '80%%',
-        maxHeight: vH.current ? vH.current.clientHeight - 65 : '80%%',
+        height: vH.current ? vH.current.clientHeight - 84 : '80%%',
+        maxHeight: vH.current ? vH.current.clientHeight - 84 : '80%%',
       }}
     >
       <Form style={{ height: '100%' }}>
