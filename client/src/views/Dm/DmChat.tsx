@@ -102,6 +102,9 @@ function DmChat({ socket, room, user, messages, setMessages }) {
             onChange={(event) => setChat(event.target.value)}
             placeholder="type here"
             className="dm-chat"
+            style={{
+              marginTop: '2px',
+            }}
           />
           <StyledButton
             type="submit"
