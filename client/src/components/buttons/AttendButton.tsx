@@ -11,15 +11,22 @@ function AttendButton({ name, partyId, party, isAttending, setIsAttending }) {
     useContext(VoiceContext);
 
   useEffect(() => {
-    if (
-      attendPartyName &&
+    if (attendPartyName) {
+      /* &&
       attendPartyName.toUpperCase() === name.toUpperCase()
-    ) {
-      (async () => {
-        await updateAttendStatus();
-        await setAttendPartyName('');
-        resetTranscript();
-      })();
+    ) */ const puncRegex = /[.,\/#!$%\^\'&\*;:{}=\-_`~()]/g;
+      const spaceRegex = /\s{2,}/g;
+      const compareOne = name.replace(puncRegex, '').replace(spaceRegex, ' ');
+      const compareTwo = attendPartyName
+        .replace(puncRegex, '')
+        .replace(spaceRegex, ' ');
+      if (compareOne.toUpperCase() === compareTwo.toUpperCase()) {
+        (async () => {
+          await updateAttendStatus();
+          await setAttendPartyName('');
+          resetTranscript();
+        })();
+      }
     }
   }, [attendPartyName]);
 
@@ -36,7 +43,7 @@ function AttendButton({ name, partyId, party, isAttending, setIsAttending }) {
           party_id: partyId,
           user_id: user.id,
         });
-      } else {
+      } else if (isAttending) {
         party.users = party.users.filter((usr) => user.id !== usr.id);
         setIsAttending(false);
         await axios.delete('/api/party/role', {
