@@ -77,6 +77,7 @@ export function VoiceContextProvider({ children }) {
       command: [
         'join *',
         'unjoin *',
+        'RSVP *',
         'remove me from *',
         "don't go to *",
         'leave *',
