@@ -111,6 +111,9 @@ function Chat({
               onChange={(event) => setChat(event.target.value)}
               placeholder="type here"
               disabled={isArchived}
+              style={{
+                marginTop: '2px',
+              }}
             />
             <StyledButton
               type="submit"
