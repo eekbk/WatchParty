@@ -109,7 +109,7 @@ function Chat({
             <Form.Control
               value={chat}
               onChange={(event) => setChat(event.target.value)}
-              placeholder="type here!"
+              placeholder="type here"
               disabled={isArchived}
             />
             <StyledButton
@@ -117,7 +117,7 @@ function Chat({
               onClick={handleSubmit}
               disabled={isArchived}
             >
-              Send!
+              Send
             </StyledButton>
           </InputGroup>
         )}
