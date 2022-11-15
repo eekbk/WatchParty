@@ -14,10 +14,72 @@ export function LoggedIn() {
   const { user } = useContext(UserContext);
   const [parties, setParties] = useState([]);
   const [allParties, setAllParties] = useState([]);
+  const [followedParties, setFollowedParties] = useState([]);
+  const [attendingParties, setAttendingParties] = useState([]);
   const [rows, setRows] = useState(null);
   const [rowsT, setRowsT] = useState(null);
   const [loading, setLoading] = useState(true);
   const [updated, setUpdated] = useState(false);
+
+  useEffect(() => {
+    const tempFollowed = allParties.filter((party) =>
+      party.users.some((partyU) =>
+        user.following.some(
+          (f) => f === partyU.id && partyU.role === 'CREATOR'
+          // userParty id && user party role is the creator or the users party
+        )
+      )
+    );
+    const tempRows = [];
+    for (let i = 0; i < tempFollowed.length / 4; i++) {
+      tempRows[i] = [];
+    }
+    tempFollowed.forEach((pt, i) => {
+      tempRows[Math.floor(i / 4)].push(
+        <Col
+          xs={12}
+          sm={12}
+          md={4}
+          lg={3}
+          xl={3}
+          style={{
+            padding: '10px',
+            paddingTop: '24px',
+            width: 'fit-content',
+          }}
+        >
+          <PartyCard party={pt} />
+        </Col>
+      );
+    });
+    setFollowedParties(tempRows);
+    const tempAttending = allParties.filter((pt) =>
+      pt.users.some((usr) => usr.id === user.id)
+    );
+    const temprows2 = [];
+    for (let i = 0; i < tempAttending.length / 4; i++) {
+      temprows2[i] = [];
+    }
+    tempAttending.forEach((pt, i) => {
+      temprows2[Math.floor(i / 4)].push(
+        <Col
+          xs={12}
+          sm={12}
+          md={4}
+          lg={3}
+          xl={3}
+          style={{
+            padding: '10px',
+            paddingTop: '24px',
+            width: 'fit-content',
+          }}
+        >
+          <PartyCard party={pt} />
+        </Col>
+      );
+    });
+    setAttendingParties(temprows2);
+  }, [allParties]);
 
   useEffect(() => {
     const tempRows = [];
@@ -88,15 +150,6 @@ export function LoggedIn() {
           );
           const today = new Date();
           today.setHours(0, 0, 0, 0);
-          const tempArr = data.data // all parties
-            .filter((party) =>
-              party.users.some((partyU) =>
-                user.following.some(
-                  (f) => f === partyU.id && partyU.role === 'CREATOR'
-                  // userParty id && user party role is the creator or the users party
-                )
-              )
-            );
           const tempUserArr = data.data.filter(
             (party) =>
               party.users.some(
@@ -104,7 +157,7 @@ export function LoggedIn() {
               ) && party.type === 'PARTY'
           );
           setParties(
-            [...tempArr, ...tempUserArr]
+            [...tempUserArr]
               .sort(
                 (a, b) =>
                   Number(new Date(a.start_date)) -
@@ -187,6 +240,58 @@ export function LoggedIn() {
                 }}
               >
                 {rowsT}
+              </Row>
+            ) : (
+              <Spinner
+                animation="border"
+                role="status"
+                style={{
+                  color: '#A663CC',
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50vh',
+                }}
+              >
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            )}
+          </Tab>
+          <Tab eventKey="followed parties" title="Followed Parties">
+            {!loading ? (
+              <Row
+                style={{
+                  justifyContent: 'center',
+                  maxHeight: 'max(65vh, 23rem)',
+                  overflowY: 'scroll',
+                }}
+              >
+                {followedParties}
+              </Row>
+            ) : (
+              <Spinner
+                animation="border"
+                role="status"
+                style={{
+                  color: '#A663CC',
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50vh',
+                }}
+              >
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            )}
+          </Tab>
+          <Tab eventKey="attending parties" title="Joined Parties">
+            {!loading ? (
+              <Row
+                style={{
+                  justifyContent: 'center',
+                  maxHeight: 'max(65vh, 23rem)',
+                  overflowY: 'scroll',
+                }}
+              >
+                {attendingParties}
               </Row>
             ) : (
               <Spinner
