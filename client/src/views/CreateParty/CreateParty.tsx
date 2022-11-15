@@ -121,7 +121,7 @@ export function CreateParty() {
     const regExp =
       /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?list=|\&list=)([^#\&\?]*).*/;
     const match = youtubePlaylist.match(regExp);
-    const altCheck = youtubePlaylist.split('list=')[1].slice(0, 34);
+    const altCheck = youtubePlaylist.split('list=')[1].split(/\W/)[0];
     if (match && match[2].length === 34) {
       axios
         .get(`/api/playlist/youtube/${match[2]}`)
@@ -133,7 +133,7 @@ export function CreateParty() {
           console.error(err);
           setYoutubePlaylist('');
         });
-    } else if (altCheck.length === 34) {
+    } else if (altCheck) {
       axios
         .get(`/api/playlist/youtube/${altCheck}`)
         .then((pl) => {
