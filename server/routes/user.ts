@@ -404,7 +404,7 @@ user.post('/dm', (req: RequestWithUser, res: Response) => {
         });
       });
       if (bool) {
-        res.status(404).send('connection already exist');
+        res.status(200).send('connection already exist');
       } else {
         const dm: userConnection[] = users.map((user) => ({
           role: 'CREATOR',

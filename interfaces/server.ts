@@ -27,6 +27,9 @@ export interface YoutubeVideo {
         title: string;
         description: string;
         thumbnails: {
+          default: {
+            url: string;
+          };
           medium: {
             url: string;
           };

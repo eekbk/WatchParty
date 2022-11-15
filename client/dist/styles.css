@@ -185,7 +185,10 @@
 }
 
 body {
-  background: radial-gradient(ellipse at center, #320e3b, black);
+  /* Use the below if the current does not work for the showcase and if we prefer it more after the showcase */
+  /* background: radial-gradient(ellipse at center, #320e3b, black); */
+  background: rgb(2,0,36);
+  background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(63,9,121,1) 0%, rgba(20,10,32,1) 100%);
   /* --bs-btn-focus-shadow-rgb: none;
   --bs-btn-box-shadow: none; */
   /* font-family:fantasy; */

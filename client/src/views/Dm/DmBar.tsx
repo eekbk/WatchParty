@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { DmUser, DmSideBar, DmUserContainer } from '../../styles';
 
-function DmBar({ user, socket, changeDm }) {
+function DmBar({ user, socket, changeDm, selected }) {
   const scrolly = useRef(null);
   const [dms, setDms] = useState({ parties: null, userInfo: null });
 
@@ -26,19 +26,43 @@ function DmBar({ user, socket, changeDm }) {
       }}
     >
       {dms.parties
-        ? dms.parties.map((party, user) => (
-          <DmUserContainer id={party.party_id} onClick={changeDm}>
-            {dms.userInfo[user].user_name}
-            <DmUser
-              id={party.party_id}
-              roundedCircle
-              src={dms.userInfo[user].profile}
-              style={{
-                  padding: '5px',
+        ? dms.parties.map((party, user) =>
+            selected !== user ? (
+              <DmUserContainer
+                id={party.party_id}
+                onClick={(e) => changeDm(e, user)}
+              >
+                {dms.userInfo[user].user_name}
+                <DmUser
+                  id={party.party_id}
+                  roundedCircle
+                  src={dms.userInfo[user].profile}
+                  style={{
+                    padding: '5px',
+                  }}
+                />
+              </DmUserContainer>
+            ) : (
+              <DmUserContainer
+                id={party.party_id}
+                onClick={(e) => changeDm(e, user)}
+                style={{
+                  backgroundColor: 'transparent',
+                  borderColor: '#8a25e2',
                 }}
-            />
-          </DmUserContainer>
-          ))
+              >
+                {dms.userInfo[user].user_name}
+                <DmUser
+                  id={party.party_id}
+                  roundedCircle
+                  src={dms.userInfo[user].profile}
+                  style={{
+                    padding: '5px',
+                  }}
+                />
+              </DmUserContainer>
+            )
+          )
         : null}
     </DmSideBar>
   );

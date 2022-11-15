@@ -48,7 +48,9 @@ playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
         url: `https://youtu.be/${video.snippet.resourceId.videoId}`,
         title: video.snippet.title,
         description: video.snippet.description,
-        thumbnail: video.snippet.thumbnails.medium.url,
+        thumbnail: video.snippet.thumbnails.medium
+          ? video.snippet.thumbnails.medium.url
+          : video.snippet.thumbnails.default.url,
       }));
       let { nextPageToken } = playlist.data;
       // Getting the rest of the pages of results
@@ -60,7 +62,9 @@ playlist.get('/youtube/:playlistId', (req: Request, res: Response) => {
                 `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&key=${process.env.YOUTUBE_KEY}&pageToken=${nextPageToken}`
               );
               tempPlaylist = playlist.data.items.filter(
-                (i) => i.snippet.title !== 'Private video'
+                (i) =>
+                  i.snippet.title !== 'Private video' &&
+                  i.snippet.title !== 'Deleted video'
               );
               formattedPlaylist = formattedPlaylist.concat(
                 tempPlaylist.map((video) => ({

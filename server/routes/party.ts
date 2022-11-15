@@ -235,7 +235,9 @@ party.post('/video', (req: Request, res: Response) => {
         url: videoUrl,
         title: tempVideo.items[0].snippet.title,
         description: tempVideo.items[0].snippet.description,
-        thumbnail: tempVideo.items[0].snippet.thumbnails.medium.url,
+        thumbnail: tempVideo.items[0].snippet.thumbnails.medium
+          ? tempVideo.items[0].snippet.thumbnails.medium.url
+          : tempVideo.items[0].snippet.thumbnails.default.url,
       };
       return prisma.video.upsert({
         where: {

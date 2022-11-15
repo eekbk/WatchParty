@@ -45,7 +45,7 @@ function HelpButton() {
         </li>
         <li>
           For multi-page search results: &quot;page (number)&quot;, &quot;next
-          page&quot;, or &quot;previoud page&quot;
+          page&quot;, or &quot;previous page&quot;
         </li>
         <li>
           Turn off microphone: &quot;turn off mic&quot;, &quot;stop

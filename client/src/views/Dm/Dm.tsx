@@ -10,10 +10,12 @@ function Dm({ socket, room }) {
   const { user } = useContext(UserContext);
   const [dmRoom, setRoom] = useState(() => room);
   const [messages, setMessages] = useState(() => []);
+  const [selected, setSelected] = useState(null);
 
   // Functions
-  const changeDm = (e) => {
+  const changeDm = (e, i) => {
     setMessages([]);
+    setSelected(i);
 
     axios
       .post('/api/party/dmMessages', {
@@ -48,7 +50,12 @@ function Dm({ socket, room }) {
           xxl={1}
           style={{ padding: '0px' }}
         >
-          <DmBar user={user} socket={socket} changeDm={changeDm} />
+          <DmBar
+            user={user}
+            socket={socket}
+            changeDm={changeDm}
+            selected={selected}
+          />
         </Col>
         <Col
           xs={10}

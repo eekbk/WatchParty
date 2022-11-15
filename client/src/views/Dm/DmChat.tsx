@@ -100,7 +100,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
           <Form.Control
             value={chat}
             onChange={(event) => setChat(event.target.value)}
-            placeholder="type here!"
+            placeholder="type here"
             className="dm-chat"
           />
           <StyledButton
@@ -108,7 +108,7 @@ function DmChat({ socket, room, user, messages, setMessages }) {
             onClick={handleSubmit}
             variant="outline-dark"
           >
-            Send!
+            Send
           </StyledButton>
         </InputGroup>
       </Form>
