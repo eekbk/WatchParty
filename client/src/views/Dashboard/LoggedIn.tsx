@@ -210,7 +210,7 @@ export function LoggedIn() {
                 style={{
                   justifyContent: 'center',
                   maxHeight: 'max(65vh, 23rem)',
-                  overflowY: 'scroll',
+                  overflowY: 'auto',
                 }}
               >
                 {rows}
@@ -236,7 +236,7 @@ export function LoggedIn() {
                 style={{
                   justifyContent: 'center',
                   maxHeight: 'max(65vh, 23rem)',
-                  overflowY: 'scroll',
+                  overflowY: 'auto',
                 }}
               >
                 {rowsT}
@@ -262,7 +262,7 @@ export function LoggedIn() {
                 style={{
                   justifyContent: 'center',
                   maxHeight: 'max(65vh, 23rem)',
-                  overflowY: 'scroll',
+                  overflowY: 'auto',
                 }}
               >
                 {followedParties}
@@ -288,7 +288,7 @@ export function LoggedIn() {
                 style={{
                   justifyContent: 'center',
                   maxHeight: 'max(65vh, 23rem)',
-                  overflowY: 'scroll',
+                  overflowY: 'auto',
                 }}
               >
                 {attendingParties}
